@@ -1,6 +1,8 @@
 # fallen_angel_scanner.py
 """
-Automated Stock Scanner for "Fallen Angel" Recovery Opportunities
+Automated Multi-Market Stock Scanner for "Fallen Angel" Recovery Opportunities
+Scans: US (S&P 500 + NASDAQ-100), Poland (WSE), UK (FTSE 100), 
+       Israel (TA-35), Germany (DAX 40)
 Finds stocks down 30%+ with low bankruptcy risk and recovery potential
 """
 
@@ -19,11 +21,10 @@ import requests
 # ============================================================================
 
 # Scanning criteria
-MIN_DROP_PERCENT = 30  # Minimum drop percentage to consider
-DROP_LOOKBACK_DAYS = 21  # Look for drops that happened in last 3 weeks (21 days)
-MIN_DROP_WINDOW = 7     # Minimum window for the drop (can happen over 7-21 days)
-MIN_MARKET_CAP = 10e9  # Minimum $10B market cap
-MAX_CANDIDATES = 10    # Maximum candidates to report
+MIN_DROP_PERCENT = 30  # Minimum cumulative drop percentage
+DROP_LOOKBACK_DAYS = 21  # Look for drops over last 3 weeks (21 days)
+MIN_MARKET_CAP = 5e9  # Minimum $5B market cap (to include more stocks)
+MAX_CANDIDATES = 15    # Maximum candidates to report
 MIN_STABLE_PERIOD = 180  # Days of stability before drop
 
 # Risk scoring weights
@@ -36,49 +37,124 @@ RISK_WEIGHTS = {
 }
 
 # ============================================================================
-# STOCK UNIVERSE - S&P 500 companies
+# STOCK UNIVERSE - Multiple Markets
 # ============================================================================
 
 def get_sp500_tickers():
-    """Fetch current S&P 500 tickers from Wikipedia"""
+    """Fetch S&P 500 tickers"""
     try:
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
         tables = pd.read_html(url)
-        df = tables[0]
-        return df['Symbol'].tolist()
+        return tables[0]['Symbol'].tolist()
     except:
-        # Fallback to major tickers if Wikipedia fails
-        return [
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'BRK-B',
-            'UNH', 'JNJ', 'V', 'WMT', 'JPM', 'MA', 'PG', 'HD', 'CVX', 'MRK',
-            'ABBV', 'KO', 'PEP', 'COST', 'AVGO', 'TMO', 'MCD', 'CSCO', 'ACN',
-            'ABT', 'NKE', 'DHR', 'VZ', 'ADBE', 'TXN', 'NEE', 'PM', 'CRM', 'LLY'
-        ]
+        return ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA']
+
+def get_nasdaq100_tickers():
+    """Fetch major NASDAQ-100 tickers"""
+    # Top NASDAQ-100 companies
+    return [
+        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'META', 'TSLA',
+        'AVGO', 'ASML', 'COST', 'NFLX', 'AMD', 'ADBE', 'PEP', 'CSCO',
+        'TMUS', 'CMCSA', 'TXN', 'INTC', 'QCOM', 'INTU', 'HON', 'AMGN',
+        'AMAT', 'SBUX', 'ISRG', 'ADP', 'ADI', 'GILD', 'BKNG', 'VRTX',
+        'PANW', 'REGN', 'LRCX', 'MU', 'MDLZ', 'SNPS', 'CDNS', 'PYPL',
+        'MRVL', 'KLAC', 'CRWD', 'ORLY', 'MAR', 'FTNT', 'MELI', 'CSX',
+        'ADSK', 'ABNB', 'DASH', 'ROP', 'WDAY', 'NXPI', 'CPRT', 'PCAR',
+        'CHTR', 'AEP', 'PAYX', 'MNST', 'ROST', 'ODFL', 'EA', 'FAST',
+        'KDP', 'DXCM', 'GEHC', 'CTSH', 'VRSK', 'EXC', 'CTAS', 'LULU',
+        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP', 'ON', 'BIIB',
+        'TTD', 'ANSS', 'CDW', 'GFS', 'ZS', 'WBD', 'DDOG', 'TEAM',
+        'MDB', 'ILMN', 'ALGN', 'ARM', 'MRNA', 'RIVN', 'LCID'
+    ]
+
+def get_wse_tickers():
+    """Get major Polish WSE tickers (.WA suffix)"""
+    return [
+        'PKO.WA', 'PZU.WA', 'PKN.WA', 'KGH.WA', 'PEO.WA', 'CDR.WA',
+        'ALE.WA', 'DNP.WA', 'LPP.WA', 'PGE.WA', 'JSW.WA', 'CCC.WA',
+        'CPS.WA', 'OPL.WA', 'MBK.WA', 'KRU.WA', 'BDX.WA', 'KTY.WA',
+        'ASB.WA', 'LTS.WA', '11B.WA', 'ATT.WA', 'CIG.WA', 'CMR.WA',
+        'EUR.WA', 'ING.WA', 'KER.WA', 'MIL.WA', 'SNS.WA', 'TPS.WA'
+    ]
+
+def get_ftse100_tickers():
+    """Get major FTSE 100 tickers (.L suffix for London)"""
+    return [
+        'SHEL.L', 'AZN.L', 'HSBA.L', 'ULVR.L', 'BP.L', 'GSK.L', 'DGE.L',
+        'RIO.L', 'BATS.L', 'REL.L', 'NG.L', 'LSEG.L', 'BARC.L', 'LLOY.L',
+        'VOD.L', 'AAL.L', 'GLEN.L', 'BHP.L', 'CPG.L', 'PRU.L', 'IMB.L',
+        'TSCO.L', 'BA.L', 'CNA.L', 'RKT.L', 'MNG.L', 'EXPN.L', 'RR.L',
+        'WPP.L', 'LGEN.L', 'SMDS.L', 'STJ.L', 'INF.L', 'FERG.L', 'III.L',
+        'NWG.L', 'PSN.L', 'AUTO.L', 'STAN.L', 'SGE.L', 'AV.L', 'ANTO.L',
+        'SSE.L', 'BT-A.L', 'ENT.L', 'SPX.L', 'SBRY.L', 'BRBY.L', 'WTB.L',
+        'CRDA.L'
+    ]
+
+def get_tase_tickers():
+    """Get major Tel Aviv Stock Exchange tickers (.TA suffix)"""
+    return [
+        'TEVA.TA', 'LUMI.TA', 'POLI.TA', 'ESLT.TA', 'ICL.TA', 'TATT.TA',
+        'AZRG.TA', 'CHLT.TA', 'FIBI.TA', 'INSR.TA', 'MZTF.TA', 'NICE.TA',
+        'TASE.TA', 'PLAZ.TA', 'DLEKG.TA', 'MLSR.TA', 'MSHL.TA', 'BEZQ.TA',
+        'ALHE.TA', 'ELAL.TA', 'PRCH.TA', 'FTAL.TA', 'HAPT.TA', 'MGRM.TA',
+        'SRAE.TA', 'BIGT.TA', 'ENLT.TA'
+    ]
+
+def get_dax_tickers():
+    """Get DAX 40 tickers (.DE suffix for XETRA/Frankfurt)"""
+    return [
+        'ADS.DE', 'AIR.DE', 'ALV.DE', 'BAS.DE', 'BAYN.DE', 'BEI.DE',
+        'BMW.DE', 'BNR.DE', 'CBK.DE', 'CON.DE', 'DB1.DE', 'DBK.DE',
+        'DHL.DE', 'DTE.DE', 'EOAN.DE', 'FME.DE', 'FRE.DE', 'HEI.DE',
+        'HEN.DE', 'HFG.DE', 'IFX.DE', 'MBG.DE', 'MRK.DE', 'MTX.DE',
+        'MUV2.DE', 'PAH3.DE', 'PUM.DE', 'QIA.DE', 'RHM.DE', 'RWE.DE',
+        'SAP.DE', 'SHL.DE', 'SIE.DE', 'SRT.DE', 'SY1.DE', 'VNA.DE',
+        'VOW3.DE', 'ZAL.DE', 'DPW.DE', 'HNR1.DE'
+    ]
+
+def get_all_tickers():
+    """Combine all market tickers"""
+    all_tickers = []
+    all_tickers.extend(get_sp500_tickers())
+    all_tickers.extend(get_nasdaq100_tickers())
+    all_tickers.extend(get_wse_tickers())
+    all_tickers.extend(get_ftse100_tickers())
+    all_tickers.extend(get_tase_tickers())
+    all_tickers.extend(get_dax_tickers())
+    
+    # Remove duplicates
+    return list(set(all_tickers))
+
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def get_market_info(ticker):
+    """Determine market, flag, and currency from ticker"""
+    if ticker.endswith('.WA'):
+        return "🇵🇱 WSE", "PLN"
+    elif ticker.endswith('.L'):
+        return "🇬🇧 LSE", "GBP"
+    elif ticker.endswith('.TA'):
+        return "🇮🇱 TASE", "ILS"
+    elif ticker.endswith('.DE'):
+        return "🇩🇪 XETRA", "EUR"
+    else:
+        return "🇺🇸 US", "USD"
 
 # ============================================================================
 # ANALYSIS FUNCTIONS
 # ============================================================================
 
 def calculate_drop(prices, lookback_days=21):
-    """
-    Calculate cumulative drop over the lookback period (2-3 weeks)
-    This catches both sharp crashes and gradual sustained sell-offs
-    """
+    """Calculate cumulative drop over the lookback period"""
     if len(prices) < 2:
         return 0, 0, 0, 0
     
     current_price = prices.iloc[-1]
-    
-    # Price from 2-3 weeks ago (starting point)
     lookback_price = prices.iloc[-min(lookback_days, len(prices))]
-    
-    # Cumulative drop from that starting point
     cumulative_drop = ((current_price - lookback_price) / lookback_price) * 100
-    
-    # Also find the highest price in this period (for potential gain calc)
     max_price = prices.max()
-    
-    # Days of the drop period
     drop_days = min(lookback_days, len(prices) - 1)
     
     return cumulative_drop, lookback_price, current_price, drop_days
@@ -90,27 +166,21 @@ def check_stability_before_drop(prices, drop_start_idx, lookback_days=180):
     
     stable_period = prices[:drop_start_idx][-lookback_days:]
     volatility = (stable_period.std() / stable_period.mean()) * 100
-    
-    # Consider stable if volatility < 15%
     return volatility < 15, volatility
 
 def get_financial_health(ticker_obj):
     """Assess bankruptcy risk from financials"""
     try:
         info = ticker_obj.info
-        balance_sheet = ticker_obj.balance_sheet
         
-        # Debt to Equity
         total_debt = info.get('totalDebt', 0)
         total_equity = info.get('totalStockholderEquity', 1)
         debt_to_equity = total_debt / total_equity if total_equity > 0 else 999
         
-        # Current Ratio (liquidity)
         current_assets = info.get('totalCurrentAssets', 0)
         current_liabilities = info.get('totalCurrentLiabilities', 1)
         current_ratio = current_assets / current_liabilities if current_liabilities > 0 else 0
         
-        # Cash position
         cash = info.get('totalCash', 0)
         market_cap = info.get('marketCap', 1)
         cash_to_mc = cash / market_cap if market_cap > 0 else 0
@@ -125,44 +195,38 @@ def get_financial_health(ticker_obj):
         return None
 
 def calculate_risk_score(financial_health, drop_percent, stability_vol):
-    """Calculate risk score 1-10 (1=safest, 10=riskiest)"""
+    """Calculate risk score 1-10"""
     if not financial_health:
-        return 8  # High risk if we can't get data
+        return 8
     
-    score = 5  # Start neutral
+    score = 5
     
-    # Debt risk (lower is better)
     if financial_health['debt_to_equity'] < 0.3:
         score -= 1
     elif financial_health['debt_to_equity'] > 0.7:
         score += 1.5
     
-    # Liquidity risk
     if financial_health['current_ratio'] > 2.0:
         score -= 1
     elif financial_health['current_ratio'] < 1.0:
         score += 1.5
     
-    # Cash cushion
     if financial_health['cash_to_mc'] > 0.15:
         score -= 0.5
     
-    # Drop severity (bigger drop = more risk, but also more opportunity)
     if abs(drop_percent) > 50:
         score += 1
     
-    # Previous stability is good
     if stability_vol < 10:
         score -= 0.5
     
     return max(1, min(10, round(score)))
 
 def get_drop_reason(ticker):
-    """Try to determine why stock dropped using news/info"""
+    """Try to determine why stock dropped"""
     try:
         stock = yf.Ticker(ticker)
         news = stock.news[:3] if hasattr(stock, 'news') else []
-        
         if news:
             headlines = [item.get('title', '') for item in news]
             return ' | '.join(headlines)[:200]
@@ -176,18 +240,20 @@ def get_drop_reason(ticker):
 
 def scan_for_fallen_angels():
     """Main scanning function"""
-    print(f"🔍 Starting Fallen Angel scan at {datetime.now()}")
+    print(f"🔍 Starting Multi-Market Fallen Angel scan at {datetime.now()}")
+    print(f"Markets: US (S&P500 + NASDAQ-100), Poland (WSE), UK (FTSE100), Israel (TASE), Germany (DAX)")
     print(f"Looking for cumulative drops ≥{MIN_DROP_PERCENT}% over last {DROP_LOOKBACK_DAYS} days\n")
     
-    tickers = get_sp500_tickers()
+    tickers = get_all_tickers()
     candidates = []
     
     end_date = datetime.now()
-    start_date = end_date - timedelta(days=365)  # Get 1 year of data
+    start_date = end_date - timedelta(days=365)
     
     for i, ticker in enumerate(tickers):
         try:
-            print(f"Scanning {ticker} ({i+1}/{len(tickers)})...", end='\r')
+            market, currency = get_market_info(ticker)
+            print(f"Scanning {ticker} ({market}) ({i+1}/{len(tickers)})...", end='\r')
             
             stock = yf.Ticker(ticker)
             hist = stock.history(start=start_date, end=end_date)
@@ -195,45 +261,33 @@ def scan_for_fallen_angels():
             if len(hist) < DROP_LOOKBACK_DAYS + MIN_STABLE_PERIOD:
                 continue
             
-            # Get market cap
             info = stock.info
             market_cap = info.get('marketCap', 0)
             if market_cap < MIN_MARKET_CAP:
                 continue
             
-            # Check recent cumulative drop over 2-3 weeks
             recent_prices = hist['Close'][-DROP_LOOKBACK_DAYS:]
             drop_percent, start_price, current_price, drop_days = calculate_drop(recent_prices, DROP_LOOKBACK_DAYS)
             
-            if drop_percent >= -MIN_DROP_PERCENT:  # We want negative drops
+            if drop_percent >= -MIN_DROP_PERCENT:
                 continue
             
-            # Check if it was stable before the drop period
             all_prices = hist['Close']
             stable_period_end = len(all_prices) - DROP_LOOKBACK_DAYS
-            is_stable, stability_vol = check_stability_before_drop(
-                all_prices, stable_period_end, MIN_STABLE_PERIOD
-            )
+            is_stable, stability_vol = check_stability_before_drop(all_prices, stable_period_end, MIN_STABLE_PERIOD)
             
             if not is_stable:
                 continue
             
-            # Get financial health
             financial_health = get_financial_health(stock)
             if not financial_health:
                 continue
             
-            # Calculate metrics
             risk_score = calculate_risk_score(financial_health, drop_percent, stability_vol)
-            
-            # Find the peak price in recent history for potential gain calculation
-            max_price_recent = all_prices[-60:].max()  # Last 2-3 months peak
+            max_price_recent = all_prices[-60:].max()
             potential_gain = ((max_price_recent - current_price) / current_price) * 100
-            
-            # Get drop reason
             drop_reason = get_drop_reason(ticker)
             
-            # Bankruptcy risk assessment
             if risk_score <= 3:
                 bankruptcy_risk = "Very Low"
             elif risk_score <= 5:
@@ -246,6 +300,8 @@ def scan_for_fallen_angels():
             candidates.append({
                 'ticker': ticker,
                 'company': info.get('longName', ticker),
+                'market': market,
+                'currency': currency,
                 'current_price': current_price,
                 'drop_percent': drop_percent,
                 'drop_days': drop_days,
@@ -266,8 +322,7 @@ def scan_for_fallen_angels():
     
     print("\n" + "="*80)
     
-    # Sort by potential gain and filter by risk
-    candidates = [c for c in candidates if c['risk_score'] <= 7]  # Filter out highest risk
+    candidates = [c for c in candidates if c['risk_score'] <= 7]
     candidates.sort(key=lambda x: x['potential_gain'], reverse=True)
     
     return candidates[:MAX_CANDIDATES]
@@ -277,15 +332,15 @@ def scan_for_fallen_angels():
 # ============================================================================
 
 def generate_html_email(candidates):
-    """Generate beautiful HTML email with results"""
+    """Generate HTML email with results"""
     
     if not candidates:
         return """
         <html>
         <body style="font-family: Arial, sans-serif; padding: 20px;">
-            <h2>🔍 Fallen Angel Scanner</h2>
+            <h2>🔍 Multi-Market Fallen Angel Scanner</h2>
             <p>No new candidates found matching your criteria today.</p>
-            <p style="color: #666;">The scanner ran successfully but didn't find any stocks with 30%+ drops that meet the quality filters.</p>
+            <p style="color: #666;">Markets scanned: US, Poland, UK, Israel, Germany</p>
         </body>
         </html>
         """
@@ -293,19 +348,21 @@ def generate_html_email(candidates):
     rows = ""
     for c in candidates:
         risk_color = '#22c55e' if c['risk_score'] <= 3 else '#eab308' if c['risk_score'] <= 5 else '#ef4444'
+        market_badge = f"<span style='background: #3b82f6; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 4px;'>{c['market']}</span>"
         rows += f"""
         <tr style="border-bottom: 1px solid #e5e7eb;">
-            <td style="padding: 12px; font-weight: bold;">{c['ticker']}</td>
-            <td style="padding: 12px;">{c['company'][:30]}</td>
+            <td style="padding: 12px; font-weight: bold;">{c['ticker']}{market_badge}</td>
+            <td style="padding: 12px;">{c['company'][:25]}</td>
             <td style="padding: 12px; color: #ef4444; font-weight: bold;">{c['drop_percent']:.1f}%</td>
             <td style="padding: 12px; color: #22c55e; font-weight: bold;">+{c['potential_gain']:.1f}%</td>
+            <td style="padding: 12px; font-size: 12px;">{c['current_price']:.2f} {c['currency']}</td>
             <td style="padding: 12px;">
                 <span style="background: {risk_color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
                     {c['risk_score']}/10
                 </span>
             </td>
             <td style="padding: 12px; font-size: 12px;">{c['bankruptcy_risk']}</td>
-            <td style="padding: 12px; font-size: 11px; color: #666;">{c['drop_reason'][:60]}...</td>
+            <td style="padding: 12px; font-size: 11px; color: #666;">{c['drop_reason'][:45]}...</td>
         </tr>
         """
     
@@ -314,29 +371,30 @@ def generate_html_email(candidates):
     <head>
         <style>
             body {{ font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f4f6; }}
-            .container {{ max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 8px; }}
+            .container {{ max-width: 1100px; margin: 20px auto; background: white; padding: 30px; border-radius: 8px; }}
             .header {{ background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
             table {{ width: 100%; border-collapse: collapse; }}
-            th {{ background: #f9fafb; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; }}
+            th {{ background: #f9fafb; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; font-size: 13px; }}
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <h1 style="margin: 0;">🔍 Fallen Angel Scanner Results</h1>
-                <p style="margin: 10px 0 0 0; opacity: 0.9;">Found {len(candidates)} recovery opportunities</p>
+                <h1 style="margin: 0;">🌍 Multi-Market Fallen Angel Scanner</h1>
+                <p style="margin: 10px 0 0 0; opacity: 0.9;">Found {len(candidates)} recovery opportunities across 5 markets</p>
                 <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8;">{datetime.now().strftime('%B %d, %Y at %H:%M')}</p>
             </div>
             
-            <p>Stocks with <strong>cumulative drops of 30%+ over the last 2-3 weeks</strong> that show potential for recovery:</p>
+            <p>Stocks with <strong>cumulative drops of 30%+ over the last 2-3 weeks</strong> from US, Poland, UK, Israel, and Germany:</p>
             
             <table>
                 <thead>
                     <tr>
                         <th>Ticker</th>
                         <th>Company</th>
-                        <th>Cumulative Drop</th>
+                        <th>Drop</th>
                         <th>Potential Gain</th>
+                        <th>Price</th>
                         <th>Risk</th>
                         <th>Bankruptcy Risk</th>
                         <th>Why It Dropped</th>
@@ -352,7 +410,8 @@ def generate_html_email(candidates):
             </div>
             
             <div style="margin-top: 20px; font-size: 12px; color: #666; text-align: center;">
-                <p>Fallen Angel Scanner • Automated by GitHub Actions</p>
+                <p>Multi-Market Fallen Angel Scanner • Automated by GitHub Actions</p>
+                <p>Markets: 🇺🇸 US • 🇵🇱 Poland • 🇬🇧 UK • 🇮🇱 Israel • 🇩🇪 Germany</p>
             </div>
         </div>
     </body>
@@ -371,7 +430,7 @@ def send_email(candidates):
         print("❌ Email credentials not configured")
         return
     
-    subject = f"🔍 Fallen Angel Scanner - {len(candidates)} candidates found" if candidates else "🔍 Fallen Angel Scanner - No new candidates"
+    subject = f"🌍 Multi-Market Scanner - {len(candidates)} candidates found" if candidates else "🌍 Multi-Market Scanner - No new candidates"
     
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject
@@ -382,7 +441,6 @@ def send_email(candidates):
     msg.attach(MIMEText(html_body, 'html'))
     
     try:
-        # Using Gmail SMTP
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, receiver_email, msg.as_string())
@@ -403,9 +461,8 @@ if __name__ == "__main__":
     if candidates:
         print("Top candidates:")
         for c in candidates[:5]:
-            print(f"  {c['ticker']:6} - Drop: {c['drop_percent']:6.1f}% | Gain Potential: +{c['potential_gain']:5.1f}% | Risk: {c['risk_score']}/10")
+            print(f"  {c['ticker']:10} {c['market']:12} Drop: {c['drop_percent']:6.1f}% | Gain: +{c['potential_gain']:5.1f}% | Risk: {c['risk_score']}/10")
     
-    # Send email
     send_email(candidates)
     
     print("\n" + "="*80)
