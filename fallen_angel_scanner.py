@@ -20,7 +20,8 @@ import requests
 
 # Scanning criteria
 MIN_DROP_PERCENT = 30  # Minimum drop percentage to consider
-DROP_PERIOD_DAYS = 14  # Look for drops in last N days
+DROP_LOOKBACK_DAYS = 21  # Look for drops that happened in last 3 weeks (21 days)
+MIN_DROP_WINDOW = 7     # Minimum window for the drop (can happen over 7-21 days)
 MIN_MARKET_CAP = 10e9  # Minimum $10B market cap
 MAX_CANDIDATES = 10    # Maximum candidates to report
 MIN_STABLE_PERIOD = 180  # Days of stability before drop
@@ -58,19 +59,29 @@ def get_sp500_tickers():
 # ANALYSIS FUNCTIONS
 # ============================================================================
 
-def calculate_drop(prices):
-    """Calculate max drop in recent period"""
+def calculate_drop(prices, lookback_days=21):
+    """
+    Calculate cumulative drop over the lookback period (2-3 weeks)
+    This catches both sharp crashes and gradual sustained sell-offs
+    """
     if len(prices) < 2:
-        return 0, 0, 0
+        return 0, 0, 0, 0
     
-    max_price = prices.max()
     current_price = prices.iloc[-1]
-    drop_percent = ((current_price - max_price) / max_price) * 100
     
-    # Find where the drop started
-    max_idx = prices.idxmax()
+    # Price from 2-3 weeks ago (starting point)
+    lookback_price = prices.iloc[-min(lookback_days, len(prices))]
     
-    return drop_percent, max_price, current_price
+    # Cumulative drop from that starting point
+    cumulative_drop = ((current_price - lookback_price) / lookback_price) * 100
+    
+    # Also find the highest price in this period (for potential gain calc)
+    max_price = prices.max()
+    
+    # Days of the drop period
+    drop_days = min(lookback_days, len(prices) - 1)
+    
+    return cumulative_drop, lookback_price, current_price, drop_days
 
 def check_stability_before_drop(prices, drop_start_idx, lookback_days=180):
     """Check if stock was stable before the drop"""
@@ -166,14 +177,13 @@ def get_drop_reason(ticker):
 def scan_for_fallen_angels():
     """Main scanning function"""
     print(f"🔍 Starting Fallen Angel scan at {datetime.now()}")
-    print(f"Looking for drops ≥{MIN_DROP_PERCENT}% in last {DROP_PERIOD_DAYS} days\n")
+    print(f"Looking for cumulative drops ≥{MIN_DROP_PERCENT}% over last {DROP_LOOKBACK_DAYS} days\n")
     
     tickers = get_sp500_tickers()
     candidates = []
     
     end_date = datetime.now()
     start_date = end_date - timedelta(days=365)  # Get 1 year of data
-    recent_start = end_date - timedelta(days=DROP_PERIOD_DAYS)
     
     for i, ticker in enumerate(tickers):
         try:
@@ -182,7 +192,7 @@ def scan_for_fallen_angels():
             stock = yf.Ticker(ticker)
             hist = stock.history(start=start_date, end=end_date)
             
-            if len(hist) < DROP_PERIOD_DAYS + MIN_STABLE_PERIOD:
+            if len(hist) < DROP_LOOKBACK_DAYS + MIN_STABLE_PERIOD:
                 continue
             
             # Get market cap
@@ -191,18 +201,18 @@ def scan_for_fallen_angels():
             if market_cap < MIN_MARKET_CAP:
                 continue
             
-            # Check recent drop
-            recent_prices = hist['Close'][-DROP_PERIOD_DAYS:]
-            drop_percent, max_price, current_price = calculate_drop(recent_prices)
+            # Check recent cumulative drop over 2-3 weeks
+            recent_prices = hist['Close'][-DROP_LOOKBACK_DAYS:]
+            drop_percent, start_price, current_price, drop_days = calculate_drop(recent_prices, DROP_LOOKBACK_DAYS)
             
             if drop_percent >= -MIN_DROP_PERCENT:  # We want negative drops
                 continue
             
-            # Check if it was stable before
+            # Check if it was stable before the drop period
             all_prices = hist['Close']
-            max_idx_pos = len(all_prices) - DROP_PERIOD_DAYS
+            stable_period_end = len(all_prices) - DROP_LOOKBACK_DAYS
             is_stable, stability_vol = check_stability_before_drop(
-                all_prices, max_idx_pos, MIN_STABLE_PERIOD
+                all_prices, stable_period_end, MIN_STABLE_PERIOD
             )
             
             if not is_stable:
@@ -215,7 +225,10 @@ def scan_for_fallen_angels():
             
             # Calculate metrics
             risk_score = calculate_risk_score(financial_health, drop_percent, stability_vol)
-            potential_gain = ((max_price - current_price) / current_price) * 100
+            
+            # Find the peak price in recent history for potential gain calculation
+            max_price_recent = all_prices[-60:].max()  # Last 2-3 months peak
+            potential_gain = ((max_price_recent - current_price) / current_price) * 100
             
             # Get drop reason
             drop_reason = get_drop_reason(ticker)
@@ -235,8 +248,8 @@ def scan_for_fallen_angels():
                 'company': info.get('longName', ticker),
                 'current_price': current_price,
                 'drop_percent': drop_percent,
-                'drop_days': DROP_PERIOD_DAYS,
-                'previous_high': max_price,
+                'drop_days': drop_days,
+                'previous_high': max_price_recent,
                 'potential_gain': potential_gain,
                 'market_cap': market_cap,
                 'risk_score': risk_score,
@@ -315,14 +328,14 @@ def generate_html_email(candidates):
                 <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8;">{datetime.now().strftime('%B %d, %Y at %H:%M')}</p>
             </div>
             
-            <p>Here are stocks that dropped 30%+ recently but show potential for recovery:</p>
+            <p>Stocks with <strong>cumulative drops of 30%+ over the last 2-3 weeks</strong> that show potential for recovery:</p>
             
             <table>
                 <thead>
                     <tr>
                         <th>Ticker</th>
                         <th>Company</th>
-                        <th>Drop</th>
+                        <th>Cumulative Drop</th>
                         <th>Potential Gain</th>
                         <th>Risk</th>
                         <th>Bankruptcy Risk</th>
