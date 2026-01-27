@@ -126,8 +126,63 @@ def get_all_tickers():
     return list(set(all_tickers))
 
 # ============================================================================
-# HELPER FUNCTIONS
+# BROKER RECOMMENDATION ENGINE
 # ============================================================================
+
+def get_broker_recommendation(ticker, market):
+    """Recommend optimal broker based on ticker and market"""
+    
+    # US stocks (NYSE/NASDAQ)
+    if market == "🇺🇸 US":
+        return {
+            'primary': 'Revolut',
+            'alternative': 'mBank eMakler',
+            'reason': 'Lower fees + extended hours',
+            'emoji': '📱'
+        }
+    
+    # Polish stocks (WSE)
+    elif market == "🇵🇱 WSE":
+        return {
+            'primary': 'mBank eMakler',
+            'alternative': None,
+            'reason': 'Local market, best execution',
+            'emoji': '🏦'
+        }
+    
+    # UK stocks (LSE)
+    elif market == "🇬🇧 LSE":
+        return {
+            'primary': 'mBank eMakler',
+            'alternative': 'Revolut',
+            'reason': 'Full FTSE access, lower fees',
+            'emoji': '🏦'
+        }
+    
+    # German stocks (XETRA)
+    elif market == "🇩🇪 XETRA":
+        return {
+            'primary': 'mBank eMakler',
+            'alternative': None,
+            'reason': 'Full DAX access, good fees',
+            'emoji': '🏦'
+        }
+    
+    # Israeli stocks (TASE)
+    elif market == "🇮🇱 TASE":
+        return {
+            'primary': 'Bank Leumi',
+            'alternative': None,
+            'reason': 'Only broker with TASE access',
+            'emoji': '🇮🇱'
+        }
+    
+    return {
+        'primary': 'Check manually',
+        'alternative': None,
+        'reason': 'Unknown market',
+        'emoji': '❓'
+    }
 
 def get_market_info(ticker):
     """Determine market, flag, and currency from ticker"""
@@ -314,7 +369,8 @@ def scan_for_fallen_angels():
                 'current_ratio': financial_health['current_ratio'],
                 'cash_position': 'Strong' if financial_health['cash_to_mc'] > 0.15 else 'Moderate',
                 'stability_vol': stability_vol,
-                'drop_reason': drop_reason
+                'drop_reason': drop_reason,
+                'broker': get_broker_recommendation(ticker, market)
             })
             
         except Exception as e:
@@ -349,9 +405,21 @@ def generate_html_email(candidates):
     for c in candidates:
         risk_color = '#22c55e' if c['risk_score'] <= 3 else '#eab308' if c['risk_score'] <= 5 else '#ef4444'
         market_badge = f"<span style='background: #3b82f6; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 4px;'>{c['market']}</span>"
+        
+        # Broker recommendation badge
+        broker = c['broker']
+        broker_color = '#10b981' if broker['primary'] == 'Revolut' else '#3b82f6' if broker['primary'] == 'mBank eMakler' else '#f59e0b'
+        broker_badge = f"<div style='margin-top: 4px;'><span style='background: {broker_color}; color: white; padding: 2px 8px; border-radius: 3px; font-size: 10px;'>{broker['emoji']} {broker['primary']}</span>"
+        if broker['alternative']:
+            broker_badge += f"<span style='background: #9ca3af; color: white; padding: 2px 8px; border-radius: 3px; font-size: 10px; margin-left: 4px;'>or {broker['alternative']}</span>"
+        broker_badge += "</div>"
+        
         rows += f"""
         <tr style="border-bottom: 1px solid #e5e7eb;">
-            <td style="padding: 12px; font-weight: bold;">{c['ticker']}{market_badge}</td>
+            <td style="padding: 12px;">
+                <div style="font-weight: bold;">{c['ticker']}{market_badge}</div>
+                {broker_badge}
+            </td>
             <td style="padding: 12px;">{c['company'][:25]}</td>
             <td style="padding: 12px; color: #ef4444; font-weight: bold;">{c['drop_percent']:.1f}%</td>
             <td style="padding: 12px; color: #22c55e; font-weight: bold;">+{c['potential_gain']:.1f}%</td>
@@ -361,8 +429,7 @@ def generate_html_email(candidates):
                     {c['risk_score']}/10
                 </span>
             </td>
-            <td style="padding: 12px; font-size: 12px;">{c['bankruptcy_risk']}</td>
-            <td style="padding: 12px; font-size: 11px; color: #666;">{c['drop_reason'][:45]}...</td>
+            <td style="padding: 12px; font-size: 11px; color: #666;">{c['drop_reason'][:40]}...</td>
         </tr>
         """
     
@@ -390,13 +457,12 @@ def generate_html_email(candidates):
             <table>
                 <thead>
                     <tr>
-                        <th>Ticker</th>
+                        <th>Ticker & Broker</th>
                         <th>Company</th>
                         <th>Drop</th>
                         <th>Potential Gain</th>
                         <th>Price</th>
                         <th>Risk</th>
-                        <th>Bankruptcy Risk</th>
                         <th>Why It Dropped</th>
                     </tr>
                 </thead>
@@ -406,6 +472,13 @@ def generate_html_email(candidates):
             </table>
             
             <div style="margin-top: 30px; padding: 15px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                <strong>📱 Broker Guide:</strong><br>
+                <span style="color: #10b981;">● Revolut</span> = US stocks (lower fees, extended hours)<br>
+                <span style="color: #3b82f6;">● mBank eMakler</span> = Polish, UK, German stocks<br>
+                <span style="color: #f59e0b;">● Bank Leumi</span> = Israeli stocks (exclusive access)
+            </div>
+            
+            <div style="margin-top: 15px; padding: 15px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
                 <strong>⚠️ Remember:</strong> Do your own research before investing. Check news, earnings, and assess if the drop is temporary or permanent.
             </div>
             
@@ -424,46 +497,4 @@ def send_email(candidates):
     """Send email with results"""
     sender_email = os.environ.get('SENDER_EMAIL')
     sender_password = os.environ.get('SENDER_PASSWORD')
-    receiver_email = os.environ.get('RECEIVER_EMAIL')
-    
-    if not all([sender_email, sender_password, receiver_email]):
-        print("❌ Email credentials not configured")
-        return
-    
-    subject = f"🌍 Multi-Market Scanner - {len(candidates)} candidates found" if candidates else "🌍 Multi-Market Scanner - No new candidates"
-    
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = subject
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-    
-    html_body = generate_html_email(candidates)
-    msg.attach(MIMEText(html_body, 'html'))
-    
-    try:
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, receiver_email, msg.as_string())
-        server.quit()
-        print(f"✅ Email sent successfully to {receiver_email}")
-    except Exception as e:
-        print(f"❌ Failed to send email: {e}")
-
-# ============================================================================
-# MAIN
-# ============================================================================
-
-if __name__ == "__main__":
-    candidates = scan_for_fallen_angels()
-    
-    print(f"\n✅ Scan complete! Found {len(candidates)} candidates\n")
-    
-    if candidates:
-        print("Top candidates:")
-        for c in candidates[:5]:
-            print(f"  {c['ticker']:10} {c['market']:12} Drop: {c['drop_percent']:6.1f}% | Gain: +{c['potential_gain']:5.1f}% | Risk: {c['risk_score']}/10")
-    
-    send_email(candidates)
-    
-    print("\n" + "="*80)
-    print("Done! 🎉")
+    receiver_email = os.enviro
