@@ -12,7 +12,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,7 +21,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install yfinance pandas numpy --break-system-packages
+          pip install -r requirements.txt --break-system-packages
       
       - name: Run fallen angel scanner
         env:
