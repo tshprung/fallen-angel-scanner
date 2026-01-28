@@ -21,7 +21,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install pandas yfinance --break-system-packages
+          pip install -r requirements.txt --break-system-packages
       
       - name: Run ticker update check
         id: update_check
