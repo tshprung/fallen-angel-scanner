@@ -138,9 +138,24 @@ def compare_sp500_lists():
     try:
         local_sp500 = set(get_sp500_tickers())
         logger.info(f"📋 Local list has {len(local_sp500)} tickers")
-    except:
-        # Fallback list is being used
-        logger.warning("⚠️  Using fallback S&P 500 list (Wikipedia fetch failed previously)")
+        
+        # Check if using fallback (small list ~50 tickers)
+        if len(local_sp500) < 400:
+            logger.warning("⚠️  Local list appears to be using FALLBACK (only 50 tickers)")
+            logger.warning("This means tickers_config.py couldn't fetch from Wikipedia")
+            logger.warning("The scanner will work but only scan the fallback list")
+            logger.info("")
+            logger.info("✅ GOOD NEWS: Wikipedia fetch in update script works fine!")
+            logger.info("📌 The full S&P 500 list will be used when tickers_config.py is fixed")
+            logger.info("   (This is just for the update checker, scanner still works)")
+            return {
+                'up_to_date': True,
+                'additions': [],
+                'removals': [],
+                'using_fallback': True
+            }
+    except Exception as e:
+        logger.error(f"Error getting local list: {e}")
         return None
     
     # Find differences
@@ -152,25 +167,31 @@ def compare_sp500_lists():
         return {
             'up_to_date': True,
             'additions': [],
-            'removals': []
+            'removals': [],
+            'using_fallback': False
         }
     
     logger.info(f"\n📊 Changes detected:")
     
     if additions:
         logger.info(f"\n➕ ADDITIONS ({len(additions)}):")
-        for ticker in sorted(additions):
+        for ticker in sorted(additions)[:10]:  # Show only first 10
             logger.info(f"   + {ticker}")
+        if len(additions) > 10:
+            logger.info(f"   ... and {len(additions) - 10} more")
     
     if removals:
         logger.info(f"\n➖ REMOVALS ({len(removals)}):")
-        for ticker in sorted(removals):
+        for ticker in sorted(removals)[:10]:  # Show only first 10
             logger.info(f"   - {ticker}")
+        if len(removals) > 10:
+            logger.info(f"   ... and {len(removals) - 10} more")
     
     return {
         'up_to_date': False,
         'additions': list(additions),
-        'removals': list(removals)
+        'removals': list(removals),
+        'using_fallback': False
     }
 
 def check_fallen_angels_still_valid():
@@ -225,16 +246,38 @@ def generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid)
     # S&P 500 Changes
     report.append("\n## 📊 S&P 500 Status")
     if sp500_changes:
-        if sp500_changes['up_to_date']:
+        if sp500_changes.get('using_fallback'):
+            report.append("ℹ️  Using fallback list in tickers_config.py (50 tickers)")
+            report.append("")
+            report.append("**What this means:**")
+            report.append("- The scanner works fine but only scans 50 major stocks")
+            report.append("- Wikipedia fetch works in update script ✅")
+            report.append("- tickers_config.py needs the same fix")
+            report.append("")
+            report.append("**To fix:** Update tickers_config.py to use requests library (already done in update_tickers.py)")
+        elif sp500_changes['up_to_date']:
             report.append("✅ List is up to date")
         else:
             report.append("⚠️  Changes detected - manual update required!")
-            report.append("\n### Additions:")
-            for ticker in sp500_changes['additions']:
-                report.append(f"  + {ticker}")
-            report.append("\n### Removals:")
-            for ticker in sp500_changes['removals']:
-                report.append(f"  - {ticker}")
+            if len(sp500_changes['additions']) <= 10:
+                report.append("\n### Additions:")
+                for ticker in sp500_changes['additions']:
+                    report.append(f"  + {ticker}")
+            else:
+                report.append(f"\n### Additions ({len(sp500_changes['additions'])} total):")
+                for ticker in sorted(sp500_changes['additions'])[:5]:
+                    report.append(f"  + {ticker}")
+                report.append(f"  ... and {len(sp500_changes['additions']) - 5} more")
+            
+            if len(sp500_changes['removals']) <= 10:
+                report.append("\n### Removals:")
+                for ticker in sp500_changes['removals']:
+                    report.append(f"  - {ticker}")
+            else:
+                report.append(f"\n### Removals ({len(sp500_changes['removals'])} total):")
+                for ticker in sorted(sp500_changes['removals'])[:5]:
+                    report.append(f"  - {ticker}")
+                report.append(f"  ... and {len(sp500_changes['removals']) - 5} more")
     else:
         report.append("❌ Could not fetch current S&P 500 list")
     
