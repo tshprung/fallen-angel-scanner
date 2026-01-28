@@ -1,0 +1,33 @@
+# Sensitive files - DO NOT COMMIT
+.env
+*.key
+*.pem
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files that might contain sensitive info
+data/
+*.csv
+*.xlsx
+
+# Keep the log file in git for tracking
+# fallen_angel_scanner.log will be committed
