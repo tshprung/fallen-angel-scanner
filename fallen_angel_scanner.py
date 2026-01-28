@@ -3,7 +3,7 @@
 Automated Multi-Market Stock Scanner for "Fallen Angel" Recovery Opportunities
 Scans: US (S&P 500 + NASDAQ-100), Poland (WSE), UK (FTSE 100), 
        Israel (TA-35), Germany (DAX 40)
-Finds stocks down 30%+ with low bankruptcy risk and recovery potential
+Finds stocks down 20%+ with low bankruptcy risk and recovery potential
 """
 
 import yfinance as yf
@@ -15,6 +15,24 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 import requests
+import logging
+from tickers_config import get_all_tickers, get_market_info
+
+# ============================================================================
+# LOGGING SETUP
+# ============================================================================
+
+# Configure logging to both file and console
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('fallen_angel_scanner.log'),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 # ============================================================================
 # CONFIGURATION
@@ -35,141 +53,6 @@ RISK_WEIGHTS = {
     'volatility_increase': 0.15,
     'volume_spike': 0.15
 }
-
-# ============================================================================
-# STOCK UNIVERSE - Multiple Markets
-# ============================================================================
-
-def get_sp500_tickers():
-    """Fetch S&P 500 tickers"""
-    try:
-        url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-        tables = pd.read_html(url)
-        return tables[0]['Symbol'].tolist()
-    except:
-        return ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA']
-
-def get_nasdaq100_tickers():
-    """Fetch major NASDAQ-100 tickers"""
-    # Updated with December 2025 reconstitution changes
-    return [
-        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'META', 'TSLA',
-        'AVGO', 'ASML', 'COST', 'NFLX', 'AMD', 'ADBE', 'PEP', 'CSCO',
-        'TMUS', 'CMCSA', 'TXN', 'INTC', 'QCOM', 'INTU', 'HON', 'AMGN',
-        'AMAT', 'SBUX', 'ISRG', 'ADP', 'ADI', 'GILD', 'BKNG', 'VRTX',
-        'PANW', 'REGN', 'LRCX', 'MU', 'MDLZ', 'SNPS', 'CDNS', 'PYPL',
-        'MRVL', 'KLAC', 'CRWD', 'ORLY', 'MAR', 'FTNT', 'MELI', 'CSX',
-        'ADSK', 'ABNB', 'DASH', 'ROP', 'WDAY', 'NXPI', 'CPRT', 'PCAR',
-        'CHTR', 'AEP', 'PAYX', 'MNST', 'ROST', 'ODFL', 'EA', 'FAST',
-        'KDP', 'DXCM', 'GEHC', 'CTSH', 'VRSK', 'EXC', 'CTAS', 'LULU',
-        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP', 'BIIB',
-        'ANSS', 'WBD', 'DDOG', 'TEAM',
-        'MDB', 'ILMN', 'ALGN', 'ARM', 'MRNA', 'RIVN', 'LCID',
-        # Added Dec 2025: ALNY, FER, INSM, MPWR, STX, WDC
-        'ALNY', 'FER', 'INSM', 'MPWR', 'STX', 'WDC',
-        # Removed Dec 2025: CDW, GFS, LULU, ON, TTD (TTD removed from NDX but keep scanning as fallen angel candidate)
-    ]
-
-def get_wse_tickers():
-    """Get major Polish WSE tickers (.WA suffix)"""
-    return [
-        'PKO.WA', 'PZU.WA', 'PKN.WA', 'KGH.WA', 'PEO.WA', 'CDR.WA',
-        'ALE.WA', 'DNP.WA', 'LPP.WA', 'PGE.WA', 'JSW.WA', 'CCC.WA',
-        'CPS.WA', 'OPL.WA', 'MBK.WA', 'KRU.WA', 'BDX.WA', 'KTY.WA',
-        'ASB.WA', 'LTS.WA', '11B.WA', 'ATT.WA', 'CIG.WA',
-        'EUR.WA', 'ING.WA', 'KER.WA', 'MIL.WA'
-        # Removed: CMR.WA, SNS.WA, TPS.WA (delisted)
-    ]
-
-def get_ftse100_tickers():
-    """Get major FTSE 100 tickers (.L suffix for London)"""
-    return [
-        'SHEL.L', 'AZN.L', 'HSBA.L', 'ULVR.L', 'BP.L', 'GSK.L', 'DGE.L',
-        'RIO.L', 'BATS.L', 'REL.L', 'NG.L', 'LSEG.L', 'BARC.L', 'LLOY.L',
-        'VOD.L', 'AAL.L', 'GLEN.L', 'BHP.L', 'CPG.L', 'PRU.L', 'IMB.L',
-        'TSCO.L', 'BA.L', 'CNA.L', 'RKT.L', 'MNG.L', 'EXPN.L', 'RR.L',
-        'WPP.L', 'LGEN.L', 'STJ.L', 'INF.L', 'FERG.L', 'III.L',
-        'NWG.L', 'PSN.L', 'AUTO.L', 'STAN.L', 'SGE.L', 'AV.L', 'ANTO.L',
-        'SSE.L', 'BT-A.L', 'ENT.L', 'SPX.L', 'SBRY.L', 'BRBY.L', 'WTB.L',
-        'CRDA.L'
-        # Removed: SMDS.L (delisted)
-    ]
-
-def get_tase_tickers():
-    """Get major Tel Aviv Stock Exchange tickers (.TA suffix)"""
-    return [
-        'TEVA.TA', 'LUMI.TA', 'POLI.TA', 'ESLT.TA', 'ICL.TA', 'TATT.TA',
-        'AZRG.TA', 'FIBI.TA', 'MZTF.TA', 'NICE.TA',
-        'TASE.TA', 'DLEKG.TA', 'MLSR.TA', 'BEZQ.TA',
-        'ALHE.TA', 'ELAL.TA', 'PRCH.TA', 'FTAL.TA', 'MGRM.TA',
-        'BIGT.TA', 'ENLT.TA'
-        # Removed: CHLT.TA, INSR.TA, MSHL.TA, HAPT.TA, SRAE.TA, PLAZ.TA (delisted/no data)
-    ]
-
-def get_dax_tickers():
-    """Get DAX 40 tickers (.DE suffix for XETRA/Frankfurt)"""
-    return [
-        'ADS.DE', 'AIR.DE', 'ALV.DE', 'BAS.DE', 'BAYN.DE', 'BEI.DE',
-        'BMW.DE', 'BNR.DE', 'CBK.DE', 'CON.DE', 'DB1.DE', 'DBK.DE',
-        'DHL.DE', 'DTE.DE', 'EOAN.DE', 'FME.DE', 'FRE.DE', 'HEI.DE',
-        'HEN.DE', 'HFG.DE', 'IFX.DE', 'MBG.DE', 'MRK.DE', 'MTX.DE',
-        'MUV2.DE', 'PAH3.DE', 'PUM.DE', 'QIA.DE', 'RHM.DE', 'RWE.DE',
-        'SAP.DE', 'SHL.DE', 'SIE.DE', 'SRT.DE', 'SY1.DE', 'VNA.DE',
-        'VOW3.DE', 'ZAL.DE', 'HNR1.DE'
-        # Removed: DPW.DE (delisted)
-    ]
-
-def get_fallen_angel_candidates():
-    """
-    High-priority candidates - recently removed from major indices or known underperformers
-    These stocks are more likely to show large drops
-    """
-    return [
-        # Recently removed from NASDAQ-100 (Dec 2025)
-        'TTD',   # Trade Desk - removed after 68% decline
-        'LULU',  # Lululemon - removed after 46% decline
-        'CDW',   # CDW Corporation
-        'GFS',   # GlobalFoundries
-        'ON',    # ON Semiconductor
-        'BIIB',  # Biogen
-        
-        # Recently removed from S&P 500 (2025)
-        'ENPH',  # Enphase Energy - removed Sept 2025
-        'CZR',   # Caesars Entertainment
-        'MKTX',  # MarketAxess Holdings
-        
-        # Known underperformers / volatile
-        'ZS',    # Zscaler
-        'RIVN',  # Rivian
-        'LCID',  # Lucid Motors
-        'MRNA',  # Moderna
-        'WBD',   # Warner Bros Discovery
-    ]
-
-def get_all_tickers():
-    """Combine all market tickers with fallen angel candidates prioritized"""
-    all_tickers = []
-    
-    # Add high-priority fallen angel candidates FIRST (scan these first)
-    all_tickers.extend(get_fallen_angel_candidates())
-    
-    # Then add all major index tickers
-    all_tickers.extend(get_sp500_tickers())
-    all_tickers.extend(get_nasdaq100_tickers())
-    all_tickers.extend(get_wse_tickers())
-    all_tickers.extend(get_ftse100_tickers())
-    all_tickers.extend(get_tase_tickers())
-    all_tickers.extend(get_dax_tickers())
-    
-    # Remove duplicates while preserving order (keeps first occurrence)
-    seen = set()
-    unique_tickers = []
-    for ticker in all_tickers:
-        if ticker not in seen:
-            seen.add(ticker)
-            unique_tickers.append(ticker)
-    
-    return unique_tickers
 
 # ============================================================================
 # BROKER RECOMMENDATION ENGINE
@@ -229,19 +112,6 @@ def get_broker_recommendation(ticker, market):
         'reason': 'Unknown market',
         'emoji': '❓'
     }
-
-def get_market_info(ticker):
-    """Determine market, flag, and currency from ticker"""
-    if ticker.endswith('.WA'):
-        return "🇵🇱 WSE", "PLN"
-    elif ticker.endswith('.L'):
-        return "🇬🇧 LSE", "GBP"
-    elif ticker.endswith('.TA'):
-        return "🇮🇱 TASE", "ILS"
-    elif ticker.endswith('.DE'):
-        return "🇩🇪 XETRA", "EUR"
-    else:
-        return "🇺🇸 US", "USD"
 
 # ============================================================================
 # DROP DETECTION
@@ -346,16 +216,17 @@ def get_drop_reason(ticker):
 
 def scan_for_fallen_angels():
     """Main scanning function"""
-    print("="*80)
-    print("🌍 MULTI-MARKET FALLEN ANGEL SCANNER")
-    print("="*80)
-    print(f"Scanning: US, Poland, UK, Israel, Germany")
-    print(f"Looking for: {MIN_DROP_PERCENT}%+ drops over {DROP_LOOKBACK_DAYS} days")
-    print(f"Min market cap: ${MIN_MARKET_CAP/1e9:.1f}B")
-    print("="*80 + "\n")
+    logger.info("="*80)
+    logger.info("🌍 MULTI-MARKET FALLEN ANGEL SCANNER")
+    logger.info("="*80)
+    logger.info(f"Scanning: US, Poland, UK, Israel, Germany")
+    logger.info(f"Looking for: {MIN_DROP_PERCENT}%+ drops over {DROP_LOOKBACK_DAYS} days")
+    logger.info(f"Min market cap: ${MIN_MARKET_CAP/1e9:.1f}B")
+    logger.info("="*80)
     
     tickers = get_all_tickers()
-    print(f"Total tickers to scan: {len(tickers)}\n")
+    logger.info(f"Total tickers to scan: {len(tickers)}")
+    logger.info("")
     
     candidates = []
     end_date = datetime.now()
@@ -364,7 +235,7 @@ def scan_for_fallen_angels():
     for i, ticker in enumerate(tickers):
         try:
             market, currency = get_market_info(ticker)
-            print(f"Scanning {ticker} ({market}) ({i+1}/{len(tickers)})...", end='\r')
+            logger.info(f"Scanning {ticker} ({market}) ({i+1}/{len(tickers)})...")
             
             stock = yf.Ticker(ticker)
             hist = stock.history(start=start_date, end=end_date)
@@ -408,6 +279,8 @@ def scan_for_fallen_angels():
             else:
                 bankruptcy_risk = "High"
             
+            logger.info(f"✅ FOUND: {ticker} - {drop_percent:.1f}% drop, +{potential_gain:.1f}% potential")
+            
             candidates.append({
                 'ticker': ticker,
                 'company': info.get('longName', ticker),
@@ -430,9 +303,11 @@ def scan_for_fallen_angels():
             })
             
         except Exception as e:
+            logger.debug(f"Error scanning {ticker}: {e}")
             continue
     
-    print("\n" + "="*80)
+    logger.info("")
+    logger.info("="*80)
     
     candidates = [c for c in candidates if c['risk_score'] <= 7]
     candidates.sort(key=lambda x: x['potential_gain'], reverse=True)
@@ -556,7 +431,7 @@ def send_email(candidates):
     receiver_email = os.environ.get('RECEIVER_EMAIL')
     
     if not all([sender_email, sender_password, receiver_email]):
-        print("❌ Email credentials not found in environment variables")
+        logger.error("Email credentials not found in environment variables")
         return
     
     subject = f"🌍 {len(candidates)} Fallen Angels Found" if candidates else "🔍 No Fallen Angels Today"
@@ -571,34 +446,38 @@ def send_email(candidates):
     msg.attach(html_part)
     
     try:
-        print(f"\n📧 Sending email to {receiver_email}...")
+        logger.info(f"📧 Sending email to {receiver_email}...")
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login(sender_email, sender_password)
             server.send_message(msg)
-        print("✅ Email sent successfully!")
+        logger.info("✅ Email sent successfully!")
     except Exception as e:
-        print(f"❌ Failed to send email: {e}")
+        logger.error(f"Failed to send email: {e}")
 
 # ============================================================================
 # MAIN EXECUTION
 # ============================================================================
 
 if __name__ == "__main__":
-    print("\n" + "="*80)
-    print("MULTI-MARKET FALLEN ANGEL SCANNER")
-    print("="*80 + "\n")
+    logger.info("")
+    logger.info("="*80)
+    logger.info("MULTI-MARKET FALLEN ANGEL SCANNER")
+    logger.info("="*80)
+    logger.info("")
     
     candidates = scan_for_fallen_angels()
     
-    print(f"\n✅ Found {len(candidates)} qualified fallen angel candidates")
+    logger.info(f"✅ Found {len(candidates)} qualified fallen angel candidates")
     
     if candidates:
-        print("\nTop 5 Candidates:")
+        logger.info("")
+        logger.info("Top 5 Candidates:")
         for i, c in enumerate(candidates[:5], 1):
-            print(f"{i}. {c['ticker']} ({c['market']}) - {c['drop_percent']:.1f}% drop, +{c['potential_gain']:.1f}% potential")
+            logger.info(f"{i}. {c['ticker']} ({c['market']}) - {c['drop_percent']:.1f}% drop, +{c['potential_gain']:.1f}% potential")
     
     send_email(candidates)
     
-    print("\n" + "="*80)
-    print("SCAN COMPLETE")
-    print("="*80)
+    logger.info("")
+    logger.info("="*80)
+    logger.info("SCAN COMPLETE")
+    logger.info("="*80)
