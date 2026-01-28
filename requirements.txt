@@ -1,7 +1,14 @@
 # Fallen Angel Scanner Requirements
 # Install with: pip install -r requirements.txt --break-system-packages
 
+# Core dependencies for scanner
 yfinance>=0.2.40
 pandas>=2.0.0
 numpy>=1.24.0
+
+# For ticker updater (Wikipedia parsing)
 lxml>=4.9.0
+requests>=2.31.0
+
+# Note: All these are commonly available and don't require compilation
+# The --break-system-packages flag is only needed in some restricted Python environments
