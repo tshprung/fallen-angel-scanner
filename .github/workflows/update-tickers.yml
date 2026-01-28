@@ -1,0 +1,56 @@
+name: Bi-Weekly Ticker List Update
+
+on:
+  schedule:
+    # Run every 2 weeks on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-tickers:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install pandas yfinance --break-system-packages
+      
+      - name: Run ticker update check
+        id: update_check
+        run: |
+          python update_tickers.py
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+      
+      - name: Commit logs
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add ticker_updates.log
+          git add ticker_update_report_*.txt
+          git diff --quiet && git diff --staged --quiet || git commit -m "Ticker update check $(date +'%Y-%m-%d')"
+          git push
+      
+      - name: Create issue if action needed
+        if: steps.update_check.outputs.exit_code == '1'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const reportFiles = fs.readdirSync('.').filter(f => f.startsWith('ticker_update_report_'));
+            const reportContent = fs.readFileSync(reportFiles[0], 'utf8');
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ Ticker List Update Required',
+              body: `Automated ticker update check found changes that need attention:\n\n\`\`\`\n${reportContent}\n\`\`\`\n\n**Action Required:**\nPlease review the report and update \`tickers_config.py\` accordingly.`,
+              labels: ['ticker-update', 'maintenance']
+            });
