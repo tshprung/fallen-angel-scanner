@@ -1,0 +1,40 @@
+name: Daily Fallen Angel Scan
+
+on:
+  schedule:
+    # Run Mon-Fri at 10 PM UTC (6 PM EST / after US market close)
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install yfinance pandas numpy --break-system-packages
+      
+      - name: Run fallen angel scanner
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+        run: |
+          python fallen_angel_scanner.py
+      
+      - name: Commit scan log
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add fallen_angel_scanner.log
+          git diff --quiet && git diff --staged --quiet || git commit -m "Scan log update $(date +'%Y-%m-%d %H:%M')"
+          git push
