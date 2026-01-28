@@ -9,6 +9,9 @@ This script:
 4. Generates update report
 5. (Optionally) Auto-commits changes to git
 
+Requirements:
+    pip install pandas yfinance lxml --break-system-packages
+
 Run: python update_tickers.py
 """
 
@@ -16,11 +19,20 @@ import pandas as pd
 import yfinance as yf
 from datetime import datetime
 import logging
+import sys
 from tickers_config import (
     get_sp500_tickers, 
     get_nasdaq100_tickers,
     get_fallen_angel_candidates
 )
+
+# Check for required dependencies
+try:
+    import lxml
+except ImportError:
+    print("ERROR: Missing required dependency 'lxml'")
+    print("Install with: pip install lxml --break-system-packages")
+    sys.exit(1)
 
 # Setup logging
 logging.basicConfig(
@@ -40,11 +52,18 @@ logger = logging.getLogger(__name__)
 def fetch_sp500_from_wikipedia():
     """Fetch current S&P 500 composition from Wikipedia"""
     try:
+        # Try with lxml parser first
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
         tables = pd.read_html(url)
         current_tickers = tables[0]['Symbol'].tolist()
         logger.info(f"✅ Fetched {len(current_tickers)} S&P 500 tickers from Wikipedia")
         return set(current_tickers)
+    except ImportError as e:
+        if 'lxml' in str(e):
+            logger.error("❌ lxml not installed. Install with: pip install lxml --break-system-packages")
+        else:
+            logger.error(f"Import error: {e}")
+        return None
     except Exception as e:
         logger.error(f"Failed to fetch S&P 500 list: {e}")
         return None
