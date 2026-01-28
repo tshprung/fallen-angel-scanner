@@ -10,7 +10,7 @@ This script:
 5. (Optionally) Auto-commits changes to git
 
 Requirements:
-    pip install pandas yfinance lxml --break-system-packages
+    pip install pandas yfinance lxml requests --break-system-packages
 
 Run: python update_tickers.py
 """
@@ -20,6 +20,8 @@ import yfinance as yf
 from datetime import datetime
 import logging
 import sys
+import requests
+from io import StringIO
 from tickers_config import (
     get_sp500_tickers, 
     get_nasdaq100_tickers,
@@ -52,9 +54,18 @@ logger = logging.getLogger(__name__)
 def fetch_sp500_from_wikipedia():
     """Fetch current S&P 500 composition from Wikipedia"""
     try:
-        # Try with lxml parser first
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-        tables = pd.read_html(url)
+        
+        # Use requests to fetch with proper headers
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        # Parse HTML tables from the response
+        tables = pd.read_html(StringIO(response.text))
         current_tickers = tables[0]['Symbol'].tolist()
         logger.info(f"✅ Fetched {len(current_tickers)} S&P 500 tickers from Wikipedia")
         return set(current_tickers)
@@ -64,8 +75,13 @@ def fetch_sp500_from_wikipedia():
         else:
             logger.error(f"Import error: {e}")
         return None
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Failed to fetch from Wikipedia: {e}")
+        logger.warning("Wikipedia may be blocking requests. S&P 500 comparison skipped.")
+        return None
     except Exception as e:
-        logger.error(f"Failed to fetch S&P 500 list: {e}")
+        logger.error(f"Failed to parse S&P 500 list: {e}")
+        logger.warning("Using fallback list from tickers_config.py for scanning")
         return None
 
 def test_ticker_validity(ticker):
