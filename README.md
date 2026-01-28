@@ -40,11 +40,17 @@ python fallen_angel_scanner.py
 
 ```
 .
-├── fallen_angel_scanner.py    # Main scanner logic
-├── tickers_config.py           # Stock ticker lists (EDIT THIS)
-├── fallen_angel_scanner.log   # Execution log (committed to git)
-├── .gitignore                  # Git ignore rules
-└── README.md                   # This file
+├── fallen_angel_scanner.py        # Main scanner logic
+├── tickers_config.py               # Stock ticker lists (EDIT THIS)
+├── update_tickers.py               # Automated ticker list updater (NEW!)
+├── fallen_angel_scanner.log       # Scanner execution log (committed)
+├── ticker_updates.log              # Ticker update check log (committed)
+├── ticker_update_report_*.txt     # Update reports (committed)
+├── .github/workflows/
+│   ├── daily-scan.yml             # Daily scanner automation
+│   └── update-tickers.yml         # Bi-weekly ticker updates
+├── .gitignore                      # Git ignore rules
+└── README.md                       # This file
 ```
 
 ## 🔧 Configuration
@@ -93,10 +99,12 @@ All scan activity is logged to `fallen_angel_scanner.log`:
 
 ## 🔄 Automation (GitHub Actions)
 
-Add to `.github/workflows/fallen-angel-scan.yml`:
+### Daily Scanner
+
+Add to `.github/workflows/daily-scan.yml`:
 
 ```yaml
-name: Fallen Angel Scan
+name: Daily Fallen Angel Scan
 
 on:
   schedule:
@@ -131,24 +139,102 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add fallen_angel_scanner.log
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update scan log $(date +'%Y-%m-%d %H:%M')"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Scan log update $(date +'%Y-%m-%d %H:%M')"
           git push
+```
+
+### Bi-Weekly Ticker Updates (NEW! 🎉)
+
+Automatically checks for index changes every 2 weeks!
+
+Add to `.github/workflows/update-tickers.yml`:
+
+```yaml
+name: Bi-Weekly Ticker List Update
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC (check every week, runs update every 2 weeks)
+  workflow_dispatch:
+
+jobs:
+  update-tickers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install pandas yfinance --break-system-packages
+      
+      - name: Run ticker update check
+        run: |
+          python update_tickers.py
+      
+      - name: Commit logs and reports
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add ticker_updates.log ticker_update_report_*.txt
+          git diff --quiet && git diff --staged --quiet || git commit -m "Ticker update check $(date +'%Y-%m-%d')"
+          git push
+      
+      - name: Create issue if updates needed
+        # Creates GitHub issue if tickers need updating
+```
+
+**What it does:**
+- ✅ Fetches current S&P 500 from Wikipedia
+- ✅ Tests all fallen angel candidates for validity
+- ✅ Spot-checks NASDAQ-100 tickers
+- ✅ Generates detailed update report
+- ✅ Commits logs to git
+- ✅ Creates GitHub issue if action needed
+
+**Manual run:**
+```bash
+python update_tickers.py
 ```
 
 ## 🛠️ Maintenance
 
-### Quarterly Tasks
-1. Check for S&P 500 changes (March, June, September, December)
-2. Update `tickers_config.py` if needed
+### Automated (Every 2 Weeks via GitHub Actions)
+The `update_tickers.py` script automatically:
+1. ✅ Checks S&P 500 for additions/removals
+2. ✅ Validates all fallen angel candidates
+3. ✅ Tests NASDAQ-100 tickers
+4. ✅ Generates update report
+5. ✅ Creates GitHub issue if changes detected
 
-### Annual Tasks (December)
-1. Check NASDAQ-100 reconstitution announcement
-2. Update `get_nasdaq100_tickers()` and `get_fallen_angel_candidates()`
-3. Review and clean delisted stocks from all markets
+**You just need to:**
+- Review the GitHub issue when created
+- Update `tickers_config.py` based on the report
+- Close the issue
 
-### When Stocks Get Delisted
-1. Remove from appropriate function in `tickers_config.py`
-2. Add comment noting removal date
+### Manual Tasks
+
+**Quarterly (March, June, September, December):**
+1. Review S&P 500 rebalance announcements
+2. Check the automated update report
+3. Update `tickers_config.py` if the automation flagged changes
+
+**Annual (December):**
+1. Check NASDAQ-100 reconstitution (announced ~Dec 10)
+2. Update `get_nasdaq100_tickers()` with additions/removals
+3. Move removed tickers to `get_fallen_angel_candidates()`
+4. Review all international indices for changes
+
+**When Notified by Automation:**
+1. Check GitHub issue created by workflow
+2. Review `ticker_update_report_*.txt`
+3. Update `tickers_config.py` accordingly
+4. Run `python fallen_angel_scanner.py` to test
+5. Commit and push changes
 
 ## 🎯 Fallen Angel Candidates
 
