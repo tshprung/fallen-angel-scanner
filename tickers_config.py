@@ -64,7 +64,7 @@ def get_sp500_tickers():
         # Fallback: Top 50 US stocks by market cap
         return [
             'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA',
-            'BRK.B', 'LLY', 'V', 'UNH', 'XOM', 'WMT', 'JPM', 'MA',
+            'BRK-B', 'LLY', 'V', 'UNH', 'XOM', 'WMT', 'JPM', 'MA',
             'JNJ', 'PG', 'AVGO', 'HD', 'CVX', 'MRK', 'ABBV', 'COST',
             'KO', 'PEP', 'BAC', 'NFLX', 'TMO', 'CRM', 'AMD', 'MCD',
             'CSCO', 'ACN', 'LIN', 'ADBE', 'ORCL', 'ABT', 'WFC', 'DHR',
@@ -104,7 +104,7 @@ def get_nasdaq100_tickers():
         'CHTR', 'AEP', 'PAYX', 'MNST', 'ROST', 'ODFL', 'EA', 'FAST',
         'KDP', 'DXCM', 'GEHC', 'CTSH', 'VRSK', 'EXC', 'CTAS',
         'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP', 'BIIB',
-        'ANSS', 'WBD', 'DDOG', 'TEAM',
+        'WBD', 'DDOG', 'TEAM',
         'MDB', 'ILMN', 'ALGN', 'ARM', 'MRNA', 'RIVN', 'LCID',
         
         # Added December 2025
@@ -117,6 +117,9 @@ def get_nasdaq100_tickers():
         
         # Removed December 2025 (now in fallen_angel_candidates):
         # TTD, LULU, CDW, GFS, ON
+        
+        # Acquired/Delisted:
+        # ANSS - Acquired by Synopsys (SNPS) for $35B in July 2025
     ]
 
 # ============================================================================
@@ -154,7 +157,6 @@ def get_wse_tickers():
         'BDX.WA',   # Budimex
         'KTY.WA',   # Kęty
         'ASB.WA',   # Asseco Business Solutions
-        'LTS.WA',   # Lubelski Węgiel Bogdanka
         
         # Small-cap
         '11B.WA',   # 11 bit studios
@@ -260,9 +262,7 @@ def get_tase_tickers():
         # Small-cap
         'ALHE.TA',   # Alony Hetz
         'ELAL.TA',   # El Al Airlines
-        'PRCH.TA',   # Perrigo
         'FTAL.TA',   # Formula Systems
-        'MGRM.TA',   # Migdal Insurance
         'BIGT.TA',   # Big Shopping Centers
         'ENLT.TA',   # Energix
     ]
