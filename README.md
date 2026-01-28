@@ -1,300 +1,217 @@
-# 🌍 Multi-Market Fallen Angel Scanner
+# 📦 Dependency Management Guide
 
-Automated stock scanner that finds "fallen angel" recovery opportunities across 5 global markets.
+Quick reference for managing Python dependencies in this project.
 
-## 📊 What It Does
+## 📋 Current Dependencies
 
-Scans ~250+ stocks across:
-- 🇺🇸 US (S&P 500 + NASDAQ-100)
-- 🇵🇱 Poland (WSE)
-- 🇬🇧 UK (FTSE 100)
-- 🇮🇱 Israel (TASE)
-- 🇩🇪 Germany (DAX 40)
+See `requirements.txt` for the full list:
+- **yfinance** - Fetch stock data from Yahoo Finance
+- **pandas** - Data manipulation and analysis
+- **numpy** - Numerical computing
+- **lxml** - HTML/XML parsing (for Wikipedia tables)
+- **requests** - HTTP library (for fetching web pages)
 
-**Finds stocks that:**
-- Dropped 20%+ in the last month
-- Were stable for 3+ months before the drop
-- Have low bankruptcy risk (strong financials)
-- Have recovery potential
+## 🔄 How to Update Dependencies
 
-## 🚀 Quick Start
+### Method 1: Edit requirements.txt (Recommended)
 
-### 1. Install Dependencies
-```bash
-pip install yfinance pandas numpy --break-system-packages
+1. **Edit the file:**
+   ```bash
+   vim requirements.txt  # or nano, code, etc.
+   ```
+
+2. **Add, remove, or update versions:**
+   ```txt
+   # Add a new package
+   beautifulsoup4>=4.12.0
+   
+   # Update version
+   yfinance>=0.2.50
+   
+   # Remove a package
+   # Just delete the line
+   ```
+
+3. **Test locally:**
+   ```bash
+   pip install -r requirements.txt --break-system-packages
+   python fallen_angel_scanner.py  # Test scanner
+   python update_tickers.py        # Test updater
+   ```
+
+4. **Commit changes:**
+   ```bash
+   git add requirements.txt
+   git commit -m "Update dependencies: add X, update Y to v1.2"
+   git push
+   ```
+
+5. **GitHub Actions will automatically use the new requirements** ✅
+
+### Method 2: Update Workflows Directly (Not Recommended)
+
+Only do this if you need different dependencies for different workflows.
+
+**Edit `.github/workflows/daily-scan.yml`:**
+```yaml
+- name: Install dependencies
+  run: |
+    pip install yfinance pandas numpy new-package --break-system-packages
 ```
 
-### 2. Set Environment Variables
-```bash
-export SENDER_EMAIL="your-email@gmail.com"
-export SENDER_PASSWORD="your-app-password"  # Gmail App Password
-export RECEIVER_EMAIL="your-email@gmail.com"
-```
+**⚠️ Downsides:**
+- Have to update multiple files
+- Easy to forget one
+- Harder to maintain
 
-### 3. Run the Scanner
+## 🧪 Testing New Dependencies
+
+### Local Testing
 ```bash
+# Create virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Test
 python fallen_angel_scanner.py
-```
-
-## 📁 File Structure
-
-```
-.
-├── fallen_angel_scanner.py        # Main scanner logic
-├── tickers_config.py               # Stock ticker lists (EDIT THIS)
-├── update_tickers.py               # Automated ticker list updater (NEW!)
-├── fallen_angel_scanner.log       # Scanner execution log (committed)
-├── ticker_updates.log              # Ticker update check log (committed)
-├── ticker_update_report_*.txt     # Update reports (committed)
-├── .github/workflows/
-│   ├── daily-scan.yml             # Daily scanner automation
-│   └── update-tickers.yml         # Bi-weekly ticker updates
-├── .gitignore                      # Git ignore rules
-└── README.md                       # This file
-```
-
-## 🔧 Configuration
-
-### Adjusting Scan Criteria
-
-Edit `fallen_angel_scanner.py`:
-
-```python
-MIN_DROP_PERCENT = 20       # Minimum drop % (20% default)
-DROP_LOOKBACK_DAYS = 30     # Time window (30 days)
-MIN_MARKET_CAP = 2e9        # Min market cap ($2B)
-MIN_STABLE_PERIOD = 90      # Stability period (90 days)
-MAX_CANDIDATES = 15         # Max results to return
-```
-
-### Updating Stock Lists
-
-**Edit `tickers_config.py` when:**
-- Indices rebalance (NASDAQ-100: December, S&P 500: quarterly)
-- You want to add/remove fallen angel candidates
-- Stocks get delisted
-
-**Key sections to update:**
-1. `get_fallen_angel_candidates()` - High-priority stocks to scan first
-2. `get_nasdaq100_tickers()` - Updated annually in December
-3. `get_sp500_tickers()` - Auto-fetches from Wikipedia (fallback list available)
-
-## 📧 Email Reports
-
-Results are emailed automatically with:
-- List of fallen angels found
-- Drop %, potential gain, risk score
-- Broker recommendation (Revolut, mBank, Bank Leumi)
-- Link to company info
-
-## 📝 Logging
-
-All scan activity is logged to `fallen_angel_scanner.log`:
-- Which stocks were scanned
-- Which stocks qualified
-- Any errors encountered
-- Execution time
-
-**The log file is committed to git** so you can track historical scans.
-
-## 🔄 Automation (GitHub Actions)
-
-### Daily Scanner
-
-Add to `.github/workflows/daily-scan.yml`:
-
-```yaml
-name: Daily Fallen Angel Scan
-
-on:
-  schedule:
-    - cron: '0 22 * * 1-5'  # Run Mon-Fri at 10 PM UTC (6 PM EST)
-  workflow_dispatch:  # Manual trigger
-
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      
-      - name: Install dependencies
-        run: |
-          pip install yfinance pandas numpy --break-system-packages
-      
-      - name: Run scanner
-        env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
-        run: |
-          python fallen_angel_scanner.py
-      
-      - name: Commit log file
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add fallen_angel_scanner.log
-          git diff --quiet && git diff --staged --quiet || git commit -m "Scan log update $(date +'%Y-%m-%d %H:%M')"
-          git push
-```
-
-### Bi-Weekly Ticker Updates (NEW! 🎉)
-
-Automatically checks for index changes every 2 weeks!
-
-Add to `.github/workflows/update-tickers.yml`:
-
-```yaml
-name: Bi-Weekly Ticker List Update
-
-on:
-  schedule:
-    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC (check every week, runs update every 2 weeks)
-  workflow_dispatch:
-
-jobs:
-  update-tickers:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      
-      - name: Install dependencies
-        run: |
-          pip install pandas yfinance --break-system-packages
-      
-      - name: Run ticker update check
-        run: |
-          python update_tickers.py
-      
-      - name: Commit logs and reports
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add ticker_updates.log ticker_update_report_*.txt
-          git diff --quiet && git diff --staged --quiet || git commit -m "Ticker update check $(date +'%Y-%m-%d')"
-          git push
-      
-      - name: Create issue if updates needed
-        # Creates GitHub issue if tickers need updating
-```
-
-**What it does:**
-- ✅ Fetches current S&P 500 from Wikipedia
-- ✅ Tests all fallen angel candidates for validity
-- ✅ Spot-checks NASDAQ-100 tickers
-- ✅ Generates detailed update report
-- ✅ Commits logs to git
-- ✅ Creates GitHub issue if action needed
-
-**Manual run:**
-```bash
 python update_tickers.py
 ```
 
-## 🛠️ Maintenance
+### GitHub Actions Testing
+1. Push changes to a test branch
+2. Go to Actions tab
+3. Manually trigger workflow
+4. Check logs for errors
 
-### Automated (Every 2 Weeks via GitHub Actions)
-The `update_tickers.py` script automatically:
-1. ✅ Checks S&P 500 for additions/removals
-2. ✅ Validates all fallen angel candidates
-3. ✅ Tests NASDAQ-100 tickers
-4. ✅ Generates update report
-5. ✅ Creates GitHub issue if changes detected
+## 📌 Common Updates
 
-**You just need to:**
-- Review the GitHub issue when created
-- Update `tickers_config.py` based on the report
-- Close the issue
-
-### Manual Tasks
-
-**Quarterly (March, June, September, December):**
-1. Review S&P 500 rebalance announcements
-2. Check the automated update report
-3. Update `tickers_config.py` if the automation flagged changes
-
-**Annual (December):**
-1. Check NASDAQ-100 reconstitution (announced ~Dec 10)
-2. Update `get_nasdaq100_tickers()` with additions/removals
-3. Move removed tickers to `get_fallen_angel_candidates()`
-4. Review all international indices for changes
-
-**When Notified by Automation:**
-1. Check GitHub issue created by workflow
-2. Review `ticker_update_report_*.txt`
-3. Update `tickers_config.py` accordingly
-4. Run `python fallen_angel_scanner.py` to test
-5. Commit and push changes
-
-## 🎯 Fallen Angel Candidates
-
-High-priority stocks scanned FIRST (most likely to have dropped):
-- Recently removed from NASDAQ-100 or S&P 500
-- Known volatile stocks (RIVN, LCID, MRNA, etc.)
-- Stocks from your portfolio that dropped significantly
-
-**Update this list** in `tickers_config.py` → `get_fallen_angel_candidates()`
-
-## 📊 Risk Scoring
-
-Risk score (0-10, lower is better) based on:
-- Debt-to-equity ratio
-- Current ratio (liquidity)
-- Drop severity
-- Historical volatility
-
-**Risk levels:**
-- 0-3: Very Low (safest)
-- 4-5: Low
-- 6-7: Medium
-- 8-10: High (filtered out)
-
-## 🔍 Example Output
-
-```
-✅ Found 3 qualified fallen angel candidates
-
-Top 5 Candidates:
-1. TTD (🇺🇸 US) - -32.6% drop, +47.2% potential
-2. ENPH (🇺🇸 US) - -28.1% drop, +38.5% potential
-3. RIVN (🇺🇸 US) - -45.3% drop, +92.1% potential
-
-📧 Sending email to your-email@gmail.com...
-✅ Email sent successfully!
+### Update yfinance
+```txt
+# In requirements.txt
+yfinance>=0.2.50  # Update version number
 ```
 
-## ⚙️ Gmail App Password Setup
+### Add web scraping capability
+```txt
+# In requirements.txt
+beautifulsoup4>=4.12.0
+selenium>=4.15.0
+```
 
-1. Go to https://myaccount.google.com/security
-2. Enable 2-Factor Authentication
-3. Go to "App passwords"
-4. Generate password for "Mail"
-5. Use this as `SENDER_PASSWORD`
+### Add data visualization
+```txt
+# In requirements.txt
+matplotlib>=3.8.0
+plotly>=5.18.0
+```
 
-## 📌 Notes
+### Add email with attachments
+```txt
+# Already have standard library smtplib
+# No new dependencies needed!
+```
 
-- Scan takes ~5-10 minutes for 250+ stocks
-- yfinance may rate-limit aggressive scanning
-- Some international tickers may have data delays
-- Gmail has daily sending limits (~500 emails/day)
+## 🔍 Checking What's Installed
 
-## 🤝 Contributing
+### Locally
+```bash
+pip list
+pip show yfinance  # Details about specific package
+```
 
-To add new markets:
-1. Create `get_MARKET_tickers()` function in `tickers_config.py`
-2. Add ticker suffix to `get_market_info()`
-3. Update `get_all_tickers()` to include new market
+### In GitHub Actions
+Check the workflow logs - they show exactly what gets installed.
 
-## 📜 License
+## ⚠️ Troubleshooting
 
-MIT License - Feel free to use and modify!
+### Dependency Conflicts
+```bash
+# If you get conflicts
+pip install --upgrade -r requirements.txt --break-system-packages
+
+# Or start fresh
+pip uninstall -y -r requirements.txt
+pip install -r requirements.txt --break-system-packages
+```
+
+### Missing Dependencies in GitHub Actions
+1. Check requirements.txt is committed
+2. Verify workflow has `pip install -r requirements.txt`
+3. Check workflow logs for errors
+
+### Version Pinning
+**Flexible (recommended for our use case):**
+```txt
+yfinance>=0.2.40  # Allows 0.2.40, 0.2.50, 0.3.0, etc.
+```
+
+**Strict (use if you need exact versions):**
+```txt
+yfinance==0.2.40  # Only allows exactly 0.2.40
+```
+
+## 📚 Best Practices
+
+1. ✅ **Use requirements.txt** - Single source of truth
+2. ✅ **Test locally first** - Before pushing
+3. ✅ **Version constraints** - Use `>=` for flexibility
+4. ✅ **Document changes** - In commit messages
+5. ✅ **Keep it minimal** - Only add what you need
+
+## 🎯 Quick Commands
+
+```bash
+# Install all dependencies
+pip install -r requirements.txt --break-system-packages
+
+# Update all to latest versions
+pip install --upgrade -r requirements.txt --break-system-packages
+
+# Check what's installed
+pip list
+
+# Save current environment
+pip freeze > requirements-frozen.txt  # For exact reproducibility
+
+# Check outdated packages
+pip list --outdated
+```
+
+## 📝 Example: Adding a New Dependency
+
+Let's say you want to add `python-telegram-bot` to send alerts via Telegram:
+
+1. **Add to requirements.txt:**
+   ```txt
+   python-telegram-bot>=20.0.0
+   ```
+
+2. **Test locally:**
+   ```bash
+   pip install -r requirements.txt --break-system-packages
+   ```
+
+3. **Update your code:**
+   ```python
+   import telegram
+   # Your telegram bot code
+   ```
+
+4. **Commit and push:**
+   ```bash
+   git add requirements.txt fallen_angel_scanner.py
+   git commit -m "Add Telegram notifications"
+   git push
+   ```
+
+5. **Done!** GitHub Actions will use the new dependency automatically.
+
+## 🆘 Need Help?
+
+- Check GitHub Actions logs for specific errors
+- Test locally with `pip install -r requirements.txt`
+- Verify requirements.txt syntax (no typos, valid package names)
+- Search PyPI for exact package names: https://pypi.org
