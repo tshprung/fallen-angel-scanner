@@ -57,8 +57,20 @@ def get_sp500_tickers():
     """
     try:
         import pandas as pd
+        import requests
+        from io import StringIO
+        
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-        tables = pd.read_html(url)
+        
+        # Use requests with headers to avoid 403
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        tables = pd.read_html(StringIO(response.text))
         return tables[0]['Symbol'].tolist()
     except:
         # Fallback: Top 50 US stocks by market cap
