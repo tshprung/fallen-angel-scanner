@@ -21,11 +21,11 @@ import requests
 # ============================================================================
 
 # Scanning criteria
-MIN_DROP_PERCENT = 30  # Minimum cumulative drop percentage
-DROP_LOOKBACK_DAYS = 21  # Look for drops over last 3 weeks (21 days)
-MIN_MARKET_CAP = 5e9  # Minimum $5B market cap (to include more stocks)
+MIN_DROP_PERCENT = 20  # Minimum cumulative drop percentage (lowered from 30)
+DROP_LOOKBACK_DAYS = 30  # Look for drops over last month (extended from 21)
+MIN_MARKET_CAP = 2e9  # Minimum $2B market cap (lowered from $5B)
 MAX_CANDIDATES = 15    # Maximum candidates to report
-MIN_STABLE_PERIOD = 180  # Days of stability before drop
+MIN_STABLE_PERIOD = 90  # Days of stability before drop (lowered from 180)
 
 # Risk scoring weights
 RISK_WEIGHTS = {
@@ -73,8 +73,9 @@ def get_wse_tickers():
         'PKO.WA', 'PZU.WA', 'PKN.WA', 'KGH.WA', 'PEO.WA', 'CDR.WA',
         'ALE.WA', 'DNP.WA', 'LPP.WA', 'PGE.WA', 'JSW.WA', 'CCC.WA',
         'CPS.WA', 'OPL.WA', 'MBK.WA', 'KRU.WA', 'BDX.WA', 'KTY.WA',
-        'ASB.WA', 'LTS.WA', '11B.WA', 'ATT.WA', 'CIG.WA', 'CMR.WA',
-        'EUR.WA', 'ING.WA', 'KER.WA', 'MIL.WA', 'SNS.WA', 'TPS.WA'
+        'ASB.WA', 'LTS.WA', '11B.WA', 'ATT.WA', 'CIG.WA',
+        'EUR.WA', 'ING.WA', 'KER.WA', 'MIL.WA'
+        # Removed: CMR.WA, SNS.WA, TPS.WA (delisted)
     ]
 
 def get_ftse100_tickers():
@@ -84,20 +85,22 @@ def get_ftse100_tickers():
         'RIO.L', 'BATS.L', 'REL.L', 'NG.L', 'LSEG.L', 'BARC.L', 'LLOY.L',
         'VOD.L', 'AAL.L', 'GLEN.L', 'BHP.L', 'CPG.L', 'PRU.L', 'IMB.L',
         'TSCO.L', 'BA.L', 'CNA.L', 'RKT.L', 'MNG.L', 'EXPN.L', 'RR.L',
-        'WPP.L', 'LGEN.L', 'SMDS.L', 'STJ.L', 'INF.L', 'FERG.L', 'III.L',
+        'WPP.L', 'LGEN.L', 'STJ.L', 'INF.L', 'FERG.L', 'III.L',
         'NWG.L', 'PSN.L', 'AUTO.L', 'STAN.L', 'SGE.L', 'AV.L', 'ANTO.L',
         'SSE.L', 'BT-A.L', 'ENT.L', 'SPX.L', 'SBRY.L', 'BRBY.L', 'WTB.L',
         'CRDA.L'
+        # Removed: SMDS.L (delisted)
     ]
 
 def get_tase_tickers():
     """Get major Tel Aviv Stock Exchange tickers (.TA suffix)"""
     return [
         'TEVA.TA', 'LUMI.TA', 'POLI.TA', 'ESLT.TA', 'ICL.TA', 'TATT.TA',
-        'AZRG.TA', 'CHLT.TA', 'FIBI.TA', 'INSR.TA', 'MZTF.TA', 'NICE.TA',
-        'TASE.TA', 'PLAZ.TA', 'DLEKG.TA', 'MLSR.TA', 'MSHL.TA', 'BEZQ.TA',
-        'ALHE.TA', 'ELAL.TA', 'PRCH.TA', 'FTAL.TA', 'HAPT.TA', 'MGRM.TA',
-        'SRAE.TA', 'BIGT.TA', 'ENLT.TA'
+        'AZRG.TA', 'FIBI.TA', 'MZTF.TA', 'NICE.TA',
+        'TASE.TA', 'DLEKG.TA', 'MLSR.TA', 'BEZQ.TA',
+        'ALHE.TA', 'ELAL.TA', 'PRCH.TA', 'FTAL.TA', 'MGRM.TA',
+        'BIGT.TA', 'ENLT.TA'
+        # Removed: CHLT.TA, INSR.TA, MSHL.TA, HAPT.TA, SRAE.TA, PLAZ.TA (delisted/no data)
     ]
 
 def get_dax_tickers():
@@ -109,7 +112,8 @@ def get_dax_tickers():
         'HEN.DE', 'HFG.DE', 'IFX.DE', 'MBG.DE', 'MRK.DE', 'MTX.DE',
         'MUV2.DE', 'PAH3.DE', 'PUM.DE', 'QIA.DE', 'RHM.DE', 'RWE.DE',
         'SAP.DE', 'SHL.DE', 'SIE.DE', 'SRT.DE', 'SY1.DE', 'VNA.DE',
-        'VOW3.DE', 'ZAL.DE', 'DPW.DE', 'HNR1.DE'
+        'VOW3.DE', 'ZAL.DE', 'HNR1.DE'
+        # Removed: DPW.DE (delisted)
     ]
 
 def get_all_tickers():
@@ -462,7 +466,7 @@ def generate_html_email(candidates):
                 <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8;">{datetime.now().strftime('%B %d, %Y at %H:%M')}</p>
             </div>
             
-            <p>Stocks with <strong>cumulative drops of 30%+ over the last 2-3 weeks</strong> from US, Poland, UK, Israel, and Germany:</p>
+            <p>Stocks with <strong>cumulative drops of 20%+ over the last month</strong> from US, Poland, UK, Israel, and Germany:</p>
             
             <table>
                 <thead>
