@@ -51,7 +51,7 @@ def get_sp500_tickers():
 
 def get_nasdaq100_tickers():
     """Fetch major NASDAQ-100 tickers"""
-    # Top NASDAQ-100 companies
+    # Updated with December 2025 reconstitution changes
     return [
         'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'META', 'TSLA',
         'AVGO', 'ASML', 'COST', 'NFLX', 'AMD', 'ADBE', 'PEP', 'CSCO',
@@ -62,9 +62,12 @@ def get_nasdaq100_tickers():
         'ADSK', 'ABNB', 'DASH', 'ROP', 'WDAY', 'NXPI', 'CPRT', 'PCAR',
         'CHTR', 'AEP', 'PAYX', 'MNST', 'ROST', 'ODFL', 'EA', 'FAST',
         'KDP', 'DXCM', 'GEHC', 'CTSH', 'VRSK', 'EXC', 'CTAS', 'LULU',
-        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP', 'ON', 'BIIB',
-        'TTD', 'ANSS', 'CDW', 'GFS', 'ZS', 'WBD', 'DDOG', 'TEAM',
-        'MDB', 'ILMN', 'ALGN', 'ARM', 'MRNA', 'RIVN', 'LCID'
+        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP', 'BIIB',
+        'ANSS', 'WBD', 'DDOG', 'TEAM',
+        'MDB', 'ILMN', 'ALGN', 'ARM', 'MRNA', 'RIVN', 'LCID',
+        # Added Dec 2025: ALNY, FER, INSM, MPWR, STX, WDC
+        'ALNY', 'FER', 'INSM', 'MPWR', 'STX', 'WDC',
+        # Removed Dec 2025: CDW, GFS, LULU, ON, TTD (TTD removed from NDX but keep scanning as fallen angel candidate)
     ]
 
 def get_wse_tickers():
@@ -116,9 +119,41 @@ def get_dax_tickers():
         # Removed: DPW.DE (delisted)
     ]
 
+def get_fallen_angel_candidates():
+    """
+    High-priority candidates - recently removed from major indices or known underperformers
+    These stocks are more likely to show large drops
+    """
+    return [
+        # Recently removed from NASDAQ-100 (Dec 2025)
+        'TTD',   # Trade Desk - removed after 68% decline
+        'LULU',  # Lululemon - removed after 46% decline
+        'CDW',   # CDW Corporation
+        'GFS',   # GlobalFoundries
+        'ON',    # ON Semiconductor
+        'BIIB',  # Biogen
+        
+        # Recently removed from S&P 500 (2025)
+        'ENPH',  # Enphase Energy - removed Sept 2025
+        'CZR',   # Caesars Entertainment
+        'MKTX',  # MarketAxess Holdings
+        
+        # Known underperformers / volatile
+        'ZS',    # Zscaler
+        'RIVN',  # Rivian
+        'LCID',  # Lucid Motors
+        'MRNA',  # Moderna
+        'WBD',   # Warner Bros Discovery
+    ]
+
 def get_all_tickers():
-    """Combine all market tickers"""
+    """Combine all market tickers with fallen angel candidates prioritized"""
     all_tickers = []
+    
+    # Add high-priority fallen angel candidates FIRST (scan these first)
+    all_tickers.extend(get_fallen_angel_candidates())
+    
+    # Then add all major index tickers
     all_tickers.extend(get_sp500_tickers())
     all_tickers.extend(get_nasdaq100_tickers())
     all_tickers.extend(get_wse_tickers())
@@ -126,8 +161,15 @@ def get_all_tickers():
     all_tickers.extend(get_tase_tickers())
     all_tickers.extend(get_dax_tickers())
     
-    # Remove duplicates
-    return list(set(all_tickers))
+    # Remove duplicates while preserving order (keeps first occurrence)
+    seen = set()
+    unique_tickers = []
+    for ticker in all_tickers:
+        if ticker not in seen:
+            seen.add(ticker)
+            unique_tickers.append(ticker)
+    
+    return unique_tickers
 
 # ============================================================================
 # BROKER RECOMMENDATION ENGINE
