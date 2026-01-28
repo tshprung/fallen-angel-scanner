@@ -323,6 +323,23 @@ def get_dax_tickers():
     ]
 
 # ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
+
+def get_market_info(ticker):
+    """Determine market, flag, and currency from ticker suffix"""
+    if ticker.endswith('.WA'):
+        return "🇵🇱 WSE", "PLN"
+    elif ticker.endswith('.L'):
+        return "🇬🇧 LSE", "GBP"
+    elif ticker.endswith('.TA'):
+        return "🇮🇱 TASE", "ILS"
+    elif ticker.endswith('.DE'):
+        return "🇩🇪 XETRA", "EUR"
+    else:
+        return "🇺🇸 US", "USD"
+
+# ============================================================================
 # MASTER FUNCTION - COMBINES ALL TICKERS
 # ============================================================================
 
