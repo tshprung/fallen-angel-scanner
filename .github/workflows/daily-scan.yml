@@ -26,7 +26,7 @@ jobs:
       - name: Run fallen angel scanner
         env:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        run: python fallen_angel_scanner_v2.py
+        run: python fallen_angel_scanner.py
       
       - name: Commit memory file
         run: |
