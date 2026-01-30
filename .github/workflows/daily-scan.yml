@@ -2,39 +2,38 @@ name: Daily Fallen Angel Scan
 
 on:
   schedule:
-    # Run Mon-Fri at 10 PM UTC (6 PM EST / after US market close)
-    - cron: '0 22 * * 1-5'
-  workflow_dispatch:  # Allow manual trigger
+    # Run at 18:30 UTC (19:30 Polish time) on weekdays
+    - cron: "30 18 * * 1-5"
+  workflow_dispatch:
 
 jobs:
   scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 40
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
       
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt --break-system-packages
+        run: pip install -r requirements.txt --break-system-packages
       
       - name: Run fallen angel scanner
         env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
-        run: |
-          python fallen_angel_scanner.py
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python fallen_angel_scanner_v2.py
       
-      - name: Commit scan log
+      - name: Commit memory file
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add fallen_angel_scanner.log
-          git diff --quiet && git diff --staged --quiet || git commit -m "Scan log update $(date +'%Y-%m-%d %H:%M')"
-          git push
+          git config user.name "fallen-angel-bot"
+          git config user.email "bot@fallen-angel"
+          git pull --rebase || true
+          git add scanner_memory.json || true
+          git add logs/*.txt || true
+          git commit -m "Update scanner memory $(date +'%Y-%m-%d')" || echo "No changes"
+          git push || echo "Push failed, memory not saved"
