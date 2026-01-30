@@ -25,6 +25,8 @@ jobs:
       
       - name: Run fallen angel scanner
         env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           PYTHONUNBUFFERED: 1
         run: python -u fallen_angel_scanner.py
