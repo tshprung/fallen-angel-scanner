@@ -42,7 +42,7 @@ from tickers_config import (
 # Email settings
 EMAIL_FROM = "tshprung@gmail.com"
 EMAIL_TO = "tshprung@gmail.com"
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_PASSWORD = os.getenv("SENDER_PASSWORD")
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
