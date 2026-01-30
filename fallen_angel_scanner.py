@@ -236,7 +236,7 @@ def get_earnings_date(ticker):
 def search_recent_news(ticker, company_name):
     """Search for recent news about the stock"""
     try:
-        # Use yfinance news first
+        # Try yfinance news first
         stock = yf.Ticker(ticker)
         news_items = stock.news[:5] if hasattr(stock, 'news') and stock.news else []
         
@@ -251,11 +251,31 @@ def search_recent_news(ticker, company_name):
             if headlines:
                 return headlines
         
-        # Fallback: generic reasons
-        return ["No specific news found - check market-wide trends"]
+        # If yfinance fails, try to infer from recent price action
+        # This is more reliable than trying external APIs in GitHub Actions
+        print(f"    📰 No yfinance news for {ticker}, using price analysis")
+        
+        # Analyze recent drops to infer cause
+        hist = stock.history(period="1mo")
+        if len(hist) >= 5:
+            # Check if drop is sudden (1-3 days) or gradual
+            recent_5d = hist["Close"].tail(5)
+            max_recent = recent_5d.max()
+            current = recent_5d.iloc[-1]
+            drop_5d = ((current / max_recent) - 1) * 100
+            
+            if drop_5d < -15:
+                return ["Sharp drop detected - likely earnings miss, guidance cut, or sector selloff"]
+            elif drop_5d < -10:
+                return ["Moderate decline - possibly analyst downgrade or sector weakness"]
+            else:
+                return ["Gradual decline - check for sector trends or market rotation"]
+        
+        return ["Price decline detected - check recent earnings and sector news"]
     
     except Exception as e:
-        return [f"Unable to fetch news: {str(e)}"]
+        print(f"    ⚠️ News search error: {e}")
+        return ["Unable to determine cause - manual research needed"]
 
 def analyze_news_sentiment(headlines):
     """Analyze if drop is from temporary noise or real problems"""
@@ -290,54 +310,89 @@ def get_financial_health(ticker_obj):
     try:
         info = ticker_obj.info
         
-        total_debt = info.get('totalDebt', 0)
-        total_equity = info.get('totalStockholderEquity', 1)
-        debt_to_equity = total_debt / total_equity if total_equity > 0 else 999
+        # Get values with defaults
+        total_debt = info.get('totalDebt', 0) or 0
+        total_equity = info.get('totalStockholderEquity', 0) or 0
         
-        current_assets = info.get('totalCurrentAssets', 0)
-        current_liabilities = info.get('totalCurrentLiabilities', 1)
-        current_ratio = current_assets / current_liabilities if current_liabilities > 0 else 0
+        # Calculate debt to equity safely
+        if total_equity > 0:
+            debt_to_equity = total_debt / total_equity
+        else:
+            debt_to_equity = 999 if total_debt > 0 else 0
         
-        cash = info.get('totalCash', 0)
-        revenue = info.get('totalRevenue', 0)
+        # Get current ratio
+        current_assets = info.get('totalCurrentAssets', 0) or 0
+        current_liabilities = info.get('totalCurrentLiabilities', 0) or 0
+        
+        if current_liabilities > 0:
+            current_ratio = current_assets / current_liabilities
+        else:
+            current_ratio = 99 if current_assets > 0 else 0
+        
+        cash = info.get('totalCash', 0) or 0
+        revenue = info.get('totalRevenue', 0) or 0
+        market_cap = info.get('marketCap', 0) or 0
+        
+        # Validate the data
+        if debt_to_equity > 100:  # Sanity check
+            debt_to_equity = 10  # Cap at reasonable value
         
         return {
-            'debt_to_equity': debt_to_equity,
-            'current_ratio': current_ratio,
+            'debt_to_equity': round(debt_to_equity, 2),
+            'current_ratio': round(current_ratio, 2),
             'cash': cash,
-            'revenue': revenue
+            'revenue': revenue,
+            'market_cap': market_cap
         }
-    except:
+    except Exception as e:
+        print(f"    ⚠️ Financial data error: {e}")
         return None
 
 def calculate_risk_score(financial_health, news_sentiment):
     """Calculate risk score 1-10"""
     if not financial_health:
-        return 8
+        return 7  # Default to medium-high if no data
     
-    score = 5
+    score = 5  # Start neutral
     
-    # Debt analysis
-    if financial_health['debt_to_equity'] < 0.3:
-        score -= 2
-    elif financial_health['debt_to_equity'] > 1.0:
-        score += 2
+    # Debt analysis (more nuanced)
+    de_ratio = financial_health.get('debt_to_equity', 0)
+    if de_ratio < 0.3:
+        score -= 2  # Very low debt = safer
+    elif de_ratio < 0.7:
+        score -= 1  # Moderate debt = good
+    elif de_ratio > 2.0:
+        score += 3  # High leverage = risky
+    elif de_ratio > 1.0:
+        score += 1  # Elevated debt
     
-    # Liquidity
-    if financial_health['current_ratio'] > 2.0:
-        score -= 1
-    elif financial_health['current_ratio'] < 1.0:
-        score += 2
+    # Liquidity (more forgiving)
+    cr = financial_health.get('current_ratio', 0)
+    if cr > 2.0:
+        score -= 1.5  # Strong liquidity
+    elif cr > 1.5:
+        score -= 0.5  # Adequate liquidity
+    elif cr < 1.0 and cr > 0:
+        score += 1  # Weak liquidity
     
-    # Revenue (zero revenue = speculative)
-    if financial_health['revenue'] == 0:
-        score += 2
+    # Revenue check
+    revenue = financial_health.get('revenue', 0)
+    if revenue == 0:
+        score += 2  # No revenue = speculative
     
-    # News sentiment
+    # Cash position
+    cash = financial_health.get('cash', 0)
+    market_cap = financial_health.get('market_cap', 1)
+    if market_cap > 0:
+        cash_ratio = cash / market_cap
+        if cash_ratio > 0.20:
+            score -= 1  # Strong cash position
+    
+    # News sentiment (significant weight)
     if "SERIOUS" in news_sentiment:
         score += 3
     elif "TEMPORARY" in news_sentiment:
-        score -= 1
+        score -= 1.5  # Bigger discount for temporary issues
     
     return max(1, min(10, round(score)))
 
