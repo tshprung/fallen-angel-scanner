@@ -52,6 +52,9 @@ DROP_LOOKBACK_DAYS = 21  # Look for drops over last 21 days
 MIN_MARKET_CAP = 2e9  # Minimum $2B market cap
 MAX_CANDIDATES = 10  # Maximum candidates to report
 
+# Risk filters
+MAX_DEBT_TO_EQUITY = 1.5  # Skip companies with debt/equity > 1.5
+
 # Memory/tracking
 MEMORY_FILE = "scanner_memory.json"
 DEDUP_DAYS = 14  # Don't re-send same stock within 14 days
@@ -416,6 +419,19 @@ def stage2_deep_analysis(candidates, memory):
         try:
             stock = yf.Ticker(ticker)
             info = stock.info
+            
+            # Apply debt filter
+            total_debt = info.get('totalDebt', 0) or 0
+            total_equity = info.get('totalStockholderEquity', 0) or 0
+            
+            if total_equity > 0:
+                debt_to_equity = total_debt / total_equity
+                if debt_to_equity > MAX_DEBT_TO_EQUITY:
+                    print(f"  ⏭️  {ticker} excluded: High debt (D/E: {debt_to_equity:.2f})")
+                    continue
+            elif total_debt > 0:
+                print(f"  ⏭️  {ticker} excluded: Debt with no equity (bankruptcy risk)")
+                continue
             
             # Company name
             company_name = info.get('longName', info.get('shortName', ticker))
