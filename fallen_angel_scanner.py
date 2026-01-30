@@ -40,8 +40,8 @@ from tickers_config import (
 # ============================================================================
 
 # Email settings
-EMAIL_FROM = "tshprung@gmail.com"
-EMAIL_TO = "tshprung@gmail.com"
+EMAIL_FROM = os.getenv("SENDER_EMAIL")
+EMAIL_TO = os.getenv("RECEIVER_EMAIL")
 EMAIL_PASSWORD = os.getenv("SENDER_PASSWORD")
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
