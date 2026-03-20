@@ -47,7 +47,7 @@ SMTP_PORT = 587
 MIN_DROP_PERCENT = 20  # Minimum drop percentage
 DROP_LOOKBACK_DAYS = 21  # Look for drops over last 21 days
 MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs trailing-year range
-MAX_CANDIDATES = 25  # Cap email size after ranking
+MAX_CANDIDATES = 20  # Final report size; if more pass Stage 2, tiers tighten until ≤ this
 
 # Risk filters
 MAX_DEBT_TO_EQUITY = 1.5  # Skip companies with debt/equity > 1.5
@@ -186,6 +186,48 @@ def is_biotechnology_company(info):
     if "biotechnology" in ind:
         return True
     return False
+
+
+def narrow_analyzed_results(analyzed, max_results=20):
+    """
+    If Stage 2 yields more than max_results, apply progressively stricter cuts
+    (lower risk score, higher recovery bar) until the list fits.
+    """
+    if len(analyzed) <= max_results:
+        return sorted(
+            analyzed, key=lambda x: (x["risk_score"], -x["recovery_potential"])
+        )
+
+    n_before = len(analyzed)
+    pool = sorted(analyzed, key=lambda x: (x["risk_score"], -x["recovery_potential"]))
+
+    steps = [
+        ("risk ≤ 5", lambda s: s["risk_score"] <= 5),
+        ("risk ≤ 4", lambda s: s["risk_score"] <= 4),
+        ("risk ≤ 4 & recovery ≥ 55%", lambda s: s["risk_score"] <= 4 and s["recovery_potential"] >= 55),
+        ("risk ≤ 4 & recovery ≥ 60%", lambda s: s["risk_score"] <= 4 and s["recovery_potential"] >= 60),
+        ("risk ≤ 3", lambda s: s["risk_score"] <= 3),
+        ("risk ≤ 3 & recovery ≥ 58%", lambda s: s["risk_score"] <= 3 and s["recovery_potential"] >= 58),
+        ("risk ≤ 2", lambda s: s["risk_score"] <= 2),
+    ]
+
+    last_non_empty = pool
+    for label, pred in steps:
+        filt = [s for s in pool if pred(s)]
+        if not filt:
+            continue
+        last_non_empty = sorted(filt, key=lambda x: (x["risk_score"], -x["recovery_potential"]))
+        if len(last_non_empty) <= max_results:
+            print(
+                f"  📉 Tightened selection ({n_before} → {len(last_non_empty)}): {label}"
+            )
+            return last_non_empty
+
+    out = last_non_empty[:max_results]
+    print(
+        f"  📉 Tightened selection ({n_before} → {len(out)}): top {max_results} by risk / recovery"
+    )
+    return out
 
 
 def get_broker_recommendation(market):
@@ -559,10 +601,9 @@ def stage2_deep_analysis(candidates, memory):
             print(f"  ❌ Failed to analyze {ticker}: {e}")
             continue
     
-    analyzed.sort(key=lambda x: (x["risk_score"], -x["recovery_potential"]))
-    analyzed = analyzed[:MAX_CANDIDATES]
+    analyzed = narrow_analyzed_results(analyzed, MAX_CANDIDATES)
     
-    print(f"\n✅ Stage 2 complete: {len(analyzed)} stocks fully analyzed (capped at {MAX_CANDIDATES})\n")
+    print(f"\n✅ Stage 2 complete: {len(analyzed)} stocks in final report (max {MAX_CANDIDATES})\n")
     return analyzed
 
 # ============================================================================
