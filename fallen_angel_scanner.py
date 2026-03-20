@@ -475,17 +475,27 @@ def stage2_deep_analysis(candidates, memory):
                 print(f"  ⏭️  {ticker} excluded: biotechnology (preference)")
                 continue
             
-            # Apply debt filter
-            total_debt = info.get('totalDebt', 0) or 0
-            total_equity = info.get('totalStockholderEquity', 0) or 0
-            
-            if total_equity > 0:
+            # Apply debt filter (Yahoo often omits totalStockholderEquity — use debtToEquity fallback)
+            total_debt = info.get("totalDebt", 0) or 0
+            total_equity = info.get("totalStockholderEquity")
+            debt_to_equity = None
+            if total_equity is not None and total_equity > 0:
                 debt_to_equity = total_debt / total_equity
-                if debt_to_equity > MAX_DEBT_TO_EQUITY:
-                    print(f"  ⏭️  {ticker} excluded: High debt (D/E: {debt_to_equity:.2f})")
-                    continue
-            elif total_debt > 0:
-                print(f"  ⏭️  {ticker} excluded: Debt with no equity (bankruptcy risk)")
+            else:
+                de_yf = info.get("debtToEquity")
+                if de_yf is not None and np.isfinite(float(de_yf)):
+                    debt_to_equity = float(de_yf)
+
+            if debt_to_equity is not None and debt_to_equity > MAX_DEBT_TO_EQUITY:
+                print(f"  ⏭️  {ticker} excluded: High debt (D/E: {debt_to_equity:.2f})")
+                continue
+            if (
+                total_equity is not None
+                and total_equity < 0
+                and total_debt > 0
+                and debt_to_equity is None
+            ):
+                print(f"  ⏭️  {ticker} excluded: Negative book equity with debt (high risk)")
                 continue
             
             # Company name
