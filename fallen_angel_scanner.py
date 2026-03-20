@@ -49,8 +49,9 @@ DROP_LOOKBACK_DAYS = 21  # Look for drops over last 21 days
 MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs trailing-year range
 MAX_CANDIDATES = 20  # Final report size; if more pass Stage 2, tiers tighten until ≤ this
 
-# Risk filters
-MAX_DEBT_TO_EQUITY = 1.5  # Skip companies with debt/equity > 1.5
+# Risk filters (operating companies only — see debt_filter_applies)
+MAX_DEBT_TO_EQUITY = 2.5  # When Yahoo D/E is trustworthy, exclude above this
+DEBT_RATIO_TRUST_MAX = 50.0  # Values above this are usually bad Yahoo data — skip exclusion
 
 # Memory/tracking
 MEMORY_FILE = "scanner_memory.json"
@@ -175,6 +176,75 @@ def passes_avg_dollar_liquidity(hist, min_dollar_vol_usd):
     tail = hist.tail(min(20, len(hist)))
     dv = (tail["Close"] * tail["Volume"]).mean()
     return dv >= min_dollar_vol_usd
+
+
+def debt_filter_applies(info):
+    """
+    Debt/equity from Yahoo is meaningless for banks/insurers/REITs and often broken
+    for other names. Only apply the leverage exclusion to operating companies.
+    """
+    sector = (info.get("sector") or "").strip().lower()
+    industry = (info.get("industry") or "").strip().lower()
+    if sector in ("financial services", "real estate"):
+        return False
+    needles = (
+        "bank",
+        "insurance",
+        "reit",
+        "capital market",
+        "asset management",
+        "credit services",
+        "mortgage",
+        "financial -",
+        "consumer - financial",
+        "investment - financial",
+        "regional -",
+        "shell company",
+    )
+    if any(n in industry for n in needles):
+        return False
+    return True
+
+
+def compute_debt_to_equity_ratio(info):
+    """Single place for D/E used by Stage 2 and financial health. None if unknown."""
+    total_debt = info.get("totalDebt", 0) or 0
+    total_equity = info.get("totalStockholderEquity")
+    if total_equity is not None and total_equity > 0:
+        return total_debt / total_equity
+    de_yf = info.get("debtToEquity")
+    if de_yf is not None and np.isfinite(float(de_yf)):
+        return float(de_yf)
+    return None
+
+
+def should_exclude_for_leverage(info):
+    """
+    Exclude for high leverage only when ratio is present, sane, and sector is comparable.
+    Returns (exclude: bool, reason or None).
+    """
+    if not debt_filter_applies(info):
+        return False, None
+
+    total_debt = info.get("totalDebt", 0) or 0
+    total_equity = info.get("totalStockholderEquity")
+    de = compute_debt_to_equity_ratio(info)
+
+    if (
+        total_equity is not None
+        and total_equity < 0
+        and total_debt > 0
+        and de is None
+    ):
+        return True, "Negative book equity with debt (high risk)"
+
+    if de is None:
+        return False, None
+    if de > DEBT_RATIO_TRUST_MAX:
+        return False, None
+    if de > MAX_DEBT_TO_EQUITY:
+        return True, f"High debt (D/E: {de:.2f})"
+    return False, None
 
 
 def is_biotechnology_company(info):
@@ -402,43 +472,44 @@ def analyze_news_sentiment(headlines):
         return "🟡 UNCLEAR", "Need manual research"
 
 def get_financial_health(ticker_obj):
-    """Assess bankruptcy risk from financials"""
+    """Assess bankruptcy risk from financials (D/E skipped for financials / bad Yahoo data)."""
     try:
         info = ticker_obj.info
-        
-        # Get values with defaults
-        total_debt = info.get('totalDebt', 0) or 0
-        total_equity = info.get('totalStockholderEquity', 0) or 0
-        
-        # Calculate debt to equity safely
-        if total_equity > 0:
-            debt_to_equity = total_debt / total_equity
+
+        if not debt_filter_applies(info):
+            de_for_risk = 0.5
+            de_display = None
         else:
-            debt_to_equity = 999 if total_debt > 0 else 0
-        
-        # Get current ratio
+            raw = compute_debt_to_equity_ratio(info)
+            if raw is None or raw > DEBT_RATIO_TRUST_MAX:
+                de_for_risk = 0.5
+                de_display = None
+            else:
+                de_for_risk = float(raw)
+                de_display = round(raw, 2)
+
         current_assets = info.get('totalCurrentAssets', 0) or 0
         current_liabilities = info.get('totalCurrentLiabilities', 0) or 0
-        
+
         if current_liabilities > 0:
             current_ratio = current_assets / current_liabilities
         else:
             current_ratio = 99 if current_assets > 0 else 0
-        
+
         cash = info.get('totalCash', 0) or 0
         revenue = info.get('totalRevenue', 0) or 0
         market_cap = info.get('marketCap', 0) or 0
-        
-        # Validate the data
-        if debt_to_equity > 100:  # Sanity check
-            debt_to_equity = 10  # Cap at reasonable value
-        
+
+        if de_for_risk > 100:
+            de_for_risk = 10.0
+
         return {
-            'debt_to_equity': round(debt_to_equity, 2),
+            'debt_to_equity': round(de_for_risk, 2),
+            'debt_equity_display': de_display,
             'current_ratio': round(current_ratio, 2),
             'cash': cash,
             'revenue': revenue,
-            'market_cap': market_cap
+            'market_cap': market_cap,
         }
     except Exception as e:
         print(f"    ⚠️ Financial data error: {e}")
@@ -517,27 +588,9 @@ def stage2_deep_analysis(candidates, memory):
                 print(f"  ⏭️  {ticker} excluded: biotechnology (preference)")
                 continue
             
-            # Apply debt filter (Yahoo often omits totalStockholderEquity — use debtToEquity fallback)
-            total_debt = info.get("totalDebt", 0) or 0
-            total_equity = info.get("totalStockholderEquity")
-            debt_to_equity = None
-            if total_equity is not None and total_equity > 0:
-                debt_to_equity = total_debt / total_equity
-            else:
-                de_yf = info.get("debtToEquity")
-                if de_yf is not None and np.isfinite(float(de_yf)):
-                    debt_to_equity = float(de_yf)
-
-            if debt_to_equity is not None and debt_to_equity > MAX_DEBT_TO_EQUITY:
-                print(f"  ⏭️  {ticker} excluded: High debt (D/E: {debt_to_equity:.2f})")
-                continue
-            if (
-                total_equity is not None
-                and total_equity < 0
-                and total_debt > 0
-                and debt_to_equity is None
-            ):
-                print(f"  ⏭️  {ticker} excluded: Negative book equity with debt (high risk)")
+            excl, lev_reason = should_exclude_for_leverage(info)
+            if excl:
+                print(f"  ⏭️  {ticker} excluded: {lev_reason}")
                 continue
             
             # Company name
@@ -736,10 +789,15 @@ def generate_email_html(analyzed_stocks, price_alerts):
             # Financial health
             if stock['financial_health']:
                 health = stock['financial_health']
+                de_txt = (
+                    f"{health['debt_equity_display']:.2f}"
+                    if health.get('debt_equity_display') is not None
+                    else "n/a (financial sector or unreliable data)"
+                )
                 html += f"""
                 <p><strong>💼 Financial Health:</strong><br/>
                 Cash: ${health['cash']/1e9:.2f}B | 
-                Debt/Equity: {health['debt_to_equity']:.2f} | 
+                Debt/Equity: {de_txt} | 
                 Current Ratio: {health['current_ratio']:.2f}</p>
                 """
             
