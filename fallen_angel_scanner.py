@@ -4,6 +4,11 @@ Two-Stage Fallen Angel Scanner with News Analysis
 Stage 1: Quick filter for price drops (fast)
 Stage 2: Deep analysis only for candidates found (comprehensive)
 
+Goal: names trading well below a plausible “normal” range (heuristics: drawdown,
+liquidity, recovery headroom, fundamentals) where the move may be driven by
+temporary noise rather than permanent impairment. Biotechnology names are excluded
+by sector/industry (binary clinical/regulatory risk, different game than your thesis).
+
 Features:
 - News analysis for each candidate
 - 14-day deduplication memory
@@ -20,19 +25,11 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 import json
-import requests
 
-# Import ticker lists
-import sys
-sys.path.append('/home/claude')
 from tickers_config import (
-    get_sp500_tickers,
-    get_nasdaq100_tickers, 
-    get_fallen_angel_candidates,
-    get_wse_tickers,
-    get_ftse100_tickers,
-    get_tase_tickers,
-    get_dax_tickers
+    get_all_tickers,
+    get_min_market_cap_usd,
+    get_min_avg_dollar_volume_usd,
 )
 
 # ============================================================================
@@ -49,8 +46,8 @@ SMTP_PORT = 587
 # Scanning criteria
 MIN_DROP_PERCENT = 20  # Minimum drop percentage
 DROP_LOOKBACK_DAYS = 21  # Look for drops over last 21 days
-MIN_MARKET_CAP = 2e9  # Minimum $2B market cap
-MAX_CANDIDATES = 10  # Maximum candidates to report
+MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs trailing-year range
+MAX_CANDIDATES = 25  # Cap email size after ranking
 
 # Risk filters
 MAX_DEBT_TO_EQUITY = 1.5  # Skip companies with debt/equity > 1.5
@@ -136,6 +133,61 @@ def get_market_info(ticker):
     else:
         return "🇺🇸 US", "USD"
 
+def format_price_for_email(price, currency_code):
+    """Prefix/suffix by currency for email (avoid showing USD $ for PLN/GBP etc.)."""
+    c = (currency_code or "USD").upper()
+    if c == "GBP":
+        return f"£{price:.2f}"
+    if c == "EUR":
+        return f"€{price:.2f}"
+    if c == "PLN":
+        return f"{price:.2f} zł"
+    if c == "ILS":
+        return f"₪{price:.2f}"
+    return f"${price:.2f}"
+
+
+def is_tradeable_equity(info):
+    """Skip ETFs/funds and OTC names — focus on listed operating equities."""
+    qt = (info.get("quoteType") or "").upper()
+    if qt in ("ETF", "MUTUALFUND", "INDEX", "ETN", "CRYPTOCURRENCY"):
+        return False
+    ex = ((info.get("exchange") or "") + " " + (info.get("fullExchangeName") or "")).upper()
+    if "OTC" in ex or "PINK" in ex or "OTCBB" in ex:
+        return False
+    return True
+
+
+def not_penny_delist_risk(info, ticker):
+    """Avoid ultra-low-priced names where delisting is more common."""
+    p = info.get("regularMarketPrice") or info.get("currentPrice")
+    if p is None or p <= 0:
+        return True
+    if ticker.endswith(".WA") or ticker.endswith(".TA") or ticker.endswith(".L") or ticker.endswith(".DE"):
+        return p >= 1.0
+    return p >= 2.0
+
+
+def passes_avg_dollar_liquidity(hist, min_dollar_vol_usd):
+    """20-day average dollar volume (uses last N rows of history)."""
+    if hist is None or len(hist) < 10:
+        return False
+    tail = hist.tail(min(20, len(hist)))
+    dv = (tail["Close"] * tail["Volume"]).mean()
+    return dv >= min_dollar_vol_usd
+
+
+def is_biotechnology_company(info):
+    """
+    True if Yahoo classifies the name as biotechnology (GICS-style industry).
+    Excludes classic pharma / medtech unless labeled biotech — user preference.
+    """
+    ind = f"{info.get('industry') or ''} {info.get('industryKey') or ''}".lower()
+    if "biotechnology" in ind:
+        return True
+    return False
+
+
 def get_broker_recommendation(market):
     """Recommend broker based on market"""
     brokers = {
@@ -161,18 +213,7 @@ def stage1_quick_filter():
     print("STAGE 1: Quick Price Drop Filter")
     print("="*80)
     
-    # Get all tickers
-    all_tickers = []
-    all_tickers.extend(get_sp500_tickers())
-    all_tickers.extend(get_nasdaq100_tickers())
-    all_tickers.extend(get_wse_tickers())
-    all_tickers.extend(get_ftse100_tickers())
-    all_tickers.extend(get_tase_tickers())
-    all_tickers.extend(get_dax_tickers())
-    all_tickers.extend(get_fallen_angel_candidates())
-    
-    # Remove duplicates
-    all_tickers = list(set(all_tickers))
+    all_tickers = get_all_tickers()
     print(f"Scanning {len(all_tickers)} stocks across 5 markets\n")
     
     candidates = []
@@ -186,15 +227,25 @@ def stage1_quick_filter():
             
             # Quick checks only
             info = stock.info
-            market_cap = info.get('marketCap', 0)
-            
-            # Filter by market cap
-            if market_cap < MIN_MARKET_CAP:
+            market_cap = info.get('marketCap', 0) or 0
+
+            if not is_tradeable_equity(info):
+                continue
+            if not not_penny_delist_risk(info, ticker):
+                continue
+            if is_biotechnology_company(info):
+                continue
+
+            min_cap = get_min_market_cap_usd(ticker)
+            if market_cap < min_cap:
                 continue
             
             # Get price history
             hist = stock.history(period="1mo")
             if len(hist) < 10:
+                continue
+
+            if not passes_avg_dollar_liquidity(hist, get_min_avg_dollar_volume_usd(ticker)):
                 continue
             
             current_price = hist["Close"].iloc[-1].item()
@@ -419,6 +470,10 @@ def stage2_deep_analysis(candidates, memory):
         try:
             stock = yf.Ticker(ticker)
             info = stock.info
+
+            if is_biotechnology_company(info):
+                print(f"  ⏭️  {ticker} excluded: biotechnology (preference)")
+                continue
             
             # Apply debt filter
             total_debt = info.get('totalDebt', 0) or 0
@@ -458,6 +513,16 @@ def stage2_deep_analysis(candidates, memory):
             hist = stock.history(period="1y")
             stable_high = hist["Close"].quantile(0.80).item()
             recovery_potential = ((stable_high / candidate['current_price']) - 1) * 100
+
+            if not np.isfinite(recovery_potential):
+                print(f"  ⏭️  {ticker} excluded: invalid recovery estimate")
+                continue
+            if recovery_potential < MIN_RECOVERY_POTENTIAL_PCT:
+                print(
+                    f"  ⏭️  {ticker} excluded: recovery vs 1y 80th pctile "
+                    f"+{recovery_potential:.0f}% < {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target"
+                )
+                continue
             
             analyzed.append({
                 'ticker': ticker,
@@ -484,7 +549,10 @@ def stage2_deep_analysis(candidates, memory):
             print(f"  ❌ Failed to analyze {ticker}: {e}")
             continue
     
-    print(f"\n✅ Stage 2 complete: {len(analyzed)} stocks fully analyzed\n")
+    analyzed.sort(key=lambda x: (x["risk_score"], -x["recovery_potential"]))
+    analyzed = analyzed[:MAX_CANDIDATES]
+    
+    print(f"\n✅ Stage 2 complete: {len(analyzed)} stocks fully analyzed (capped at {MAX_CANDIDATES})\n")
     return analyzed
 
 # ============================================================================
@@ -527,9 +595,12 @@ def generate_email_html(analyzed_stocks, price_alerts):
             <p>Previously sent stocks that dropped another 10%+:</p>
         """
         for alert in price_alerts:
+            _, acurr = get_market_info(alert["ticker"])
+            op = format_price_for_email(alert["original_price"], acurr)
+            cp = format_price_for_email(alert["current_price"], acurr)
             html += f"""
             <p><strong>{alert['ticker']}</strong>: 
-            ${alert['original_price']:.2f} → ${alert['current_price']:.2f} 
+            {op} → {cp} 
             ({alert['additional_drop']:.1f}% additional drop since {alert['sent_date']})</p>
             """
         html += "</div>"
@@ -537,7 +608,7 @@ def generate_email_html(analyzed_stocks, price_alerts):
     # Summary intro
     if analyzed_stocks:
         html += """
-        <p><strong>Stocks with cumulative drops of 20%+ over the last month from US, Poland, UK, Israel, and Germany:</strong></p>
+        <p><strong>Stocks with ~20%+ drawdown vs ~21 sessions ago, &ge;50% recovery vs 1y trading range (heuristic), US Russell 1000 + large-cap PL/UK/IL/DE watchlists:</strong></p>
         <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
             <tr style="background: #34495e; color: white;">
                 <th style="padding: 10px; text-align: left;">Ticker & Broker</th>

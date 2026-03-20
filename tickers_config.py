@@ -6,6 +6,29 @@ This file contains all stock ticker lists for the fallen angel scanner.
 Update this file when indices rebalance (quarterly for S&P 500, annually for NASDAQ-100 in December).
 """
 
+# Minimum market cap (USD) used by the scanner — US $2B; other regions slightly lower
+# for liquid “large cap” names on smaller markets (yfinance reports marketCap in USD).
+MIN_MARKET_CAP_USD_US = 2_000_000_000
+MIN_MARKET_CAP_USD_UK_DE = 1_000_000_000
+MIN_MARKET_CAP_USD_PL_IL = 400_000_000
+
+
+def get_min_market_cap_usd(ticker: str) -> float:
+    """Minimum market cap (USD) for screening by listing suffix."""
+    if ticker.endswith(".WA") or ticker.endswith(".TA"):
+        return MIN_MARKET_CAP_USD_PL_IL
+    if ticker.endswith(".L") or ticker.endswith(".DE"):
+        return MIN_MARKET_CAP_USD_UK_DE
+    return MIN_MARKET_CAP_USD_US
+
+
+def get_min_avg_dollar_volume_usd(ticker: str) -> float:
+    """Rough 20-day average dollar volume floor — lower for smaller home markets."""
+    if ticker.endswith(".WA") or ticker.endswith(".TA"):
+        return 350_000
+    return 1_500_000
+
+
 # ============================================================================
 # HIGH-PRIORITY FALLEN ANGEL CANDIDATES
 # ============================================================================
@@ -27,7 +50,6 @@ def get_fallen_angel_candidates():
         'CDW',   # CDW Corporation
         'GFS',   # GlobalFoundries
         'ON',    # ON Semiconductor
-        'BIIB',  # Biogen
         
         # Recently removed from S&P 500 (2025)
         'ENPH',  # Enphase Energy - removed Sept 2025
@@ -38,10 +60,55 @@ def get_fallen_angel_candidates():
         'ZS',    # Zscaler
         'RIVN',  # Rivian
         'LCID',  # Lucid Motors
-        'MRNA',  # Moderna
         'WBD',   # Warner Bros Discovery
         'INTC',  # Intel - significant decline
     ]
+
+# ============================================================================
+# US STOCKS - Russell 1000 (broad NYSE + Nasdaq liquid universe)
+# ============================================================================
+
+def fetch_russell_1000_tickers():
+    """
+    Russell ~1000 constituents from Wikipedia (embedded components table).
+    Covers large/mid US equities without needing paid screeners.
+    """
+    try:
+        import pandas as pd
+        import requests
+        from io import StringIO
+
+        url = "https://en.wikipedia.org/wiki/Russell_1000_Index"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        tables = pd.read_html(StringIO(response.text))
+        for table in tables:
+            if "Symbol" in table.columns:
+                return table["Symbol"].astype(str).str.strip().tolist()
+        return []
+    except Exception:
+        return []
+
+
+def get_us_scan_tickers():
+    """
+    Primary US universe: Russell 1000. If fetch fails, fall back to S&P 500 + NASDAQ-100.
+    """
+    r1k = fetch_russell_1000_tickers()
+    if len(r1k) >= 500:
+        return r1k
+
+    seen = set()
+    out = []
+    for t in get_sp500_tickers() + get_nasdaq100_tickers():
+        if t not in seen:
+            seen.add(t)
+            out.append(t)
+    return out
+
 
 # ============================================================================
 # US STOCKS - S&P 500
@@ -115,9 +182,9 @@ def get_nasdaq100_tickers():
         # Small-cap & speculative
         'CHTR', 'AEP', 'PAYX', 'MNST', 'ROST', 'ODFL', 'EA', 'FAST',
         'KDP', 'DXCM', 'GEHC', 'CTSH', 'VRSK', 'EXC', 'CTAS',
-        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP', 'BIIB',
+        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP',
         'WBD', 'DDOG', 'TEAM',
-        'MDB', 'ILMN', 'ALGN', 'ARM', 'MRNA', 'RIVN', 'LCID',
+        'MDB', 'ILMN', 'ALGN', 'ARM', 'RIVN', 'LCID',
         
         # Added December 2025
         'ALNY',  # Alnylam Pharmaceuticals
@@ -361,18 +428,15 @@ def get_all_tickers():
     
     Scanning order:
     1. Fallen angel candidates (most likely to have big drops)
-    2. S&P 500 stocks
-    3. NASDAQ-100 stocks
-    4. International markets (WSE, LSE, TASE, DAX)
+    2. US Russell 1000 (or S&P 500 + NASDAQ-100 fallback)
+    3. International markets (WSE, LSE, TASE, DAX) — large liquid names
     """
     all_tickers = []
     
     # Add high-priority fallen angel candidates FIRST
     all_tickers.extend(get_fallen_angel_candidates())
     
-    # Then add all major index tickers
-    all_tickers.extend(get_sp500_tickers())
-    all_tickers.extend(get_nasdaq100_tickers())
+    all_tickers.extend(get_us_scan_tickers())
     all_tickers.extend(get_wse_tickers())
     all_tickers.extend(get_ftse100_tickers())
     all_tickers.extend(get_tase_tickers())
