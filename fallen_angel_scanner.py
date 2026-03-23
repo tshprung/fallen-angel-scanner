@@ -654,7 +654,7 @@ def stage2_deep_analysis(candidates, memory):
             
             # Increment counter and add delay every 100 analyses
             analysis_count += 1
-            if analysis_count % 100 == 0:
+            if analysis_count % 5 == 0:
                 print(f"  ⏸️  Analyzed {analysis_count} stocks, pausing 5 seconds to avoid rate limits...")
                 time.sleep(5)
             
