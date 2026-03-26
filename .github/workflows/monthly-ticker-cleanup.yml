@@ -1,0 +1,76 @@
+name: Monthly Ticker Cleanup
+
+on:
+  schedule:
+    # Run on the 1st of every month at 10:00 UTC
+    - cron: '0 10 1 * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install yfinance pandas numpy
+    
+    - name: Run cleanup script
+      run: |
+        python cleanup_failed_tickers.py
+    
+    - name: Upload cleanup report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: ticker-cleanup-report
+        path: ticker_cleanup_report_*.txt
+        retention-days: 90
+    
+    - name: Comment on issue (if tickers need removal)
+      if: always()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const files = fs.readdirSync('.').filter(f => f.startsWith('ticker_cleanup_report_'));
+          
+          if (files.length > 0) {
+            const report = fs.readFileSync(files[0], 'utf8');
+            
+            // Create or update issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['ticker-cleanup']
+            });
+            
+            const body = `## Monthly Ticker Cleanup Report\n\n\`\`\`\n${report}\n\`\`\``;
+            
+            if (issues.data.length > 0) {
+              // Update existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: body
+              });
+            } else {
+              // Create new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Ticker Cleanup Needed',
+                body: body,
+                labels: ['ticker-cleanup']
+              });
+            }
+          }
