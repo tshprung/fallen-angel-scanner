@@ -85,6 +85,10 @@ MEMORY_FILE = "scanner_memory.json"
 DEDUP_DAYS = 14  # Don't re-send same stock within 14 days
 PRICE_ALERT_THRESHOLD = 0.10  # Alert if stock drops another 10%
 
+# Ticker validation
+FAILED_TICKER_FILE = "failed_tickers.json"
+MAX_FAILURES_BEFORE_REMOVAL = 3  # Remove ticker after 3 consecutive failures
+
 # ============================================================================
 # MEMORY MANAGEMENT
 # ============================================================================
@@ -106,6 +110,44 @@ def save_memory(memory):
             json.dump(memory, f, indent=2)
     except Exception as e:
         print(f"Failed to save memory: {e}")
+
+def load_failed_tickers():
+    """Load failed ticker tracking"""
+    try:
+        if os.path.exists(FAILED_TICKER_FILE):
+            with open(FAILED_TICKER_FILE, 'r') as f:
+                return json.load(f)
+        return {}
+    except:
+        return {}
+
+def save_failed_tickers(failed_tickers):
+    """Save failed ticker tracking"""
+    try:
+        with open(FAILED_TICKER_FILE, 'w') as f:
+            json.dump(failed_tickers, f, indent=2)
+    except Exception as e:
+        print(f"Failed to save failed tickers: {e}")
+
+def record_ticker_failure(ticker, failed_tickers, reason):
+    """Record a ticker failure. Returns True if ticker should be flagged for removal."""
+    if ticker not in failed_tickers:
+        failed_tickers[ticker] = {
+            "count": 1,
+            "last_failure": datetime.now().isoformat(),
+            "reason": reason
+        }
+    else:
+        failed_tickers[ticker]["count"] += 1
+        failed_tickers[ticker]["last_failure"] = datetime.now().isoformat()
+        failed_tickers[ticker]["reason"] = reason
+    
+    return failed_tickers[ticker]["count"] >= MAX_FAILURES_BEFORE_REMOVAL
+
+def record_ticker_success(ticker, failed_tickers):
+    """Remove ticker from failed list if it succeeds"""
+    if ticker in failed_tickers:
+        del failed_tickers[ticker]
 
 def should_send_stock(ticker, memory):
     """Check if stock was already sent recently"""
@@ -353,9 +395,16 @@ def stage1_quick_filter():
     print("="*80)
     
     all_tickers = get_all_tickers()
-    print(f"Scanning {len(all_tickers)} stocks across 5 markets\n")
+    failed_tickers = load_failed_tickers()
+    
+    print(f"Scanning {len(all_tickers)} stocks across 5 markets")
+    if failed_tickers:
+        print(f"  ⚠️  Tracking {len(failed_tickers)} tickers with failures\n")
+    else:
+        print()
     
     candidates = []
+    tickers_to_remove = []
     
     for i, ticker in enumerate(all_tickers):
         if (i + 1) % 50 == 0:
@@ -364,7 +413,15 @@ def stage1_quick_filter():
         try:
             stock, info = get_stock_with_retry(ticker)
             if not stock or not info:
+                # Record failure
+                should_remove = record_ticker_failure(ticker, failed_tickers, "Failed to fetch data")
+                if should_remove:
+                    tickers_to_remove.append(ticker)
+                    print(f"  ❌ {ticker} flagged for removal (3+ failures)")
                 continue
+            
+            # Success - clear from failed list
+            record_ticker_success(ticker, failed_tickers)
             
             # Quick checks only
             market_cap = info.get('marketCap', 0) or 0
@@ -403,10 +460,26 @@ def stage1_quick_filter():
                 print(f"  ✓ {ticker}: {drop_pct:.1f}%")
         
         except Exception as e:
+            # Record failure for any exception
+            error_msg = str(e)
+            if "404" in error_msg or "Not Found" in error_msg:
+                should_remove = record_ticker_failure(ticker, failed_tickers, "Ticker not found (404)")
+                if should_remove:
+                    tickers_to_remove.append(ticker)
+                    print(f"  ❌ {ticker} flagged for removal (3+ failures)")
             continue
     
-    print(f"\n✅ Stage 1 complete: Found {len(candidates)} candidates\n")
-    return candidates
+    # Save failed ticker tracking
+    save_failed_tickers(failed_tickers)
+    
+    print(f"\n✅ Stage 1 complete: Found {len(candidates)} candidates")
+    if tickers_to_remove:
+        print(f"⚠️  {len(tickers_to_remove)} tickers flagged for removal: {', '.join(tickers_to_remove[:10])}")
+        if len(tickers_to_remove) > 10:
+            print(f"   ... and {len(tickers_to_remove) - 10} more")
+    print()
+    
+    return candidates, tickers_to_remove
 
 # ============================================================================
 # STAGE 2: DEEP ANALYSIS
@@ -1150,10 +1223,15 @@ def main():
         print(f"✅ Found {len(price_alerts)} averaging down alerts")
     
     # Stage 1: Quick filter
-    candidates = stage1_quick_filter()
+    candidates, tickers_to_remove = stage1_quick_filter()
     
     if not candidates and not price_alerts:
         print("✅ No fallen angels found today. Market looking stable!\n")
+        
+        # Log tickers to remove if any
+        if tickers_to_remove:
+            print(f"📋 Note: {len(tickers_to_remove)} tickers flagged for cleanup")
+            print("   Run monthly cleanup script to remove them from ticker lists")
         return
     
     # Stage 2: Deep analysis
