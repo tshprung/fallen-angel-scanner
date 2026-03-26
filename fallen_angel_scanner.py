@@ -591,6 +591,198 @@ def calculate_risk_score(financial_health, news_sentiment):
     
     return max(1, min(10, round(score)))
 
+def check_bankruptcy_risk(stock, info, financial_health):
+    """
+    Check for bankruptcy risk. Returns (has_risk: bool, reason: str)
+    AUTO-EXCLUDE if any critical indicator fails
+    """
+    try:
+        if not financial_health:
+            return True, "No financial data available"
+        
+        # 1. Interest coverage ratio (EBIT / interest expense)
+        ebit = info.get('ebit', 0) or 0
+        interest_expense = info.get('interestExpense', 0) or 0
+        
+        if interest_expense > 0:
+            interest_coverage = ebit / abs(interest_expense)
+            if interest_coverage < 2.0:
+                return True, f"Low interest coverage: {interest_coverage:.1f}x (need >2x)"
+        elif interest_expense < 0 and ebit < abs(interest_expense) * 2:
+            # Handle negative interest expense reporting
+            return True, f"Insufficient earnings to cover interest"
+        
+        # 2. Quick ratio (liquid assets / current liabilities)
+        current_assets = info.get('totalCurrentAssets', 0) or 0
+        inventory = info.get('inventory', 0) or 0
+        current_liabilities = info.get('totalCurrentLiabilities', 0) or 0
+        
+        if current_liabilities > 0:
+            quick_ratio = (current_assets - inventory) / current_liabilities
+            if quick_ratio < 0.5:
+                return True, f"Low quick ratio: {quick_ratio:.2f} (need >0.5)"
+        
+        # 3. Operating cash flow must be positive
+        cash_flow = stock.cashflow
+        if not cash_flow.empty and 'Operating Cash Flow' in cash_flow.index:
+            latest_ocf = cash_flow.loc['Operating Cash Flow'].iloc[0]
+            if pd.notna(latest_ocf) and latest_ocf < 0:
+                return True, "Negative operating cash flow"
+        
+        # 4. Check for negative equity (bankruptcy indicator)
+        total_equity = info.get('totalStockholderEquity', 0)
+        if total_equity and total_equity < 0:
+            return True, "Negative shareholder equity"
+        
+        return False, None
+        
+    except Exception as e:
+        print(f"    ⚠️ Bankruptcy check error: {e}")
+        return True, f"Unable to verify financial stability: {e}"
+
+def detect_bottom(stock, current_price):
+    """
+    Technical analysis to detect if stock is at bottom.
+    Returns: (at_bottom: bool, wait_price_low: float, wait_price_high: float, confidence: str)
+    """
+    try:
+        hist = stock.history(period="1y")
+        if len(hist) < 50:
+            return False, None, None, "Insufficient data"
+        
+        # Calculate indicators
+        close = hist['Close']
+        
+        # 1. RSI (14-day)
+        delta = close.diff()
+        gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+        loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+        rs = gain / loss
+        rsi = 100 - (100 / (1 + rs))
+        current_rsi = rsi.iloc[-1]
+        
+        # 2. 52-week low
+        week_52_low = close.min()
+        distance_from_low = ((current_price - week_52_low) / week_52_low) * 100
+        
+        # 3. Bollinger Bands (20-day)
+        sma_20 = close.rolling(window=20).mean()
+        std_20 = close.rolling(window=20).std()
+        lower_band = sma_20 - (2 * std_20)
+        current_lower_band = lower_band.iloc[-1]
+        
+        # 4. Volume trend (selling exhaustion?)
+        volume = hist['Volume']
+        avg_volume_20 = volume.rolling(window=20).mean()
+        recent_volume = volume.iloc[-5:].mean()  # Last 5 days
+        volume_declining = recent_volume < avg_volume_20.iloc[-1] * 0.8
+        
+        # 5. Find support levels (previous lows in last year)
+        support_levels = []
+        for i in range(10, len(close) - 10):
+            if close.iloc[i] == close.iloc[i-10:i+10].min():
+                support_levels.append(close.iloc[i])
+        
+        nearest_support = None
+        if support_levels:
+            support_below = [s for s in support_levels if s < current_price]
+            if support_below:
+                nearest_support = max(support_below)
+        
+        # Decision logic
+        at_bottom = False
+        confidence = "LOW"
+        
+        if current_rsi < 30 and distance_from_low < 15:
+            # Oversold + near 52-week low
+            at_bottom = True
+            confidence = "HIGH"
+        elif current_rsi < 35 and distance_from_low < 20 and volume_declining:
+            # Moderately oversold + near low + volume declining
+            at_bottom = True
+            confidence = "MEDIUM"
+        elif current_price <= current_lower_band * 1.02:
+            # At or just above lower Bollinger Band
+            at_bottom = True
+            confidence = "MEDIUM"
+        
+        # Calculate wait price if NOT at bottom
+        wait_price_low = None
+        wait_price_high = None
+        
+        if not at_bottom:
+            # Estimate bottom using: min(52-week low, nearest support, lower Bollinger band)
+            candidates = [week_52_low]
+            if nearest_support:
+                candidates.append(nearest_support)
+            if current_lower_band > 0:
+                candidates.append(current_lower_band)
+            
+            estimated_bottom = min(candidates)
+            wait_price_low = estimated_bottom * 0.95  # -5%
+            wait_price_high = estimated_bottom * 1.05  # +5%
+        
+        return at_bottom, wait_price_low, wait_price_high, confidence
+        
+    except Exception as e:
+        print(f"    ⚠️ Technical analysis error: {e}")
+        return False, None, None, "Error"
+
+def estimate_recovery_target(stock, info, current_price):
+    """
+    Estimate realistic recovery price target.
+    Returns: (target_low: float, target_high: float, upside_pct: float)
+    """
+    try:
+        hist = stock.history(period="5y")
+        if len(hist) < 250:
+            hist = stock.history(period="1y")
+        
+        # Method 1: Historical valuation (5-year average P/E)
+        pe_ratio = info.get('trailingPE', 0) or 0
+        eps = info.get('trailingEps', 0) or 0
+        
+        target_from_pe = None
+        if hist is not None and len(hist) > 250:
+            # Calculate historical average price
+            avg_price_5y = hist['Close'].mean()
+            high_80pct = hist['Close'].quantile(0.80)
+            target_from_pe = (avg_price_5y + high_80pct) / 2
+        
+        # Method 2: Analyst targets
+        target_mean = info.get('targetMeanPrice', 0) or 0
+        target_high = info.get('targetHighPrice', 0) or 0
+        
+        # Method 3: Technical resistance (1-year high at 80th percentile)
+        hist_1y = stock.history(period="1y")
+        resistance = hist_1y['Close'].quantile(0.80) if len(hist_1y) > 0 else 0
+        
+        # Combine methods (use available data)
+        targets = []
+        if target_from_pe and target_from_pe > current_price * 1.3:
+            targets.append(target_from_pe)
+        if target_mean and target_mean > current_price * 1.3:
+            targets.append(target_mean)
+        if resistance and resistance > current_price * 1.3:
+            targets.append(resistance)
+        
+        if not targets:
+            # Fallback: Use 80th percentile of 1-year data
+            targets.append(resistance if resistance > 0 else current_price * 1.5)
+        
+        # Conservative estimate: average of targets
+        target_avg = sum(targets) / len(targets)
+        target_low = target_avg * 0.90  # -10% margin
+        target_high = target_avg * 1.10  # +10% margin
+        
+        upside_pct = ((target_avg - current_price) / current_price) * 100
+        
+        return target_low, target_high, upside_pct
+        
+    except Exception as e:
+        print(f"    ⚠️ Target estimation error: {e}")
+        return None, None, None
+    
 def stage2_deep_analysis(candidates, memory):
     """Stage 2: Comprehensive analysis of candidates"""
     print("="*80)
@@ -634,6 +826,13 @@ def stage2_deep_analysis(candidates, memory):
             # Financial health
             health = get_financial_health(stock)
             
+            # BANKRUPTCY RISK CHECK (AUTO-EXCLUDE)
+            print(f"  🏥 Checking bankruptcy risk...")
+            has_bankruptcy_risk, bankruptcy_reason = check_bankruptcy_risk(stock, info, health)
+            if has_bankruptcy_risk:
+                print(f"  ❌ {ticker} excluded: {bankruptcy_reason}")
+                continue
+            
             # Earnings calendar
             earnings_date, days_to_earnings = get_earnings_date(ticker)
             
@@ -645,19 +844,21 @@ def stage2_deep_analysis(candidates, memory):
             # Risk score
             risk = calculate_risk_score(health, news_sentiment)
             
-            # Recovery potential (simple: stable high vs current)
-            hist = stock.history(period="1y")
-            stable_high = hist["Close"].quantile(0.80).item()
-            recovery_potential = ((stable_high / candidate['current_price']) - 1) * 100
-
-            if not np.isfinite(recovery_potential):
-                print(f"  ⏭️  {ticker} excluded: invalid recovery estimate")
+            # FILTER: Only show risk < 4 (Low risk only)
+            if risk >= 4:
+                print(f"  ⏭️  {ticker} excluded: Risk score {risk}/10 (need <4)")
                 continue
-            if recovery_potential < MIN_RECOVERY_POTENTIAL_PCT:
-                print(
-                    f"  ⏭️  {ticker} excluded: recovery vs 1y 80th pctile "
-                    f"+{recovery_potential:.0f}% < {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target"
-                )
+            
+            # TECHNICAL ANALYSIS: Bottom detection
+            print(f"  📊 Technical analysis...")
+            at_bottom, wait_low, wait_high, bottom_confidence = detect_bottom(stock, candidate['current_price'])
+            
+            # RECOVERY TARGET ESTIMATION
+            target_low, target_high, upside_pct = estimate_recovery_target(stock, info, candidate['current_price'])
+            
+            # Verify upside meets minimum requirement (50%)
+            if upside_pct and upside_pct < MIN_RECOVERY_POTENTIAL_PCT:
+                print(f"  ⏭️  {ticker} excluded: Upside {upside_pct:.0f}% < {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target")
                 continue
             
             analyzed.append({
@@ -669,8 +870,14 @@ def stage2_deep_analysis(candidates, memory):
                 'alt_broker': alt_broker,
                 'current_price': candidate['current_price'],
                 'drop_pct': candidate['drop_pct'],
-                'recovery_potential': recovery_potential,
+                'recovery_potential': upside_pct if upside_pct else 0,
+                'target_low': target_low,
+                'target_high': target_high,
                 'risk_score': risk,
+                'at_bottom': at_bottom,
+                'wait_price_low': wait_low,
+                'wait_price_high': wait_high,
+                'bottom_confidence': bottom_confidence,
                 'earnings_date': earnings_date,
                 'days_to_earnings': days_to_earnings,
                 'news_headlines': news_headlines[:3],  # Top 3
@@ -679,7 +886,8 @@ def stage2_deep_analysis(candidates, memory):
                 'financial_health': health
             })
             
-            print(f"  ✅ {ticker} analyzed: Risk {risk}/10, {news_sentiment}")
+            status = "BUY NOW" if at_bottom else "WAIT"
+            print(f"  ✅ {ticker} analyzed: Risk {risk}/10, {status}, Upside ~{upside_pct:.0f}%")
             
             # Increment counter and add delay every 100 analyses
             analysis_count += 1
@@ -749,46 +957,55 @@ def generate_email_html(analyzed_stocks, price_alerts):
     # Summary intro
     if analyzed_stocks:
         html += """
-        <p><strong>Stocks with ~20%+ drawdown vs ~21 sessions ago, &ge;50% recovery vs 1y trading range (heuristic), US Russell 1000 + large-cap PL/UK/IL/DE watchlists:</strong></p>
+        <p><strong>High-Quality Fallen Angels (Bankruptcy Risk: LOW, Risk Score: &lt;4/10, Upside: &ge;50%):</strong></p>
         <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
             <tr style="background: #34495e; color: white;">
+                <th style="padding: 10px; text-align: left;">Status</th>
                 <th style="padding: 10px; text-align: left;">Ticker & Broker</th>
                 <th style="padding: 10px; text-align: left;">Company</th>
-                <th style="padding: 10px; text-align: right;">Drop</th>
-                <th style="padding: 10px; text-align: right;">Potential Gain</th>
-                <th style="padding: 10px; text-align: right;">Price</th>
+                <th style="padding: 10px; text-align: right;">Current Price</th>
+                <th style="padding: 10px; text-align: right;">Target Price</th>
+                <th style="padding: 10px; text-align: right;">Upside</th>
                 <th style="padding: 10px; text-align: center;">Risk</th>
-                <th style="padding: 10px; text-align: left;">Why It Dropped</th>
             </tr>
         """
         
         for stock in analyzed_stocks:
-            risk_class = "low-risk" if stock['risk_score'] <= 3 else "med-risk" if stock['risk_score'] <= 6 else "high-risk"
+            risk_class = "low-risk"  # All stocks are low risk now (< 4)
+            
+            # Status indicator
+            if stock['at_bottom']:
+                status = "✅ BUY NOW"
+                status_color = "#27ae60"
+                price_note = ""
+            else:
+                status = "⏳ WAIT"
+                status_color = "#f39c12"
+                wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f}"
+                price_note = f"<br/><small>Wait for: {wait_range} {stock['currency']}</small>"
+            
+            # Target price range
+            target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f}"
             
             # Broker line
             broker_line = f"{stock['broker']}"
             if stock['alt_broker']:
                 broker_line += f" {stock['alt_broker']}"
             
-            # Earnings warning
-            earnings_note = ""
-            if stock['earnings_date']:
-                earnings_note = f"<br/>📅 Earnings in {stock['days_to_earnings']} days ({stock['earnings_date']})"
-            
             html += f"""
             <tr class="{risk_class}" style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px; color: {status_color};">
+                    <strong>{status}</strong>{price_note}
+                </td>
                 <td style="padding: 10px;">
                     <strong>{stock['ticker']}</strong>{stock['market']}<br/>
                     <small>{broker_line}</small>
                 </td>
                 <td style="padding: 10px;">{stock['company']}</td>
-                <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{stock['drop_pct']:.1f}%</strong></td>
-                <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.1f}%</strong></td>
                 <td style="padding: 10px; text-align: right;">{stock['current_price']:.2f} {stock['currency']}</td>
+                <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>{target_range}</strong></td>
+                <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.0f}%</strong></td>
                 <td style="padding: 10px; text-align: center;"><strong>{stock['risk_score']}/10</strong></td>
-                <td style="padding: 10px;">
-                    {stock['sentiment_reason']}{earnings_note}
-                </td>
             </tr>
             """
         
@@ -798,15 +1015,26 @@ def generate_email_html(analyzed_stocks, price_alerts):
         html += "<h2>📊 Detailed Analysis</h2>"
         
         for stock in analyzed_stocks:
-            risk_class = "low-risk" if stock['risk_score'] <= 3 else "med-risk" if stock['risk_score'] <= 6 else "high-risk"
+            risk_class = "low-risk"  # All are low risk now
+            
+            # Status
+            if stock['at_bottom']:
+                status_html = '<p style="color: #27ae60; font-size: 18px;"><strong>✅ BUY NOW</strong> - Technical analysis shows stock is at/near bottom</p>'
+            else:
+                wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f} {stock['currency']}"
+                status_html = f'<p style="color: #f39c12; font-size: 18px;"><strong>⏳ WAIT</strong> - Wait for price to reach: <strong>{wait_range}</strong> (±5%)</p>'
+            
+            # Target estimate
+            target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f} {stock['currency']}"
             
             html += f"""
             <div class="stock {risk_class}">
                 <h3>{stock['ticker']}: {stock['company']}</h3>
-                <p><strong>Market:</strong> {stock['market']} | 
-                   <strong>Price:</strong> {stock['current_price']:.2f} {stock['currency']} | 
-                   <strong>Drop:</strong> {stock['drop_pct']:.1f}% | 
-                   <strong>Risk:</strong> {stock['risk_score']}/10</p>
+                {status_html}
+                
+                <p><strong>📍 Current Price:</strong> {stock['current_price']:.2f} {stock['currency']} (Down {stock['drop_pct']:.1f}%)</p>
+                <p><strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
+                <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low)</p>
                 
                 <p><strong>{stock['news_sentiment']}</strong>: {stock['sentiment_reason']}</p>
                 
@@ -832,11 +1060,18 @@ def generate_email_html(analyzed_stocks, price_alerts):
                     else "n/a (financial sector or unreliable data)"
                 )
                 html += f"""
-                <p><strong>💼 Financial Health:</strong><br/>
+                <p><strong>💼 Financial Health (Bankruptcy Risk: LOW):</strong><br/>
                 Cash: ${health['cash']/1e9:.2f}B | 
                 Debt/Equity: {de_txt} | 
                 Current Ratio: {health['current_ratio']:.2f}</p>
                 """
+            
+            # Technical indicators
+            html += f"""
+            <p><strong>📊 Technical Analysis:</strong><br/>
+            Bottom Detection: {stock['bottom_confidence']} confidence | 
+            52-week Low Distance: Check chart for support levels</p>
+            """
             
             # Earnings warning
             if stock['earnings_date']:
