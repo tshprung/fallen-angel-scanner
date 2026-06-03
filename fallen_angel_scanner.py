@@ -400,6 +400,132 @@ def profitability_signals(info):
     return n_neg, hard_exclude
 
 
+def compute_piotroski_score(info, ticker_obj):
+    score = 0
+    checked = 0
+
+    try:
+        fin = ticker_obj.financials
+        bs = ticker_obj.balance_sheet
+    except Exception:
+        fin, bs = None, None
+
+    def get_row(df, *keys):
+        if df is None or df.empty:
+            return None
+        for k in keys:
+            if k in df.index:
+                return df.loc[k]
+        return None
+
+    def val(series, idx):
+        try:
+            v = series.iloc[idx]
+            return float(v) if v is not None and not pd.isna(v) else None
+        except Exception:
+            return None
+
+    ni = info.get('netIncomeToCommon')
+    ta = info.get('totalAssets')
+    ocf = info.get('operatingCashflow')
+
+    # F1: ROA > 0
+    if ni is not None and ta and ta > 0:
+        checked += 1
+        if ni / ta > 0:
+            score += 1
+
+    # F2: OCF > 0
+    if ocf is not None:
+        checked += 1
+        if ocf > 0:
+            score += 1
+
+    # F3: ROA improving YoY
+    ni_row = get_row(fin, 'Net Income', 'Net Income Common Stockholders')
+    ta_row = get_row(bs, 'Total Assets')
+    if ni_row is not None and ta_row is not None:
+        ni0, ni1 = val(ni_row, 0), val(ni_row, 1)
+        ta0, ta1 = val(ta_row, 0), val(ta_row, 1)
+        if all(v is not None and v != 0 for v in [ni0, ni1, ta0, ta1]):
+            checked += 1
+            if ni0 / ta0 > ni1 / ta1:
+                score += 1
+
+    # F4: Accruals — OCF/Assets > ROA
+    if ocf is not None and ta and ta > 0 and ni is not None:
+        checked += 1
+        if (ocf / ta) > (ni / ta):
+            score += 1
+
+    # F5: Long-term leverage decreased YoY
+    ltd_row = get_row(bs, 'Long Term Debt', 'Long-Term Debt')
+    if ltd_row is not None and ta_row is not None:
+        ltd0, ltd1 = val(ltd_row, 0), val(ltd_row, 1)
+        ta0, ta1 = val(ta_row, 0), val(ta_row, 1)
+        if all(v is not None for v in [ltd0, ltd1, ta0, ta1]) and ta0 > 0 and ta1 > 0:
+            checked += 1
+            if ltd0 / ta0 < ltd1 / ta1:
+                score += 1
+
+    # F6: Current ratio improved YoY
+    ca_row = get_row(bs, 'Current Assets')
+    cl_row = get_row(bs, 'Current Liabilities')
+    if ca_row is not None and cl_row is not None:
+        ca0, ca1 = val(ca_row, 0), val(ca_row, 1)
+        cl0, cl1 = val(cl_row, 0), val(cl_row, 1)
+        if all(v is not None for v in [ca0, ca1, cl0, cl1]) and cl0 > 0 and cl1 > 0:
+            checked += 1
+            if ca0 / cl0 > ca1 / cl1:
+                score += 1
+
+    # F7: No new share dilution (allow 2% tolerance)
+    sh_row = get_row(
+        bs,
+        'Ordinary Shares Number',
+        'Share Issued',
+        'Common Stock Shares Outstanding',
+    )
+    if sh_row is not None:
+        sh0, sh1 = val(sh_row, 0), val(sh_row, 1)
+        if sh0 is not None and sh1 is not None:
+            checked += 1
+            if sh0 <= sh1 * 1.02:
+                score += 1
+
+    # F8: Gross margin improved YoY
+    gp_row = get_row(fin, 'Gross Profit')
+    rev_row = get_row(fin, 'Total Revenue')
+    if gp_row is not None and rev_row is not None:
+        gp0, gp1 = val(gp_row, 0), val(gp_row, 1)
+        rv0, rv1 = val(rev_row, 0), val(rev_row, 1)
+        if all(v is not None and v != 0 for v in [gp0, gp1, rv0, rv1]):
+            checked += 1
+            if gp0 / rv0 > gp1 / rv1:
+                score += 1
+
+    # F9: Asset turnover improved YoY
+    if rev_row is not None and ta_row is not None:
+        rv0, rv1 = val(rev_row, 0), val(rev_row, 1)
+        ta0, ta1 = val(ta_row, 0), val(ta_row, 1)
+        if all(v is not None for v in [rv0, rv1, ta0, ta1]) and ta0 > 0 and ta1 > 0:
+            checked += 1
+            if rv0 / ta0 > rv1 / ta1:
+                score += 1
+
+    if checked < 5:
+        return None, checked
+    return score, checked
+
+
+def format_piotroski_for_email(score, checks):
+    """Piotroski display: F:7/9 ⭐ when score >= 7."""
+    if score is None or checks is None:
+        return "F:n/a"
+    star = " ⭐" if score >= 7 else ""
+    return f"F:{score}/{checks}{star}"
+
+
 def narrow_analyzed_results(analyzed, max_results=20):
     """
     If Stage 2 yields more than max_results, apply progressively stricter cuts
@@ -718,6 +844,8 @@ def calculate_risk_score(
     rsi=None,
     profitability_penalty=0,
     is_dropping=False,
+    piotroski=None,
+    market_cap_usd=None,
 ):
     """Calculate risk score 1-10"""
     if not financial_health:
@@ -725,6 +853,25 @@ def calculate_risk_score(
     
     score = 5  # Start neutral
     score += profitability_penalty
+
+    if piotroski is not None:
+        if piotroski >= 7:
+            score -= 2
+        elif piotroski >= 5:
+            score -= 1
+        elif piotroski <= 2:
+            score += 3
+        elif piotroski <= 3:
+            score += 2
+
+    if market_cap_usd is not None and market_cap_usd > 0:
+        cap = float(market_cap_usd)
+        if 1_000_000_000 <= cap <= 8_000_000_000:
+            score -= 1
+        elif cap > 50_000_000_000:
+            score += 1
+        elif cap < 500_000_000:
+            score += 1
     
     # Debt analysis (more nuanced)
     de_ratio = financial_health.get('debt_to_equity', 0)
@@ -1025,6 +1172,23 @@ def stage2_deep_analysis(candidates, memory):
             
             # Financial health
             health = get_financial_health(stock)
+
+            piotroski_score, piotroski_checks = compute_piotroski_score(info, stock)
+            if (
+                piotroski_score is not None
+                and piotroski_score <= 2
+                and piotroski_checks >= 6
+            ):
+                print(
+                    f"  ⏭️  {ticker} excluded: Piotroski F{piotroski_score}/"
+                    f"{piotroski_checks} (value-trap gate)"
+                )
+                continue
+
+            forward_pe = info.get("forwardPE")
+            price_to_book = info.get("priceToBook")
+            short_percent = info.get("shortPercentOfFloat")
+            market_cap_usd = candidate.get("market_cap") or info.get("marketCap") or 0
             
             # BANKRUPTCY RISK CHECK (AUTO-EXCLUDE)
             print(f"  🏥 Checking bankruptcy risk...")
@@ -1086,6 +1250,8 @@ def stage2_deep_analysis(candidates, memory):
                 rsi=rsi_val,
                 profitability_penalty=prof_penalty,
                 is_dropping=is_dropping,
+                piotroski=piotroski_score,
+                market_cap_usd=market_cap_usd,
             )
 
             if risk >= 4:
@@ -1136,7 +1302,13 @@ def stage2_deep_analysis(candidates, memory):
                 'news_headlines': news_headlines[:3],  # Top 3
                 'news_sentiment': news_sentiment,
                 'sentiment_reason': sentiment_reason,
-                'financial_health': health
+                'financial_health': health,
+                'piotroski_score': piotroski_score,
+                'piotroski_checks': piotroski_checks,
+                'forward_pe': forward_pe,
+                'price_to_book': price_to_book,
+                'short_percent': short_percent,
+                'market_cap_usd': market_cap_usd,
             })
             
             status = "BUY NOW" if at_bottom else "WAIT"
@@ -1321,7 +1493,8 @@ def generate_email_html(analyzed_stocks, price_alerts):
                 <p><strong>📍 Current Price:</strong> {price_txt} (Down {drop_detail})</p>
                 <p><strong>RSI:</strong> {format_rsi_for_email(stock.get('rsi'))} | 
                    <strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
-                <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low)</p>
+                <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low) | 
+                   <strong>Piotroski:</strong> {format_piotroski_for_email(stock.get('piotroski_score'), stock.get('piotroski_checks'))}</p>
                 
                 <p><strong>{stock['news_sentiment']}</strong>: {stock['sentiment_reason']}</p>
                 
@@ -1361,6 +1534,32 @@ def generate_email_html(analyzed_stocks, price_alerts):
                 Debt/Equity: {de_txt} | 
                 Current Ratio: {health['current_ratio']:.2f} | 
                 Revenue YoY: {rev_yoy_txt}</p>
+                """
+
+            fpe = stock.get("forward_pe")
+            pb = stock.get("price_to_book")
+            sp = stock.get("short_percent")
+            fpe_txt = (
+                f"{float(fpe):.1f}x"
+                if fpe is not None and np.isfinite(float(fpe))
+                else "n/a"
+            )
+            pb_txt = (
+                f"{float(pb):.1f}x"
+                if pb is not None and np.isfinite(float(pb))
+                else "n/a"
+            )
+            if sp is not None and np.isfinite(float(sp)):
+                short_txt = f"{float(sp) * 100:.1f}%"
+                if float(sp) > 0.15:
+                    short_txt += " 🔥"
+            else:
+                short_txt = "n/a"
+            html += f"""
+                <p><strong>📈 Valuation:</strong><br/>
+                Forward P/E: {fpe_txt} | 
+                P/B: {pb_txt} | 
+                Short float: {short_txt}</p>
                 """
             
             # Technical indicators
