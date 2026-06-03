@@ -73,7 +73,10 @@ SMTP_PORT = 587
 # Scanning criteria
 MIN_DROP_PERCENT = 20  # Minimum drop percentage
 DROP_LOOKBACK_DAYS = 21  # Look for drops over last 21 days
-MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs trailing-year range
+DROP_FROM_52W_HIGH_MIN = 35  # ~35% below peak → ~54% recovery vs 52w high (clears 50% gate)
+MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs 52-week high
+EARNINGS_EXCLUDE_DAYS = 5  # Hard exclude if earnings within this many calendar days
+EARNINGS_NOTE_DAYS_MAX = 21  # Informational earnings note up to this many days
 MAX_CANDIDATES = 20  # Final report size; if more pass Stage 2, tiers tighten until ≤ this
 
 # Risk filters (operating companies only — see debt_filter_applies)
@@ -217,6 +220,57 @@ def format_price_for_email(price, currency_code):
     return f"${price:.2f}"
 
 
+def format_cash_billions_for_email(cash, currency_code):
+    """Format cash balance in billions with correct currency symbol."""
+    if cash is None:
+        return "n/a"
+    try:
+        b = float(cash) / 1e9
+        if not np.isfinite(b):
+            return "n/a"
+    except (TypeError, ValueError):
+        return "n/a"
+    c = (currency_code or "USD").upper()
+    if c == "GBP":
+        return f"£{b:.2f}B"
+    if c == "EUR":
+        return f"€{b:.2f}B"
+    if c == "PLN":
+        return f"{b:.2f}B zł"
+    if c == "ILS":
+        return f"₪{b:.2f}B"
+    return f"${b:.2f}B"
+
+
+def format_rsi_for_email(rsi):
+    """RSI display with color icon: green <35, yellow 35-50, red >50."""
+    if rsi is None or not np.isfinite(float(rsi)):
+        return "n/a"
+    r = float(rsi)
+    if r < 35:
+        icon = "🟢"
+    elif r <= 50:
+        icon = "🟡"
+    else:
+        icon = "🔴"
+    return f"{icon} {r:.1f}"
+
+
+def compute_rsi(closes, period=14):
+    """Wilder-style RSI from close series; None if insufficient data."""
+    if closes is None or len(closes) < period + 1:
+        return None
+    delta = closes.diff()
+    gain = delta.clip(lower=0).rolling(period).mean()
+    loss = -delta.clip(upper=0).rolling(period).mean()
+    rs = gain / loss.replace(0, np.nan)
+    rsi = 100 - (100 / (1 + rs))
+    val = rsi.iloc[-1]
+    if val is None or pd.isna(val) or not np.isfinite(float(val)):
+        return None
+    return float(val)
+
+
 def is_tradeable_equity(info):
     """Skip ETFs/funds and OTC names — focus on listed operating equities."""
     qt = (info.get("quoteType") or "").upper()
@@ -316,15 +370,34 @@ def should_exclude_for_leverage(info):
     return False, None
 
 
+BIOTECH_EXCLUSION_KEYWORDS = (
+    "biotechnology",
+    "pharmaceutical",
+    "drug manufacturer",
+    "clinical stage",
+    "biopharmaceutical",
+)
+
+
 def is_biotechnology_company(info):
     """
-    True if Yahoo classifies the name as biotechnology (GICS-style industry).
-    Excludes classic pharma / medtech unless labeled biotech — user preference.
+    Exclude biotech/pharma/clinical-stage names (not med devices or diagnostics).
     """
     ind = f"{info.get('industry') or ''} {info.get('industryKey') or ''}".lower()
-    if "biotechnology" in ind:
-        return True
-    return False
+    return any(kw in ind for kw in BIOTECH_EXCLUSION_KEYWORDS)
+
+
+def profitability_signals(info):
+    """
+    Count negative profitability flags and whether all three trigger hard exclude.
+    Uses Yahoo defaults when fields are missing (same as gate spec).
+    """
+    neg_gm = info.get("grossMargins", 1) < 0
+    neg_ocf = info.get("operatingCashflow", 1) < 0
+    neg_rg = info.get("revenueGrowth", 0) < -0.10
+    n_neg = sum((neg_gm, neg_ocf, neg_rg))
+    hard_exclude = neg_gm and neg_ocf and neg_rg
+    return n_neg, hard_exclude
 
 
 def narrow_analyzed_results(analyzed, max_results=20):
@@ -447,17 +520,16 @@ def stage1_quick_filter():
             
             current_price = hist["Close"].iloc[-1].item()
             lookback_price = hist["Close"].iloc[-min(DROP_LOOKBACK_DAYS, len(hist))].item()
-            drop_pct = ((current_price - lookback_price) / lookback_price) * 100
-            
-            # Found a candidate!
-            if drop_pct <= -MIN_DROP_PERCENT:
+            drop_21d_pct = ((current_price - lookback_price) / lookback_price) * 100
+
+            if drop_21d_pct <= -MIN_DROP_PERCENT:
                 candidates.append({
-                    'ticker': ticker,
-                    'current_price': current_price,
-                    'drop_pct': drop_pct,
-                    'market_cap': market_cap
+                    "ticker": ticker,
+                    "current_price": current_price,
+                    "drop_21d_pct": drop_21d_pct,
+                    "market_cap": market_cap,
                 })
-                print(f"  ✓ {ticker}: {drop_pct:.1f}%")
+                print(f"  ✓ {ticker}: {drop_21d_pct:.1f}%")
         
         except Exception as e:
             # Record failure for any exception
@@ -486,18 +558,20 @@ def stage1_quick_filter():
 # ============================================================================
 
 def get_earnings_date(ticker):
-    """Check if earnings coming soon"""
+    """Return next earnings date and calendar days until, if within EARNINGS_NOTE_DAYS_MAX."""
     try:
         stock = yf.Ticker(ticker)
         calendar = stock.calendar
-        if calendar is not None and 'Earnings Date' in calendar.index:
-            earnings_date = pd.Timestamp(calendar.loc['Earnings Date'].values[0]).tz_localize(None)
-            days_until = (earnings_date - datetime.now()).days
-            
-            if 0 <= days_until <= 14:
-                return earnings_date.strftime('%Y-%m-%d'), days_until
+        if calendar is not None and "Earnings Date" in calendar.index:
+            earnings_date = pd.Timestamp(
+                calendar.loc["Earnings Date"].values[0]
+            ).tz_localize(None)
+            days_until = (earnings_date.date() - datetime.now().date()).days
+
+            if 0 <= days_until <= EARNINGS_NOTE_DAYS_MAX:
+                return earnings_date.strftime("%Y-%m-%d"), days_until
         return None, None
-    except:
+    except Exception:
         return None, None
 
 def search_recent_news(ticker, company_name):
@@ -604,6 +678,27 @@ def get_financial_health(ticker_obj):
         if de_for_risk > 100:
             de_for_risk = 10.0
 
+        revenue_growth_yoy = None
+        try:
+            fin = ticker_obj.financials
+            if fin is not None and not fin.empty:
+                rev_label = None
+                for label in fin.index:
+                    if str(label).strip().lower() == "total revenue":
+                        rev_label = label
+                        break
+                if rev_label is not None:
+                    rev_series = fin.loc[rev_label].dropna()
+                    if len(rev_series) >= 2:
+                        cols = sorted(rev_series.index, reverse=True)[:2]
+                        newer, older = cols[0], cols[1]
+                        r_new = float(rev_series[newer])
+                        r_old = float(rev_series[older])
+                        if r_old != 0 and np.isfinite(r_new) and np.isfinite(r_old):
+                            revenue_growth_yoy = ((r_new / r_old) - 1) * 100
+        except Exception:
+            pass
+
         return {
             'debt_to_equity': round(de_for_risk, 2),
             'debt_equity_display': de_display,
@@ -611,17 +706,25 @@ def get_financial_health(ticker_obj):
             'cash': cash,
             'revenue': revenue,
             'market_cap': market_cap,
+            'revenue_growth_yoy': revenue_growth_yoy,
         }
     except Exception as e:
         print(f"    ⚠️ Financial data error: {e}")
         return None
 
-def calculate_risk_score(financial_health, news_sentiment):
+def calculate_risk_score(
+    financial_health,
+    news_sentiment,
+    rsi=None,
+    profitability_penalty=0,
+    is_dropping=False,
+):
     """Calculate risk score 1-10"""
     if not financial_health:
         return 7  # Default to medium-high if no data
     
     score = 5  # Start neutral
+    score += profitability_penalty
     
     # Debt analysis (more nuanced)
     de_ratio = financial_health.get('debt_to_equity', 0)
@@ -647,6 +750,24 @@ def calculate_risk_score(financial_health, news_sentiment):
     revenue = financial_health.get('revenue', 0)
     if revenue == 0:
         score += 2  # No revenue = speculative
+
+    rev_yoy = financial_health.get("revenue_growth_yoy")
+    if rev_yoy is not None and np.isfinite(float(rev_yoy)):
+        rev_yoy = float(rev_yoy)
+        if rev_yoy < -15:
+            score += 2
+        elif rev_yoy < 0:
+            score += 1
+        elif rev_yoy > 10:
+            score -= 1
+
+    # RSI (Stage 2)
+    if rsi is not None and np.isfinite(float(rsi)):
+        rsi_f = float(rsi)
+        if rsi_f < 35:
+            score -= 1
+        elif rsi_f > 60 and is_dropping:
+            score += 1
     
     # Cash position
     cash = financial_health.get('cash', 0)
@@ -881,8 +1002,14 @@ def stage2_deep_analysis(candidates, memory):
                 continue
 
             if is_biotechnology_company(info):
-                print(f"  ⏭️  {ticker} excluded: biotechnology (preference)")
+                print(f"  ⏭️  {ticker} excluded: biotech/pharma (preference)")
                 continue
+
+            n_prof, prof_exclude = profitability_signals(info)
+            if prof_exclude:
+                print(f"  ⏭️  {ticker} excluded: profitability gate (3/3 negative)")
+                continue
+            prof_penalty = 2 if n_prof == 2 else 0
             
             excl, lev_reason = should_exclude_for_leverage(info)
             if excl:
@@ -908,30 +1035,80 @@ def stage2_deep_analysis(candidates, memory):
             
             # Earnings calendar
             earnings_date, days_to_earnings = get_earnings_date(ticker)
+            if (
+                days_to_earnings is not None
+                and 0 <= days_to_earnings <= EARNINGS_EXCLUDE_DAYS
+            ):
+                print(
+                    f"  ⏭️  {ticker} excluded: earnings in {days_to_earnings} days "
+                    f"({earnings_date})"
+                )
+                continue
+            earnings_for_email = None
+            days_for_email = None
+            if (
+                days_to_earnings is not None
+                and EARNINGS_EXCLUDE_DAYS < days_to_earnings <= EARNINGS_NOTE_DAYS_MAX
+            ):
+                earnings_for_email = earnings_date
+                days_for_email = days_to_earnings
             
             # News analysis
             print(f"  📰 Searching news...")
             news_headlines = search_recent_news(ticker, company_name)
             news_sentiment, sentiment_reason = analyze_news_sentiment(news_headlines)
-            
-            # Risk score
-            risk = calculate_risk_score(health, news_sentiment)
-            
-            # FILTER: Only show risk < 4 (Low risk only)
+
+            drop_21d = candidate.get("drop_21d_pct")
+            is_dropping = drop_21d is not None and drop_21d < -5
+
+            drop_from_peak_pct = None
+            try:
+                hist_1y = stock.history(period="1y")
+                if hist_1y is not None and len(hist_1y) >= 10:
+                    peak_52w = hist_1y["Close"].max().item()
+                    cp = candidate["current_price"]
+                    if peak_52w and peak_52w > 0:
+                        drop_from_peak_pct = ((cp - peak_52w) / peak_52w) * 100
+            except Exception:
+                pass
+
+            rsi_val = None
+            try:
+                hist_3mo = stock.history(period="3mo")
+                if hist_3mo is not None and len(hist_3mo) >= 15:
+                    rsi_val = compute_rsi(hist_3mo["Close"])
+            except Exception:
+                pass
+
+            risk = calculate_risk_score(
+                health,
+                news_sentiment,
+                rsi=rsi_val,
+                profitability_penalty=prof_penalty,
+                is_dropping=is_dropping,
+            )
+
             if risk >= 4:
                 print(f"  ⏭️  {ticker} excluded: Risk score {risk}/10 (need <4)")
                 continue
-            
-            # TECHNICAL ANALYSIS: Bottom detection
+
             print(f"  📊 Technical analysis...")
-            at_bottom, wait_low, wait_high, bottom_confidence = detect_bottom(stock, candidate['current_price'])
-            
-            # RECOVERY TARGET ESTIMATION
-            target_low, target_high, upside_pct = estimate_recovery_target(stock, info, candidate['current_price'])
-            
-            # Verify upside meets minimum requirement (50%)
-            if upside_pct and upside_pct < MIN_RECOVERY_POTENTIAL_PCT:
-                print(f"  ⏭️  {ticker} excluded: Upside {upside_pct:.0f}% < {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target")
+            at_bottom, wait_low, wait_high, bottom_confidence = detect_bottom(
+                stock, candidate["current_price"]
+            )
+
+            target_low, target_high, upside_pct = estimate_recovery_target(
+                stock, info, candidate["current_price"]
+            )
+
+            if upside_pct is None or not np.isfinite(upside_pct):
+                print(f"  ⏭️  {ticker} excluded: invalid recovery estimate")
+                continue
+            if upside_pct < MIN_RECOVERY_POTENTIAL_PCT:
+                print(
+                    f"  ⏭️  {ticker} excluded: Upside {upside_pct:.0f}% "
+                    f"< {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target"
+                )
                 continue
             
             analyzed.append({
@@ -942,8 +1119,11 @@ def stage2_deep_analysis(candidates, memory):
                 'broker': broker,
                 'alt_broker': alt_broker,
                 'current_price': candidate['current_price'],
-                'drop_pct': candidate['drop_pct'],
-                'recovery_potential': upside_pct if upside_pct else 0,
+                'drop_21d_pct': drop_21d,
+                'drop_from_peak_pct': drop_from_peak_pct,
+                'drop_pct': drop_21d if drop_21d is not None else 0,
+                'rsi': rsi_val,
+                'recovery_potential': upside_pct,
                 'target_low': target_low,
                 'target_high': target_high,
                 'risk_score': risk,
@@ -951,8 +1131,8 @@ def stage2_deep_analysis(candidates, memory):
                 'wait_price_low': wait_low,
                 'wait_price_high': wait_high,
                 'bottom_confidence': bottom_confidence,
-                'earnings_date': earnings_date,
-                'days_to_earnings': days_to_earnings,
+                'earnings_date': earnings_for_email,
+                'days_to_earnings': days_for_email,
                 'news_headlines': news_headlines[:3],  # Top 3
                 'news_sentiment': news_sentiment,
                 'sentiment_reason': sentiment_reason,
@@ -1034,12 +1214,15 @@ def generate_email_html(analyzed_stocks, price_alerts):
         <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
             <tr style="background: #34495e; color: white;">
                 <th style="padding: 10px; text-align: left;">Status</th>
-                <th style="padding: 10px; text-align: left;">Ticker & Broker</th>
-                <th style="padding: 10px; text-align: left;">Company</th>
-                <th style="padding: 10px; text-align: right;">Current Price</th>
-                <th style="padding: 10px; text-align: right;">Target Price</th>
+                <th style="padding: 10px; text-align: left;">Ticker</th>
+                <th style="padding: 10px; text-align: right;">Drop 21d</th>
+                <th style="padding: 10px; text-align: right;">Drop Peak</th>
+                <th style="padding: 10px; text-align: center;">RSI</th>
+                <th style="padding: 10px; text-align: right;">Target</th>
                 <th style="padding: 10px; text-align: right;">Upside</th>
                 <th style="padding: 10px; text-align: center;">Risk</th>
+                <th style="padding: 10px; text-align: left;">Sentiment</th>
+                <th style="padding: 10px; text-align: left;">Earnings</th>
             </tr>
         """
         
@@ -1060,10 +1243,24 @@ def generate_email_html(analyzed_stocks, price_alerts):
             # Target price range
             target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f}"
             
-            # Broker line
             broker_line = f"{stock['broker']}"
             if stock['alt_broker']:
                 broker_line += f" {stock['alt_broker']}"
+
+            d21 = stock.get("drop_21d_pct")
+            dpeak = stock.get("drop_from_peak_pct")
+            drop_21d_txt = f"{d21:.1f}%" if d21 is not None and np.isfinite(d21) else "n/a"
+            drop_peak_txt = (
+                f"{dpeak:.1f}%" if dpeak is not None and np.isfinite(dpeak) else "n/a"
+            )
+            rsi_txt = format_rsi_for_email(stock.get("rsi"))
+
+            if stock.get("earnings_date"):
+                earnings_cell = (
+                    f"📅 {stock['days_to_earnings']}d ({stock['earnings_date']})"
+                )
+            else:
+                earnings_cell = "—"
             
             html += f"""
             <tr class="{risk_class}" style="border-bottom: 1px solid #ddd;">
@@ -1071,14 +1268,17 @@ def generate_email_html(analyzed_stocks, price_alerts):
                     <strong>{status}</strong>{price_note}
                 </td>
                 <td style="padding: 10px;">
-                    <strong>{stock['ticker']}</strong>{stock['market']}<br/>
+                    <strong>{stock['ticker']}</strong> {stock['market']}<br/>
                     <small>{broker_line}</small>
                 </td>
-                <td style="padding: 10px;">{stock['company']}</td>
-                <td style="padding: 10px; text-align: right;">{stock['current_price']:.2f} {stock['currency']}</td>
+                <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_21d_txt}</strong></td>
+                <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_peak_txt}</strong></td>
+                <td style="padding: 10px; text-align: center;">{rsi_txt}</td>
                 <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>{target_range}</strong></td>
                 <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.0f}%</strong></td>
                 <td style="padding: 10px; text-align: center;"><strong>{stock['risk_score']}/10</strong></td>
+                <td style="padding: 10px;">{stock['sentiment_reason']}</td>
+                <td style="padding: 10px;">{earnings_cell}</td>
             </tr>
             """
         
@@ -1100,13 +1300,27 @@ def generate_email_html(analyzed_stocks, price_alerts):
             # Target estimate
             target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f} {stock['currency']}"
             
+            price_txt = format_price_for_email(
+                stock["current_price"], stock.get("currency")
+            )
+            d21d = stock.get("drop_21d_pct")
+            dpk = stock.get("drop_from_peak_pct")
+            drop_detail = (
+                f"21d {d21d:.1f}%"
+                if d21d is not None and np.isfinite(d21d)
+                else "21d n/a"
+            )
+            if dpk is not None and np.isfinite(dpk):
+                drop_detail += f" | peak {dpk:.1f}%"
+
             html += f"""
             <div class="stock {risk_class}">
                 <h3>{stock['ticker']}: {stock['company']}</h3>
                 {status_html}
                 
-                <p><strong>📍 Current Price:</strong> {stock['current_price']:.2f} {stock['currency']} (Down {stock['drop_pct']:.1f}%)</p>
-                <p><strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
+                <p><strong>📍 Current Price:</strong> {price_txt} (Down {drop_detail})</p>
+                <p><strong>RSI:</strong> {format_rsi_for_email(stock.get('rsi'))} | 
+                   <strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
                 <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low)</p>
                 
                 <p><strong>{stock['news_sentiment']}</strong>: {stock['sentiment_reason']}</p>
@@ -1132,11 +1346,21 @@ def generate_email_html(analyzed_stocks, price_alerts):
                     if health.get('debt_equity_display') is not None
                     else "n/a (financial sector or unreliable data)"
                 )
+                cash_txt = format_cash_billions_for_email(
+                    health.get("cash"), stock.get("currency")
+                )
+                rev_yoy = health.get("revenue_growth_yoy")
+                rev_yoy_txt = (
+                    f"{rev_yoy:.1f}%"
+                    if rev_yoy is not None and np.isfinite(float(rev_yoy))
+                    else "n/a"
+                )
                 html += f"""
                 <p><strong>💼 Financial Health (Bankruptcy Risk: LOW):</strong><br/>
-                Cash: ${health['cash']/1e9:.2f}B | 
+                Cash: {cash_txt} | 
                 Debt/Equity: {de_txt} | 
-                Current Ratio: {health['current_ratio']:.2f}</p>
+                Current Ratio: {health['current_ratio']:.2f} | 
+                Revenue YoY: {rev_yoy_txt}</p>
                 """
             
             # Technical indicators
