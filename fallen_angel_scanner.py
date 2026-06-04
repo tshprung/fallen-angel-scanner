@@ -82,6 +82,7 @@ MAX_CANDIDATES = 20  # Final report size; if more pass Stage 2, tiers tighten un
 # Risk filters (operating companies only — see debt_filter_applies)
 MAX_DEBT_TO_EQUITY = 2.5  # When Yahoo D/E is trustworthy, exclude above this
 DEBT_RATIO_TRUST_MAX = 50.0  # Values above this are usually bad Yahoo data — skip exclusion
+NET_DEBT_TO_MCAP_MAX = 1.0  # net debt > 1x market cap = equity stub
 
 # Memory/tracking
 MEMORY_FILE = "scanner_memory.json"
@@ -367,6 +368,19 @@ def should_exclude_for_leverage(info):
         return False, None
     if de > MAX_DEBT_TO_EQUITY:
         return True, f"High debt (D/E: {de:.2f})"
+
+    # Equity stub gate: net debt exceeds market cap
+    market_cap = info.get("marketCap", 0) or 0
+    total_cash_for_stub = info.get("totalCash", 0) or 0
+    net_debt_for_stub = total_debt - total_cash_for_stub
+    if (
+        market_cap > 0
+        and net_debt_for_stub > 0
+        and (net_debt_for_stub / market_cap) >= NET_DEBT_TO_MCAP_MAX
+    ):
+        ratio = net_debt_for_stub / market_cap
+        return True, f"Equity stub: net debt {ratio:.1f}x market cap"
+
     return False, None
 
 
@@ -801,6 +815,13 @@ def get_financial_health(ticker_obj):
         revenue = info.get('totalRevenue', 0) or 0
         market_cap = info.get('marketCap', 0) or 0
 
+        total_debt = info.get('totalDebt', 0) or 0
+        ebitda = info.get('ebitda')
+        net_debt = total_debt - cash
+        debt_ebitda = None
+        if ebitda and np.isfinite(float(ebitda)) and float(ebitda) > 0:
+            debt_ebitda = round(total_debt / float(ebitda), 2)
+
         if de_for_risk > 100:
             de_for_risk = 10.0
 
@@ -833,6 +854,9 @@ def get_financial_health(ticker_obj):
             'revenue': revenue,
             'market_cap': market_cap,
             'revenue_growth_yoy': revenue_growth_yoy,
+            'total_debt': total_debt,
+            'net_debt': net_debt,
+            'debt_ebitda': debt_ebitda,
         }
     except Exception as e:
         print(f"    ⚠️ Financial data error: {e}")
@@ -846,6 +870,7 @@ def calculate_risk_score(
     is_dropping=False,
     piotroski=None,
     market_cap_usd=None,
+    debt_ebitda=None,
 ):
     """Calculate risk score 1-10"""
     if not financial_health:
@@ -883,6 +908,14 @@ def calculate_risk_score(
         score += 3  # High leverage = risky
     elif de_ratio > 1.0:
         score += 1  # Elevated debt
+
+    # Debt/EBITDA — catches high leverage even when D/E looks acceptable
+    if debt_ebitda is not None and np.isfinite(float(debt_ebitda)):
+        deb = float(debt_ebitda)
+        if deb > 5:
+            score += 2
+        elif deb > 3:
+            score += 1
     
     # Liquidity (more forgiving)
     cr = financial_health.get('current_ratio', 0)
@@ -1252,6 +1285,7 @@ def stage2_deep_analysis(candidates, memory):
                 is_dropping=is_dropping,
                 piotroski=piotroski_score,
                 market_cap_usd=market_cap_usd,
+                debt_ebitda=health.get("debt_ebitda") if health else None,
             )
 
             if risk >= 4:
@@ -1528,10 +1562,26 @@ def generate_email_html(analyzed_stocks, price_alerts):
                     if rev_yoy is not None and np.isfinite(float(rev_yoy))
                     else "n/a"
                 )
+                net_debt = health.get("net_debt")
+                debt_ebitda = health.get("debt_ebitda")
+                net_debt_txt = (
+                    f"${net_debt / 1e9:.1f}B" if net_debt is not None else "n/a"
+                )
+                debt_ebitda_txt = (
+                    f"{debt_ebitda:.1f}x" if debt_ebitda is not None else "n/a"
+                )
+                stub_flag = (
+                    " ⚠️ EQUITY STUB"
+                    if net_debt
+                    and health.get("market_cap")
+                    and net_debt > health["market_cap"]
+                    else ""
+                )
                 html += f"""
                 <p><strong>💼 Financial Health (Bankruptcy Risk: LOW):</strong><br/>
                 Cash: {cash_txt} | 
                 Debt/Equity: {de_txt} | 
+                Net debt: {net_debt_txt} | Debt/EBITDA: {debt_ebitda_txt}{stub_flag}<br/>
                 Current Ratio: {health['current_ratio']:.2f} | 
                 Revenue YoY: {rev_yoy_txt}</p>
                 """
