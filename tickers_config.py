@@ -1,6 +1,6 @@
 """
 Ticker Configuration File
-Last updated: January 2026
+Last updated: July 2026
 
 This file contains all stock ticker lists for the fallen angel scanner.
 Update this file when indices rebalance (quarterly for S&P 500, annually for NASDAQ-100 in December).
@@ -54,7 +54,13 @@ def get_fallen_angel_candidates():
         # Recently removed from S&P 500 (2025)
         'ENPH',  # Enphase Energy - removed Sept 2025
         'CZR',   # Caesars Entertainment
-        'MKTX',  # MarketAxess Holdings
+        
+        'ADSK',  # Autodesk - down 42% from peak, near 52-week low
+        'TEAM',  # Atlassian - down 64% from peak, near 52-week low
+        'ADBE',  # Adobe - down 50% from peak, at 52-week low
+        'LDOS',  # Leidos - down 49% from peak, defense IT
+        'WDAY',  # Workday - down 51% from peak, near 52-week low
+        'CRM',   # Salesforce - down 43% from peak, near 52-week low
         
         # Known underperformers / volatile stocks
         'ZS',    # Zscaler
@@ -187,9 +193,7 @@ def get_nasdaq100_tickers():
         'MDB', 'ILMN', 'ALGN', 'ARM', 'RIVN', 'LCID',
         
         # Added December 2025
-        'ALNY',  # Alnylam Pharmaceuticals
         'FER',   # Ferrovial
-        'INSM',  # Insmed
         'MPWR',  # Monolithic Power Systems
         'STX',   # Seagate Technology (up 200%+ in 2025)
         'WDC',   # Western Digital (up 238% in 2025)
@@ -239,7 +243,7 @@ def get_wse_tickers():
         
         # Small-cap
         '11B.WA',   # 11 bit studios
-        'ATT.WA',   # Atende
+        'ATT.WA',   # Grupa Azoty (fertilizers, chemicals)
         'CIG.WA',   # Cigames
         'EUR.WA',   # Eurocash
         'ING.WA',   # ING Bank Śląski
