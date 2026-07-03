@@ -173,7 +173,21 @@ def check_price_alerts(memory):
             stock = yf.Ticker(ticker)
             current_price = stock.history(period="1d")["Close"].iloc[-1].item()
             original_price = data["price"]
-            
+            stored_date = data.get("date")
+
+            # Adjust for splits that occurred after the stored date
+            try:
+                splits = stock.splits
+                if stored_date and splits is not None and not splits.empty:
+                    split_cutoff = pd.Timestamp(stored_date).tz_localize("UTC")
+                    splits.index = splits.index.tz_convert("UTC")
+                    recent_splits = splits[splits.index > split_cutoff]
+                    if not recent_splits.empty:
+                        cumulative_ratio = recent_splits.prod().item()
+                        original_price = original_price / cumulative_ratio
+            except Exception:
+                pass
+
             drop_since_alert = (current_price / original_price - 1)
             
             if drop_since_alert <= -PRICE_ALERT_THRESHOLD:
@@ -698,18 +712,28 @@ def stage1_quick_filter():
 # ============================================================================
 
 def get_earnings_date(ticker):
-    """Return next earnings date and calendar days until, if within EARNINGS_NOTE_DAYS_MAX."""
     try:
         stock = yf.Ticker(ticker)
         calendar = stock.calendar
-        if calendar is not None and "Earnings Date" in calendar.index:
-            earnings_date = pd.Timestamp(
-                calendar.loc["Earnings Date"].values[0]
-            ).tz_localize(None)
-            days_until = (earnings_date.date() - datetime.now().date()).days
+        if calendar is None:
+            return None, None
 
-            if 0 <= days_until <= EARNINGS_NOTE_DAYS_MAX:
-                return earnings_date.strftime("%Y-%m-%d"), days_until
+        # yfinance 0.2.x returns a dict; older versions return a DataFrame
+        if isinstance(calendar, dict):
+            dates = calendar.get("Earnings Date")
+            if not dates:
+                return None, None
+            earnings_ts = pd.Timestamp(dates[0] if isinstance(dates, list) else dates)
+        else:
+            if "Earnings Date" not in calendar.index:
+                return None, None
+            earnings_ts = pd.Timestamp(calendar.loc["Earnings Date"].values[0])
+
+        earnings_ts = earnings_ts.tz_localize(None) if earnings_ts.tzinfo else earnings_ts
+        days_until = (earnings_ts.date() - datetime.now().date()).days
+
+        if 0 <= days_until <= EARNINGS_NOTE_DAYS_MAX:
+            return earnings_ts.strftime("%Y-%m-%d"), days_until
         return None, None
     except Exception:
         return None, None
@@ -1033,29 +1057,29 @@ def detect_bottom(stock, current_price):
         loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
         rs = gain / loss
         rsi = 100 - (100 / (1 + rs))
-        current_rsi = rsi.iloc[-1]
+        current_rsi = float(rsi.iloc[-1].item())
         
         # 2. 52-week low
-        week_52_low = close.min()
+        week_52_low = close.min().item()
         distance_from_low = ((current_price - week_52_low) / week_52_low) * 100
         
         # 3. Bollinger Bands (20-day)
         sma_20 = close.rolling(window=20).mean()
         std_20 = close.rolling(window=20).std()
         lower_band = sma_20 - (2 * std_20)
-        current_lower_band = lower_band.iloc[-1]
+        current_lower_band = lower_band.iloc[-1].item()
         
         # 4. Volume trend (selling exhaustion?)
         volume = hist['Volume']
         avg_volume_20 = volume.rolling(window=20).mean()
         recent_volume = volume.iloc[-5:].mean()  # Last 5 days
-        volume_declining = recent_volume < avg_volume_20.iloc[-1] * 0.8
+        volume_declining = recent_volume.item() < avg_volume_20.iloc[-1].item() * 0.8
         
         # 5. Find support levels (previous lows in last year)
         support_levels = []
         for i in range(10, len(close) - 10):
-            if close.iloc[i] == close.iloc[i-10:i+10].min():
-                support_levels.append(close.iloc[i])
+            if close.iloc[i].item() == close.iloc[i-10:i+10].min().item():
+                support_levels.append(close.iloc[i].item())
         
         nearest_support = None
         if support_levels:
@@ -1129,7 +1153,7 @@ def estimate_recovery_target(stock, info, current_price):
         
         # Method 3: Technical resistance (1-year high at 80th percentile)
         hist_1y = stock.history(period="1y")
-        resistance = hist_1y['Close'].quantile(0.80) if len(hist_1y) > 0 else 0
+        resistance = hist_1y['Close'].quantile(0.80).item() if len(hist_1y) > 0 else 0.0
         
         # Combine methods (use available data)
         targets = []
