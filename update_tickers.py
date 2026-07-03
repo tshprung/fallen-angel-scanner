@@ -230,11 +230,26 @@ def check_nasdaq100_validity():
         logger.info("✅ All NASDAQ-100 tickers are valid!")
         return []
 
+def check_russell1000_fetch():
+    """Verify Russell 1000 Wikipedia fetch returns a full universe."""
+    from tickers_config import fetch_russell_1000_tickers
+    logger.info("\n" + "="*80)
+    logger.info("RUSSELL 1000 FETCH CHECK")
+    logger.info("="*80)
+    tickers = fetch_russell_1000_tickers()
+    count = len(tickers)
+    if count >= 500:
+        logger.info(f"✅ Russell 1000 fetch OK: {count} tickers")
+        return True
+    else:
+        logger.warning(f"❌ Russell 1000 fetch returned only {count} tickers (need ≥500) — scanner will use S&P 500 fallback")
+        return False
+
 # ============================================================================
 # GENERATE UPDATE REPORT
 # ============================================================================
 
-def generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid):
+def generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid, russell_ok, wse_invalid, ftse_invalid, tase_invalid, dax_invalid):
     """Generate comprehensive update report"""
     
     report = []
@@ -242,6 +257,13 @@ def generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid)
     report.append("TICKER LIST UPDATE REPORT")
     report.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     report.append("="*80)
+    
+    # Russell 1000 Fetch
+    report.append("\n## 🗂️ Russell 1000 Fetch")
+    if russell_ok:
+        report.append("✅ Fetch OK — full universe available")
+    else:
+        report.append("❌ Fetch returned < 500 tickers — scanner using fallback S&P 500 list")
     
     # S&P 500 Changes
     report.append("\n## 📊 S&P 500 Status")
@@ -298,11 +320,31 @@ def generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid)
             report.append(f"  - {item['ticker']} ({item['reason']})")
     else:
         report.append("✅ All tickers are valid")
+
+    # International Tickers Validation Sections
+    for name, invalid_list in [
+        ("🇵🇱 WSE (Poland)", wse_invalid),
+        ("🇬🇧 FTSE 100 (UK)", ftse_invalid),
+        ("🇮🇱 TASE (Israel)", tase_invalid),
+        ("🇩🇪 DAX (Germany)", dax_invalid),
+    ]:
+        report.append(f"\n## {name}")
+        if invalid_list:
+            report.append(f"❌ Found {len(invalid_list)} invalid tickers - REMOVE THESE:")
+            for item in invalid_list:
+                report.append(f"  - {item['ticker']} ({item['reason']})")
+        else:
+            report.append("✅ All tickers are valid")
     
     # Action Items
     report.append("\n## 🎯 ACTION ITEMS")
     action_needed = False
     
+    if not russell_ok:
+        report.append("\n0. Fix Russell 1000 Fetch:")
+        report.append("   - Verify Wikipedia connection or parser elements for Russell 1000 tickers")
+        action_needed = True
+
     if sp500_changes and not sp500_changes['up_to_date']:
         report.append("\n1. Update S&P 500 list:")
         report.append("   - Wikipedia auto-fetches, but you may want to verify additions/removals")
@@ -320,6 +362,11 @@ def generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid)
         report.append("   - Check https://www.nasdaq.com/solutions/nasdaq-100 for replacements")
         action_needed = True
     
+    if wse_invalid or ftse_invalid or tase_invalid or dax_invalid:
+        report.append("\n4. Update International Ticker Lists in tickers_config.py:")
+        report.append("   - Review and remove invalid symbols listed under international sections above")
+        action_needed = True
+
     if not action_needed:
         report.append("\n✅ No action needed - all lists are up to date!")
     
@@ -338,6 +385,9 @@ def main():
     logger.info("🔄 AUTOMATED TICKER LIST UPDATE CHECK")
     logger.info("="*80)
     
+    # 0. Check Russell 1000
+    russell_ok = check_russell1000_fetch()
+
     # 1. Check S&P 500
     sp500_changes = compare_sp500_lists()
     
@@ -347,8 +397,24 @@ def main():
     # 3. Spot check NASDAQ-100
     nasdaq_invalid = check_nasdaq100_validity()
     
+    # 3.5 Check International Tickers
+    from tickers_config import get_wse_tickers, get_ftse100_tickers, get_tase_tickers, get_dax_tickers
+    wse_invalid    = check_tickers_validity(get_wse_tickers(),    "WSE (Poland)")
+    ftse_invalid   = check_tickers_validity(get_ftse100_tickers(), "FTSE 100 (UK)")
+    tase_invalid   = check_tickers_validity(get_tase_tickers(),   "TASE (Israel)")
+    dax_invalid    = check_tickers_validity(get_dax_tickers(),    "DAX (Germany)")
+
     # 4. Generate report
-    report = generate_update_report(sp500_changes, fallen_angels_invalid, nasdaq_invalid)
+    report = generate_update_report(
+        sp500_changes, 
+        fallen_angels_invalid, 
+        nasdaq_invalid, 
+        russell_ok, 
+        wse_invalid, 
+        ftse_invalid, 
+        tase_invalid, 
+        dax_invalid
+    )
     
     # 5. Log and save report
     logger.info(report)
@@ -362,11 +428,17 @@ def main():
     
     # 6. Determine if action needed
     action_needed = (
-        (sp500_changes and not sp500_changes['up_to_date']) or
-        fallen_angels_invalid or
-        nasdaq_invalid
+        (sp500_changes is None or not sp500_changes.get('up_to_date', False)) or
+        bool(fallen_angels_invalid) or
+        bool(nasdaq_invalid) or
+        bool(wse_invalid) or 
+        bool(ftse_invalid) or
+        bool(tase_invalid) or 
+        bool(dax_invalid)
     )
     
+    action_needed = (not russell_ok) or action_needed
+
     if action_needed:
         logger.warning("\n⚠️  ACTION REQUIRED: Please review the report and update tickers_config.py")
         return 1  # Exit code 1 = action needed
