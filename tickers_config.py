@@ -83,6 +83,7 @@ def fetch_russell_1000_tickers():
         import pandas as pd
         import requests
         from io import StringIO
+        import re
 
         url = "https://en.wikipedia.org/wiki/Russell_1000_Index"
         headers = {
@@ -93,7 +94,16 @@ def fetch_russell_1000_tickers():
         tables = pd.read_html(StringIO(response.text))
         for table in tables:
             if "Symbol" in table.columns:
-                return table["Symbol"].astype(str).str.strip().tolist()
+                tickers = table["Symbol"].astype(str).str.strip().tolist()
+                
+                def _normalize_ticker(t: str) -> str:
+                    # Wikipedia uses dot notation for share classes (CWEN.A, BRK.B)
+                    # Yahoo Finance requires hyphen notation (CWEN-A, BRK-B)
+                    # Only match single capital letter A/B/C at end — not exchange suffixes like .DE/.WA
+                    return re.sub(r'\.([ABC])$', r'-\1', t)
+                
+                tickers = [_normalize_ticker(t) for t in tickers]
+                return tickers
         return []
     except Exception:
         return []
@@ -232,7 +242,6 @@ def get_wse_tickers():
         
         # Mid-cap
         'JSW.WA',   # JSW (coal)
-        'CCC.WA',   # CCC (shoes)
         'CPS.WA',   # Cyfrowy Polsat
         'OPL.WA',   # Orange Polska
         'MBK.WA',   # mBank
