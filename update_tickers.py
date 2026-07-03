@@ -420,7 +420,7 @@ def main():
     logger.info(report)
     
     # Save report to file
-    report_filename = f"ticker_update_report_{datetime.now().strftime('%Y%m%d')}.txt"
+    report_filename = "ticker_update_report.txt"
     with open(report_filename, 'w') as f:
         f.write(report)
     
