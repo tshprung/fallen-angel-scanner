@@ -249,7 +249,7 @@ def get_wse_tickers():
         'BDX.WA',   # Budimex
         'KTY.WA',   # Kęty
         'ASB.WA',   # Asseco Business Solutions
-        'MDVP.WA',  # Modivo SA (footwear, formerly CCC SA — renamed Feb 2026)
+        'MDV.WA',  # Modivo SA (footwear, formerly CCC SA — renamed Feb 2026)
 
         # Small-cap
         '11B.WA',   # 11 bit studios
