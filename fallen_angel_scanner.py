@@ -77,6 +77,13 @@ DROP_FROM_52W_HIGH_MIN = 35  # ~35% below peak → ~54% recovery vs 52w high (cl
 MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs 52-week high
 EARNINGS_EXCLUDE_DAYS = 5  # Hard exclude if earnings within this many calendar days
 EARNINGS_NOTE_DAYS_MAX = 21  # Informational earnings note up to this many days
+
+# Price shape criteria (sudden-drop fallen angel vs gradual multi-quarter decliner)
+SHAPE_MIN_STABLE_YEARS = 2  # Min years of pre-drop history required to judge shape
+SHAPE_RECENT_WINDOW_DAYS = 126  # ~6 trading months treated as the "recent drop" window
+SHAPE_GRADUAL_DECLINE_DRIFT_PCT = -25  # Stable-period drift below this = already bleeding for years (TTD-pattern) -> hard exclude
+SHAPE_SUDDEN_DROP_MIN_PCT = -25  # Min drop from stable-period high to current price to call it "sudden"
+SHAPE_MAX_STABLE_RANGE_PCT = 60  # Stable-period high/low range above this = too choppy to call "stable"
 MAX_CANDIDATES = 20  # Final report size; if more pass Stage 2, tiers tighten until ≤ this
 
 # Risk filters (operating companies only — see debt_filter_applies)
@@ -552,6 +559,23 @@ def format_piotroski_for_email(score, checks):
         return "F:n/a"
     star = " ⭐" if score >= 7 else ""
     return f"F:{score}/{checks}{star}"
+
+
+def format_shape_for_email(price_shape, stable_years, recent_drop_pct):
+    """Price shape display: sudden drop vs choppy vs limited history."""
+    if price_shape == "sudden_drop":
+        years_txt = f"{stable_years:.1f}y" if stable_years is not None else "?"
+        drop_txt = (
+            f"{recent_drop_pct:.0f}%"
+            if recent_drop_pct is not None and np.isfinite(recent_drop_pct)
+            else "?"
+        )
+        return f"🎯 Sudden drop (stable {years_txt}, then {drop_txt})"
+    elif price_shape == "choppy":
+        return "〰️ Mixed/choppy"
+    elif price_shape == "insufficient_data":
+        return "❓ Limited history"
+    return "—"
 
 
 def narrow_analyzed_results(analyzed, max_results=20):
@@ -1126,6 +1150,84 @@ def detect_bottom(stock, current_price):
         print(f"    ⚠️ Technical analysis error: {e}")
         return False, None, None, "Error"
 
+def analyze_price_shape(stock, current_price):
+    """
+    Classify the shape of a stock's price history to distinguish sudden-drop
+    fallen angels (e.g. ACN: stable for years, dropped this year on a single
+    catalyst) from gradual multi-quarter decliners (e.g. TTD: eroding steadily
+    over many quarters, no single break).
+
+    Splits history into a "stable period" (everything except the last
+    SHAPE_RECENT_WINDOW_DAYS) and a "recent period" (the last window), then
+    checks whether the stable period was actually stable (flat-to-up, low
+    volatility) before a sharp recent break.
+
+    Returns dict:
+        shape: "sudden_drop" | "gradual_decline" | "choppy" | "insufficient_data"
+        stable_years: float or None
+        stable_drift_pct: float or None  (long-term trend during stable years)
+        stable_range_pct: float or None  (high/low volatility during stable years)
+        recent_drop_pct: float or None   (drop from stable-period high to current price)
+    """
+    empty_result = {
+        "shape": "insufficient_data",
+        "stable_years": None,
+        "stable_drift_pct": None,
+        "stable_range_pct": None,
+        "recent_drop_pct": None,
+    }
+    try:
+        hist = stock.history(period="5y")
+        min_days_needed = int(SHAPE_MIN_STABLE_YEARS * 252) + SHAPE_RECENT_WINDOW_DAYS
+
+        if hist is None or len(hist) < min_days_needed:
+            return empty_result
+
+        close = hist["Close"]
+        stable = close.iloc[:-SHAPE_RECENT_WINDOW_DAYS]
+
+        if len(stable) < int(SHAPE_MIN_STABLE_YEARS * 252):
+            return empty_result
+
+        stable_start = stable.iloc[:21].mean().item()
+        stable_end = stable.iloc[-21:].mean().item()
+        stable_high = stable.max().item()
+        stable_low = stable.min().item()
+        stable_years = len(stable) / 252
+
+        if stable_start <= 0 or stable_high <= 0:
+            result = dict(empty_result)
+            result["stable_years"] = stable_years
+            return result
+
+        stable_drift_pct = ((stable_end - stable_start) / stable_start) * 100
+        stable_range_pct = ((stable_high - stable_low) / stable_high) * 100
+        recent_drop_pct = ((current_price - stable_high) / stable_high) * 100
+
+        if stable_drift_pct <= SHAPE_GRADUAL_DECLINE_DRIFT_PCT:
+            # Already bleeding for years before the "recent" window even
+            # starts -> TTD-pattern, not a fallen angel.
+            shape = "gradual_decline"
+        elif (
+            stable_range_pct <= SHAPE_MAX_STABLE_RANGE_PCT
+            and recent_drop_pct <= SHAPE_SUDDEN_DROP_MIN_PCT
+        ):
+            shape = "sudden_drop"
+        else:
+            shape = "choppy"
+
+        return {
+            "shape": shape,
+            "stable_years": stable_years,
+            "stable_drift_pct": stable_drift_pct,
+            "stable_range_pct": stable_range_pct,
+            "recent_drop_pct": recent_drop_pct,
+        }
+
+    except Exception as e:
+        print(f"    ⚠️ Shape analysis error: {e}")
+        return empty_result
+
 def estimate_recovery_target(stock, info, current_price):
     """
     Estimate realistic recovery price target.
@@ -1218,6 +1320,17 @@ def stage2_deep_analysis(candidates, memory):
             excl, lev_reason = should_exclude_for_leverage(info)
             if excl:
                 print(f"  ⏭️  {ticker} excluded: {lev_reason}")
+                continue
+
+            # PRICE SHAPE CHECK (sudden drop vs gradual multi-quarter decline)
+            print(f"  📐 Checking price shape...")
+            shape_info = analyze_price_shape(stock, candidate["current_price"])
+            if shape_info["shape"] == "gradual_decline":
+                print(
+                    f"  ⏭️  {ticker} excluded: gradual decline shape "
+                    f"(stable-period drift {shape_info['stable_drift_pct']:.0f}% "
+                    f"over {shape_info['stable_years']:.1f}y — TTD-pattern, not a fallen angel)"
+                )
                 continue
             
             # Company name
@@ -1367,6 +1480,9 @@ def stage2_deep_analysis(candidates, memory):
                 'price_to_book': price_to_book,
                 'short_percent': short_percent,
                 'market_cap_usd': market_cap_usd,
+                'price_shape': shape_info['shape'],
+                'shape_stable_years': shape_info['stable_years'],
+                'shape_recent_drop_pct': shape_info['recent_drop_pct'],
             })
             
             status = "BUY NOW" if at_bottom else "WAIT"
@@ -1448,6 +1564,7 @@ def generate_email_html(analyzed_stocks, price_alerts):
                 <th style="padding: 10px; text-align: right;">Drop 21d</th>
                 <th style="padding: 10px; text-align: right;">Drop Peak</th>
                 <th style="padding: 10px; text-align: center;">RSI</th>
+                <th style="padding: 10px; text-align: left;">Shape</th>
                 <th style="padding: 10px; text-align: right;">Target</th>
                 <th style="padding: 10px; text-align: right;">Upside</th>
                 <th style="padding: 10px; text-align: center;">Risk</th>
@@ -1484,6 +1601,11 @@ def generate_email_html(analyzed_stocks, price_alerts):
                 f"{dpeak:.1f}%" if dpeak is not None and np.isfinite(dpeak) else "n/a"
             )
             rsi_txt = format_rsi_for_email(stock.get("rsi"))
+            shape_txt = format_shape_for_email(
+                stock.get("price_shape"),
+                stock.get("shape_stable_years"),
+                stock.get("shape_recent_drop_pct"),
+            )
 
             if stock.get("earnings_date"):
                 earnings_cell = (
@@ -1504,6 +1626,7 @@ def generate_email_html(analyzed_stocks, price_alerts):
                 <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_21d_txt}</strong></td>
                 <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_peak_txt}</strong></td>
                 <td style="padding: 10px; text-align: center;">{rsi_txt}</td>
+                <td style="padding: 10px; font-size: 12px;">{shape_txt}</td>
                 <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>{target_range}</strong></td>
                 <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.0f}%</strong></td>
                 <td style="padding: 10px; text-align: center;"><strong>{stock['risk_score']}/10</strong></td>
@@ -1553,6 +1676,7 @@ def generate_email_html(analyzed_stocks, price_alerts):
                    <strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
                 <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low) | 
                    <strong>Piotroski:</strong> {format_piotroski_for_email(stock.get('piotroski_score'), stock.get('piotroski_checks'))}</p>
+                <p><strong>📐 Shape:</strong> {format_shape_for_email(stock.get('price_shape'), stock.get('shape_stable_years'), stock.get('shape_recent_drop_pct'))}</p>
                 
                 <p><strong>{stock['news_sentiment']}</strong>: {stock['sentiment_reason']}</p>
                 
