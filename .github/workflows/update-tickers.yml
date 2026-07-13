@@ -44,7 +44,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const reportFiles = fs.readdirSync('.').filter(f => f.startsWith('ticker_update_report_'));
+            const reportFiles = fs.readdirSync('.').filter(f => f.startsWith('ticker_update_report'));
             const reportContent = fs.readFileSync(reportFiles[0], 'utf8');
             
             github.rest.issues.create({
