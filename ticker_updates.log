@@ -1509,3 +1509,100 @@ Generated: 2026-07-06 12:53:25
 📄 Report saved to: ticker_update_report.txt
 2026-07-06 12:53:25,751 - INFO - 
 ✅ ALL CLEAR: No updates needed!
+2026-07-13 12:05:33,362 - INFO - 
+================================================================================
+2026-07-13 12:05:33,362 - INFO - 🔄 AUTOMATED TICKER LIST UPDATE CHECK
+2026-07-13 12:05:33,362 - INFO - ================================================================================
+2026-07-13 12:05:33,363 - INFO - 
+================================================================================
+2026-07-13 12:05:33,363 - INFO - RUSSELL 1000 FETCH CHECK
+2026-07-13 12:05:33,363 - INFO - ================================================================================
+2026-07-13 12:05:33,543 - INFO - ✅ Russell 1000 fetch OK: 1008 tickers
+2026-07-13 12:05:33,543 - INFO - 
+================================================================================
+2026-07-13 12:05:33,543 - INFO - S&P 500 COMPARISON
+2026-07-13 12:05:33,543 - INFO - ================================================================================
+2026-07-13 12:05:33,670 - INFO - ✅ Fetched 503 S&P 500 tickers from Wikipedia
+2026-07-13 12:05:33,792 - INFO - 📋 Local list has 503 tickers
+2026-07-13 12:05:33,792 - INFO - ✅ S&P 500 list is up to date!
+2026-07-13 12:05:33,792 - INFO - 
+================================================================================
+2026-07-13 12:05:33,792 - INFO - FALLEN ANGEL CANDIDATES VALIDATION
+2026-07-13 12:05:33,792 - INFO - ================================================================================
+2026-07-13 12:05:33,792 - INFO - 
+🔍 Checking 18 Fallen Angel tickers...
+2026-07-13 12:05:35,045 - INFO - Progress: 10/18
+2026-07-13 12:05:36,194 - INFO - ✅ All fallen angel candidates are valid!
+2026-07-13 12:05:36,194 - INFO - 
+================================================================================
+2026-07-13 12:05:36,194 - INFO - NASDAQ-100 SPOT CHECK
+2026-07-13 12:05:36,194 - INFO - ================================================================================
+2026-07-13 12:05:36,194 - INFO - 
+🔍 Checking 90 NASDAQ-100 tickers...
+2026-07-13 12:05:37,360 - INFO - Progress: 10/90
+2026-07-13 12:05:38,618 - INFO - Progress: 20/90
+2026-07-13 12:05:39,888 - INFO - Progress: 30/90
+2026-07-13 12:05:41,195 - INFO - Progress: 40/90
+2026-07-13 12:05:42,448 - INFO - Progress: 50/90
+2026-07-13 12:05:43,699 - INFO - Progress: 60/90
+2026-07-13 12:05:44,939 - INFO - Progress: 70/90
+2026-07-13 12:05:46,246 - INFO - Progress: 80/90
+2026-07-13 12:05:47,389 - INFO - Progress: 90/90
+2026-07-13 12:05:47,512 - INFO - ✅ All NASDAQ-100 tickers are valid!
+2026-07-13 12:05:47,512 - INFO - 
+🔍 Checking 26 WSE (Poland) tickers...
+2026-07-13 12:05:48,676 - INFO - Progress: 10/26
+2026-07-13 12:05:50,018 - INFO - Progress: 20/26
+2026-07-13 12:05:50,944 - INFO - 
+🔍 Checking 49 FTSE 100 (UK) tickers...
+2026-07-13 12:05:52,122 - INFO - Progress: 10/49
+2026-07-13 12:05:53,418 - INFO - Progress: 20/49
+2026-07-13 12:05:54,704 - INFO - Progress: 30/49
+2026-07-13 12:05:56,111 - INFO - Progress: 40/49
+2026-07-13 12:05:57,368 - INFO - 
+🔍 Checking 19 TASE (Israel) tickers...
+2026-07-13 12:05:58,519 - INFO - Progress: 10/19
+2026-07-13 12:05:59,809 - INFO - 
+🔍 Checking 39 DAX (Germany) tickers...
+2026-07-13 12:06:00,956 - INFO - Progress: 10/39
+2026-07-13 12:06:02,214 - INFO - Progress: 20/39
+2026-07-13 12:06:03,539 - INFO - Progress: 30/39
+2026-07-13 12:06:04,879 - INFO - 
+================================================================================
+TICKER LIST UPDATE REPORT
+Generated: 2026-07-13 12:06:04
+================================================================================
+
+## 🗂️ Russell 1000 Fetch
+✅ Fetch OK — full universe available
+
+## 📊 S&P 500 Status
+✅ List is up to date
+
+## 🔥 Fallen Angel Candidates
+✅ All candidates are valid
+
+## 📈 NASDAQ-100
+✅ All tickers are valid
+
+## 🇵🇱 WSE (Poland)
+✅ All tickers are valid
+
+## 🇬🇧 FTSE 100 (UK)
+✅ All tickers are valid
+
+## 🇮🇱 TASE (Israel)
+✅ All tickers are valid
+
+## 🇩🇪 DAX (Germany)
+✅ All tickers are valid
+
+## 🎯 ACTION ITEMS
+
+✅ No action needed - all lists are up to date!
+
+================================================================================
+2026-07-13 12:06:04,879 - INFO - 
+📄 Report saved to: ticker_update_report.txt
+2026-07-13 12:06:04,879 - INFO - 
+✅ ALL CLEAR: No updates needed!
