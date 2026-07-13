@@ -34,7 +34,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add ticker_updates.log
-          git add ticker_update_report_*.txt
+          git add ticker_update_report.txt
           git diff --quiet && git diff --staged --quiet || git commit -m "Ticker update check $(date +'%Y-%m-%d')"
           git push
       
