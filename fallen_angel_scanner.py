@@ -75,6 +75,19 @@ MIN_DROP_PERCENT = 20  # Minimum drop percentage
 DROP_LOOKBACK_DAYS = 21  # Look for drops over last 21 days
 DROP_FROM_52W_HIGH_MIN = 35  # ~35% below peak → ~54% recovery vs 52w high (clears 50% gate)
 MIN_RECOVERY_POTENTIAL_PCT = 50.0  # Require ~50%+ implied upside vs 52-week high
+
+# "Fresh Crash Watch": a separate, softer bucket for stocks that just had a
+# sudden single-day/short-window crash but hadn't already been beaten down
+# for a while (so they don't clear MIN_RECOVERY_POTENTIAL_PCT above -- that
+# gate is calibrated for names already priced for pessimism). Same quality
+# gates as the main list (biotech/equity-stub/debt/Piotroski/earnings), but
+# a lower recovery bar, since the drop is new rather than already fully
+# priced in. Requires the shape classifier to call it "sudden_drop" (not a
+# gradual decliner) AND the existing technical bottom check to agree it's
+# at/near a bottom -- both already computed for every candidate, just not
+# previously used to admit anything on their own.
+MIN_RECOVERY_POTENTIAL_FRESH_CRASH_PCT = 20.0
+MAX_FRESH_CRASH_CANDIDATES = 10
 EARNINGS_EXCLUDE_DAYS = 5  # Hard exclude if earnings within this many calendar days
 EARNINGS_NOTE_DAYS_MAX = 21  # Informational earnings note up to this many days
 
@@ -576,6 +589,25 @@ def format_shape_for_email(price_shape, stable_years, recent_drop_pct):
     elif price_shape == "insufficient_data":
         return "❓ Limited history"
     return "—"
+
+
+def classify_recovery_bucket(upside_pct, price_shape, at_bottom):
+    """
+    Decide which report bucket (if any) a candidate belongs to, based on
+    its estimated recovery upside, price shape, and technical bottom signal.
+    Pure function (no I/O) so the bucket logic is unit-testable on its own.
+
+    Returns "fallen_angel", "fresh_crash", or None (excluded from both).
+    """
+    if upside_pct >= MIN_RECOVERY_POTENTIAL_PCT:
+        return "fallen_angel"
+    if (
+        price_shape == "sudden_drop"
+        and at_bottom
+        and upside_pct >= MIN_RECOVERY_POTENTIAL_FRESH_CRASH_PCT
+    ):
+        return "fresh_crash"
+    return None
 
 
 def narrow_analyzed_results(analyzed, max_results=20):
@@ -1290,6 +1322,7 @@ def stage2_deep_analysis(candidates, memory):
     print("="*80)
     
     analyzed = []
+    fresh_crash = []
     analysis_count = 0  # Track number of stocks analyzed
     
     for candidate in candidates:
@@ -1441,14 +1474,18 @@ def stage2_deep_analysis(candidates, memory):
             if upside_pct is None or not np.isfinite(upside_pct):
                 print(f"  ⏭️  {ticker} excluded: invalid recovery estimate")
                 continue
-            if upside_pct < MIN_RECOVERY_POTENTIAL_PCT:
+
+            bucket = classify_recovery_bucket(upside_pct, shape_info["shape"], at_bottom)
+            if bucket is None:
                 print(
                     f"  ⏭️  {ticker} excluded: Upside {upside_pct:.0f}% "
-                    f"< {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target"
+                    f"< {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target "
+                    f"(fresh-crash bar is {MIN_RECOVERY_POTENTIAL_FRESH_CRASH_PCT:.0f}%, "
+                    f"needs sudden_drop shape + at/near bottom)"
                 )
                 continue
-            
-            analyzed.append({
+
+            record = {
                 'ticker': ticker,
                 'company': company_name,
                 'market': market,
@@ -1483,10 +1520,17 @@ def stage2_deep_analysis(candidates, memory):
                 'price_shape': shape_info['shape'],
                 'shape_stable_years': shape_info['stable_years'],
                 'shape_recent_drop_pct': shape_info['recent_drop_pct'],
-            })
-            
+                'bucket': bucket,
+            }
+
+            if bucket == "fallen_angel":
+                analyzed.append(record)
+            else:
+                fresh_crash.append(record)
+
             status = "BUY NOW" if at_bottom else "WAIT"
-            print(f"  ✅ {ticker} analyzed: Risk {risk}/10, {status}, Upside ~{upside_pct:.0f}%")
+            bucket_label = "fallen angel" if bucket == "fallen_angel" else "fresh crash watch"
+            print(f"  ✅ {ticker} analyzed [{bucket_label}]: Risk {risk}/10, {status}, Upside ~{upside_pct:.0f}%")
             
             # Increment counter and add delay every 100 analyses
             analysis_count += 1
@@ -1499,20 +1543,252 @@ def stage2_deep_analysis(candidates, memory):
             continue
     
     analyzed = narrow_analyzed_results(analyzed, MAX_CANDIDATES)
-    
-    print(f"\n✅ Stage 2 complete: {len(analyzed)} stocks in final report (max {MAX_CANDIDATES})\n")
-    return analyzed
+    fresh_crash = narrow_analyzed_results(fresh_crash, MAX_FRESH_CRASH_CANDIDATES)
+
+    print(f"\n✅ Stage 2 complete: {len(analyzed)} fallen angels (max {MAX_CANDIDATES}), "
+          f"{len(fresh_crash)} fresh crash watch (max {MAX_FRESH_CRASH_CANDIDATES})\n")
+    return analyzed, fresh_crash
 
 # ============================================================================
 # EMAIL GENERATION
 # ============================================================================
 
-def generate_email_html(analyzed_stocks, price_alerts):
+def _build_summary_table_rows(stocks):
+    """Builds the <tr> rows for the summary table. Shared by both the
+    Fallen Angels and Fresh Crash Watch sections -- same row shape."""
+    rows = ""
+    for stock in stocks:
+        risk_class = "low-risk"  # Everything reaching either bucket has risk <4
+
+        if stock['at_bottom']:
+            status = "✅ BUY NOW"
+            status_color = "#27ae60"
+            price_note = ""
+        else:
+            status = "⏳ WAIT"
+            status_color = "#f39c12"
+            wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f}"
+            price_note = f"<br/><small>Wait for: {wait_range} {stock['currency']}</small>"
+
+        target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f}"
+
+        broker_line = f"{stock['broker']}"
+        if stock['alt_broker']:
+            broker_line += f" {stock['alt_broker']}"
+
+        d21 = stock.get("drop_21d_pct")
+        dpeak = stock.get("drop_from_peak_pct")
+        drop_21d_txt = f"{d21:.1f}%" if d21 is not None and np.isfinite(d21) else "n/a"
+        drop_peak_txt = (
+            f"{dpeak:.1f}%" if dpeak is not None and np.isfinite(dpeak) else "n/a"
+        )
+        rsi_txt = format_rsi_for_email(stock.get("rsi"))
+        shape_txt = format_shape_for_email(
+            stock.get("price_shape"),
+            stock.get("shape_stable_years"),
+            stock.get("shape_recent_drop_pct"),
+        )
+
+        if stock.get("earnings_date"):
+            earnings_cell = (
+                f"📅 {stock['days_to_earnings']}d ({stock['earnings_date']})"
+            )
+        else:
+            earnings_cell = "—"
+
+        rows += f"""
+        <tr class="{risk_class}" style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px; color: {status_color};">
+                <strong>{status}</strong>{price_note}
+            </td>
+            <td style="padding: 10px;">
+                <strong>{stock['ticker']}</strong> {stock['market']}<br/>
+                <small>{broker_line}</small>
+            </td>
+            <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_21d_txt}</strong></td>
+            <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_peak_txt}</strong></td>
+            <td style="padding: 10px; text-align: center;">{rsi_txt}</td>
+            <td style="padding: 10px; font-size: 12px;">{shape_txt}</td>
+            <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>{target_range}</strong></td>
+            <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.0f}%</strong></td>
+            <td style="padding: 10px; text-align: center;"><strong>{stock['risk_score']}/10</strong></td>
+            <td style="padding: 10px;">{stock['sentiment_reason']}</td>
+            <td style="padding: 10px;">{earnings_cell}</td>
+        </tr>
+        """
+    return rows
+
+
+def _build_summary_table(stocks, heading_html):
+    """Heading + full summary table for one bucket of stocks."""
+    html = heading_html
+    html += """
+    <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+        <tr style="background: #34495e; color: white;">
+            <th style="padding: 10px; text-align: left;">Status</th>
+            <th style="padding: 10px; text-align: left;">Ticker</th>
+            <th style="padding: 10px; text-align: right;">Drop 21d</th>
+            <th style="padding: 10px; text-align: right;">Drop Peak</th>
+            <th style="padding: 10px; text-align: center;">RSI</th>
+            <th style="padding: 10px; text-align: left;">Shape</th>
+            <th style="padding: 10px; text-align: right;">Target</th>
+            <th style="padding: 10px; text-align: right;">Upside</th>
+            <th style="padding: 10px; text-align: center;">Risk</th>
+            <th style="padding: 10px; text-align: left;">Sentiment</th>
+            <th style="padding: 10px; text-align: left;">Earnings</th>
+        </tr>
+    """
+    html += _build_summary_table_rows(stocks)
+    html += "</table>"
+    return html
+
+
+def _build_detail_cards(stocks):
+    """Full 'Detailed Analysis' card section for one bucket of stocks."""
+    html = ""
+    for stock in stocks:
+        risk_class = "low-risk"
+
+        if stock['at_bottom']:
+            status_html = '<p style="color: #27ae60; font-size: 18px;"><strong>✅ BUY NOW</strong> - Technical analysis shows stock is at/near bottom</p>'
+        else:
+            wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f} {stock['currency']}"
+            status_html = f'<p style="color: #f39c12; font-size: 18px;"><strong>⏳ WAIT</strong> - Wait for price to reach: <strong>{wait_range}</strong> (±5%)</p>'
+
+        target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f} {stock['currency']}"
+
+        price_txt = format_price_for_email(
+            stock["current_price"], stock.get("currency")
+        )
+        d21d = stock.get("drop_21d_pct")
+        dpk = stock.get("drop_from_peak_pct")
+        drop_detail = (
+            f"21d {d21d:.1f}%"
+            if d21d is not None and np.isfinite(d21d)
+            else "21d n/a"
+        )
+        if dpk is not None and np.isfinite(dpk):
+            drop_detail += f" | peak {dpk:.1f}%"
+
+        html += f"""
+        <div class="stock {risk_class}">
+            <h3>{stock['ticker']}: {stock['company']}</h3>
+            {status_html}
+            
+            <p><strong>📍 Current Price:</strong> {price_txt} (Down {drop_detail})</p>
+            <p><strong>RSI:</strong> {format_rsi_for_email(stock.get('rsi'))} | 
+               <strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
+            <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low) | 
+               <strong>Piotroski:</strong> {format_piotroski_for_email(stock.get('piotroski_score'), stock.get('piotroski_checks'))}</p>
+            <p><strong>📐 Shape:</strong> {format_shape_for_email(stock.get('price_shape'), stock.get('shape_stable_years'), stock.get('shape_recent_drop_pct'))}</p>
+            
+            <p><strong>{stock['news_sentiment']}</strong>: {stock['sentiment_reason']}</p>
+            
+            <div class="news">
+                <strong>📰 Recent News:</strong>
+                <ul>
+        """
+
+        for headline in stock['news_headlines']:
+            html += f"<li>{headline}</li>"
+
+        html += """
+                </ul>
+            </div>
+        """
+
+        if stock['financial_health']:
+            health = stock['financial_health']
+            de_txt = (
+                f"{health['debt_equity_display']:.2f}"
+                if health.get('debt_equity_display') is not None
+                else "n/a (financial sector or unreliable data)"
+            )
+            cash_txt = format_cash_billions_for_email(
+                health.get("cash"), stock.get("currency")
+            )
+            rev_yoy = health.get("revenue_growth_yoy")
+            rev_yoy_txt = (
+                f"{rev_yoy:.1f}%"
+                if rev_yoy is not None and np.isfinite(float(rev_yoy))
+                else "n/a"
+            )
+            net_debt = health.get("net_debt")
+            debt_ebitda = health.get("debt_ebitda")
+            net_debt_txt = (
+                f"${net_debt / 1e9:.1f}B" if net_debt is not None else "n/a"
+            )
+            debt_ebitda_txt = (
+                f"{debt_ebitda:.1f}x" if debt_ebitda is not None else "n/a"
+            )
+            stub_flag = (
+                " ⚠️ EQUITY STUB"
+                if net_debt
+                and health.get("market_cap")
+                and net_debt > health["market_cap"]
+                else ""
+            )
+            html += f"""
+            <p><strong>💼 Financial Health (Bankruptcy Risk: LOW):</strong><br/>
+            Cash: {cash_txt} | 
+            Debt/Equity: {de_txt} | 
+            Net debt: {net_debt_txt} | Debt/EBITDA: {debt_ebitda_txt}{stub_flag}<br/>
+            Current Ratio: {health['current_ratio']:.2f} | 
+            Revenue YoY: {rev_yoy_txt}</p>
+            """
+
+        fpe = stock.get("forward_pe")
+        pb = stock.get("price_to_book")
+        sp = stock.get("short_percent")
+        fpe_txt = (
+            f"{float(fpe):.1f}x"
+            if fpe is not None and np.isfinite(float(fpe))
+            else "n/a"
+        )
+        pb_txt = (
+            f"{float(pb):.1f}x"
+            if pb is not None and np.isfinite(float(pb))
+            else "n/a"
+        )
+        if sp is not None and np.isfinite(float(sp)):
+            short_txt = f"{float(sp) * 100:.1f}%"
+            if float(sp) > 0.15:
+                short_txt += " 🔥"
+        else:
+            short_txt = "n/a"
+        html += f"""
+            <p><strong>📈 Valuation:</strong><br/>
+            Forward P/E: {fpe_txt} | 
+            P/B: {pb_txt} | 
+            Short float: {short_txt}</p>
+            """
+
+        html += f"""
+        <p><strong>📊 Technical Analysis:</strong><br/>
+        Bottom Detection: {stock['bottom_confidence']} confidence | 
+        52-week Low Distance: Check chart for support levels</p>
+        """
+
+        if stock['earnings_date']:
+            html += f"""
+            <p><strong>📅 Earnings:</strong> {stock['earnings_date']} ({stock['days_to_earnings']} days away) - 
+            Price may be volatile around earnings</p>
+            """
+
+        html += "</div>"
+    return html
+
+
+def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     """Generate HTML email report"""
-    
+    fresh_crash_stocks = fresh_crash_stocks or []
+
     # Sort by risk score (lowest first = best)
     analyzed_stocks.sort(key=lambda x: x['risk_score'])
-    
+    fresh_crash_stocks.sort(key=lambda x: x['risk_score'])
+
+    total_found = len(analyzed_stocks) + len(fresh_crash_stocks)
+
     html = f"""
     <html>
     <head>
@@ -1530,11 +1806,11 @@ def generate_email_html(analyzed_stocks, price_alerts):
     <body>
         <div class="header">
             <h1>🌍 Multi-Market Fallen Angel Scanner</h1>
-            <p>Found {len(analyzed_stocks)} recovery opportunities across 5 markets</p>
+            <p>Found {total_found} recovery opportunities across 5 markets</p>
             <p>{datetime.now().strftime('%B %d, %Y at %H:%M')}</p>
         </div>
     """
-    
+
     # Price alerts section
     if price_alerts:
         html += """
@@ -1552,230 +1828,33 @@ def generate_email_html(analyzed_stocks, price_alerts):
             ({alert['additional_drop']:.1f}% additional drop since {alert['sent_date']})</p>
             """
         html += "</div>"
-    
-    # Summary intro
+
+    # Fallen Angels section
     if analyzed_stocks:
-        html += """
-        <p><strong>High-Quality Fallen Angels (Bankruptcy Risk: LOW, Risk Score: &lt;4/10, Upside: &ge;50%):</strong></p>
-        <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
-            <tr style="background: #34495e; color: white;">
-                <th style="padding: 10px; text-align: left;">Status</th>
-                <th style="padding: 10px; text-align: left;">Ticker</th>
-                <th style="padding: 10px; text-align: right;">Drop 21d</th>
-                <th style="padding: 10px; text-align: right;">Drop Peak</th>
-                <th style="padding: 10px; text-align: center;">RSI</th>
-                <th style="padding: 10px; text-align: left;">Shape</th>
-                <th style="padding: 10px; text-align: right;">Target</th>
-                <th style="padding: 10px; text-align: right;">Upside</th>
-                <th style="padding: 10px; text-align: center;">Risk</th>
-                <th style="padding: 10px; text-align: left;">Sentiment</th>
-                <th style="padding: 10px; text-align: left;">Earnings</th>
-            </tr>
+        heading = f"""
+        <p><strong>High-Quality Fallen Angels (Bankruptcy Risk: LOW, Risk Score: &lt;4/10, Upside: &ge;{MIN_RECOVERY_POTENTIAL_PCT:.0f}%):</strong></p>
         """
-        
-        for stock in analyzed_stocks:
-            risk_class = "low-risk"  # All stocks are low risk now (< 4)
-            
-            # Status indicator
-            if stock['at_bottom']:
-                status = "✅ BUY NOW"
-                status_color = "#27ae60"
-                price_note = ""
-            else:
-                status = "⏳ WAIT"
-                status_color = "#f39c12"
-                wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f}"
-                price_note = f"<br/><small>Wait for: {wait_range} {stock['currency']}</small>"
-            
-            # Target price range
-            target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f}"
-            
-            broker_line = f"{stock['broker']}"
-            if stock['alt_broker']:
-                broker_line += f" {stock['alt_broker']}"
-
-            d21 = stock.get("drop_21d_pct")
-            dpeak = stock.get("drop_from_peak_pct")
-            drop_21d_txt = f"{d21:.1f}%" if d21 is not None and np.isfinite(d21) else "n/a"
-            drop_peak_txt = (
-                f"{dpeak:.1f}%" if dpeak is not None and np.isfinite(dpeak) else "n/a"
-            )
-            rsi_txt = format_rsi_for_email(stock.get("rsi"))
-            shape_txt = format_shape_for_email(
-                stock.get("price_shape"),
-                stock.get("shape_stable_years"),
-                stock.get("shape_recent_drop_pct"),
-            )
-
-            if stock.get("earnings_date"):
-                earnings_cell = (
-                    f"📅 {stock['days_to_earnings']}d ({stock['earnings_date']})"
-                )
-            else:
-                earnings_cell = "—"
-            
-            html += f"""
-            <tr class="{risk_class}" style="border-bottom: 1px solid #ddd;">
-                <td style="padding: 10px; color: {status_color};">
-                    <strong>{status}</strong>{price_note}
-                </td>
-                <td style="padding: 10px;">
-                    <strong>{stock['ticker']}</strong> {stock['market']}<br/>
-                    <small>{broker_line}</small>
-                </td>
-                <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_21d_txt}</strong></td>
-                <td style="padding: 10px; text-align: right; color: #e74c3c;"><strong>{drop_peak_txt}</strong></td>
-                <td style="padding: 10px; text-align: center;">{rsi_txt}</td>
-                <td style="padding: 10px; font-size: 12px;">{shape_txt}</td>
-                <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>{target_range}</strong></td>
-                <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.0f}%</strong></td>
-                <td style="padding: 10px; text-align: center;"><strong>{stock['risk_score']}/10</strong></td>
-                <td style="padding: 10px;">{stock['sentiment_reason']}</td>
-                <td style="padding: 10px;">{earnings_cell}</td>
-            </tr>
-            """
-        
-        html += "</table>"
-        
-        # Detailed analysis for each stock
+        html += _build_summary_table(analyzed_stocks, heading)
         html += "<h2>📊 Detailed Analysis</h2>"
-        
-        for stock in analyzed_stocks:
-            risk_class = "low-risk"  # All are low risk now
-            
-            # Status
-            if stock['at_bottom']:
-                status_html = '<p style="color: #27ae60; font-size: 18px;"><strong>✅ BUY NOW</strong> - Technical analysis shows stock is at/near bottom</p>'
-            else:
-                wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f} {stock['currency']}"
-                status_html = f'<p style="color: #f39c12; font-size: 18px;"><strong>⏳ WAIT</strong> - Wait for price to reach: <strong>{wait_range}</strong> (±5%)</p>'
-            
-            # Target estimate
-            target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f} {stock['currency']}"
-            
-            price_txt = format_price_for_email(
-                stock["current_price"], stock.get("currency")
-            )
-            d21d = stock.get("drop_21d_pct")
-            dpk = stock.get("drop_from_peak_pct")
-            drop_detail = (
-                f"21d {d21d:.1f}%"
-                if d21d is not None and np.isfinite(d21d)
-                else "21d n/a"
-            )
-            if dpk is not None and np.isfinite(dpk):
-                drop_detail += f" | peak {dpk:.1f}%"
+        html += _build_detail_cards(analyzed_stocks)
 
-            html += f"""
-            <div class="stock {risk_class}">
-                <h3>{stock['ticker']}: {stock['company']}</h3>
-                {status_html}
-                
-                <p><strong>📍 Current Price:</strong> {price_txt} (Down {drop_detail})</p>
-                <p><strong>RSI:</strong> {format_rsi_for_email(stock.get('rsi'))} | 
-                   <strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
-                <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low) | 
-                   <strong>Piotroski:</strong> {format_piotroski_for_email(stock.get('piotroski_score'), stock.get('piotroski_checks'))}</p>
-                <p><strong>📐 Shape:</strong> {format_shape_for_email(stock.get('price_shape'), stock.get('shape_stable_years'), stock.get('shape_recent_drop_pct'))}</p>
-                
-                <p><strong>{stock['news_sentiment']}</strong>: {stock['sentiment_reason']}</p>
-                
-                <div class="news">
-                    <strong>📰 Recent News:</strong>
-                    <ul>
-            """
-            
-            for headline in stock['news_headlines']:
-                html += f"<li>{headline}</li>"
-            
-            html += """
-                    </ul>
-                </div>
-            """
-            
-            # Financial health
-            if stock['financial_health']:
-                health = stock['financial_health']
-                de_txt = (
-                    f"{health['debt_equity_display']:.2f}"
-                    if health.get('debt_equity_display') is not None
-                    else "n/a (financial sector or unreliable data)"
-                )
-                cash_txt = format_cash_billions_for_email(
-                    health.get("cash"), stock.get("currency")
-                )
-                rev_yoy = health.get("revenue_growth_yoy")
-                rev_yoy_txt = (
-                    f"{rev_yoy:.1f}%"
-                    if rev_yoy is not None and np.isfinite(float(rev_yoy))
-                    else "n/a"
-                )
-                net_debt = health.get("net_debt")
-                debt_ebitda = health.get("debt_ebitda")
-                net_debt_txt = (
-                    f"${net_debt / 1e9:.1f}B" if net_debt is not None else "n/a"
-                )
-                debt_ebitda_txt = (
-                    f"{debt_ebitda:.1f}x" if debt_ebitda is not None else "n/a"
-                )
-                stub_flag = (
-                    " ⚠️ EQUITY STUB"
-                    if net_debt
-                    and health.get("market_cap")
-                    and net_debt > health["market_cap"]
-                    else ""
-                )
-                html += f"""
-                <p><strong>💼 Financial Health (Bankruptcy Risk: LOW):</strong><br/>
-                Cash: {cash_txt} | 
-                Debt/Equity: {de_txt} | 
-                Net debt: {net_debt_txt} | Debt/EBITDA: {debt_ebitda_txt}{stub_flag}<br/>
-                Current Ratio: {health['current_ratio']:.2f} | 
-                Revenue YoY: {rev_yoy_txt}</p>
-                """
+    # Fresh Crash Watch section -- separate bucket, separate risk profile.
+    # These pass every quality gate but land below the Fallen Angels'
+    # recovery bar because the drop is new rather than already fully
+    # priced in. Kept visually distinct rather than blended into one list.
+    if fresh_crash_stocks:
+        heading = f"""
+        <h2>⚡ Fresh Crash Watch</h2>
+        <p>Sudden, recent crashes (not yet a deep multi-month decline) that pass every quality
+        gate but land below the {MIN_RECOVERY_POTENTIAL_PCT:.0f}% recovery bar used for Fallen
+        Angels above -- included here instead because the shape classifier confirms a genuine
+        sudden drop and technical signals suggest it's at/near a bottom, not still falling.
+        Riskier than the list above: the market may not be done reacting yet.</p>
+        """
+        html += _build_summary_table(fresh_crash_stocks, heading)
+        html += "<h2>📊 Detailed Analysis — Fresh Crash Watch</h2>"
+        html += _build_detail_cards(fresh_crash_stocks)
 
-            fpe = stock.get("forward_pe")
-            pb = stock.get("price_to_book")
-            sp = stock.get("short_percent")
-            fpe_txt = (
-                f"{float(fpe):.1f}x"
-                if fpe is not None and np.isfinite(float(fpe))
-                else "n/a"
-            )
-            pb_txt = (
-                f"{float(pb):.1f}x"
-                if pb is not None and np.isfinite(float(pb))
-                else "n/a"
-            )
-            if sp is not None and np.isfinite(float(sp)):
-                short_txt = f"{float(sp) * 100:.1f}%"
-                if float(sp) > 0.15:
-                    short_txt += " 🔥"
-            else:
-                short_txt = "n/a"
-            html += f"""
-                <p><strong>📈 Valuation:</strong><br/>
-                Forward P/E: {fpe_txt} | 
-                P/B: {pb_txt} | 
-                Short float: {short_txt}</p>
-                """
-            
-            # Technical indicators
-            html += f"""
-            <p><strong>📊 Technical Analysis:</strong><br/>
-            Bottom Detection: {stock['bottom_confidence']} confidence | 
-            52-week Low Distance: Check chart for support levels</p>
-            """
-            
-            # Earnings warning
-            if stock['earnings_date']:
-                html += f"""
-                <p><strong>📅 Earnings:</strong> {stock['earnings_date']} ({stock['days_to_earnings']} days away) - 
-                Price may be volatile around earnings</p>
-                """
-            
-            html += "</div>"
-    
     # Footer
     html += """
         <div style="margin-top: 30px; padding: 20px; background: #ecf0f1; border-radius: 5px;">
@@ -1795,8 +1874,9 @@ def generate_email_html(analyzed_stocks, price_alerts):
     </body>
     </html>
     """
-    
+
     return html
+
 
 def send_email(subject, html_body):
     """Send email report"""
@@ -1857,24 +1937,27 @@ def main():
     
     # Stage 2: Deep analysis
     analyzed_stocks = []
+    fresh_crash_stocks = []
     if candidates:
-        analyzed_stocks = stage2_deep_analysis(candidates, memory)
+        analyzed_stocks, fresh_crash_stocks = stage2_deep_analysis(candidates, memory)
     
     # Generate and send email
-    if analyzed_stocks or price_alerts:
+    if analyzed_stocks or fresh_crash_stocks or price_alerts:
         print("\n" + "="*80)
         print("GENERATING EMAIL REPORT")
         print("="*80)
         
-        html = generate_email_html(analyzed_stocks, price_alerts)
+        html = generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
         
         subject = f"🌍 Fallen Angels: {len(analyzed_stocks)} opportunities"
+        if fresh_crash_stocks:
+            subject += f" + {len(fresh_crash_stocks)} fresh crash watch"
         if price_alerts:
             subject += f" + {len(price_alerts)} averaging down alerts"
         
         if send_email(subject, html):
-            # Update memory
-            for stock in analyzed_stocks:
+            # Update memory (both buckets share the same dedup/tracking)
+            for stock in analyzed_stocks + fresh_crash_stocks:
                 memory['sent_stocks'][stock['ticker']] = datetime.now().isoformat()
                 memory['tracked_prices'][stock['ticker']] = {
                     'price': stock['current_price'],
