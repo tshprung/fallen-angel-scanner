@@ -13,6 +13,18 @@ MIN_MARKET_CAP_USD_UK_DE = 1_000_000_000
 MIN_MARKET_CAP_USD_PL_IL = 400_000_000
 RUSSELL_2000_TOP_N = 750
 
+# Small-cap quality gates. These are deliberately stricter than the normal
+# US universe because the Russell 2000 extension contains smaller, noisier
+# companies. The scanner can use these thresholds without expanding the
+# universe further.
+SMALL_CAP_MAX_MARKET_CAP_USD = 2_000_000_000
+SMALL_CAP_MIN_DOLLAR_VOLUME_USD = 2_000_000
+
+# Cached membership set so Stage 1 does not download IWM holdings once per
+# ticker. The first call fetches the upper Russell 2000 slice; subsequent calls
+# are in-memory for the duration of the scan.
+_RUSSELL_2000_MEMBERSHIP = None
+
 
 def get_min_market_cap_usd(ticker: str) -> float:
     if ticker.endswith(".WA") or ticker.endswith(".TA"):
@@ -22,11 +34,23 @@ def get_min_market_cap_usd(ticker: str) -> float:
     return MIN_MARKET_CAP_USD_US
 
 
+def is_upper_small_cap_ticker(ticker: str) -> bool:
+    """Return True when a US ticker belongs to our upper Russell 2000 slice."""
+    global _RUSSELL_2000_MEMBERSHIP
+    if ticker.endswith((".WA", ".TA", ".L", ".DE")):
+        return False
+    if _RUSSELL_2000_MEMBERSHIP is None:
+        _RUSSELL_2000_MEMBERSHIP = set(fetch_russell_2000_tickers())
+    return ticker in _RUSSELL_2000_MEMBERSHIP
+
+
 def get_min_avg_dollar_volume_usd(ticker: str) -> float:
     if ticker.endswith(".WA") or ticker.endswith(".TA"):
         return 350_000
     if ticker.endswith(".L") or ticker.endswith(".DE"):
         return 1_000_000
+    if is_upper_small_cap_ticker(ticker):
+        return SMALL_CAP_MIN_DOLLAR_VOLUME_USD
     return 1_500_000
 
 
