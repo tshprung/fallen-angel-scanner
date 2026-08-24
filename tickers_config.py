@@ -1,14 +1,17 @@
 """
 Ticker Configuration File
-Last updated: July 2026
+Last updated: August 2026
 
-This file contains all stock ticker lists for the fallen angel scanner.
-Update this file when indices rebalance (quarterly for S&P 500, annually for NASDAQ-100 in December).
+Ticker universes and screening thresholds for the fallen angel scanner.
 """
 
-# Minimum market cap (USD) used by the scanner — US $2B; other regions slightly lower
-# for liquid “large cap” names on smaller markets (yfinance reports marketCap in USD).
-MIN_MARKET_CAP_USD_US = 2_000_000_000
+# US: keep the broad Russell 1000 universe, but allow a controlled extension
+# into the upper small-cap range. The scanner applies stricter liquidity and
+# balance-sheet gates to names below the normal US large/mid-cap floor.
+MIN_MARKET_CAP_USD_US = 750_000_000
+MIN_MARKET_CAP_USD_US_STANDARD = 2_000_000_000
+MIN_MARKET_CAP_USD_US_SMALL = 750_000_000
+
 MIN_MARKET_CAP_USD_UK_DE = 1_000_000_000
 MIN_MARKET_CAP_USD_PL_IL = 400_000_000
 
@@ -23,106 +26,53 @@ def get_min_market_cap_usd(ticker: str) -> float:
 
 
 def get_min_avg_dollar_volume_usd(ticker: str) -> float:
-    """Rough 20-day average dollar volume floor — lower for smaller home markets."""
+    """Minimum 20-day average dollar volume; stricter for US small caps."""
     if ticker.endswith(".WA") or ticker.endswith(".TA"):
         return 350_000
-    return 1_500_000
+    if ticker.endswith(".L") or ticker.endswith(".DE"):
+        return 1_000_000
+    return 2_000_000
 
-
-# ============================================================================
-# HIGH-PRIORITY FALLEN ANGEL CANDIDATES
-# ============================================================================
 
 def get_fallen_angel_candidates():
-    """
-    High-priority candidates - recently removed from major indices or known underperformers
-    These stocks are scanned FIRST as they're most likely to show large drops
-    
-    Update this list when:
-    - Stocks are removed from NASDAQ-100 (December rebalance)
-    - Stocks are removed from S&P 500 (quarterly rebalances)
-    - You notice other volatile stocks worth monitoring
-    """
     return [
-        # Recently removed from NASDAQ-100 (Dec 2025)
-        'TTD',   # Trade Desk - removed after 68% decline
-        'LULU',  # Lululemon - removed after 46% decline
-        'CDW',   # CDW Corporation
-        'GFS',   # GlobalFoundries
-        'ON',    # ON Semiconductor
-        
-        # Recently removed from S&P 500 (2025)
-        'ENPH',  # Enphase Energy - removed Sept 2025
-        'CZR',   # Caesars Entertainment
-        
-        'ADSK',  # Autodesk - down 42% from peak, near 52-week low
-        'TEAM',  # Atlassian - down 64% from peak, near 52-week low
-        'ADBE',  # Adobe - down 50% from peak, at 52-week low
-        'LDOS',  # Leidos - down 49% from peak, defense IT
-        'WDAY',  # Workday - down 51% from peak, near 52-week low
-        'CRM',   # Salesforce - down 43% from peak, near 52-week low
-        
-        # Known underperformers / volatile stocks
-        'ZS',    # Zscaler
-        'RIVN',  # Rivian
-        'LCID',  # Lucid Motors
-        'WBD',   # Warner Bros Discovery
-        'INTC',  # Intel - significant decline
+        'TTD', 'LULU', 'CDW', 'GFS', 'ON',
+        'ENPH', 'CZR', 'ADSK', 'TEAM', 'ADBE', 'LDOS', 'WDAY', 'CRM',
+        'ZS', 'RIVN', 'LCID', 'WBD', 'INTC',
     ]
 
-# ============================================================================
-# US STOCKS - Russell 1000 (broad NYSE + Nasdaq liquid universe)
-# ============================================================================
 
 def fetch_russell_1000_tickers():
-    """
-    Russell 1000 constituents from Wikipedia's dedicated company-list page.
-    Covers large/mid US equities without needing paid screeners.
-    """
+    """Fetch Russell 1000 constituents from Wikipedia."""
     try:
         import pandas as pd
         import requests
         from io import StringIO
         import re
-
         url = "https://en.wikipedia.org/wiki/List_of_Russell_1000_companies"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }
+        headers = {"User-Agent": "Mozilla/5.0"}
         response = requests.get(url, headers=headers, timeout=15)
         response.raise_for_status()
         tables = pd.read_html(StringIO(response.text))
-
         for table in tables:
             if "Symbol" not in table.columns:
                 continue
-
-            # Missing symbols are represented as NaN floats; drop them before regex normalization.
             symbols = table["Symbol"].dropna().astype(str).str.strip()
             tickers = [t for t in symbols.tolist() if t and t.lower() != 'nan']
-
-            # Wikipedia uses dot notation for share classes (CWEN.A, BRK.B).
-            # Yahoo Finance requires hyphen notation (CWEN-A, BRK-B).
             tickers = [re.sub(r'\.([ABC])$', r'-\1', t) for t in tickers]
-
             if len(tickers) >= 500:
                 return tickers
-
         return []
     except Exception:
         return []
 
 
 def get_us_scan_tickers():
-    """
-    Primary US universe: Russell 1000. If fetch fails, fall back to S&P 500 + NASDAQ-100.
-    """
+    """Primary US universe: Russell 1000, with S&P/NASDAQ fallback."""
     r1k = fetch_russell_1000_tickers()
     if len(r1k) >= 500:
         return r1k
-
-    seen = set()
-    out = []
+    seen, out = set(), []
     for t in get_sp500_tickers() + get_nasdaq100_tickers():
         if t not in seen:
             seen.add(t)
@@ -130,236 +80,44 @@ def get_us_scan_tickers():
     return out
 
 
-# ============================================================================
-# US STOCKS - S&P 500
-# ============================================================================
-
 def get_sp500_tickers():
-    """
-    Fetch S&P 500 tickers from Wikipedia
-    Fallback to major tech stocks if fetch fails
-    
-    S&P 500 rebalances quarterly (March, June, September, December)
-    Check for updates at: https://www.spglobal.com/spdji/en/indices/equity/sp-500/
-    """
     try:
         import pandas as pd
         import requests
         from io import StringIO
-        
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-        
-        # Use requests with headers to avoid 403
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
-        
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)
         response.raise_for_status()
-        
-        tables = pd.read_html(StringIO(response.text))
-        return tables[0]['Symbol'].tolist()
-    except:
-        # Fallback: Top 50 US stocks by market cap
-        return [
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA',
-            'BRK-B', 'LLY', 'V', 'UNH', 'XOM', 'WMT', 'JPM', 'MA',
-            'JNJ', 'PG', 'AVGO', 'HD', 'CVX', 'MRK', 'ABBV', 'COST',
-            'KO', 'PEP', 'BAC', 'NFLX', 'TMO', 'CRM', 'AMD', 'MCD',
-            'CSCO', 'ACN', 'LIN', 'ADBE', 'ORCL', 'ABT', 'WFC', 'DHR',
-            'NKE', 'CMCSA', 'TXN', 'DIS', 'PM', 'VZ', 'BMY', 'INTC',
-            'UPS', 'NEE', 'RTX'
-        ]
+        return pd.read_html(StringIO(response.text))[0]['Symbol'].tolist()
+    except Exception:
+        return ['AAPL','MSFT','GOOGL','AMZN','NVDA','META','TSLA','BRK-B','LLY','V','UNH','XOM','WMT','JPM','MA']
 
-# ============================================================================
-# US STOCKS - NASDAQ-100
-# ============================================================================
 
 def get_nasdaq100_tickers():
-    """
-    NASDAQ-100 tickers (manually maintained)
-    
-    NASDAQ-100 rebalances annually in December
-    Last update: December 2025
-    Next update: December 2026
-    
-    Check for updates at: https://www.nasdaq.com/solutions/nasdaq-100
-    """
-    return [
-        # Mega-cap tech
-        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'NVDA', 'META', 'TSLA',
-        
-        # Large-cap tech & growth
-        'AVGO', 'ASML', 'COST', 'NFLX', 'AMD', 'ADBE', 'PEP', 'CSCO',
-        'TMUS', 'CMCSA', 'TXN', 'INTC', 'QCOM', 'INTU', 'HON', 'AMGN',
-        'AMAT', 'SBUX', 'ISRG', 'ADP', 'ADI', 'GILD', 'BKNG', 'VRTX',
-        
-        # Mid-cap tech & growth
-        'PANW', 'REGN', 'LRCX', 'MU', 'MDLZ', 'SNPS', 'CDNS', 'PYPL',
-        'MRVL', 'KLAC', 'CRWD', 'ORLY', 'MAR', 'FTNT', 'MELI', 'CSX',
-        'ADSK', 'ABNB', 'DASH', 'ROP', 'WDAY', 'NXPI', 'CPRT', 'PCAR',
-        
-        # Small-cap & speculative
-        'CHTR', 'AEP', 'PAYX', 'MNST', 'ROST', 'ODFL', 'EA', 'FAST',
-        'KDP', 'DXCM', 'GEHC', 'CTSH', 'VRSK', 'EXC', 'CTAS',
-        'IDXX', 'KHC', 'XEL', 'CCEP', 'AZN', 'MCHP',
-        'WBD', 'DDOG', 'TEAM',
-        'MDB', 'ILMN', 'ALGN', 'ARM', 'RIVN', 'LCID',
-        
-        # Added December 2025
-        'FER',   # Ferrovial
-        'MPWR',  # Monolithic Power Systems
-        'STX',   # Seagate Technology (up 200%+ in 2025)
-        'WDC',   # Western Digital (up 238% in 2025)
-        
-        # Removed December 2025 (now in fallen_angel_candidates):
-        # TTD, LULU, CDW, GFS, ON
-        
-        # Acquired/Delisted:
-        # ANSS - Acquired by Synopsys (SNPS) for $35B in July 2025
-    ]
+    return ['AAPL','MSFT','GOOGL','GOOG','AMZN','NVDA','META','TSLA','AVGO','ASML','COST','NFLX','AMD','ADBE','PEP','CSCO','TMUS','CMCSA','TXN','INTC','QCOM','INTU','HON','AMGN','AMAT','SBUX','ISRG','ADP','ADI','GILD','BKNG','VRTX','PANW','REGN','LRCX','MU','MDLZ','SNPS','CDNS','PYPL','MRVL','KLAC','CRWD','ORLY','MAR','FTNT','MELI','CSX','ADSK','ABNB','DASH','ROP','WDAY','NXPI','CPRT','PCAR','CHTR','AEP','PAYX','MNST','ROST','ODFL','EA','FAST','KDP','DXCM','GEHC','CTSH','VRSK','EXC','CTAS','IDXX','KHC','XEL','CCEP','AZN','MCHP','WBD','DDOG','TEAM','MDB','ILMN','ALGN','ARM','RIVN','LCID','FER','MPWR','STX','WDC']
 
-# ============================================================================
-# POLAND - WARSAW STOCK EXCHANGE (WSE)
-# ============================================================================
 
 def get_wse_tickers():
-    """
-    Major Polish WSE tickers (.WA suffix)
-    WIG30 and WIG20 components
-    
-    Last cleaned: January 2026 (removed 3 delisted stocks)
-    Check for updates at: https://www.gpw.pl/indices
-    """
-    return [
-        # Large-cap
-        'PKO.WA', 'PZU.WA', 'PKN.WA', 'KGH.WA', 'PEO.WA', 'CDR.WA', 'ALE.WA', 'DNP.WA', 'LPP.WA', 'PGE.WA',
-        # Mid-cap
-        'JSW.WA', 'CPS.WA', 'OPL.WA', 'MBK.WA', 'KRU.WA', 'BDX.WA', 'KTY.WA', 'ASB.WA', 'MDV.WA',
-        # Small-cap
-        '11B.WA', 'ATT.WA', 'CIG.WA', 'EUR.WA', 'ING.WA', 'KER.WA', 'MIL.WA',
-    ]
+    return ['PKO.WA','PZU.WA','PKN.WA','KGH.WA','PEO.WA','CDR.WA','ALE.WA','DNP.WA','LPP.WA','PGE.WA','JSW.WA','CPS.WA','OPL.WA','MBK.WA','KRU.WA','BDX.WA','KTY.WA','ASB.WA','MDV.WA','11B.WA','ATT.WA','CIG.WA','EUR.WA','ING.WA','KER.WA','MIL.WA']
 
-# ============================================================================
-# UK - LONDON STOCK EXCHANGE (LSE)
-# ============================================================================
 
 def get_ftse100_tickers():
-    """
-    Major FTSE 100 tickers (.L suffix for London)
-    
-    Last cleaned: January 2026 (removed 1 delisted stock)
-    Check for updates at: https://www.londonstockexchange.com/indices/ftse-100
-    """
-    return [
-        # Energy & Resources
-        'SHEL.L', 'BP.L', 'RIO.L', 'GLEN.L', 'BHP.L', 'ANTO.L',
-        # Financials
-        'HSBA.L', 'BARC.L', 'LLOY.L', 'NWG.L', 'STAN.L', 'LSEG.L', 'PRU.L', 'LGEN.L', 'III.L',
-        # Consumer
-        'AZN.L', 'ULVR.L', 'DGE.L', 'BATS.L', 'REL.L', 'TSCO.L', 'SBRY.L', 'BRBY.L',
-        # Industrial & Tech
-        'NG.L', 'SSE.L', 'BA.L', 'RR.L', 'RKT.L', 'WPP.L', 'EXPN.L', 'CNA.L', 'VOD.L', 'BT-A.L', 'AAL.L',
-        # Other major components
-        'GSK.L', 'CPG.L', 'IMB.L', 'MNG.L', 'STJ.L', 'INF.L', 'FERG.L', 'PSN.L', 'AUTO.L', 'SGE.L',
-        'AV.L', 'ENT.L', 'SPX.L', 'WTB.L', 'CRDA.L'
-    ]
+    return ['SHEL.L','BP.L','RIO.L','GLEN.L','BHP.L','ANTO.L','HSBA.L','BARC.L','LLOY.L','NWG.L','STAN.L','LSEG.L','PRU.L','LGEN.L','III.L','AZN.L','ULVR.L','DGE.L','BATS.L','REL.L','TSCO.L','SBRY.L','BRBY.L','NG.L','SSE.L','BA.L','RR.L','RKT.L','WPP.L','EXPN.L','CNA.L','VOD.L','BT-A.L','AAL.L','GSK.L','CPG.L','IMB.L','MNG.L','STJ.L','INF.L','FERG.L','PSN.L','AUTO.L','SGE.L','AV.L','ENT.L','SPX.L','WTB.L','CRDA.L']
 
-# ============================================================================
-# ISRAEL - TEL AVIV STOCK EXCHANGE (TASE)
-# ============================================================================
 
 def get_tase_tickers():
-    """
-    Major Tel Aviv Stock Exchange tickers (.TA suffix)
-    TA-35 and TA-125 components
-    
-    Last cleaned: January 2026 (removed 6 delisted stocks)
-    Check for updates at: https://www.tase.co.il/en/indices/
-    """
-    return [
-        # Large-cap
-        'TEVA.TA', 'LUMI.TA', 'POLI.TA', 'ESLT.TA', 'ICL.TA', 'TATT.TA', 'AZRG.TA', 'NICE.TA',
-        # Mid-cap
-        'FIBI.TA', 'MZTF.TA', 'TASE.TA', 'DLEKG.TA', 'MLSR.TA', 'BEZQ.TA',
-        # Small-cap
-        'ALHE.TA', 'ELAL.TA', 'FTAL.TA', 'BIGT.TA', 'ENLT.TA',
-    ]
+    return ['TEVA.TA','LUMI.TA','POLI.TA','ESLT.TA','ICL.TA','TATT.TA','AZRG.TA','NICE.TA','FIBI.TA','MZTF.TA','TASE.TA','DLEKG.TA','MLSR.TA','BEZQ.TA','ALHE.TA','ELAL.TA','FTAL.TA','BIGT.TA','ENLT.TA']
 
-# ============================================================================
-# GERMANY - XETRA/FRANKFURT
-# ============================================================================
 
 def get_dax_tickers():
-    """
-    DAX 40 tickers (.DE suffix for XETRA/Frankfurt)
-    
-    Last cleaned: January 2026 (removed 1 delisted stock)
-    Check for updates at: https://www.dax-indices.com/
-    """
-    return [
-        # Large-cap industrials & auto
-        'SAP.DE', 'SIE.DE', 'ALV.DE', 'DTE.DE', 'BAS.DE', 'VOW3.DE', 'BMW.DE', 'MBG.DE', 'ADS.DE', 'PUM.DE',
-        # Financials
-        'DBK.DE', 'CBK.DE', 'DB1.DE',
-        # Pharma & Healthcare
-        'BAYN.DE', 'MRK.DE', 'FME.DE', 'FRE.DE',
-        # Industrial & Tech
-        'IFX.DE', 'SY1.DE', 'AIR.DE', 'MTX.DE', 'RHM.DE', 'SRT.DE', 'HEI.DE', 'BEI.DE',
-        # Energy & Utilities
-        'EOAN.DE', 'RWE.DE',
-        # Other major components
-        'BNR.DE', 'CON.DE', 'DHL.DE', 'HEN.DE', 'HFG.DE', 'MUV2.DE', 'PAH3.DE', 'QIA.DE', 'SHL.DE', 'VNA.DE',
-        'ZAL.DE', 'HNR1.DE'
-    ]
+    return ['SAP.DE','SIE.DE','ALV.DE','DTE.DE','BAS.DE','VOW3.DE','BMW.DE','MBG.DE','ADS.DE','PUM.DE','DBK.DE','CBK.DE','DB1.DE','BAYN.DE','MRK.DE','FME.DE','FRE.DE','IFX.DE','SY1.DE','AIR.DE','MTX.DE','RHM.DE','SRT.DE','HEI.DE','BEI.DE','EOAN.DE','RWE.DE','BNR.DE','CON.DE','DHL.DE','HEN.DE','HFG.DE','MUV2.DE','PAH3.DE','QIA.DE','SHL.DE','VNA.DE','ZAL.DE','HNR1.DE']
 
-# ============================================================================
-# HELPER FUNCTIONS
-# ============================================================================
-
-def get_market_info(ticker):
-    """Determine market, flag, and currency from ticker suffix"""
-    if ticker.endswith('.WA'):
-        return "🇵🇱 WSE", "PLN"
-    elif ticker.endswith('.L'):
-        return "🇬🇧 LSE", "GBP"
-    elif ticker.endswith('.TA'):
-        return "🇮🇱 TASE", "ILS"
-    elif ticker.endswith('.DE'):
-        return "🇩🇪 XETRA", "EUR"
-    else:
-        return "🇺🇸 US", "USD"
-
-# ============================================================================
-# MASTER FUNCTION - COMBINES ALL TICKERS
-# ============================================================================
 
 def get_all_tickers():
-    """
-    Combine all market tickers with fallen angel candidates prioritized
-    
-    Scanning order:
-    1. Fallen angel candidates (most likely to have big drops)
-    2. US Russell 1000 (or S&P 500 + NASDAQ-100 fallback)
-    3. International markets (WSE, LSE, TASE, DAX) — large liquid names
-    """
-    all_tickers = []
-    
-    # Add high-priority fallen angel candidates FIRST
-    all_tickers.extend(get_fallen_angel_candidates())
-    
-    all_tickers.extend(get_us_scan_tickers())
-    all_tickers.extend(get_wse_tickers())
-    all_tickers.extend(get_ftse100_tickers())
-    all_tickers.extend(get_tase_tickers())
-    all_tickers.extend(get_dax_tickers())
-    
-    # Remove duplicates while preserving order (keeps first occurrence)
-    seen = set()
-    unique_tickers = []
-    for ticker in all_tickers:
-        if ticker not in seen:
-            seen.add(ticker)
-            unique_tickers.append(ticker)
-    
-    return unique_tickers
+    """Return the complete scan universe."""
+    tickers = []
+    for group in (get_us_scan_tickers(), get_fallen_angel_candidates(), get_wse_tickers(), get_ftse100_tickers(), get_tase_tickers(), get_dax_tickers()):
+        for ticker in group:
+            if ticker not in tickers:
+                tickers.append(ticker)
+    return tickers
