@@ -76,7 +76,7 @@ def get_fallen_angel_candidates():
 
 def fetch_russell_1000_tickers():
     """
-    Russell ~1000 constituents from Wikipedia (embedded components table).
+    Russell 1000 constituents from Wikipedia's dedicated company-list page.
     Covers large/mid US equities without needing paid screeners.
     """
     try:
@@ -85,25 +85,29 @@ def fetch_russell_1000_tickers():
         from io import StringIO
         import re
 
-        url = "https://en.wikipedia.org/wiki/Russell_1000_Index"
+        url = "https://en.wikipedia.org/wiki/List_of_Russell_1000_companies"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
         response = requests.get(url, headers=headers, timeout=15)
         response.raise_for_status()
         tables = pd.read_html(StringIO(response.text))
+
         for table in tables:
-            if "Symbol" in table.columns:
-                tickers = table["Symbol"].astype(str).str.strip().tolist()
-                
-                def _normalize_ticker(t: str) -> str:
-                    # Wikipedia uses dot notation for share classes (CWEN.A, BRK.B)
-                    # Yahoo Finance requires hyphen notation (CWEN-A, BRK-B)
-                    # Only match single capital letter A/B/C at end — not exchange suffixes like .DE/.WA
-                    return re.sub(r'\.([ABC])$', r'-\1', t)
-                
-                tickers = [_normalize_ticker(t) for t in tickers]
+            if "Symbol" not in table.columns:
+                continue
+
+            # Missing symbols are represented as NaN floats; drop them before regex normalization.
+            symbols = table["Symbol"].dropna().astype(str).str.strip()
+            tickers = [t for t in symbols.tolist() if t and t.lower() != 'nan']
+
+            # Wikipedia uses dot notation for share classes (CWEN.A, BRK.B).
+            # Yahoo Finance requires hyphen notation (CWEN-A, BRK-B).
+            tickers = [re.sub(r'\.([ABC])$', r'-\1', t) for t in tickers]
+
+            if len(tickers) >= 500:
                 return tickers
+
         return []
     except Exception:
         return []
@@ -229,36 +233,11 @@ def get_wse_tickers():
     """
     return [
         # Large-cap
-        'PKO.WA',   # PKO Bank Polski
-        'PZU.WA',   # PZU Insurance
-        'PKN.WA',   # PKN Orlen (oil)
-        'KGH.WA',   # KGHM (copper)
-        'PEO.WA',   # Pekao Bank
-        'CDR.WA',   # CD Projekt
-        'ALE.WA',   # Allegro
-        'DNP.WA',   # Dino Polska
-        'LPP.WA',   # LPP (fashion)
-        'PGE.WA',   # PGE Energy
-        
+        'PKO.WA', 'PZU.WA', 'PKN.WA', 'KGH.WA', 'PEO.WA', 'CDR.WA', 'ALE.WA', 'DNP.WA', 'LPP.WA', 'PGE.WA',
         # Mid-cap
-        'JSW.WA',   # JSW (coal)
-        'CPS.WA',   # Cyfrowy Polsat
-        'OPL.WA',   # Orange Polska
-        'MBK.WA',   # mBank
-        'KRU.WA',   # Kruk
-        'BDX.WA',   # Budimex
-        'KTY.WA',   # Kęty
-        'ASB.WA',   # Asseco Business Solutions
-        'MDV.WA',  # Modivo SA (footwear, formerly CCC SA — renamed Feb 2026)
-
+        'JSW.WA', 'CPS.WA', 'OPL.WA', 'MBK.WA', 'KRU.WA', 'BDX.WA', 'KTY.WA', 'ASB.WA', 'MDV.WA',
         # Small-cap
-        '11B.WA',   # 11 bit studios
-        'ATT.WA',   # Grupa Azoty (fertilizers, chemicals)
-        'CIG.WA',   # Cigames
-        'EUR.WA',   # Eurocash
-        'ING.WA',   # ING Bank Śląski
-        'KER.WA',   # Kernel
-        'MIL.WA',   # Millenium Bank
+        '11B.WA', 'ATT.WA', 'CIG.WA', 'EUR.WA', 'ING.WA', 'KER.WA', 'MIL.WA',
     ]
 
 # ============================================================================
@@ -274,50 +253,15 @@ def get_ftse100_tickers():
     """
     return [
         # Energy & Resources
-        'SHEL.L',   # Shell
-        'BP.L',     # BP
-        'RIO.L',    # Rio Tinto
-        'GLEN.L',   # Glencore
-        'BHP.L',    # BHP Group
-        'ANTO.L',   # Antofagasta
-        
+        'SHEL.L', 'BP.L', 'RIO.L', 'GLEN.L', 'BHP.L', 'ANTO.L',
         # Financials
-        'HSBA.L',   # HSBC
-        'BARC.L',   # Barclays
-        'LLOY.L',   # Lloyds
-        'NWG.L',    # NatWest
-        'STAN.L',   # Standard Chartered
-        'LSEG.L',   # London Stock Exchange
-        'PRU.L',    # Prudential
-        'LGEN.L',   # Legal & General
-        'III.L',    # 3i Group
-        
+        'HSBA.L', 'BARC.L', 'LLOY.L', 'NWG.L', 'STAN.L', 'LSEG.L', 'PRU.L', 'LGEN.L', 'III.L',
         # Consumer
-        'AZN.L',    # AstraZeneca
-        'ULVR.L',   # Unilever
-        'DGE.L',    # Diageo
-        'BATS.L',   # British American Tobacco
-        'REL.L',    # RELX
-        'TSCO.L',   # Tesco
-        'SBRY.L',   # Sainsbury's
-        'BRBY.L',   # Burberry
-        
+        'AZN.L', 'ULVR.L', 'DGE.L', 'BATS.L', 'REL.L', 'TSCO.L', 'SBRY.L', 'BRBY.L',
         # Industrial & Tech
-        'NG.L',     # National Grid
-        'SSE.L',    # SSE
-        'BA.L',     # BAE Systems
-        'RR.L',     # Rolls-Royce
-        'RKT.L',    # Reckitt
-        'WPP.L',    # WPP
-        'EXPN.L',   # Experian
-        'CNA.L',    # Centrica
-        'VOD.L',    # Vodafone
-        'BT-A.L',   # BT Group
-        'AAL.L',    # Anglo American
-        
+        'NG.L', 'SSE.L', 'BA.L', 'RR.L', 'RKT.L', 'WPP.L', 'EXPN.L', 'CNA.L', 'VOD.L', 'BT-A.L', 'AAL.L',
         # Other major components
-        'GSK.L', 'CPG.L', 'IMB.L', 'MNG.L', 'STJ.L',
-        'INF.L', 'FERG.L', 'PSN.L', 'AUTO.L', 'SGE.L',
+        'GSK.L', 'CPG.L', 'IMB.L', 'MNG.L', 'STJ.L', 'INF.L', 'FERG.L', 'PSN.L', 'AUTO.L', 'SGE.L',
         'AV.L', 'ENT.L', 'SPX.L', 'WTB.L', 'CRDA.L'
     ]
 
@@ -335,29 +279,11 @@ def get_tase_tickers():
     """
     return [
         # Large-cap
-        'TEVA.TA',   # Teva Pharmaceutical
-        'LUMI.TA',   # Bank Leumi
-        'POLI.TA',   # Bank Hapoalim
-        'ESLT.TA',   # Elbit Systems
-        'ICL.TA',    # ICL Group
-        'TATT.TA',   # Teva Tech
-        'AZRG.TA',   # Azrieli Group
-        'NICE.TA',   # NICE Systems
-        
+        'TEVA.TA', 'LUMI.TA', 'POLI.TA', 'ESLT.TA', 'ICL.TA', 'TATT.TA', 'AZRG.TA', 'NICE.TA',
         # Mid-cap
-        'FIBI.TA',   # First International Bank
-        'MZTF.TA',   # Mizrahi Tefahot Bank
-        'TASE.TA',   # Tel Aviv Stock Exchange
-        'DLEKG.TA',  # Delek Group
-        'MLSR.TA',   # Melisron
-        'BEZQ.TA',   # Bezeq Telecom
-        
+        'FIBI.TA', 'MZTF.TA', 'TASE.TA', 'DLEKG.TA', 'MLSR.TA', 'BEZQ.TA',
         # Small-cap
-        'ALHE.TA',   # Alony Hetz
-        'ELAL.TA',   # El Al Airlines
-        'FTAL.TA',   # Formula Systems
-        'BIGT.TA',   # Big Shopping Centers
-        'ENLT.TA',   # Energix
+        'ALHE.TA', 'ELAL.TA', 'FTAL.TA', 'BIGT.TA', 'ENLT.TA',
     ]
 
 # ============================================================================
@@ -373,45 +299,17 @@ def get_dax_tickers():
     """
     return [
         # Large-cap industrials & auto
-        'SAP.DE',    # SAP
-        'SIE.DE',    # Siemens
-        'ALV.DE',    # Allianz
-        'DTE.DE',    # Deutsche Telekom
-        'BAS.DE',    # BASF
-        'VOW3.DE',   # Volkswagen
-        'BMW.DE',    # BMW
-        'MBG.DE',    # Mercedes-Benz
-        'ADS.DE',    # Adidas
-        'PUM.DE',    # Puma
-        
+        'SAP.DE', 'SIE.DE', 'ALV.DE', 'DTE.DE', 'BAS.DE', 'VOW3.DE', 'BMW.DE', 'MBG.DE', 'ADS.DE', 'PUM.DE',
         # Financials
-        'DBK.DE',    # Deutsche Bank
-        'CBK.DE',    # Commerzbank
-        'DB1.DE',    # Deutsche Börse
-        
+        'DBK.DE', 'CBK.DE', 'DB1.DE',
         # Pharma & Healthcare
-        'BAYN.DE',   # Bayer
-        'MRK.DE',    # Merck
-        'FME.DE',    # Fresenius Medical Care
-        'FRE.DE',    # Fresenius
-        
+        'BAYN.DE', 'MRK.DE', 'FME.DE', 'FRE.DE',
         # Industrial & Tech
-        'IFX.DE',    # Infineon
-        'SY1.DE',    # Symrise
-        'AIR.DE',    # Airbus
-        'MTX.DE',    # MTU Aero Engines
-        'RHM.DE',    # Rheinmetall
-        'SRT.DE',    # Sartorius
-        'HEI.DE',    # HeidelbergCement
-        'BEI.DE',    # Beiersdorf
-        
+        'IFX.DE', 'SY1.DE', 'AIR.DE', 'MTX.DE', 'RHM.DE', 'SRT.DE', 'HEI.DE', 'BEI.DE',
         # Energy & Utilities
-        'EOAN.DE',   # E.ON
-        'RWE.DE',    # RWE
-        
+        'EOAN.DE', 'RWE.DE',
         # Other major components
-        'BNR.DE', 'CON.DE', 'DHL.DE', 'HEN.DE', 'HFG.DE',
-        'MUV2.DE', 'PAH3.DE', 'QIA.DE', 'SHL.DE', 'VNA.DE',
+        'BNR.DE', 'CON.DE', 'DHL.DE', 'HEN.DE', 'HFG.DE', 'MUV2.DE', 'PAH3.DE', 'QIA.DE', 'SHL.DE', 'VNA.DE',
         'ZAL.DE', 'HNR1.DE'
     ]
 
