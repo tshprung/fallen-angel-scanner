@@ -9,26 +9,30 @@ on:
 jobs:
   update-tickers:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt --break-system-packages
-      
+
       - name: Run ticker update check
         id: update_check
+        continue-on-error: true
         run: |
+          set +e
           python update_tickers.py
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
-      
+          rc=$?
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
       - name: Commit logs
         run: |
           git config user.name github-actions
@@ -37,17 +41,16 @@ jobs:
           git add ticker_update_report.txt
           git diff --quiet && git diff --staged --quiet || git commit -m "Ticker update check $(date +'%Y-%m-%d')"
           git push
-      
+
       - name: Create issue if action needed
         if: steps.update_check.outputs.exit_code == '1'
         uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
-            const reportFiles = fs.readdirSync('.').filter(f => f.startsWith('ticker_update_report'));
-            const reportContent = fs.readFileSync(reportFiles[0], 'utf8');
-            
-            github.rest.issues.create({
+            const reportContent = fs.readFileSync('ticker_update_report.txt', 'utf8');
+
+            await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: '⚠️ Ticker List Update Required',
