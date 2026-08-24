@@ -9,14 +9,6 @@ add any external API calls.
 import numpy as np
 import fallen_angel_scanner as scanner
 
-
-# ---------------------------------------------------------------------------
-# 1. Recovery-target valuation sanity check
-# ---------------------------------------------------------------------------
-# The original target model can produce very large upside from historical
-# prices/analyst targets even when the stock remains extremely expensive.
-# Apply a haircut to the *upside*, rather than a hard valuation exclusion, so
-# genuine high-growth recoveries can still qualify.
 _original_estimate_recovery_target = scanner.estimate_recovery_target
 
 
@@ -52,8 +44,6 @@ def estimate_recovery_target_with_valuation_sanity(stock, info, current_price):
         if pb is not None and pb > 6:
             haircut += 0.15
 
-        # For the upper small-cap extension, demand a little more valuation
-        # discipline because these names have higher failure/dispersion risk.
         market_cap = info.get("marketCap") or 0
         if 750_000_000 <= market_cap < 2_000_000_000:
             if fpe is not None and fpe > 30:
@@ -72,17 +62,12 @@ def estimate_recovery_target_with_valuation_sanity(stock, info, current_price):
     return target_low, target_high, upside_pct
 
 
-# ---------------------------------------------------------------------------
-# 2. Additional small-cap quality pressure
-# ---------------------------------------------------------------------------
 _original_calculate_risk_score = scanner.calculate_risk_score
 
 
 def calculate_risk_score_with_small_cap_quality(*args, **kwargs):
     score = _original_calculate_risk_score(*args, **kwargs)
 
-    # calculate_risk_score signature has market_cap_usd, piotroski and
-    # debt_ebitda as keyword arguments in the current scanner.
     market_cap = kwargs.get("market_cap_usd")
     if market_cap is None and len(args) >= 7:
         market_cap = args[6]
@@ -90,8 +75,8 @@ def calculate_risk_score_with_small_cap_quality(*args, **kwargs):
     if piotroski is None and len(args) >= 6:
         piotroski = args[5]
     debt_ebitda = kwargs.get("debt_ebitda")
-    if debt_ebitda is None and len(args) >= 7:
-        debt_ebitda = args[6]
+    if debt_ebitda is None and len(args) >= 8:
+        debt_ebitda = args[7]
 
     try:
         market_cap = float(market_cap or 0)
