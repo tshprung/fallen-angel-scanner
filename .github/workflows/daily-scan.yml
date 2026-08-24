@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    # The US universe is now broader (upper Russell 2000 included). Give the
-    # scanner more wall-clock time while keeping the weekday run well within
-    # the free-tier budget for a private repository.
+    # The US universe is broad; the enhanced runner adds only a few history
+    # requests for final candidates. Keep a generous wall-clock limit while
+    # remaining on the standard GitHub-hosted runner.
     timeout-minutes: 60
 
     steps:
@@ -32,7 +32,7 @@ jobs:
           RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           PYTHONUNBUFFERED: 1
-        run: python -u scanner_policy.py
+        run: python -u scanner_enhanced.py
 
       - name: Commit memory file
         run: |
