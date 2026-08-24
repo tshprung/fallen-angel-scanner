@@ -16,6 +16,14 @@ from tickers_config import (
     get_fallen_angel_candidates
 )
 
+# Windows consoles may default to cp1252, which cannot encode the emoji
+# characters used in the log messages. Force UTF-8 when supported.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding='utf-8', errors='replace')
+    except (AttributeError, ValueError):
+        pass
+
 try:
     import lxml
 except ImportError:
@@ -27,7 +35,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('ticker_updates.log'),
+        logging.FileHandler('ticker_updates.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )
@@ -76,14 +84,10 @@ def fetch_russell_1000_from_wikipedia():
             if 'Symbol' not in table.columns:
                 continue
 
-            tickers = (
-                table['Symbol']
-                .astype(str)
-                .str.strip()
-                .replace({'nan': ''})
-                .tolist()
-            )
-            tickers = [t for t in tickers if t]
+            # Some rows have missing symbols, represented by NaN floats.
+            # Drop them before applying string normalization/regex.
+            symbols = table['Symbol'].dropna().astype(str).str.strip()
+            tickers = [t for t in symbols.tolist() if t and t.lower() != 'nan']
 
             # Yahoo Finance uses BRK-B / BF-A rather than Wikipedia's BRK.B / BF.A.
             import re
@@ -270,7 +274,7 @@ def main():
 
     logger.info(report)
     report_filename = "ticker_update_report.txt"
-    with open(report_filename, 'w') as f:
+    with open(report_filename, 'w', encoding='utf-8') as f:
         f.write(report)
     logger.info(f"\n📄 Report saved to: {report_filename}")
 
