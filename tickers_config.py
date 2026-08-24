@@ -5,11 +5,13 @@ Last updated: August 2026
 This file contains all stock ticker lists for the fallen angel scanner.
 """
 
-# US market-cap floor. Russell 1000 + Russell 2000 together give the scanner
-# a broad US universe; this floor removes the smallest/noisiest names in Stage 1.
+# US market-cap floor. The Russell 2000 extension is intentionally limited to
+# its upper slice so the daily GitHub Action remains practical and Yahoo does
+# not receive thousands of unnecessary requests.
 MIN_MARKET_CAP_USD_US = 750_000_000
 MIN_MARKET_CAP_USD_UK_DE = 1_000_000_000
 MIN_MARKET_CAP_USD_PL_IL = 400_000_000
+RUSSELL_2000_TOP_N = 750
 
 
 def get_min_market_cap_usd(ticker: str) -> float:
@@ -25,8 +27,6 @@ def get_min_avg_dollar_volume_usd(ticker: str) -> float:
         return 350_000
     if ticker.endswith(".L") or ticker.endswith(".DE"):
         return 1_000_000
-    # Keep the same US liquidity gate for all US names. This is important now
-    # that the universe includes Russell 2000 names as well.
     return 1_500_000
 
 
@@ -44,11 +44,7 @@ def _fetch_wikipedia_symbols(url):
         import requests
         from io import StringIO
         import re
-        response = requests.get(
-            url,
-            headers={"User-Agent": "Mozilla/5.0"},
-            timeout=20,
-        )
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=20)
         response.raise_for_status()
         tables = pd.read_html(StringIO(response.text))
         for table in tables:
@@ -63,21 +59,17 @@ def _fetch_wikipedia_symbols(url):
 
 
 def fetch_russell_1000_tickers():
-    """Fetch Russell 1000 constituents from Wikipedia."""
-    tickers = _fetch_wikipedia_symbols(
-        "https://en.wikipedia.org/wiki/List_of_Russell_1000_companies"
-    )
+    tickers = _fetch_wikipedia_symbols("https://en.wikipedia.org/wiki/List_of_Russell_1000_companies")
     return tickers if len(tickers) >= 500 else []
 
 
-def fetch_russell_2000_tickers():
-    """Fetch current Russell 2000 constituents from iShares IWM holdings.
+def fetch_russell_2000_tickers(limit=RUSSELL_2000_TOP_N):
+    """Fetch the upper slice of Russell 2000 constituents from IWM holdings.
 
-    IWM tracks the Russell 2000 and publishes its holdings as a free CSV.
-    We deliberately return the full equity universe here; Stage 1's existing
-    market-cap, security-type, biotech, penny-stock and liquidity filters then
-    decide which names actually get analysed. This avoids introducing another
-    paid market-data dependency or an extra per-ticker API call.
+    IWM tracks Russell 2000 and publishes free holdings data. We use portfolio
+    weight as a stable ranking proxy for company size, then let Stage 1 apply
+    the authoritative Yahoo market-cap and liquidity filters. Limiting to the
+    top 750 keeps the daily scan broad without multiplying API traffic by 2x.
     """
     try:
         import csv
@@ -89,64 +81,63 @@ def fetch_russell_2000_tickers():
             "ishares-russell-2000-etf/1467271812596.ajax"
             "?fileType=csv&fileName=IWM_holdings&dataType=fund"
         )
-        response = requests.get(
-            url,
-            headers={"User-Agent": "Mozilla/5.0"},
-            timeout=30,
-        )
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
         response.raise_for_status()
         text = response.content.decode("utf-8-sig", errors="replace")
-
-        # iShares puts metadata lines before the actual CSV header.
         lines = text.splitlines()
-        header_index = next(
-            (i for i, line in enumerate(lines) if line.startswith("Ticker,")),
-            None,
-        )
+        header_index = next((i for i, line in enumerate(lines) if line.startswith("Ticker,")), None)
         if header_index is None:
             return []
 
         reader = csv.DictReader(io.StringIO("\n".join(lines[header_index:])))
-        tickers = []
+        holdings = []
         for row in reader:
             ticker = (row.get("Ticker") or "").strip()
             asset_class = (row.get("Asset Class") or "").strip().lower()
-            if not ticker or ticker == "-":
+            if not ticker or ticker == "-" or (asset_class and asset_class != "equity"):
                 continue
-            if asset_class and asset_class != "equity":
-                continue
-            # iShares can expose share classes with dots; Yahoo generally uses
-            # hyphens for US share classes, matching our existing normalization.
+            try:
+                weight = float((row.get("Weight (%)") or "0").replace(",", ""))
+            except (TypeError, ValueError):
+                weight = 0.0
             ticker = ticker.replace(".", "-")
-            if ticker not in tickers:
-                tickers.append(ticker)
-        return tickers
+            holdings.append((weight, ticker))
+
+        holdings.sort(reverse=True)
+        result = []
+        seen = set()
+        for _, ticker in holdings:
+            if ticker not in seen:
+                seen.add(ticker)
+                result.append(ticker)
+            if len(result) >= limit:
+                break
+        return result
     except Exception:
         return []
 
 
 def get_us_scan_tickers():
-    """Primary US universe: Russell 1000 + Russell 2000."""
+    """Primary US universe: Russell 1000 + upper Russell 2000 slice."""
     r1k = fetch_russell_1000_tickers()
     r2k = fetch_russell_2000_tickers()
 
-    if len(r1k) >= 500 and len(r2k) >= 1000:
+    if len(r1k) >= 500:
         combined = r1k + r2k
-    elif len(r1k) >= 500:
-        combined = r1k
     else:
-        combined = get_sp500_tickers() + get_nasdaq100_tickers()
-        if len(r2k) >= 1000:
-            combined += r2k
+        combined = get_sp500_tickers() + get_nasdaq100_tickers() + r2k
 
     seen = set()
-    return [t for t in combined if not (t in seen or seen.add(t))]
+    unique = []
+    for ticker in combined:
+        if ticker not in seen:
+            seen.add(ticker)
+            unique.append(ticker)
+    return unique
 
 
 def get_sp500_tickers():
-    tickers = _fetch_wikipedia_symbols(
-        "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-    )
+    tickers = _fetch_wikipedia_symbols("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
     return tickers or ['AAPL','MSFT','GOOGL','AMZN','NVDA','META','TSLA','BRK-B','LLY','V','UNH','XOM','WMT','JPM','MA']
 
 
