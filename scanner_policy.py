@@ -4,11 +4,16 @@ The overlay keeps the core scanner intact while:
 1. extending the US universe into the upper slice of the Russell 2000;
 2. applying stricter quality/valuation discipline to smaller companies.
 
-The Russell-2000 holdings are fetched once per run from iShares' public JSON
-holdings endpoint. No per-ticker extra API calls are added by this layer.
+The Russell-2000 holdings are fetched once per run from iShares' public
+holdings endpoint. The fetch has JSON + CSV fallbacks because iShares can
+occasionally return a non-JSON response to the AJAX endpoint.
 """
 
+import csv
+import io
 import json
+import time
+
 import numpy as np
 import requests
 import fallen_angel_scanner as scanner
@@ -18,56 +23,144 @@ R2K_MIN_DOLLAR_VOLUME = 2_000_000
 R2K_MIN_MARKET_CAP = 750_000_000
 R2K_MAX_MARKET_CAP = 2_000_000_000
 
+IWM_JSON_URL = (
+    "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/"
+    "1467271812596.ajax?tab=all&fileType=json"
+)
+IWM_CSV_URL = (
+    "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/"
+    "1467271812596.ajax?fileType=csv&fileName=IWM_holdings&dataType=fund"
+)
 
-def fetch_upper_russell_2000():
-    """Fetch and return the largest current IWM constituents by portfolio weight."""
-    url = (
-        "https://www.ishares.com/us/products/239710/"
-        "ishares-russell-2000-etf/1467271812596.ajax"
-        "?tab=all&fileType=json"
-    )
+
+def _ishares_headers():
+    return {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/131.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Referer": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+        "X-Requested-With": "XMLHttpRequest",
+    }
+
+
+def _to_number(value):
+    if isinstance(value, dict):
+        value = value.get("raw", value.get("display", 0))
+    if value is None:
+        return 0.0
+    text = str(value).strip().replace(",", "").replace("$", "").replace("%", "")
     try:
-        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
-        response.raise_for_status()
-        payload = json.loads(response.content.decode("utf-8-sig"))
-        rows = payload.get("aaData") or payload.get("data") or []
-        holdings = []
-        for row in rows:
-            if not isinstance(row, (list, tuple)) or len(row) < 6:
-                continue
-            ticker = str(row[0] or "").strip()
-            asset_class = str(row[3] or "").strip().lower()
-            if not ticker or ticker == "-" or (asset_class and asset_class != "equity"):
-                continue
-            weight = row[5]
-            if isinstance(weight, dict):
-                weight = weight.get("raw", 0)
-            try:
-                weight = float(weight)
-            except (TypeError, ValueError):
-                weight = 0.0
-            holdings.append((weight, ticker.replace(".", "-")))
+        return float(text)
+    except (TypeError, ValueError):
+        return 0.0
 
-        holdings.sort(reverse=True)
-        result = []
-        seen = set()
-        for _, ticker in holdings:
-            if ticker not in seen:
-                seen.add(ticker)
-                result.append(ticker)
-            if len(result) >= R2K_TOP_N:
-                break
-        if len(result) < 500:
-            print(f"  ⚠️ Russell 2000 extension returned only {len(result)} tickers")
-            return []
-        print(f"  ✅ Russell 2000 extension: {len(result)} upper-slice tickers")
-        return result
-    except Exception as e:
-        print(f"  ⚠️ Russell 2000 extension fetch failed: {e}")
+
+def _clean_ticker(ticker):
+    ticker = str(ticker or "").strip().strip('"')
+    if not ticker or ticker in {"-", "nan", "None"}:
+        return ""
+    return ticker.replace(".", "-")
+
+
+def _select_top_holdings(holdings):
+    """Return the largest R2K constituents by current market value."""
+    holdings = sorted(holdings, key=lambda x: x[0], reverse=True)
+    result = []
+    seen = set()
+    for market_value, ticker in holdings:
+        ticker = _clean_ticker(ticker)
+        if not ticker or ticker in seen:
+            continue
+        seen.add(ticker)
+        result.append(ticker)
+        if len(result) >= R2K_TOP_N:
+            break
+    return result
+
+
+def _parse_ishares_json(content):
+    payload = json.loads(content.decode("utf-8-sig"))
+    rows = payload.get("aaData") or payload.get("data") or []
+    holdings = []
+    for row in rows:
+        if not isinstance(row, (list, tuple)) or len(row) < 6:
+            continue
+        ticker = _clean_ticker(row[0])
+        asset_class = str(row[3] or "").strip().lower()
+        if not ticker or (asset_class and asset_class != "equity"):
+            continue
+        # iShares native schema: 4=market value, 5=weight.
+        market_value = _to_number(row[4])
+        holdings.append((market_value, ticker))
+    return _select_top_holdings(holdings)
+
+
+def _parse_ishares_csv(content):
+    text = content.decode("utf-8-sig", errors="replace")
+    lines = text.splitlines()
+
+    # iShares puts descriptive metadata before the actual CSV header.
+    header_index = None
+    for i, line in enumerate(lines):
+        if line.strip().lower().startswith("ticker,"):
+            header_index = i
+            break
+    if header_index is None:
         return []
 
+    reader = csv.DictReader(io.StringIO("\n".join(lines[header_index:])))
+    holdings = []
+    for row in reader:
+        ticker = _clean_ticker(row.get("Ticker"))
+        asset_class = str(row.get("Asset Class") or "").strip().lower()
+        if not ticker or (asset_class and asset_class != "equity"):
+            continue
+        market_value = _to_number(row.get("Market Value"))
+        holdings.append((market_value, ticker))
 
-# Fetch once. The scanner is daily, so one additional HTTP request is negligible.
+    return _select_top_holdings(holdings)
+
+
+def fetch_upper_russell_2000():
+    """Fetch the largest current IWM constituents with robust fallbacks."""
+    session = requests.Session()
+    headers = _ishares_headers()
+
+    # JSON is the preferred machine-readable endpoint. Retry once because
+    # iShares occasionally returns an empty/HTML response transiently.
+    for attempt in range(2):
+        try:
+            response = session.get(IWM_JSON_URL, headers=headers, timeout=30)
+            response.raise_for_status()
+            result = _parse_ishares_json(response.content)
+            if len(result) >= 500:
+                print(f"  ✅ Russell 2000 extension: {len(result)} upper-slice tickers (JSON)")
+                return result
+            print(f"  ⚠️ iShares JSON returned only {len(result)} usable tickers")
+        except Exception as e:
+            print(f"  ⚠️ iShares JSON attempt {attempt + 1}/2 failed: {e}")
+        if attempt == 0:
+            time.sleep(2)
+
+    # CSV is the documented download path and is a useful fallback when the
+    # AJAX JSON response is blocked or malformed.
+    try:
+        response = session.get(IWM_CSV_URL, headers=headers, timeout=30)
+        response.raise_for_status()
+        result = _parse_ishares_csv(response.content)
+        if len(result) >= 500:
+            print(f"  ✅ Russell 2000 extension: {len(result)} upper-slice tickers (CSV)")
+            return result
+        print(f"  ⚠️ iShares CSV returned only {len(result)} usable tickers")
+    except Exception as e:
+        print(f"  ⚠️ iShares CSV fallback failed: {e}")
+
+    print("  ❌ Russell 2000 extension unavailable — keeping base universe")
+    return []
+
+
+# Fetch once. The scanner is daily, so these are only two or three lightweight
+# requests per run at worst, not per-ticker calls.
 R2K_TICKERS = fetch_upper_russell_2000()
 R2K_SET = set(R2K_TICKERS)
 
