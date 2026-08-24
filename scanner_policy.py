@@ -3,9 +3,9 @@
 The overlay keeps the core scanner intact while extending the US universe into
 smaller, liquid US companies and applying stricter discipline to them.
 
-Primary extension: S&P 600.  It is a much more reliable public source than the
+Primary extension: S&P 600. It is a much more reliable public source than the
 IWM AJAX endpoint in GitHub Actions, and it gives us roughly 600 additional
-small-cap names without adding thousands of Yahoo requests.  IWM is retained
+small-cap names without adding thousands of Yahoo requests. IWM is retained
 as an optional fallback because it is useful when its download endpoint works.
 """
 
@@ -27,6 +27,16 @@ R2K_MAX_MARKET_CAP = 2_000_000_000
 
 SP600_MIN_DOLLAR_VOLUME = 2_000_000
 SP600_MIN_MARKET_CAP = 750_000_000
+
+# The S&P 600 itself is not uniformly tiny: current constituents range well
+# above $5B. Keep the extension focused on genuinely smaller companies while
+# leaving the original large-cap universe unchanged.
+SMALL_CAP_MAX_MARKET_CAP_USD = 5_000_000_000
+SMALL_CAP_MAX_RISK_SCORE = 2
+SMALL_CAP_MIN_PIOTROSKI = 4
+SMALL_CAP_MAX_DEBT_EBITDA = 5.0
+SMALL_CAP_MAX_PRICE_TO_BOOK = 15.0
+SMALL_CAP_MAX_NET_DEBT_TO_MCAP = 0.75
 
 IWM_JSON_URL = (
     "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/"
@@ -122,8 +132,6 @@ def _parse_ishares_csv(content):
     if ticker_idx is None:
         return []
 
-    # Prefer market value, then weight.  Either is sufficient for selecting
-    # the upper slice; actual market-cap/liquidity checks happen in the scanner.
     value_idx = normalized.get("market value")
     if value_idx is None:
         value_idx = normalized.get("market value ($)")
@@ -276,10 +284,106 @@ def estimate_recovery_target_with_valuation_sanity(stock, info, current_price):
     return target_low, target_high, upside_pct
 
 
+# ---------------------------------------------------------------------------
+# News-quality correction
+# ---------------------------------------------------------------------------
+_original_search_recent_news = scanner.search_recent_news
+
+
+def search_recent_news_with_neutral_fallback(ticker, company_name):
+    """Do not label an unverified price-only inference as earnings/news."""
+    headlines = _original_search_recent_news(ticker, company_name)
+    synthetic_markers = (
+        "sharp drop detected",
+        "moderate decline",
+        "gradual decline",
+        "price decline detected",
+        "unable to determine cause",
+    )
+    if headlines and any(
+        any(marker in str(headline).lower() for marker in synthetic_markers)
+        for headline in headlines
+    ):
+        return ["No verified recent news available — price action only"]
+    return headlines
+
+
+# ---------------------------------------------------------------------------
+# Small-cap quality overlay
+# ---------------------------------------------------------------------------
+_original_stage2_deep_analysis = scanner.stage2_deep_analysis
+
+
+def _filter_small_cap_results(stocks):
+    filtered = []
+    for stock in stocks:
+        ticker = stock.get("ticker")
+        if ticker not in EXTENSION_SET:
+            filtered.append(stock)
+            continue
+
+        cap = stock.get("market_cap_usd") or 0
+        health = stock.get("financial_health") or {}
+        net_debt = health.get("net_debt")
+        debt_ebitda = health.get("debt_ebitda")
+        pb = stock.get("price_to_book")
+        risk = stock.get("risk_score")
+        piotroski = stock.get("piotroski_score")
+        piotroski_checks = stock.get("piotroski_checks")
+
+        if cap and cap > SMALL_CAP_MAX_MARKET_CAP_USD:
+            print(f"  ⏭️  {ticker} removed by small-cap cap limit: ${cap / 1e9:.1f}B > ${SMALL_CAP_MAX_MARKET_CAP_USD / 1e9:.1f}B")
+            continue
+
+        if risk is not None and risk > SMALL_CAP_MAX_RISK_SCORE:
+            print(f"  ⏭️  {ticker} removed by small-cap risk limit: {risk}/10 > {SMALL_CAP_MAX_RISK_SCORE}")
+            continue
+
+        if (
+            piotroski is not None
+            and piotroski_checks is not None
+            and piotroski_checks >= 6
+            and piotroski < SMALL_CAP_MIN_PIOTROSKI
+        ):
+            print(f"  ⏭️  {ticker} removed by small-cap Piotroski floor: F{piotroski}/{piotroski_checks}")
+            continue
+
+        if debt_ebitda is not None and np.isfinite(float(debt_ebitda)) and float(debt_ebitda) > SMALL_CAP_MAX_DEBT_EBITDA:
+            print(f"  ⏭️  {ticker} removed by small-cap debt/EBITDA limit: {debt_ebitda:.1f}x > {SMALL_CAP_MAX_DEBT_EBITDA:.1f}x")
+            continue
+
+        if (
+            net_debt is not None
+            and cap
+            and net_debt > 0
+            and (net_debt / cap) >= SMALL_CAP_MAX_NET_DEBT_TO_MCAP
+        ):
+            ratio = net_debt / cap
+            print(f"  ⏭️  {ticker} removed by small-cap net-debt limit: {ratio:.1f}x market cap >= {SMALL_CAP_MAX_NET_DEBT_TO_MCAP:.2f}x")
+            continue
+
+        if pb is not None and np.isfinite(float(pb)) and float(pb) > SMALL_CAP_MAX_PRICE_TO_BOOK:
+            print(f"  ⏭️  {ticker} removed by small-cap P/B sanity limit: {pb:.1f}x > {SMALL_CAP_MAX_PRICE_TO_BOOK:.1f}x")
+            continue
+
+        filtered.append(stock)
+
+    return filtered
+
+
+def stage2_deep_analysis_with_small_cap_policy(candidates, memory):
+    analyzed, fresh_crash = _original_stage2_deep_analysis(candidates, memory)
+    analyzed = _filter_small_cap_results(analyzed)
+    fresh_crash = _filter_small_cap_results(fresh_crash)
+    return analyzed, fresh_crash
+
+
 # Install the overlay before scanner.main() resolves its globals.
 scanner.get_all_tickers = get_all_tickers_with_extension
 scanner.get_min_avg_dollar_volume_usd = get_min_avg_dollar_volume_usd_with_extension
 scanner.estimate_recovery_target = estimate_recovery_target_with_valuation_sanity
+scanner.search_recent_news = search_recent_news_with_neutral_fallback
+scanner.stage2_deep_analysis = stage2_deep_analysis_with_small_cap_policy
 
 
 if __name__ == "__main__":
