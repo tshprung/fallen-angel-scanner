@@ -32,7 +32,7 @@ jobs:
           RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           PYTHONUNBUFFERED: 1
-        run: python -u fallen_angel_scanner.py
+        run: python -u scanner_policy.py
 
       - name: Commit memory file
         run: |
