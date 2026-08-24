@@ -11,18 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    timeout-minutes: 40
-    
+    # The US universe is now broader (upper Russell 2000 included). Give the
+    # scanner more wall-clock time while keeping the weekday run well within
+    # the free-tier budget for a private repository.
+    timeout-minutes: 60
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      
+
       - name: Install dependencies
         run: pip install -r requirements.txt --break-system-packages
-      
+
       - name: Run fallen angel scanner
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
@@ -30,7 +33,7 @@ jobs:
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           PYTHONUNBUFFERED: 1
         run: python -u fallen_angel_scanner.py
-      
+
       - name: Commit memory file
         run: |
           git config user.name "fallen-angel-bot"
