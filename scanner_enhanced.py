@@ -19,12 +19,17 @@ import yfinance as yf
 import fallen_angel_scanner as scanner
 import scanner_policy as policy
 
-
+# Small-cap risk 3 is allowed only when the stronger quality overlay passes.
+# Previously both policy layers used <=2, which could make a legitimate
+# candidate disappear entirely (e.g. LIF in the Aug-25 scan).
 SMALL_CAP_MAX_MARKET_CAP_USD = 5_000_000_000
 SMALL_CAP_MAX_NET_DEBT_TO_MCAP = 0.75
 SMALL_CAP_MAX_DEBT_EBITDA = 5.0
-SMALL_CAP_MAX_RISK_SCORE = 2
+SMALL_CAP_MAX_RISK_SCORE = 3
 SMALL_CAP_MIN_PIOTROSKI = 4
+
+# Keep the policy module and this enhanced overlay aligned.
+policy.SMALL_CAP_MAX_RISK_SCORE = SMALL_CAP_MAX_RISK_SCORE
 
 
 def _is_us_small_cap(stock):
@@ -133,9 +138,6 @@ def stage2_enhanced(candidates, memory):
     analyzed = _attach_trend_scores(analyzed)
     fresh = _attach_trend_scores(fresh)
     return analyzed, fresh
-
-
-scanner.stage2_deep_analysis = stage2_enhanced
 
 
 _original_generate_email_html = scanner.generate_email_html
