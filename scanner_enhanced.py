@@ -6,26 +6,22 @@ hide useful borderline candidates.
 """
 
 import numpy as np
+import pandas as pd
 import yfinance as yf
 
 import fallen_angel_scanner as scanner
 import scanner_policy as policy
 
-# Re-check more frequently so a rapidly changing fallen angel is not hidden
-# behind the original 14-day deduplication window.
 scanner.DEDUP_DAYS = 3
-
-# Risk 4 is a WATCH-level candidate instead of an automatic discard.
-# Risk >=5 remains excluded. The raw risk is retained separately.
 MAX_ADMISSIBLE_RISK_SCORE = 4
-
 SMALL_CAP_MAX_MARKET_CAP_USD = 5_000_000_000
 SMALL_CAP_MAX_NET_DEBT_TO_MCAP = 0.75
 SMALL_CAP_MAX_DEBT_EBITDA = 5.0
 SMALL_CAP_MAX_RISK_SCORE = 3
 SMALL_CAP_MIN_PIOTROSKI = 4
-
 policy.SMALL_CAP_MAX_RISK_SCORE = SMALL_CAP_MAX_RISK_SCORE
+
+TICKER_ALIASES = {"CCC.WA": "MDV.WA"}
 
 
 def _is_us_small_cap(stock):
@@ -37,24 +33,19 @@ def _is_us_small_cap(stock):
 
 
 def _apply_small_cap_quality_overlay(stocks):
-    """Apply stricter balance-sheet/quality gates to genuinely small US names."""
     out = []
     for stock in stocks:
         if not _is_us_small_cap(stock):
             out.append(stock)
             continue
-
         ticker = stock["ticker"]
         health = stock.get("financial_health") or {}
         cap = float(stock.get("market_cap_usd") or stock.get("market_cap") or 0)
-        # Use the raw risk where available. A borderline large-cap risk 4 is
-        # watchable; a small-cap risk 4 remains too risky for this strategy.
         risk = stock.get("risk_score_raw", stock.get("risk_score"))
         piotroski = stock.get("piotroski_score")
         checks = stock.get("piotroski_checks")
         debt_ebitda = health.get("debt_ebitda")
         net_debt = health.get("net_debt")
-
         if risk is not None and risk > SMALL_CAP_MAX_RISK_SCORE:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: risk {risk}/10")
             continue
@@ -74,7 +65,6 @@ def _apply_small_cap_quality_overlay(stocks):
 
 
 def _trend_template_score(ticker):
-    """Return a 0-7 recovery/Trend-Template style score; informational only."""
     try:
         close = yf.Ticker(ticker).history(period="1y", auto_adjust=False)["Close"].dropna()
         if len(close) < 210:
@@ -87,11 +77,9 @@ def _trend_template_score(ticker):
         ma200_20d = float(ma200_series.iloc[-21])
         low_52 = float(close.min())
         high_52 = float(close.max())
-        criteria = [
-            price > ma150, price > ma200, ma150 > ma200,
-            ma200 > ma200_20d, ma50 > ma150 and ma50 > ma200,
-            price > ma50, price >= low_52 * 1.30 and price >= high_52 * 0.75,
-        ]
+        criteria = [price > ma150, price > ma200, ma150 > ma200, ma200 > ma200_20d,
+                    ma50 > ma150 and ma50 > ma200, price > ma50,
+                    price >= low_52 * 1.30 and price >= high_52 * 0.75]
         return sum(bool(x) for x in criteria)
     except Exception as exc:
         print(f"  ⚠️ Trend Template unavailable for {ticker}: {exc}")
@@ -113,9 +101,6 @@ def _attach_trend_scores(stocks):
     return stocks
 
 
-# The core Stage 2 has a hard risk >=4 gate. Temporarily map exactly 4 to 3
-# so the candidate can be evaluated and ranked; we preserve raw risk for the
-# report. Scores >=5 still fail at the core gate.
 _original_calculate_risk_score = scanner.calculate_risk_score
 
 
@@ -131,24 +116,84 @@ def _calculate_risk_score_soft_gate(*args, **kwargs):
 
 scanner.calculate_risk_score = _calculate_risk_score_soft_gate
 
+
+# Yahoo Finance/WSE ticker migrations are handled here because this enhanced
+# runner is the production entry point. Empty histories are valid provider
+# responses and must never reach iloc[-1].
+def _safe_check_price_alerts(memory):
+    alerts = []
+    tracked = memory.setdefault("tracked_prices", {})
+    for stored_ticker, data in list(tracked.items()):
+        ticker = TICKER_ALIASES.get(stored_ticker, stored_ticker)
+        if ticker != stored_ticker:
+            if ticker not in tracked:
+                tracked[ticker] = data
+            del tracked[stored_ticker]
+            data = tracked[ticker]
+            print(f"  🔄 Migrated tracked ticker {stored_ticker} → {ticker}")
+        try:
+            stock = yf.Ticker(ticker)
+            history = stock.history(period="1d")
+            if history is None or history.empty or "Close" not in history.columns:
+                print(f"  ⚠️  No price data for {ticker}; skipping alert check")
+                continue
+            closes = history["Close"].dropna()
+            if closes.empty:
+                print(f"  ⚠️  Empty price history for {ticker}; skipping alert check")
+                continue
+            current_price = float(closes.iloc[-1])
+            original_price = float(data["price"])
+            stored_date = data.get("date")
+            try:
+                splits = stock.splits
+                if stored_date and splits is not None and not splits.empty:
+                    split_cutoff = pd.Timestamp(stored_date)
+                    if split_cutoff.tzinfo is None:
+                        split_cutoff = split_cutoff.tz_localize("UTC")
+                    else:
+                        split_cutoff = split_cutoff.tz_convert("UTC")
+                    split_index = splits.index
+                    if split_index.tz is None:
+                        split_index = split_index.tz_localize("UTC")
+                    else:
+                        split_index = split_index.tz_convert("UTC")
+                    recent_splits = splits.copy()
+                    recent_splits.index = split_index
+                    recent_splits = recent_splits[recent_splits.index > split_cutoff]
+                    if not recent_splits.empty:
+                        cumulative_ratio = float(recent_splits.prod())
+                        if cumulative_ratio > 0:
+                            original_price /= cumulative_ratio
+            except Exception:
+                pass
+            drop_since_alert = current_price / original_price - 1
+            if drop_since_alert <= -scanner.PRICE_ALERT_THRESHOLD:
+                alerts.append({"ticker": ticker, "original_price": original_price,
+                               "current_price": current_price,
+                               "additional_drop": drop_since_alert * 100,
+                               "sent_date": data.get("date")})
+        except Exception as exc:
+            print(f"  ⚠️  Failed to check {ticker}: {exc}")
+            continue
+    return alerts
+
+
+scanner.check_price_alerts = _safe_check_price_alerts
+
 _original_stage2 = scanner.stage2_deep_analysis
 
 
 def stage2_enhanced(candidates, memory):
     analyzed, fresh = _original_stage2(candidates, memory)
-
     for stock in list(analyzed) + list(fresh):
         health = stock.get("financial_health") or {}
         raw = health.get("_raw_risk_score")
         if raw is not None:
             stock["risk_score_raw"] = raw
-            # Keep the core display at 3 so it remains internally consistent
-            # with the admission threshold, but expose the true score below.
             stock["risk_label"] = "WATCH (raw risk 4/10)"
         else:
             stock["risk_score_raw"] = stock.get("risk_score")
             stock["risk_label"] = "LOW RISK" if (stock.get("risk_score") or 10) <= 3 else "WATCH"
-
     analyzed = _apply_small_cap_quality_overlay(analyzed)
     fresh = _apply_small_cap_quality_overlay(fresh)
     analyzed = _attach_trend_scores(analyzed)
@@ -157,7 +202,6 @@ def stage2_enhanced(candidates, memory):
 
 
 scanner.stage2_deep_analysis = stage2_enhanced
-
 
 _original_generate_email_html = scanner.generate_email_html
 
@@ -172,13 +216,11 @@ def _trend_section(stocks):
         risk_txt = f"{raw}/10" if raw is not None else "n/a"
         admission = stock.get("risk_score")
         admission_txt = f"{admission}/10" if admission is not None else "n/a"
-        rows.append(
-            f"<tr><td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
-            f"<td style='padding:7px;text-align:center'>{risk_txt}</td>"
-            f"<td style='padding:7px;text-align:center'>{admission_txt}</td>"
-            f"<td style='padding:7px;text-align:center'>{score_txt}</td>"
-            f"<td style='padding:7px'>{label}</td></tr>"
-        )
+        rows.append(f"<tr><td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
+                    f"<td style='padding:7px;text-align:center'>{risk_txt}</td>"
+                    f"<td style='padding:7px;text-align:center'>{admission_txt}</td>"
+                    f"<td style='padding:7px;text-align:center'>{score_txt}</td>"
+                    f"<td style='padding:7px'>{label}</td></tr>")
     if not rows:
         return ""
     return """
@@ -189,10 +231,8 @@ def _trend_section(stocks):
     because a fallen angel near its bottom can legitimately score low.</p>
     <table style="width:100%;border-collapse:collapse;margin:15px 0">
       <tr style="background:#34495e;color:white">
-        <th style="padding:7px;text-align:left">Ticker</th>
-        <th style="padding:7px">Raw Risk</th>
-        <th style="padding:7px">Admission</th>
-        <th style="padding:7px">Trend</th>
+        <th style="padding:7px;text-align:left">Ticker</th><th style="padding:7px">Raw Risk</th>
+        <th style="padding:7px">Admission</th><th style="padding:7px">Trend</th>
         <th style="padding:7px;text-align:left">Interpretation</th>
       </tr>
     """ + "".join(rows) + "</table>"
