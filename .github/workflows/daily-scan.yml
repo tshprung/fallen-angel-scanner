@@ -37,12 +37,23 @@ jobs:
           PYTHONUNBUFFERED: 1
         run: python -u scanner_enhanced.py
 
-      - name: Commit memory file
+      - name: Commit scanner state
         run: |
           git config user.name "fallen-angel-bot"
           git config user.email "bot@fallen-angel"
           git pull --rebase || true
-          git add scanner_memory.json || true
-          git add logs/*.txt || true
-          git commit -m "Update scanner memory $(date +'%Y-%m-%d')" || echo "No changes"
-          git push || echo "Push failed, memory not saved"
+
+          # Stage files only when they exist. In particular, logs/ may be
+          # absent on a clean run, which must not make the workflow fail.
+          git add scanner_memory.json 2>/dev/null || true
+          git add failed_tickers.json 2>/dev/null || true
+          if [ -d logs ]; then
+            git add logs/*.txt 2>/dev/null || true
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No scanner state changes"
+          else
+            git commit -m "Update scanner state $(date +'%Y-%m-%d')"
+            git push
+          fi
