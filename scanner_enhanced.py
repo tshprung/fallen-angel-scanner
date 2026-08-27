@@ -120,6 +120,26 @@ scanner.calculate_risk_score = _calculate_risk_score_soft_gate
 # Yahoo Finance/WSE ticker migrations are handled here because this enhanced
 # runner is the production entry point. Empty histories are valid provider
 # responses and must never reach iloc[-1].
+def _migrate_tracked_tickers(memory):
+    tracked = memory.setdefault("tracked_prices", {})
+    for old_ticker, new_ticker in TICKER_ALIASES.items():
+        if old_ticker in tracked:
+            if new_ticker not in tracked:
+                tracked[new_ticker] = tracked[old_ticker]
+            del tracked[old_ticker]
+            print(f"  🔄 Migrated tracked ticker {old_ticker} → {new_ticker}")
+    return memory
+
+
+def _load_memory_with_migrations():
+    memory = _original_load_memory()
+    return _migrate_tracked_tickers(memory)
+
+
+_original_load_memory = scanner.load_memory
+scanner.load_memory = _load_memory_with_migrations
+
+
 def _safe_check_price_alerts(memory):
     alerts = []
     tracked = memory.setdefault("tracked_prices", {})
