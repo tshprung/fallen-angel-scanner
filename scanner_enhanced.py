@@ -24,6 +24,61 @@ policy.SMALL_CAP_MAX_RISK_SCORE = SMALL_CAP_MAX_RISK_SCORE
 TICKER_ALIASES = {"CCC.WA": "MDV.WA"}
 
 
+# ---------------------------------------------------------------------------
+# Corporate-action-safe price history
+# ---------------------------------------------------------------------------
+# yfinance can expose pre-split historical closes on some runs/versions.
+# That can create fake 50% crashes (e.g. a 2:1 split) and corrupt the scanner's
+# 21-day drop, peak drawdown, shape, bottom and recovery calculations.
+# Always request raw prices here and normalize historical prices before a split
+# to the post-split share basis. This is deliberately conservative: if there
+# was no split, the data is unchanged.
+_ORIGINAL_TICKER = yf.Ticker
+
+
+def _split_normalize_history(hist, ticker_obj):
+    if hist is None or hist.empty or "Close" not in hist.columns:
+        return hist
+    try:
+        splits = ticker_obj.splits
+        if splits is None or splits.empty:
+            return hist
+        out = hist.copy()
+        split_series = splits.dropna()
+        for split_date, ratio in split_series.items():
+            ratio = float(ratio)
+            if not np.isfinite(ratio) or ratio <= 0 or abs(ratio - 1.0) < 1e-9:
+                continue
+            cutoff = pd.Timestamp(split_date)
+            idx = out.index
+            if getattr(idx, "tz", None) is not None and cutoff.tzinfo is None:
+                cutoff = cutoff.tz_localize(idx.tz)
+            elif getattr(idx, "tz", None) is None and cutoff.tzinfo is not None:
+                cutoff = cutoff.tz_localize(None)
+            out.loc[out.index < cutoff, [c for c in out.columns if c in ("Open", "High", "Low", "Close")]] /= ratio
+        return out
+    except Exception:
+        return hist
+
+
+class _SplitSafeTicker:
+    def __init__(self, ticker):
+        self._ticker = _ORIGINAL_TICKER(ticker)
+
+    def history(self, *args, **kwargs):
+        # Explicitly use raw prices, then normalize for splits ourselves.
+        kwargs = dict(kwargs)
+        kwargs["auto_adjust"] = False
+        hist = self._ticker.history(*args, **kwargs)
+        return _split_normalize_history(hist, self._ticker)
+
+    def __getattr__(self, name):
+        return getattr(self._ticker, name)
+
+
+yf.Ticker = _SplitSafeTicker
+
+
 def _is_us_small_cap(stock):
     ticker = stock.get("ticker", "")
     if any(ticker.endswith(s) for s in (".WA", ".TA", ".L", ".DE")):
@@ -66,7 +121,7 @@ def _apply_small_cap_quality_overlay(stocks):
 
 def _trend_template_score(ticker):
     try:
-        close = yf.Ticker(ticker).history(period="1y", auto_adjust=False)["Close"].dropna()
+        close = yf.Ticker(ticker).history(period="1y")["Close"].dropna()
         if len(close) < 210:
             return None
         price = float(close.iloc[-1])
