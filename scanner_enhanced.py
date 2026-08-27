@@ -11,15 +11,12 @@ import yfinance as yf
 import fallen_angel_scanner as scanner
 import scanner_policy as policy
 
-# ---------------------------------------------------------------------------
-# Policy tuning
-# ---------------------------------------------------------------------------
-# Re-check a stock after 3 days instead of hiding it for 14 days. This matters
-# for fallen angels because the thesis can change materially within a week.
+# Re-check more frequently so a rapidly changing fallen angel is not hidden
+# behind the original 14-day deduplication window.
 scanner.DEDUP_DAYS = 3
 
-# A risk score of 4 is now a WATCH candidate rather than an automatic discard.
-# Scores >=5 remain excluded. We preserve the raw score for reporting.
+# Risk 4 is a WATCH-level candidate instead of an automatic discard.
+# Risk >=5 remains excluded. The raw risk is retained separately.
 MAX_ADMISSIBLE_RISK_SCORE = 4
 
 SMALL_CAP_MAX_MARKET_CAP_USD = 5_000_000_000
@@ -40,7 +37,7 @@ def _is_us_small_cap(stock):
 
 
 def _apply_small_cap_quality_overlay(stocks):
-    """Apply quality gates to genuinely small US companies."""
+    """Apply stricter balance-sheet/quality gates to genuinely small US names."""
     out = []
     for stock in stocks:
         if not _is_us_small_cap(stock):
@@ -50,7 +47,9 @@ def _apply_small_cap_quality_overlay(stocks):
         ticker = stock["ticker"]
         health = stock.get("financial_health") or {}
         cap = float(stock.get("market_cap_usd") or stock.get("market_cap") or 0)
-        risk = stock.get("risk_score")
+        # Use the raw risk where available. A borderline large-cap risk 4 is
+        # watchable; a small-cap risk 4 remains too risky for this strategy.
+        risk = stock.get("risk_score_raw", stock.get("risk_score"))
         piotroski = stock.get("piotroski_score")
         checks = stock.get("piotroski_checks")
         debt_ebitda = health.get("debt_ebitda")
@@ -114,16 +113,14 @@ def _attach_trend_scores(stocks):
     return stocks
 
 
-# ---------------------------------------------------------------------------
-# Fix the hard risk boundary without falsifying the underlying score.
-# ---------------------------------------------------------------------------
+# The core Stage 2 has a hard risk >=4 gate. Temporarily map exactly 4 to 3
+# so the candidate can be evaluated and ranked; we preserve raw risk for the
+# report. Scores >=5 still fail at the core gate.
 _original_calculate_risk_score = scanner.calculate_risk_score
 
 
 def _calculate_risk_score_soft_gate(*args, **kwargs):
     raw = _original_calculate_risk_score(*args, **kwargs)
-    # Stage 2 historically hard-excludes >=4. Map only 4 -> 3 for admission;
-    # retain the true value in the financial-health dict for later reporting.
     if raw == 4:
         financial_health = args[0] if args else kwargs.get("financial_health")
         if isinstance(financial_health, dict):
@@ -140,13 +137,14 @@ _original_stage2 = scanner.stage2_deep_analysis
 def stage2_enhanced(candidates, memory):
     analyzed, fresh = _original_stage2(candidates, memory)
 
-    # Restore raw risk score for display while keeping the candidate admitted.
     for stock in list(analyzed) + list(fresh):
-        raw = (stock.get("financial_health") or {}).get("_raw_risk_score")
+        health = stock.get("financial_health") or {}
+        raw = health.get("_raw_risk_score")
         if raw is not None:
             stock["risk_score_raw"] = raw
-            stock["risk_score"] = raw
-            stock["risk_label"] = "WATCH"
+            # Keep the core display at 3 so it remains internally consistent
+            # with the admission threshold, but expose the true score below.
+            stock["risk_label"] = "WATCH (raw risk 4/10)"
         else:
             stock["risk_score_raw"] = stock.get("risk_score")
             stock["risk_label"] = "LOW RISK" if (stock.get("risk_score") or 10) <= 3 else "WATCH"
@@ -161,9 +159,6 @@ def stage2_enhanced(candidates, memory):
 scanner.stage2_deep_analysis = stage2_enhanced
 
 
-# ---------------------------------------------------------------------------
-# Email additions
-# ---------------------------------------------------------------------------
 _original_generate_email_html = scanner.generate_email_html
 
 
@@ -175,9 +170,12 @@ def _trend_section(stocks):
         label = stock.get("trend_template_label", "n/a")
         raw = stock.get("risk_score_raw")
         risk_txt = f"{raw}/10" if raw is not None else "n/a"
+        admission = stock.get("risk_score")
+        admission_txt = f"{admission}/10" if admission is not None else "n/a"
         rows.append(
             f"<tr><td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
             f"<td style='padding:7px;text-align:center'>{risk_txt}</td>"
+            f"<td style='padding:7px;text-align:center'>{admission_txt}</td>"
             f"<td style='padding:7px;text-align:center'>{score_txt}</td>"
             f"<td style='padding:7px'>{label}</td></tr>"
         )
@@ -185,13 +183,15 @@ def _trend_section(stocks):
         return ""
     return """
     <h2>📈 Recovery Confirmation</h2>
-    <p>Risk 4/10 is now shown as <strong>WATCH</strong> rather than being silently
-    discarded. Risk ≥5 remains excluded. Trend Template is informational: a
-    fallen angel near its bottom can legitimately score low.</p>
+    <p><strong>Raw Risk</strong> is the scanner's original 1–10 score. A raw
+    4/10 candidate is admitted as <strong>WATCH</strong> rather than silently
+    discarded; raw risk ≥5 remains excluded. Trend Template is informational
+    because a fallen angel near its bottom can legitimately score low.</p>
     <table style="width:100%;border-collapse:collapse;margin:15px 0">
       <tr style="background:#34495e;color:white">
         <th style="padding:7px;text-align:left">Ticker</th>
-        <th style="padding:7px">Risk</th>
+        <th style="padding:7px">Raw Risk</th>
+        <th style="padding:7px">Admission</th>
         <th style="padding:7px">Trend</th>
         <th style="padding:7px;text-align:left">Interpretation</th>
       </tr>
