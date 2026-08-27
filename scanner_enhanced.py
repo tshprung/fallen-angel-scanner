@@ -1,16 +1,8 @@
 """Enhanced daily runner for the fallen-angel scanner.
 
-Adds two things on top of scanner_policy.py:
-1. A small-cap quality overlay based on actual US market cap, not only index
-   membership. This prevents risky small names from slipping through when an
-   index membership list changes (e.g. heavily levered equity stubs).
-2. An informational Trend Template / CANSLIM-style recovery score for the
-   final candidates. It is deliberately NOT a gate: a fallen angel is often
-   below its moving averages by definition. The score tells us whether the
-   recovery has already begun.
-
-The score is calculated only for final candidates, so it adds at most a few
-extra Yahoo history requests and keeps the once-daily GitHub Action practical.
+Adds a quality overlay and recovery-confirmation signals while keeping the core
+scanner intact. The enhanced runner also softens hard boundaries that otherwise
+hide useful borderline candidates.
 """
 
 import numpy as np
@@ -19,16 +11,23 @@ import yfinance as yf
 import fallen_angel_scanner as scanner
 import scanner_policy as policy
 
-# Small-cap risk 3 is allowed only when the stronger quality overlay passes.
-# Previously both policy layers used <=2, which could make a legitimate
-# candidate disappear entirely (e.g. LIF in the Aug-25 scan).
+# ---------------------------------------------------------------------------
+# Policy tuning
+# ---------------------------------------------------------------------------
+# Re-check a stock after 3 days instead of hiding it for 14 days. This matters
+# for fallen angels because the thesis can change materially within a week.
+scanner.DEDUP_DAYS = 3
+
+# A risk score of 4 is now a WATCH candidate rather than an automatic discard.
+# Scores >=5 remain excluded. We preserve the raw score for reporting.
+MAX_ADMISSIBLE_RISK_SCORE = 4
+
 SMALL_CAP_MAX_MARKET_CAP_USD = 5_000_000_000
 SMALL_CAP_MAX_NET_DEBT_TO_MCAP = 0.75
 SMALL_CAP_MAX_DEBT_EBITDA = 5.0
 SMALL_CAP_MAX_RISK_SCORE = 3
 SMALL_CAP_MIN_PIOTROSKI = 4
 
-# Keep the policy module and this enhanced overlay aligned.
 policy.SMALL_CAP_MAX_RISK_SCORE = SMALL_CAP_MAX_RISK_SCORE
 
 
@@ -41,7 +40,7 @@ def _is_us_small_cap(stock):
 
 
 def _apply_small_cap_quality_overlay(stocks):
-    """Apply quality gates to all genuinely small US companies, not just S&P 600 members."""
+    """Apply quality gates to genuinely small US companies."""
     out = []
     for stock in stocks:
         if not _is_us_small_cap(stock):
@@ -60,35 +59,27 @@ def _apply_small_cap_quality_overlay(stocks):
         if risk is not None and risk > SMALL_CAP_MAX_RISK_SCORE:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: risk {risk}/10")
             continue
-
         if piotroski is not None and checks is not None and checks >= 6 and piotroski < SMALL_CAP_MIN_PIOTROSKI:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: Piotroski F{piotroski}/{checks}")
             continue
-
         if debt_ebitda is not None and np.isfinite(float(debt_ebitda)) and float(debt_ebitda) > SMALL_CAP_MAX_DEBT_EBITDA:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: debt/EBITDA {float(debt_ebitda):.1f}x")
             continue
-
         if net_debt is not None and float(net_debt) > 0 and cap > 0:
             ratio = float(net_debt) / cap
             if ratio >= SMALL_CAP_MAX_NET_DEBT_TO_MCAP:
                 print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: net debt {ratio:.1f}x market cap")
                 continue
-
         out.append(stock)
     return out
 
 
 def _trend_template_score(ticker):
-    """Return a 0-7 Minervini/CANSLIM Trend Template-style score.
-
-    This is used as recovery confirmation, not as a fallen-angel admission gate.
-    """
+    """Return a 0-7 recovery/Trend-Template style score; informational only."""
     try:
         close = yf.Ticker(ticker).history(period="1y", auto_adjust=False)["Close"].dropna()
         if len(close) < 210:
             return None
-
         price = float(close.iloc[-1])
         ma50 = float(close.rolling(50).mean().iloc[-1])
         ma150 = float(close.rolling(150).mean().iloc[-1])
@@ -97,15 +88,10 @@ def _trend_template_score(ticker):
         ma200_20d = float(ma200_series.iloc[-21])
         low_52 = float(close.min())
         high_52 = float(close.max())
-
         criteria = [
-            price > ma150,
-            price > ma200,
-            ma150 > ma200,
-            ma200 > ma200_20d,
-            ma50 > ma150 and ma50 > ma200,
-            price > ma50,
-            price >= low_52 * 1.30 and price >= high_52 * 0.75,
+            price > ma150, price > ma200, ma150 > ma200,
+            ma200 > ma200_20d, ma50 > ma150 and ma50 > ma200,
+            price > ma50, price >= low_52 * 1.30 and price >= high_52 * 0.75,
         ]
         return sum(bool(x) for x in criteria)
     except Exception as exc:
@@ -128,11 +114,43 @@ def _attach_trend_scores(stocks):
     return stocks
 
 
+# ---------------------------------------------------------------------------
+# Fix the hard risk boundary without falsifying the underlying score.
+# ---------------------------------------------------------------------------
+_original_calculate_risk_score = scanner.calculate_risk_score
+
+
+def _calculate_risk_score_soft_gate(*args, **kwargs):
+    raw = _original_calculate_risk_score(*args, **kwargs)
+    # Stage 2 historically hard-excludes >=4. Map only 4 -> 3 for admission;
+    # retain the true value in the financial-health dict for later reporting.
+    if raw == 4:
+        financial_health = args[0] if args else kwargs.get("financial_health")
+        if isinstance(financial_health, dict):
+            financial_health["_raw_risk_score"] = 4
+        return 3
+    return raw
+
+
+scanner.calculate_risk_score = _calculate_risk_score_soft_gate
+
 _original_stage2 = scanner.stage2_deep_analysis
 
 
 def stage2_enhanced(candidates, memory):
     analyzed, fresh = _original_stage2(candidates, memory)
+
+    # Restore raw risk score for display while keeping the candidate admitted.
+    for stock in list(analyzed) + list(fresh):
+        raw = (stock.get("financial_health") or {}).get("_raw_risk_score")
+        if raw is not None:
+            stock["risk_score_raw"] = raw
+            stock["risk_score"] = raw
+            stock["risk_label"] = "WATCH"
+        else:
+            stock["risk_score_raw"] = stock.get("risk_score")
+            stock["risk_label"] = "LOW RISK" if (stock.get("risk_score") or 10) <= 3 else "WATCH"
+
     analyzed = _apply_small_cap_quality_overlay(analyzed)
     fresh = _apply_small_cap_quality_overlay(fresh)
     analyzed = _attach_trend_scores(analyzed)
@@ -140,6 +158,12 @@ def stage2_enhanced(candidates, memory):
     return analyzed, fresh
 
 
+scanner.stage2_deep_analysis = stage2_enhanced
+
+
+# ---------------------------------------------------------------------------
+# Email additions
+# ---------------------------------------------------------------------------
 _original_generate_email_html = scanner.generate_email_html
 
 
@@ -149,22 +173,26 @@ def _trend_section(stocks):
         score = stock.get("trend_template_score")
         score_txt = f"{score}/7" if score is not None else "n/a"
         label = stock.get("trend_template_label", "n/a")
+        raw = stock.get("risk_score_raw")
+        risk_txt = f"{raw}/10" if raw is not None else "n/a"
         rows.append(
             f"<tr><td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
+            f"<td style='padding:7px;text-align:center'>{risk_txt}</td>"
             f"<td style='padding:7px;text-align:center'>{score_txt}</td>"
             f"<td style='padding:7px'>{label}</td></tr>"
         )
     if not rows:
         return ""
     return """
-    <h2>📈 Recovery Trend Confirmation (informational)</h2>
-    <p>The Trend Template score is <strong>not a filter</strong>. A fallen angel
-    near its bottom is expected to score low; the score becomes useful as the
-    price starts reclaiming its moving averages.</p>
+    <h2>📈 Recovery Confirmation</h2>
+    <p>Risk 4/10 is now shown as <strong>WATCH</strong> rather than being silently
+    discarded. Risk ≥5 remains excluded. Trend Template is informational: a
+    fallen angel near its bottom can legitimately score low.</p>
     <table style="width:100%;border-collapse:collapse;margin:15px 0">
       <tr style="background:#34495e;color:white">
         <th style="padding:7px;text-align:left">Ticker</th>
-        <th style="padding:7px">Score</th>
+        <th style="padding:7px">Risk</th>
+        <th style="padding:7px">Trend</th>
         <th style="padding:7px;text-align:left">Interpretation</th>
       </tr>
     """ + "".join(rows) + "</table>"
