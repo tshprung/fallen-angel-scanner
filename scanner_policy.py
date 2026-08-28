@@ -28,9 +28,6 @@ R2K_MAX_MARKET_CAP = 2_000_000_000
 SP600_MIN_DOLLAR_VOLUME = 2_000_000
 SP600_MIN_MARKET_CAP = 750_000_000
 
-# The S&P 600 itself is not uniformly tiny: current constituents range well
-# above $5B. Keep the extension focused on genuinely smaller companies while
-# leaving the original large-cap universe unchanged.
 SMALL_CAP_MAX_MARKET_CAP_USD = 5_000_000_000
 SMALL_CAP_MAX_RISK_SCORE = 2
 SMALL_CAP_MIN_PIOTROSKI = 4
@@ -208,17 +205,12 @@ def fetch_sp600_tickers():
     return []
 
 
-# Prefer the S&P 600 because it is consistently accessible from GitHub Actions.
-# IWM is used only if it succeeds; we never make the daily scan depend on it.
 SP600_TICKERS = fetch_sp600_tickers()
 IWM_TICKERS = fetch_upper_russell_2000() if not SP600_TICKERS else []
 EXTENSION_TICKERS = SP600_TICKERS or IWM_TICKERS
 EXTENSION_SET = set(EXTENSION_TICKERS)
 
 
-# ---------------------------------------------------------------------------
-# Universe extension
-# ---------------------------------------------------------------------------
 _original_get_all_tickers = scanner.get_all_tickers
 
 
@@ -236,9 +228,6 @@ def get_all_tickers_with_extension():
     return unique
 
 
-# ---------------------------------------------------------------------------
-# Liquidity floor for the smaller-company extension
-# ---------------------------------------------------------------------------
 _original_get_min_avg_dollar_volume_usd = scanner.get_min_avg_dollar_volume_usd
 
 
@@ -248,9 +237,6 @@ def get_min_avg_dollar_volume_usd_with_extension(ticker):
     return _original_get_min_avg_dollar_volume_usd(ticker)
 
 
-# ---------------------------------------------------------------------------
-# Recovery-target valuation sanity check
-# ---------------------------------------------------------------------------
 _original_estimate_recovery_target = scanner.estimate_recovery_target
 
 
@@ -264,8 +250,7 @@ def estimate_recovery_target_with_valuation_sanity(stock, info, current_price):
     sector = (info.get("sector") or "").strip().lower()
     industry = (info.get("industry") or "").strip().lower()
     is_financial = sector in ("financial services", "real estate") or any(
-        word in industry
-        for word in ("bank", "insurance", "reit", "capital market", "asset management")
+        word in industry for word in ("bank", "insurance", "reit", "capital market", "asset management")
     )
 
     if not is_financial:
@@ -284,9 +269,6 @@ def estimate_recovery_target_with_valuation_sanity(stock, info, current_price):
     return target_low, target_high, upside_pct
 
 
-# ---------------------------------------------------------------------------
-# News-quality correction
-# ---------------------------------------------------------------------------
 _original_search_recent_news = scanner.search_recent_news
 
 
@@ -306,6 +288,99 @@ def search_recent_news_with_neutral_fallback(ticker, company_name):
     ):
         return ["No verified recent news available — price action only"]
     return headlines
+
+
+# ---------------------------------------------------------------------------
+# Catalyst / cause analysis
+# ---------------------------------------------------------------------------
+SERIOUS_CAUSE_KEYWORDS = (
+    "fraud", "investigation", "sec inquiry", "criminal", "scandal", "bankruptcy",
+    "default", "delisting", "recall", "accounting irregular", "restatement",
+    "going concern", "covenant breach", "liquidity crisis", "chapter 11",
+)
+TEMPORARY_CAUSE_KEYWORDS = (
+    "earnings", "guidance", "outlook", "forecast", "revenue miss", "profit miss",
+    "eps miss", "analyst downgrade", "downgrade", "sector selloff", "sector rotation",
+    "market selloff", "profit-taking", "valuation", "tariff", "macro", "weak demand",
+)
+
+
+def classify_drop_cause(stock_record):
+    """Classify the *known evidence* behind a drop; never infer a cause from price alone."""
+    headlines = stock_record.get("news_headlines") or []
+    text = " ".join(str(h) for h in headlines).lower()
+    synthetic = "no verified recent news" in text or "price action only" in text
+
+    if synthetic or not text.strip():
+        return {
+            "cause_class": "unclear",
+            "cause_confidence": "LOW",
+            "cause_label": "🟡 CAUSE UNCLEAR",
+            "cause_detail": "No verified catalyst found; price action alone is not treated as a cause.",
+        }
+
+    serious_hits = [k for k in SERIOUS_CAUSE_KEYWORDS if k in text]
+    temporary_hits = [k for k in TEMPORARY_CAUSE_KEYWORDS if k in text]
+
+    if serious_hits:
+        return {
+            "cause_class": "structural_risk",
+            "cause_confidence": "MEDIUM",
+            "cause_label": "🔴 STRUCTURAL RISK",
+            "cause_detail": f"Recent coverage contains: {', '.join(serious_hits[:3])}.",
+        }
+
+    if temporary_hits:
+        health = stock_record.get("financial_health") or {}
+        rev = health.get("revenue_growth_yoy")
+        piotroski = stock_record.get("piotroski_score")
+        supportive = (rev is not None and rev >= 0) and (piotroski is None or piotroski >= 5)
+        if supportive:
+            return {
+                "cause_class": "potential_overreaction",
+                "cause_confidence": "MEDIUM",
+                "cause_label": "🟢 POTENTIAL OVERREACTION",
+                "cause_detail": f"Coverage points to {', '.join(temporary_hits[:3])}; current business metrics do not show an obvious broad deterioration.",
+            }
+        return {
+            "cause_class": "temporary_candidate",
+            "cause_confidence": "LOW",
+            "cause_label": "🟡 POSSIBLY TEMPORARY",
+            "cause_detail": f"Coverage points to {', '.join(temporary_hits[:3])}, but fundamentals do not yet confirm an overreaction.",
+        }
+
+    return {
+        "cause_class": "unclear",
+        "cause_confidence": "LOW",
+        "cause_label": "🟡 CAUSE UNCLEAR",
+        "cause_detail": "Recent headlines were found, but they do not identify a reliable reason for the decline.",
+    }
+
+
+def _apply_catalyst_analysis(stocks):
+    result = []
+    for stock in stocks:
+        cause = classify_drop_cause(stock)
+        stock.update(cause)
+
+        # A serious catalyst invalidates the fallen-angel thesis until manually reviewed.
+        if cause["cause_class"] == "structural_risk":
+            print(f"  ⏭️  {stock['ticker']} removed by catalyst gate: {cause['cause_detail']}")
+            continue
+
+        # Unknown cause remains visible, but cannot be presented as an automatic BUY NOW.
+        if cause["cause_class"] == "unclear" and stock.get("at_bottom"):
+            cp = stock.get("current_price")
+            if cp and cp > 0:
+                stock["at_bottom"] = False
+                stock["wait_price_low"] = cp * 0.90
+                stock["wait_price_high"] = cp * 1.00
+                stock["catalyst_status"] = "WATCH"
+        else:
+            stock["catalyst_status"] = "PASS"
+
+        result.append(stock)
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -334,51 +409,33 @@ def _filter_small_cap_results(stocks):
         if cap and cap > SMALL_CAP_MAX_MARKET_CAP_USD:
             print(f"  ⏭️  {ticker} removed by small-cap cap limit: ${cap / 1e9:.1f}B > ${SMALL_CAP_MAX_MARKET_CAP_USD / 1e9:.1f}B")
             continue
-
         if risk is not None and risk > SMALL_CAP_MAX_RISK_SCORE:
             print(f"  ⏭️  {ticker} removed by small-cap risk limit: {risk}/10 > {SMALL_CAP_MAX_RISK_SCORE}")
             continue
-
-        if (
-            piotroski is not None
-            and piotroski_checks is not None
-            and piotroski_checks >= 6
-            and piotroski < SMALL_CAP_MIN_PIOTROSKI
-        ):
+        if piotroski is not None and piotroski_checks is not None and piotroski_checks >= 6 and piotroski < SMALL_CAP_MIN_PIOTROSKI:
             print(f"  ⏭️  {ticker} removed by small-cap Piotroski floor: F{piotroski}/{piotroski_checks}")
             continue
-
         if debt_ebitda is not None and np.isfinite(float(debt_ebitda)) and float(debt_ebitda) > SMALL_CAP_MAX_DEBT_EBITDA:
             print(f"  ⏭️  {ticker} removed by small-cap debt/EBITDA limit: {debt_ebitda:.1f}x > {SMALL_CAP_MAX_DEBT_EBITDA:.1f}x")
             continue
-
-        if (
-            net_debt is not None
-            and cap
-            and net_debt > 0
-            and (net_debt / cap) >= SMALL_CAP_MAX_NET_DEBT_TO_MCAP
-        ):
+        if net_debt is not None and cap and net_debt > 0 and (net_debt / cap) >= SMALL_CAP_MAX_NET_DEBT_TO_MCAP:
             ratio = net_debt / cap
             print(f"  ⏭️  {ticker} removed by small-cap net-debt limit: {ratio:.1f}x market cap >= {SMALL_CAP_MAX_NET_DEBT_TO_MCAP:.2f}x")
             continue
-
         if pb is not None and np.isfinite(float(pb)) and float(pb) > SMALL_CAP_MAX_PRICE_TO_BOOK:
             print(f"  ⏭️  {ticker} removed by small-cap P/B sanity limit: {pb:.1f}x > {SMALL_CAP_MAX_PRICE_TO_BOOK:.1f}x")
             continue
-
         filtered.append(stock)
-
     return filtered
 
 
 def stage2_deep_analysis_with_small_cap_policy(candidates, memory):
     analyzed, fresh_crash = _original_stage2_deep_analysis(candidates, memory)
-    analyzed = _filter_small_cap_results(analyzed)
-    fresh_crash = _filter_small_cap_results(fresh_crash)
+    analyzed = _apply_catalyst_analysis(_filter_small_cap_results(analyzed))
+    fresh_crash = _apply_catalyst_analysis(_filter_small_cap_results(fresh_crash))
     return analyzed, fresh_crash
 
 
-# Install the overlay before scanner.main() resolves its globals.
 scanner.get_all_tickers = get_all_tickers_with_extension
 scanner.get_min_avg_dollar_volume_usd = get_min_avg_dollar_volume_usd_with_extension
 scanner.estimate_recovery_target = estimate_recovery_target_with_valuation_sanity
