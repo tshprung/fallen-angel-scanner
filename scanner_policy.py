@@ -36,11 +36,11 @@ SMALL_CAP_MAX_PRICE_TO_BOOK = 15.0
 SMALL_CAP_MAX_NET_DEBT_TO_MCAP = 0.75
 
 IWM_JSON_URL = (
-    "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/"
+    "https://www.ishares.com/us/products/239710/iwm-ishares-russell-2000-etf/"
     "1467271812596.ajax?tab=all&fileType=json"
 )
 IWM_CSV_URL = (
-    "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf/"
+    "https://www.ishares.com/us/products/239710/iwm-ishares-russell-2000-etf/"
     "1467271812596.ajax?fileType=csv&fileName=IWM_holdings&dataType=fund"
 )
 SP600_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_600_companies"
@@ -51,7 +51,7 @@ def _ishares_headers():
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/131.0 Safari/537.36",
         "Accept": "application/json, text/plain, */*",
-        "Referer": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+        "Referer": "https://www.ishares.com/us/products/239710/iwm-ishares-russell-2000-etf",
         "X-Requested-With": "XMLHttpRequest",
     }
 
@@ -306,7 +306,7 @@ TEMPORARY_CAUSE_KEYWORDS = (
 
 
 def classify_drop_cause(stock_record):
-    """Classify the *known evidence* behind a drop; never infer a cause from price alone."""
+    """Classify the known evidence behind a drop; never infer a cause from price alone."""
     headlines = stock_record.get("news_headlines") or []
     text = " ".join(str(h) for h in headlines).lower()
     synthetic = "no verified recent news" in text or "price action only" in text
@@ -363,19 +363,16 @@ def _apply_catalyst_analysis(stocks):
         cause = classify_drop_cause(stock)
         stock.update(cause)
 
-        # A serious catalyst invalidates the fallen-angel thesis until manually reviewed.
         if cause["cause_class"] == "structural_risk":
             print(f"  ⏭️  {stock['ticker']} removed by catalyst gate: {cause['cause_detail']}")
             continue
 
-        # Unknown cause remains visible, but cannot be presented as an automatic BUY NOW.
-        if cause["cause_class"] == "unclear" and stock.get("at_bottom"):
-            cp = stock.get("current_price")
-            if cp and cp > 0:
-                stock["at_bottom"] = False
-                stock["wait_price_low"] = cp * 0.90
-                stock["wait_price_high"] = cp * 1.00
-                stock["catalyst_status"] = "WATCH"
+        # Unknown cause is deliberately a WATCH, never an automatic BUY.
+        if cause["cause_class"] == "unclear":
+            stock["catalyst_status"] = "WATCH"
+            # Do not fabricate a technical entry range or overwrite the
+            # scanner's bottom detection. The absence of verified news is
+            # uncertainty, not evidence that the price should be lower.
         else:
             stock["catalyst_status"] = "PASS"
 
