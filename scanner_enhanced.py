@@ -11,6 +11,7 @@ import yfinance as yf
 
 import fallen_angel_scanner as scanner
 import scanner_policy as policy
+import scanner_bugfixes as bugfixes  # Production fixes: financial data, news, shape diagnostics
 
 scanner.DEDUP_DAYS = 3
 MAX_ADMISSIBLE_RISK_SCORE = 4
