@@ -24,7 +24,6 @@ policy.SMALL_CAP_MAX_RISK_SCORE = SMALL_CAP_MAX_RISK_SCORE
 
 TICKER_ALIASES = {"CCC.WA": "MDV.WA"}
 
-
 # ---------------------------------------------------------------------------
 # Corporate-action-safe price history
 # ---------------------------------------------------------------------------
@@ -96,17 +95,21 @@ def _apply_small_cap_quality_overlay(stocks):
         net_debt = health.get("net_debt")
         if risk is not None and risk > SMALL_CAP_MAX_RISK_SCORE:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: risk {risk}/10")
+            stock["overlay_exclusion_reason"] = f"Risk {risk}/10 > {SMALL_CAP_MAX_RISK_SCORE}/10"
             continue
         if piotroski is not None and checks is not None and checks >= 6 and piotroski < SMALL_CAP_MIN_PIOTROSKI:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: Piotroski F{piotroski}/{checks}")
+            stock["overlay_exclusion_reason"] = f"Piotroski F{piotroski}/{checks} < F{SMALL_CAP_MIN_PIOTROSKI}"
             continue
         if debt_ebitda is not None and np.isfinite(float(debt_ebitda)) and float(debt_ebitda) > SMALL_CAP_MAX_DEBT_EBITDA:
             print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: debt/EBITDA {float(debt_ebitda):.1f}x")
+            stock["overlay_exclusion_reason"] = f"Debt/EBITDA {float(debt_ebitda):.1f}x > {SMALL_CAP_MAX_DEBT_EBITDA:.1f}x"
             continue
         if net_debt is not None and float(net_debt) > 0 and cap > 0:
             ratio = float(net_debt) / cap
             if ratio >= SMALL_CAP_MAX_NET_DEBT_TO_MCAP:
                 print(f"  ⏭️  {ticker} removed by US small-cap quality overlay: net debt {ratio:.1f}x market cap")
+                stock["overlay_exclusion_reason"] = f"Net debt/market cap {ratio:.1f}x >= {SMALL_CAP_MAX_NET_DEBT_TO_MCAP:.2f}x"
                 continue
         out.append(stock)
     return out
@@ -254,7 +257,8 @@ _original_stage2 = scanner.stage2_deep_analysis
 
 def stage2_enhanced(candidates, memory):
     analyzed, fresh = _original_stage2(candidates, memory)
-    for stock in list(analyzed) + list(fresh):
+    core_candidates = list(analyzed) + list(fresh)
+    for stock in core_candidates:
         health = stock.get("financial_health") or {}
         raw = health.get("_raw_risk_score")
         if raw is not None:
@@ -263,10 +267,19 @@ def stage2_enhanced(candidates, memory):
         else:
             stock["risk_score_raw"] = stock.get("risk_score")
             stock["risk_label"] = "LOW RISK" if (stock.get("risk_score") or 10) <= 3 else "WATCH"
-    analyzed = _apply_small_cap_quality_overlay(analyzed)
-    fresh = _apply_small_cap_quality_overlay(fresh)
-    analyzed = _attach_trend_scores(analyzed)
-    fresh = _attach_trend_scores(fresh)
+        stock.setdefault("overlay_exclusion_reason", None)
+
+    analyzed_filtered = _apply_small_cap_quality_overlay(analyzed)
+    fresh_filtered = _apply_small_cap_quality_overlay(fresh)
+    filtered = [s for s in core_candidates if s.get("overlay_exclusion_reason")]
+    scanner._last_core_stage2_candidates = core_candidates
+    scanner._last_overlay_filtered_candidates = filtered
+    print(f"  🔎 Quality overlay: {len(analyzed_filtered) + len(fresh_filtered)}/{len(core_candidates)} core candidates survived")
+    if filtered:
+        for stock in filtered:
+            print(f"  🧾 Filtered candidate: {stock['ticker']} — {stock['overlay_exclusion_reason']}")
+    analyzed = _attach_trend_scores(analyzed_filtered)
+    fresh = _attach_trend_scores(fresh_filtered)
     return analyzed, fresh
 
 
@@ -307,8 +320,38 @@ def _trend_section(stocks):
     """ + "".join(rows) + "</table>"
 
 
+def _filtered_candidates_section():
+    stocks = getattr(scanner, "_last_overlay_filtered_candidates", []) or []
+    if not stocks:
+        return ""
+    rows = []
+    for stock in stocks:
+        bucket = stock.get("bucket", "candidate")
+        reason = stock.get("overlay_exclusion_reason", "quality overlay")
+        rows.append(
+            f"<tr style='border-bottom:1px solid #ddd'>"
+            f"<td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
+            f"<td style='padding:7px'>{bucket.replace('_', ' ')}</td>"
+            f"<td style='padding:7px'>{reason}</td>"
+            f"</tr>"
+        )
+    return """
+    <h2>🔎 Stage 2 Candidates Filtered by Quality Overlay</h2>
+    <p>These candidates passed the core Stage 2 analysis but were removed by the
+    additional US small-cap quality screen. They are shown for transparency and
+    are <strong>not</strong> counted as recovery opportunities.</p>
+    <table style="width:100%;border-collapse:collapse;margin:15px 0">
+      <tr style="background:#7f8c8d;color:white">
+        <th style="padding:7px;text-align:left">Ticker</th>
+        <th style="padding:7px;text-align:left">Bucket</th>
+        <th style="padding:7px;text-align:left">Reason</th>
+      </tr>
+    """ + "".join(rows) + "</table>"
+
+
 def generate_email_html_enhanced(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     html = _original_generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
+    html += _filtered_candidates_section()
     html += _trend_section(list(analyzed_stocks or []) + list(fresh_crash_stocks or []))
     return html
 
