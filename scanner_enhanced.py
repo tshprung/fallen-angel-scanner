@@ -28,12 +28,6 @@ TICKER_ALIASES = {"CCC.WA": "MDV.WA"}
 # ---------------------------------------------------------------------------
 # Corporate-action-safe price history
 # ---------------------------------------------------------------------------
-# yfinance can expose pre-split historical closes on some runs/versions.
-# That can create fake 50% crashes (e.g. a 2:1 split) and corrupt the scanner's
-# 21-day drop, peak drawdown, shape, bottom and recovery calculations.
-# Always request raw prices here and normalize historical prices before a split
-# to the post-split share basis. This is deliberately conservative: if there
-# was no split, the data is unchanged.
 _ORIGINAL_TICKER = yf.Ticker
 
 
@@ -45,8 +39,7 @@ def _split_normalize_history(hist, ticker_obj):
         if splits is None or splits.empty:
             return hist
         out = hist.copy()
-        split_series = splits.dropna()
-        for split_date, ratio in split_series.items():
+        for split_date, ratio in splits.dropna().items():
             ratio = float(ratio)
             if not np.isfinite(ratio) or ratio <= 0 or abs(ratio - 1.0) < 1e-9:
                 continue
@@ -67,7 +60,6 @@ class _SplitSafeTicker:
         self._ticker = _ORIGINAL_TICKER(ticker)
 
     def history(self, *args, **kwargs):
-        # Explicitly use raw prices, then normalize for splits ourselves.
         kwargs = dict(kwargs)
         kwargs["auto_adjust"] = False
         hist = self._ticker.history(*args, **kwargs)
@@ -187,12 +179,13 @@ def _migrate_tracked_tickers(memory):
     return memory
 
 
-def _load_memory_with_migrations():
-    memory = _original_load_memory()
-    return _migrate_tracked_tickers(memory)
-
-
 _original_load_memory = scanner.load_memory
+
+
+def _load_memory_with_migrations():
+    return _migrate_tracked_tickers(_original_load_memory())
+
+
 scanner.load_memory = _load_memory_with_migrations
 
 
@@ -321,6 +314,11 @@ def generate_email_html_enhanced(analyzed_stocks, price_alerts, fresh_crash_stoc
 
 
 scanner.generate_email_html = generate_email_html_enhanced
+
+# scanner_bugfixes must remain the final news implementation: scanner_enhanced
+# used to overwrite it with the legacy price-inference fallback, which is why
+# the previous run still reported fabricated "likely earnings" causes.
+scanner.search_recent_news = bugfixes.search_recent_news_fixed
 
 
 if __name__ == "__main__":
