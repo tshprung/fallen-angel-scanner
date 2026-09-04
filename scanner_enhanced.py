@@ -258,6 +258,7 @@ _original_stage2 = scanner.stage2_deep_analysis
 def stage2_enhanced(candidates, memory):
     analyzed, fresh = _original_stage2(candidates, memory)
     core_candidates = list(analyzed) + list(fresh)
+    core_count = len(core_candidates)
     for stock in core_candidates:
         health = stock.get("financial_health") or {}
         raw = health.get("_raw_risk_score")
@@ -271,10 +272,11 @@ def stage2_enhanced(candidates, memory):
 
     analyzed_filtered = _apply_small_cap_quality_overlay(analyzed)
     fresh_filtered = _apply_small_cap_quality_overlay(fresh)
+    survivors = len(analyzed_filtered) + len(fresh_filtered)
     filtered = [s for s in core_candidates if s.get("overlay_exclusion_reason")]
     scanner._last_core_stage2_candidates = core_candidates
     scanner._last_overlay_filtered_candidates = filtered
-    print(f"  🔎 Quality overlay: {len(analyzed_filtered) + len(fresh_filtered)}/{len(core_candidates)} core candidates survived")
+    print(f"  🔎 Quality overlay: {survivors}/{core_count} core candidates survived")
     if filtered:
         for stock in filtered:
             print(f"  🧾 Filtered candidate: {stock['ticker']} — {stock['overlay_exclusion_reason']}")
@@ -330,7 +332,7 @@ def _filtered_candidates_section():
         reason = stock.get("overlay_exclusion_reason", "quality overlay")
         rows.append(
             f"<tr style='border-bottom:1px solid #ddd'>"
-            f"<td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
+            f"<td style='padding:7px"><strong>{stock['ticker']}</strong></td>"
             f"<td style='padding:7px'>{bucket.replace('_', ' ')}</td>"
             f"<td style='padding:7px'>{reason}</td>"
             f"</tr>"
