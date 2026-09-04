@@ -42,6 +42,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _normalize_ticker(ticker):
+    """Normalize index-provider symbols to Yahoo Finance style."""
+    import re
+    ticker = str(ticker).strip().upper()
+    return re.sub(r'\.([ABC])$', r'-\1', ticker)
+
+
 def fetch_sp500_from_wikipedia():
     """Fetch current S&P 500 composition from Wikipedia."""
     try:
@@ -52,7 +59,7 @@ def fetch_sp500_from_wikipedia():
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         tables = pd.read_html(StringIO(response.text))
-        current_tickers = tables[0]['Symbol'].tolist()
+        current_tickers = [_normalize_ticker(t) for t in tables[0]['Symbol'].dropna()]
         logger.info(f"✅ Fetched {len(current_tickers)} S&P 500 tickers from Wikipedia")
         return set(current_tickers)
     except ImportError as e:
@@ -84,14 +91,8 @@ def fetch_russell_1000_from_wikipedia():
             if 'Symbol' not in table.columns:
                 continue
 
-            # Some rows have missing symbols, represented by NaN floats.
-            # Drop them before applying string normalization/regex.
             symbols = table['Symbol'].dropna().astype(str).str.strip()
-            tickers = [t for t in symbols.tolist() if t and t.lower() != 'nan']
-
-            # Yahoo Finance uses BRK-B / BF-A rather than Wikipedia's BRK.B / BF.A.
-            import re
-            tickers = [re.sub(r'\.([ABC])$', r'-\1', t) for t in tickers]
+            tickers = [_normalize_ticker(t) for t in symbols if t and t.lower() != 'nan']
 
             if len(tickers) >= 500:
                 logger.info(f"✅ Fetched {len(tickers)} Russell 1000 tickers from Wikipedia")
@@ -142,7 +143,7 @@ def compare_sp500_lists():
         return None
 
     try:
-        local_sp500 = set(get_sp500_tickers())
+        local_sp500 = {_normalize_ticker(t) for t in get_sp500_tickers()}
         logger.info(f"📋 Local list has {len(local_sp500)} tickers")
         if len(local_sp500) < 400:
             logger.warning("⚠️ Local list appears to be using FALLBACK")
