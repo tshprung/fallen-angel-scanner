@@ -332,7 +332,7 @@ def _filtered_candidates_section():
         reason = stock.get("overlay_exclusion_reason", "quality overlay")
         rows.append(
             f"<tr style='border-bottom:1px solid #ddd'>"
-            f"<td style='padding:7px"><strong>{stock['ticker']}</strong></td>"
+            f"<td style='padding:7px'><strong>{stock['ticker']}</strong></td>"
             f"<td style='padding:7px'>{bucket.replace('_', ' ')}</td>"
             f"<td style='padding:7px'>{reason}</td>"
             f"</tr>"
