@@ -9,6 +9,16 @@ import yfinance as yf
 
 import fallen_angel_scanner as scanner
 
+# Re-analyze every Stage 2 candidate on every run. The scanner normally keeps
+# sent-stock memory to prevent duplicate alerts, but this project is typically
+# run once per day and each run should reflect the current market state. Memory
+# remains available for tracking/audit and price alerts; it is no longer a gate
+# on fresh Stage 2 analysis.
+def should_send_stock_every_run(ticker, memory):
+    return True
+
+scanner.should_send_stock = should_send_stock_every_run
+
 _original_get_financial_health = scanner.get_financial_health
 
 
@@ -261,13 +271,13 @@ def _patch_detail_html(html, stocks):
         ticker = re.escape(str(stock.get("ticker", "")))
         health = stock.get("financial_health") or {}
         if health.get("debt_equity_source") == "unavailable":
-            pattern = rf"(<h3>{ticker}:.*?</h3>.*?Debt/Equity:) n/a \(financial sector or unreliable data\)"
+            pattern = rf"(<h3>{ticker}:.*?</h3>.*?Debt/Equity:) n/a \\(financial sector or unreliable data\\)"
             html = re.sub(pattern, r"\1 n/a (data unavailable)", html, count=1, flags=re.S)
     for stock in list(stocks or []):
         health = stock.get("financial_health") or {}
         if health.get("current_ratio_source") == "unavailable":
             ticker = re.escape(str(stock.get("ticker", "")))
-            html = re.sub(rf"(<h3>{ticker}:.*?</h3>.*?Current Ratio:) 0\.00", r"\1 n/a (data unavailable)", html, count=1, flags=re.S)
+            html = re.sub(rf"(<h3>{ticker}:.*?</h3>.*?Current Ratio:) 0\\.00", r"\1 n/a (data unavailable)", html, count=1, flags=re.S)
     return html
 
 
