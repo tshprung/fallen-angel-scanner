@@ -266,6 +266,36 @@ scanner.analyze_price_shape = analyze_price_shape_fixed
 _original_generate_email_html = scanner.generate_email_html
 
 
+def _catalyst_display(stock):
+    headlines = [str(h).strip() for h in (stock.get("news_headlines") or []) if str(h).strip()]
+    text = " ".join(headlines).lower()
+    if not text or "no verified company-specific recent news" in text or "unable to determine cause" in text:
+        return "⚪ PRICE ACTION ONLY", "No verified company-specific recent news was available."
+
+    serious_patterns = (
+        r"\bfraud\b", r"\blawsuit\b", r"\binvestigation\b", r"\bscandal\b", r"\bbankruptcy\b",
+        r"\bdelisting\b", r"\bdefault\b", r"\blayoff", r"\brestructur", r"\bclosure\b",
+        r"\brecall\b", r"\bcriminal\b", r"\bsec inquiry\b"
+    )
+    if any(re.search(pattern, text) for pattern in serious_patterns):
+        return "🔴 VERIFIED FUNDAMENTAL RISK", "Recent company-specific news contains a potentially fundamental problem."
+
+    catalyst_patterns = (
+        r"\bmiss(?:ed|es)?\b.{0,50}\b(?:estimate|expectation|forecast|guidance|outlook)",
+        r"\b(?:estimate|expectation|forecast|guidance|outlook)\b.{0,50}\bmiss(?:ed|es)?\b",
+        r"\b(?:lowered|cut|reduced|raised|reaffirmed|reaffirm)\b.{0,40}\b(?:guidance|outlook|forecast|target)\b",
+        r"\b(?:guidance|outlook|forecast)\b.{0,50}\b(?:lowered|cut|reduced|raised|reaffirmed|reaffirm)\b",
+        r"\bbeat\b.{0,50}\b(?:estimate|expectation)s?\b.{0,80}\b(?:fell|dropped|sank|plunged|declined)\b",
+        r"\b(?:fell|dropped|sank|plunged|declined)\b.{0,80}\b(?:despite|after)\b.{0,50}\bbeat\b",
+        r"\bsector rotation\b", r"\bprofit[- ]taking\b", r"\bsupply constraints?\b",
+        r"\benrollment headwinds?\b", r"\bearnings\b.{0,50}\b(?:miss|disappoint|disappointing)"
+    )
+    if any(re.search(pattern, text) for pattern in catalyst_patterns):
+        return "🟢 VERIFIED CATALYST", "Recent company-specific news provides a plausible explanation for the move."
+
+    return "🟡 NO VERIFIED CATALYST", "Company-specific news exists, but it does not clearly explain the decline."
+
+
 def _patch_detail_html(html, stocks):
     for stock in list(stocks or []):
         ticker = re.escape(str(stock.get("ticker", "")))
@@ -278,6 +308,18 @@ def _patch_detail_html(html, stocks):
         if health.get("current_ratio_source") == "unavailable":
             ticker = re.escape(str(stock.get("ticker", "")))
             html = re.sub(rf"(<h3>{ticker}:.*?</h3>.*?Current Ratio:) 0\\.00", r"\1 n/a (data unavailable)", html, count=1, flags=re.S)
+
+    # Correct only the catalyst wording shown in the email. The underlying
+    # news_sentiment value is intentionally left unchanged so risk scoring and
+    # BUY/WAIT selection are not altered by this presentation fix.
+    for stock in list(stocks or []):
+        old_sentiment = str(stock.get("news_sentiment") or "")
+        old_reason = str(stock.get("sentiment_reason") or "")
+        old_line = f"<p><strong>{old_sentiment}</strong>: {old_reason}</p>"
+        if old_line in html:
+            label, reason = _catalyst_display(stock)
+            new_line = f"<p><strong>{label}</strong>: {reason}</p>"
+            html = html.replace(old_line, new_line, 1)
     return html
 
 
