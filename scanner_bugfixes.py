@@ -280,20 +280,24 @@ def _catalyst_display(stock):
     if any(re.search(pattern, text) for pattern in serious_patterns):
         return "🔴 VERIFIED FUNDAMENTAL RISK", "Recent company-specific news contains a potentially fundamental problem."
 
-    catalyst_patterns = (
-        r"\bmiss(?:ed|es)?\b.{0,50}\b(?:estimate|expectation|forecast|guidance|outlook)",
-        r"\b(?:estimate|expectation|forecast|guidance|outlook)\b.{0,50}\bmiss(?:ed|es)?\b",
-        r"\b(?:lowered|cut|reduced|raised|reaffirmed|reaffirm)\b.{0,40}\b(?:guidance|outlook|forecast|target)\b",
-        r"\b(?:guidance|outlook|forecast)\b.{0,50}\b(?:lowered|cut|reduced|raised|reaffirmed|reaffirm)\b",
-        r"\bbeat\b.{0,50}\b(?:estimate|expectation)s?\b.{0,80}\b(?:fell|dropped|sank|plunged|declined)\b",
-        r"\b(?:fell|dropped|sank|plunged|declined)\b.{0,80}\b(?:despite|after)\b.{0,50}\bbeat\b",
-        r"\bsector rotation\b", r"\bprofit[- ]taking\b", r"\bsupply constraints?\b",
-        r"\benrollment headwinds?\b", r"\bearnings\b.{0,50}\b(?:miss|disappoint|disappointing)"
+    # A catalyst must describe a negative, company-specific event that can
+    # plausibly explain the decline. Positive/neutral articles, analyst targets,
+    # earnings transcripts, and articles about another company are not enough.
+    negative_event_patterns = (
+        r"\b(?:miss(?:ed|es)?|disappoint(?:ed|ing)?|shortfall|weak|weaker|cut|lowered|reduced)\b"
+        r".{0,60}\b(?:estimate|expectation|guidance|outlook|forecast|target|revenue|sales|profit|earnings)\b",
+        r"\b(?:estimate|expectation|guidance|outlook|forecast|target|revenue|sales|profit|earnings)\b"
+        r".{0,60}\b(?:miss(?:ed|es)?|disappoint(?:ed|ing)?|shortfall|weak|weaker|cut|lowered|reduced)\b",
+        r"\b(?:warning|headwind|recall|layoff|restructur|closure|probe|investigation)\b",
+        r"\b(?:supply constraint|supply constraints|production disruption|production issue)\b",
+        r"\b(?:shares?|stock|stock price|shares?)\b.{0,40}\b(?:fell|dropped|sank|plunged|declined|slumped)\b"
+        r".{0,60}\b(?:after|following|due to|amid)\b"
+        r".{0,80}\b(?:miss|warning|cut|lowered|weak|headwind|disappoint|guidance|outlook)\b"
     )
-    if any(re.search(pattern, text) for pattern in catalyst_patterns):
-        return "🟢 VERIFIED CATALYST", "Recent company-specific news provides a plausible explanation for the move."
+    if any(re.search(pattern, text) for pattern in negative_event_patterns):
+        return "🟢 VERIFIED CATALYST", "Recent company-specific news describes a plausible negative event that may explain the decline."
 
-    return "🟡 NO VERIFIED CATALYST", "Company-specific news exists, but it does not clearly explain the decline."
+    return "🟡 NO VERIFIED CATALYST", "Company-specific news exists, but it does not clearly identify a negative event explaining the decline."
 
 
 def _patch_detail_html(html, stocks):
