@@ -3,6 +3,7 @@
 import fallen_angel_scanner as scanner
 import scanner_bugfixes as bugfixes
 import scanner_enhanced  # noqa: F401 - installs enhanced scanner patches
+import scanner_safety  # noqa: F401 - installs final financial-risk guards
 
 
 _original_generate_email_html = scanner.generate_email_html
