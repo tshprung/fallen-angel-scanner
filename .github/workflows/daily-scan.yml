@@ -27,7 +27,7 @@ jobs:
         run: pip install -r requirements.txt --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py fallen_angel_scanner.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py
 
       - name: Run fallen angel scanner
         env:
