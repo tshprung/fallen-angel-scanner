@@ -68,15 +68,29 @@ def stage2_with_authoritative_leverage(candidates, memory):
 scanner.stage2_deep_analysis = stage2_with_authoritative_leverage
 
 
-# Missing liquidity data must not crash the run. Treat an unknown current
-# ratio as neutral inside the original score calculation, then add one risk
-# point so missing data cannot make a candidate look safer than a known value.
+# The legacy risk score treats any headline containing words such as
+# "earnings", "guidance", or "analyst" as TEMPORARY and subtracts 1.5 points.
+# That is too aggressive: a headline containing those words is not evidence
+# that the decline is temporary. The final catalyst classifier is deliberately
+# conservative and the report now displays that classifier, so the risk score
+# must not reward an unverified cause.
 _ORIGINAL_RISK_SCORE = scanner.calculate_risk_score
 
 
 def calculate_risk_score_safe(*args, **kwargs):
     health = args[0] if args else kwargs.get("financial_health")
     missing_current_ratio = isinstance(health, dict) and health.get("current_ratio") is None
+
+    # Neutralize the legacy TEMPORARY discount. SERIOUS remains a +3 risk
+    # penalty; all other legacy sentiment labels contribute zero. This keeps
+    # risk scoring aligned with verified evidence rather than keyword presence.
+    if args:
+        args = list(args)
+        if len(args) >= 2 and isinstance(args[1], str) and "TEMPORARY" in args[1]:
+            args[1] = "UNCLEAR"
+        args = tuple(args)
+    elif isinstance(kwargs.get("news_sentiment"), str) and "TEMPORARY" in kwargs["news_sentiment"]:
+        kwargs["news_sentiment"] = "UNCLEAR"
 
     if missing_current_ratio:
         if args:
