@@ -1721,6 +1721,12 @@ def _build_detail_cards(stocks):
             debt_ebitda_txt = (
                 f"{debt_ebitda:.1f}x" if debt_ebitda is not None else "n/a"
             )
+            current_ratio = health.get("current_ratio")
+            current_ratio_txt = (
+                f"{float(current_ratio):.2f}"
+                if current_ratio is not None and np.isfinite(float(current_ratio))
+                else "n/a"
+            )
             stub_flag = (
                 " ⚠️ EQUITY STUB"
                 if net_debt
@@ -1733,7 +1739,7 @@ def _build_detail_cards(stocks):
             Cash: {cash_txt} | 
             Debt/Equity: {de_txt} | 
             Net debt: {net_debt_txt} | Debt/EBITDA: {debt_ebitda_txt}{stub_flag}<br/>
-            Current Ratio: {health['current_ratio']:.2f} | 
+            Current Ratio: {current_ratio_txt} | 
             Revenue YoY: {rev_yoy_txt}</p>
             """
 
