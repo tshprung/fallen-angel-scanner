@@ -2477,3 +2477,99 @@ Generated: 2026-10-05 17:44:34
 ================================================================================
 2026-10-05 17:44:34,229 - INFO - 
 📄 Report saved to: ticker_update_report.txt
+2026-10-12 18:29:23,561 - INFO - 
+================================================================================
+2026-10-12 18:29:23,561 - INFO - 🔄 AUTOMATED TICKER LIST UPDATE CHECK
+2026-10-12 18:29:23,561 - INFO - ================================================================================
+2026-10-12 18:29:23,561 - INFO - 
+================================================================================
+2026-10-12 18:29:23,561 - INFO - RUSSELL 1000 FETCH CHECK
+2026-10-12 18:29:23,561 - INFO - ================================================================================
+2026-10-12 18:29:23,768 - INFO - ✅ Fetched 1021 Russell 1000 tickers from Wikipedia
+2026-10-12 18:29:23,769 - INFO - 
+================================================================================
+2026-10-12 18:29:23,769 - INFO - S&P 500 COMPARISON
+2026-10-12 18:29:23,769 - INFO - ================================================================================
+2026-10-12 18:29:23,924 - INFO - ✅ Fetched 503 S&P 500 tickers from Wikipedia
+2026-10-12 18:29:24,079 - INFO - 📋 Local list has 503 tickers
+2026-10-12 18:29:24,079 - INFO - ✅ S&P 500 list is up to date!
+2026-10-12 18:29:24,080 - INFO - 
+================================================================================
+2026-10-12 18:29:24,080 - INFO - FALLEN ANGEL CANDIDATES VALIDATION
+2026-10-12 18:29:24,080 - INFO - ================================================================================
+2026-10-12 18:29:24,080 - INFO - 
+🔍 Checking 18 Fallen Angel tickers...
+2026-10-12 18:29:26,149 - INFO - Progress: 10/18
+2026-10-12 18:29:27,961 - INFO - ✅ All fallen angel candidates are valid!
+2026-10-12 18:29:27,962 - INFO - 
+================================================================================
+2026-10-12 18:29:27,962 - INFO - NASDAQ-100 SPOT CHECK
+2026-10-12 18:29:27,962 - INFO - ================================================================================
+2026-10-12 18:29:27,962 - INFO - 
+🔍 Checking 90 NASDAQ-100 tickers...
+2026-10-12 18:29:29,600 - INFO - Progress: 10/90
+2026-10-12 18:29:31,440 - INFO - Progress: 20/90
+2026-10-12 18:29:33,247 - INFO - Progress: 30/90
+2026-10-12 18:29:35,098 - INFO - Progress: 40/90
+2026-10-12 18:29:37,058 - INFO - Progress: 50/90
+2026-10-12 18:29:38,920 - INFO - Progress: 60/90
+2026-10-12 18:29:41,103 - INFO - Progress: 70/90
+2026-10-12 18:29:43,077 - INFO - Progress: 80/90
+2026-10-12 18:29:45,136 - INFO - Progress: 90/90
+2026-10-12 18:29:45,281 - INFO - ✅ All NASDAQ-100 tickers are valid!
+2026-10-12 18:29:45,281 - INFO - 
+🔍 Checking 26 WSE (Poland) tickers...
+2026-10-12 18:29:46,919 - INFO - Progress: 10/26
+2026-10-12 18:29:49,125 - INFO - Progress: 20/26
+2026-10-12 18:29:50,351 - INFO - 
+🔍 Checking 49 FTSE 100 (UK) tickers...
+2026-10-12 18:29:52,909 - INFO - Progress: 10/49
+2026-10-12 18:29:55,067 - INFO - Progress: 20/49
+2026-10-12 18:29:56,949 - INFO - Progress: 30/49
+2026-10-12 18:29:58,771 - INFO - Progress: 40/49
+2026-10-12 18:29:59,490 - ERROR - HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: FERG.L"}}}
+2026-10-12 18:29:59,672 - WARNING - ❌ FERG.L: No price data
+2026-10-12 18:30:01,162 - INFO - 
+🔍 Checking 19 TASE (Israel) tickers...
+2026-10-12 18:30:03,240 - INFO - Progress: 10/19
+2026-10-12 18:30:05,237 - INFO - 
+🔍 Checking 39 DAX (Germany) tickers...
+2026-10-12 18:30:07,008 - INFO - Progress: 10/39
+2026-10-12 18:30:08,960 - INFO - Progress: 20/39
+2026-10-12 18:30:10,978 - INFO - Progress: 30/39
+2026-10-12 18:30:13,007 - INFO - 
+================================================================================
+TICKER LIST UPDATE REPORT
+Generated: 2026-10-12 18:30:13
+================================================================================
+
+## 🗂️ Russell 1000 Fetch
+✅ Fetch OK — full universe available
+
+## 📊 S&P 500 Status
+✅ List is up to date
+
+## 🔥 Fallen Angel Candidates
+✅ All tickers are valid
+
+## 📈 NASDAQ-100
+✅ All tickers are valid
+
+## 🇵🇱 WSE (Poland)
+✅ All tickers are valid
+
+## 🇬🇧 FTSE 100 (UK)
+❌ Found 1 invalid tickers:
+  - FERG.L (No price data)
+
+## 🇮🇱 TASE (Israel)
+✅ All tickers are valid
+
+## 🇩🇪 DAX (Germany)
+✅ All tickers are valid
+
+## 🎯 ACTION ITEMS
+
+================================================================================
+2026-10-12 18:30:13,007 - INFO - 
+📄 Report saved to: ticker_update_report.txt
