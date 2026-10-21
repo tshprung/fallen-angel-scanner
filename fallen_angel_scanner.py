@@ -27,6 +27,9 @@ import os
 import json
 import time
 
+from scanner_currency import (CurrencyUnavailable, currency_context, market_cap_usd,
+                              leverage_info_usd, normalize_health)
+
 from tickers_config import (
     get_all_tickers,
     get_min_market_cap_usd,
@@ -243,6 +246,10 @@ def get_market_info(ticker):
 
 def format_price_for_email(price, currency_code):
     """Prefix/suffix by currency for email (avoid showing USD $ for PLN/GBP etc.)."""
+    if currency_code in ("GBp", "GBX"):
+        return f"{price:.2f} GBp"
+    if currency_code in ("ILA", "ILa"):
+        return f"{price:.2f} ILA"
     c = (currency_code or "USD").upper()
     if c == "GBP":
         return f"£{price:.2f}"
@@ -323,16 +330,22 @@ def not_penny_delist_risk(info, ticker):
     if p is None or p <= 0:
         return True
     if ticker.endswith(".WA") or ticker.endswith(".TA") or ticker.endswith(".L") or ticker.endswith(".DE"):
-        return p >= 1.0
+        from scanner_currency import quote_unit
+        _, scale = quote_unit(info.get("currency"))
+        return p * scale >= 1.0
     return p >= 2.0
 
 
-def passes_avg_dollar_liquidity(hist, min_dollar_vol_usd):
+def passes_avg_dollar_liquidity(hist, min_dollar_vol_usd, quote_to_usd=1.0):
     """20-day average dollar volume (uses last N rows of history)."""
     if hist is None or len(hist) < 10:
         return False
     tail = hist.tail(min(20, len(hist)))
-    dv = (tail["Close"] * tail["Volume"]).mean()
+    valid = (np.isfinite(tail["Close"]) & np.isfinite(tail["Volume"])
+             & (tail["Close"] > 0) & (tail["Volume"] >= 0))
+    if valid.sum() < 10 or not np.isfinite(quote_to_usd) or quote_to_usd <= 0:
+        return False
+    dv = (tail.loc[valid, "Close"] * tail.loc[valid, "Volume"]).mean() * quote_to_usd
     return dv >= min_dollar_vol_usd
 
 
@@ -707,7 +720,8 @@ def stage1_quick_filter():
             record_ticker_success(ticker, failed_tickers)
             
             # Quick checks only
-            market_cap = info.get('marketCap', 0) or 0
+            context = currency_context(info)
+            market_cap = market_cap_usd(info, context)
 
             if not is_tradeable_equity(info):
                 continue
@@ -725,7 +739,7 @@ def stage1_quick_filter():
             if len(hist) < 10:
                 continue
 
-            if not passes_avg_dollar_liquidity(hist, get_min_avg_dollar_volume_usd(ticker)):
+            if not passes_avg_dollar_liquidity(hist, get_min_avg_dollar_volume_usd(ticker), context["quote_to_usd"]):
                 continue
             
             current_price = hist["Close"].iloc[-1].item()
@@ -738,9 +752,13 @@ def stage1_quick_filter():
                     "current_price": current_price,
                     "drop_21d_pct": drop_21d_pct,
                     "market_cap": market_cap,
+                    "market_cap_usd": market_cap,
+                    "currency_context": context,
                 })
                 print(f"  ✓ {ticker}: {drop_21d_pct:.1f}%")
         
+        except CurrencyUnavailable as exc:
+            print(f"  ⏭️  {ticker}: currency unverified; skipped: {exc}")
         except Exception as e:
             # Record failure for any exception
             error_msg = str(e)
@@ -1301,7 +1319,12 @@ def stage2_deep_analysis(candidates, memory):
                 continue
             prof_penalty = 2 if n_prof == 2 else 0
             
-            excl, lev_reason = should_exclude_for_leverage(info)
+            context = currency_context(info)
+            usd_info = leverage_info_usd(info, context)
+            context.update(financial_currency=info["financialCurrency"],
+                           financial_to_usd=usd_info["_financial_to_usd"],
+                           financial_fx_asof=usd_info["_financial_fx_asof"])
+            excl, lev_reason = should_exclude_for_leverage(usd_info)
             if excl:
                 print(f"  ⏭️  {ticker} excluded: {lev_reason}")
                 continue
@@ -1321,11 +1344,12 @@ def stage2_deep_analysis(candidates, memory):
             company_name = info.get('longName', info.get('shortName', ticker))
             
             # Market info
-            market, currency = get_market_info(ticker)
+            market, _ = get_market_info(ticker)
+            currency = info["currency"]
             broker, alt_broker = get_broker_recommendation(market)
             
             # Financial health
-            health = get_financial_health(stock)
+            health = normalize_health(get_financial_health(stock), usd_info)
 
             piotroski_score, piotroski_checks = compute_piotroski_score(info, stock)
             if (
@@ -1342,7 +1366,7 @@ def stage2_deep_analysis(candidates, memory):
             forward_pe = info.get("forwardPE")
             price_to_book = info.get("priceToBook")
             short_percent = info.get("shortPercentOfFloat")
-            market_cap_usd = candidate.get("market_cap") or info.get("marketCap") or 0
+            cap_usd = usd_info["marketCap"]
             
             # BANKRUPTCY RISK CHECK (AUTO-EXCLUDE)
             print(f"  🏥 Checking bankruptcy risk...")
@@ -1405,7 +1429,7 @@ def stage2_deep_analysis(candidates, memory):
                 profitability_penalty=prof_penalty,
                 is_dropping=is_dropping,
                 piotroski=piotroski_score,
-                market_cap_usd=market_cap_usd,
+                market_cap_usd=cap_usd,
                 debt_ebitda=health.get("debt_ebitda") if health else None,
             )
 
@@ -1467,7 +1491,8 @@ def stage2_deep_analysis(candidates, memory):
                 'forward_pe': forward_pe,
                 'price_to_book': price_to_book,
                 'short_percent': short_percent,
-                'market_cap_usd': market_cap_usd,
+                'market_cap_usd': cap_usd,
+                'currency_context': context,
                 'price_shape': shape_info['shape'],
                 'shape_stable_years': shape_info['stable_years'],
                 'shape_recent_drop_pct': shape_info['recent_drop_pct'],
@@ -1662,7 +1687,7 @@ def _build_detail_cards(stocks):
                 else "n/a (financial sector or unreliable data)"
             )
             cash_txt = format_cash_billions_for_email(
-                health.get("cash"), stock.get("currency")
+                health.get("cash"), health.get("monetary_currency", stock.get("currency"))
             )
             rev_yoy = health.get("revenue_growth_yoy")
             rev_yoy_txt = (
@@ -1904,6 +1929,10 @@ def main():
     if candidates:
         analyzed_stocks, fresh_crash_stocks = stage2_deep_analysis(candidates, memory)
     
+    if analyzed_stocks or fresh_crash_stocks:
+        from paper_tracking import record_selections
+        record_selections(analyzed_stocks + fresh_crash_stocks)
+
     # Generate and send email
     if analyzed_stocks or fresh_crash_stocks or price_alerts:
         print("\n" + "="*80)

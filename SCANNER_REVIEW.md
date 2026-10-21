@@ -1,3 +1,5 @@
+> Follow-up implementation, 21 October 2026: the currency normalization and forward paper-observation work described below has now been implemented. See README.md for current behavior and limitations. The original findings below describe the originally reviewed commit; the solvency, fundamental valuation, catalyst verification and validated investment-edge gaps remain open. The forward ledger starts empty and makes no performance claims. Follow-up validation: 84 offline tests passed; read-only Yahoo checks succeeded for GBP/USD, PLN/USD, and the quote/financial-currency units of AZN.L (GBp/USD) and TEVA.TA (ILA/USD). These listings were validation examples, not investment recommendations. SciPy was added because yfinance repair mode requires it.
+
 # Fallen Angel Scanner: investment logic and code review
 
 Reviewed 21 October 2026 against commit `3ac0ef5e1dd9c46f5531329725cdedc68129ee48`.

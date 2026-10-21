@@ -6,6 +6,10 @@ on:
     - cron: "30 18 * * 1-5"
   workflow_dispatch:
 
+concurrency:
+  group: fallen-angel-scan-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -24,10 +28,13 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt --break-system-packages
+        run: pip install -r requirements.txt pytest --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py
+
+      - name: Offline regression tests
+        run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
 
       - name: Run fallen angel scanner
         env:
@@ -37,16 +44,28 @@ jobs:
           PYTHONUNBUFFERED: 1
         run: python -u scanner_entry.py
 
+      - name: Refresh paper observations
+        run: python paper_tracking.py
+
+      - name: Preserve paper observations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-observations-${{ github.run_id }}
+          path: |
+            paper_tracking.json
+            paper_tracking_report.md
+
       - name: Commit scanner state
         run: |
           git config user.name "fallen-angel-bot"
           git config user.email "bot@fallen-angel"
-          git pull --rebase || true
 
           # Stage files only when they exist. In particular, logs/ may be
           # absent on a clean run, which must not make the workflow fail.
           git add scanner_memory.json 2>/dev/null || true
           git add failed_tickers.json 2>/dev/null || true
+          git add paper_tracking.json paper_tracking_report.md 2>/dev/null || true
           if [ -d logs ]; then
             git add logs/*.txt 2>/dev/null || true
           fi
@@ -55,5 +74,6 @@ jobs:
             echo "No scanner state changes"
           else
             git commit -m "Update scanner state $(date +'%Y-%m-%d')"
+            git pull --rebase
             git push
           fi
