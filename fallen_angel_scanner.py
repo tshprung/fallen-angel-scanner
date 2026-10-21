@@ -19,7 +19,7 @@ Features:
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -27,6 +27,10 @@ import os
 import json
 import time
 
+from screening import drawdown_candidate
+from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
+                                  valuation_scenarios, authoritative_health, specialist_requirements)
+from research_reporting import candidate_needs_review, financial_detail_html, write_research_report
 from scanner_currency import (CurrencyUnavailable, currency_context, market_cap_usd,
                               leverage_info_usd, normalize_health)
 
@@ -624,45 +628,13 @@ def classify_recovery_bucket(upside_pct, price_shape, at_bottom):
 
 
 def narrow_analyzed_results(analyzed, max_results=20):
-    """
-    If Stage 2 yields more than max_results, apply progressively stricter cuts
-    (lower risk score, higher recovery bar) until the list fits.
-    """
-    if len(analyzed) <= max_results:
-        return sorted(
-            analyzed, key=lambda x: (x["risk_score"], -x["recovery_potential"])
-        )
-
-    n_before = len(analyzed)
-    pool = sorted(analyzed, key=lambda x: (x["risk_score"], -x["recovery_potential"]))
-
-    steps = [
-        ("risk ≤ 5", lambda s: s["risk_score"] <= 5),
-        ("risk ≤ 4", lambda s: s["risk_score"] <= 4),
-        ("risk ≤ 4 & recovery ≥ 55%", lambda s: s["risk_score"] <= 4 and s["recovery_potential"] >= 55),
-        ("risk ≤ 4 & recovery ≥ 60%", lambda s: s["risk_score"] <= 4 and s["recovery_potential"] >= 60),
-        ("risk ≤ 3", lambda s: s["risk_score"] <= 3),
-        ("risk ≤ 3 & recovery ≥ 58%", lambda s: s["risk_score"] <= 3 and s["recovery_potential"] >= 58),
-        ("risk ≤ 2", lambda s: s["risk_score"] <= 2),
-    ]
-
-    last_non_empty = pool
-    for label, pred in steps:
-        filt = [s for s in pool if pred(s)]
-        if not filt:
-            continue
-        last_non_empty = sorted(filt, key=lambda x: (x["risk_score"], -x["recovery_potential"]))
-        if len(last_non_empty) <= max_results:
-            print(
-                f"  📉 Tightened selection ({n_before} → {len(last_non_empty)}): {label}"
-            )
-            return last_non_empty
-
-    out = last_non_empty[:max_results]
-    print(
-        f"  📉 Tightened selection ({n_before} → {len(out)}): top {max_results} by risk / recovery"
-    )
-    return out
+    """Rank with fixed, visible criteria; never change economic cutoffs to fill a report."""
+    return sorted(analyzed, key=lambda stock: (
+        stock.get("solvency_status") != "SCREEN_PASS",
+        stock.get("risk_score_raw", stock["risk_score"]),
+        -stock["recovery_potential"],
+        stock["ticker"],
+    ))[:max_results]
 
 
 def get_broker_recommendation(market):
@@ -690,6 +662,7 @@ def stage1_quick_filter():
     print("STAGE 1: Quick Price Drop Filter")
     print("="*80)
     
+    policy = load_policy()
     all_tickers = get_all_tickers()
     failed_tickers = load_failed_tickers()
     
@@ -735,28 +708,25 @@ def stage1_quick_filter():
                 continue
             
             # Get price history
-            hist = stock.history(period="1mo")
+            hist = stock.history(period="1y")
             if len(hist) < 10:
                 continue
 
             if not passes_avg_dollar_liquidity(hist, get_min_avg_dollar_volume_usd(ticker), context["quote_to_usd"]):
                 continue
             
-            current_price = hist["Close"].iloc[-1].item()
-            lookback_price = hist["Close"].iloc[-min(DROP_LOOKBACK_DAYS, len(hist))].item()
-            drop_21d_pct = ((current_price - lookback_price) / lookback_price) * 100
-
-            if drop_21d_pct <= -MIN_DROP_PERCENT:
+            signals = drawdown_candidate(hist, policy, MIN_DROP_PERCENT)
+            if signals:
                 candidates.append({
                     "ticker": ticker,
-                    "current_price": current_price,
-                    "drop_21d_pct": drop_21d_pct,
+                    "current_price": float(hist["Close"].iloc[-1]),
                     "market_cap": market_cap,
                     "market_cap_usd": market_cap,
                     "currency_context": context,
+                    **signals,
                 })
-                print(f"  ✓ {ticker}: {drop_21d_pct:.1f}%")
-        
+                print(f"  ✓ {ticker}: {signals['screen_cohort']}, 21-session change {signals['drop_21d_pct']:.1f}%")
+
         except CurrencyUnavailable as exc:
             print(f"  ⏭️  {ticker}: currency unverified; skipped: {exc}")
         except Exception as e:
@@ -972,7 +942,11 @@ def calculate_risk_score(
 ):
     """Calculate risk score 1-10"""
     if not financial_health:
-        return 7  # Default to medium-high if no data
+        return 7  # Unverified financial inputs cannot receive a low score
+    from scanner_currency import finite
+    if any(finite(financial_health.get(name)) is None for name in
+           ("debt_to_equity", "current_ratio", "revenue", "cash", "market_cap")):
+        return 7
     
     score = 5  # Start neutral
     score += profitability_penalty
@@ -1058,8 +1032,7 @@ def calculate_risk_score(
     # News sentiment (significant weight)
     if "SERIOUS" in news_sentiment:
         score += 3
-    elif "TEMPORARY" in news_sentiment:
-        score -= 1.5  # Bigger discount for temporary issues
+    # A headline keyword is not evidence that financial risk has improved.
     
     return max(1, min(10, round(score)))
 
@@ -1290,12 +1263,18 @@ def stage2_deep_analysis(candidates, memory):
     print("STAGE 2: Deep Analysis & News Check")
     print("="*80)
     
+    global _last_research_audit
+    _last_research_audit = []
+    policy = load_policy()
     analyzed = []
     fresh_crash = []
     analysis_count = 0  # Track number of stocks analyzed
     
     for candidate in candidates:
         ticker = candidate['ticker']
+        audit = {"ticker": ticker, "decision": "not_selected", "reason": "Did not complete eligibility checks",
+                 "screen_cohort": candidate.get("screen_cohort", "recent_shock")}
+        _last_research_audit.append(audit)
         
         # Check deduplication
         if not should_send_stock(ticker, memory):
@@ -1309,12 +1288,19 @@ def stage2_deep_analysis(candidates, memory):
                 print(f"  ❌ Failed to fetch {ticker} after retries")
                 continue
 
+            if specialist_requirements(info):
+                solvency = assess_solvency({}, info, policy)
+                audit.update(decision="specialist_review", solvency=solvency,
+                             reason="; ".join(solvency["missing"]))
+                continue
             if is_biotechnology_company(info):
+                audit.update(reason="Biotech/pharma exclusion")
                 print(f"  ⏭️  {ticker} excluded: biotech/pharma (preference)")
                 continue
 
             n_prof, prof_exclude = profitability_signals(info)
             if prof_exclude:
+                audit.update(reason="Negative quote-summary profitability across all three checks")
                 print(f"  ⏭️  {ticker} excluded: profitability gate (3/3 negative)")
                 continue
             prof_penalty = 2 if n_prof == 2 else 0
@@ -1324,15 +1310,14 @@ def stage2_deep_analysis(candidates, memory):
             context.update(financial_currency=info["financialCurrency"],
                            financial_to_usd=usd_info["_financial_to_usd"],
                            financial_fx_asof=usd_info["_financial_fx_asof"])
-            excl, lev_reason = should_exclude_for_leverage(usd_info)
-            if excl:
-                print(f"  ⏭️  {ticker} excluded: {lev_reason}")
-                continue
+            # Quote-summary D/E units can be ambiguous. Admission below uses
+            # dated statement debt and equity instead of rejecting on that field.
 
             # PRICE SHAPE CHECK (sudden drop vs gradual multi-quarter decline)
             print(f"  📐 Checking price shape...")
             shape_info = analyze_price_shape(stock, candidate["current_price"])
             if shape_info["shape"] == "gradual_decline":
+                audit.update(reason="Persistent pre-drop decline rather than stable-business price history")
                 print(
                     f"  ⏭️  {ticker} excluded: gradual decline shape "
                     f"(stable-period drift {shape_info['stable_drift_pct']:.0f}% "
@@ -1350,6 +1335,16 @@ def stage2_deep_analysis(candidates, memory):
             
             # Financial health
             health = normalize_health(get_financial_health(stock), usd_info)
+            evidence = collect_evidence(stock, info, policy=policy)
+            solvency = assess_solvency(evidence, info, policy)
+            valuation = valuation_scenarios(evidence, info, candidate["current_price"],
+                                            usd_info["marketCap"], usd_info["_financial_to_usd"], policy)
+            audit.update(financial_evidence=evidence, solvency=solvency, valuation=valuation)
+            if solvency["status"] in ("EXCLUDE", "UNVERIFIED", "SPECIALIST_REVIEW"):
+                audit.update(decision=solvency["status"].lower(), reason="; ".join(solvency["flags"] + solvency["missing"]))
+                print(f"  ⏭️  {ticker}: {solvency['status']}: {audit['reason']}")
+                continue
+            health = authoritative_health(health, evidence, usd_info["_financial_to_usd"], usd_info["marketCap"])
 
             piotroski_score, piotroski_checks = compute_piotroski_score(info, stock)
             if (
@@ -1368,19 +1363,15 @@ def stage2_deep_analysis(candidates, memory):
             short_percent = info.get("shortPercentOfFloat")
             cap_usd = usd_info["marketCap"]
             
-            # BANKRUPTCY RISK CHECK (AUTO-EXCLUDE)
-            print(f"  🏥 Checking bankruptcy risk...")
-            has_bankruptcy_risk, bankruptcy_reason = check_bankruptcy_risk(stock, info, health)
-            if has_bankruptcy_risk:
-                print(f"  ❌ {ticker} excluded: {bankruptcy_reason}")
-                continue
-            
+            # Dated statement checks above are authoritative; absent quote-summary
+            # interest/current-assets values must not stand in for solvency evidence.
             # Earnings calendar
             earnings_date, days_to_earnings = get_earnings_date(ticker)
             if (
                 days_to_earnings is not None
                 and 0 <= days_to_earnings <= EARNINGS_EXCLUDE_DAYS
             ):
+                audit.update(reason=f"Earnings within {EARNINGS_EXCLUDE_DAYS} days")
                 print(
                     f"  ⏭️  {ticker} excluded: earnings in {days_to_earnings} days "
                     f"({earnings_date})"
@@ -1434,6 +1425,7 @@ def stage2_deep_analysis(candidates, memory):
             )
 
             if risk >= 4:
+                audit.update(decision="risk_excluded", reason=f"Risk score {risk}/10 exceeds policy")
                 print(f"  ⏭️  {ticker} excluded: Risk score {risk}/10 (need <4)")
                 continue
 
@@ -1442,23 +1434,17 @@ def stage2_deep_analysis(candidates, memory):
                 stock, candidate["current_price"]
             )
 
-            target_low, target_high, upside_pct = estimate_recovery_target(
-                stock, info, candidate["current_price"]
-            )
-
-            if upside_pct is None or not np.isfinite(upside_pct):
-                print(f"  ⏭️  {ticker} excluded: invalid recovery estimate")
+            if valuation["status"] != "SENSITIVITY":
+                audit.update(decision="valuation_unverified", reason=valuation["reason"])
+                print(f"  ⏭️  {ticker}: {audit['reason']}")
                 continue
-
-            bucket = classify_recovery_bucket(upside_pct, shape_info["shape"], at_bottom)
-            if bucket is None:
-                print(
-                    f"  ⏭️  {ticker} excluded: Upside {upside_pct:.0f}% "
-                    f"< {MIN_RECOVERY_POTENTIAL_PCT:.0f}% target "
-                    f"(fresh-crash bar is {MIN_RECOVERY_POTENTIAL_FRESH_CRASH_PCT:.0f}%, "
-                    f"needs sudden_drop shape + at/near bottom)"
-                )
+            if not valuation["plausible_upside_screen"]:
+                audit.update(decision="insufficient_value_upside", reason="Base/bull sensitivity does not meet configured upside thresholds")
                 continue
+            target_low = valuation["cases"]["bear"]["price"]
+            target_high = valuation["cases"]["bull"]["price"]
+            upside_pct = valuation["cases"]["base"]["return_pct"]
+            bucket = "fresh_crash" if upside_pct < 50 and shape_info["shape"] == "sudden_drop" else "fallen_angel"
 
             record = {
                 'ticker': ticker,
@@ -1486,6 +1472,12 @@ def stage2_deep_analysis(candidates, memory):
                 'news_sentiment': news_sentiment,
                 'sentiment_reason': sentiment_reason,
                 'financial_health': health,
+                'financial_evidence': evidence,
+                'solvency': solvency,
+                'solvency_status': solvency["status"],
+                'valuation': valuation,
+                'target_basis': "fcf_sensitivity",
+                'screen_cohort': candidate.get("screen_cohort", "recent_shock"),
                 'piotroski_score': piotroski_score,
                 'piotroski_checks': piotroski_checks,
                 'forward_pe': forward_pe,
@@ -1499,6 +1491,7 @@ def stage2_deep_analysis(candidates, memory):
                 'bucket': bucket,
             }
 
+            audit.update(decision="selected", reason="Passed covered checks and configured FCF sensitivity thresholds")
             if bucket == "fallen_angel":
                 analyzed.append(record)
             else:
@@ -1515,6 +1508,7 @@ def stage2_deep_analysis(candidates, memory):
                 time.sleep(5)
             
         except Exception as e:
+            audit.update(decision="analysis_error", reason=f"{type(e).__name__}: {e}")
             print(f"  ❌ Failed to analyze {ticker}: {e}")
             continue
     
@@ -1534,12 +1528,12 @@ def _build_summary_table_rows(stocks):
     Fallen Angels and Fresh Crash Watch sections -- same row shape."""
     rows = ""
     for stock in stocks:
-        risk_class = "low-risk"  # Everything reaching either bucket has risk <4
+        risk_class = "review-risk" if candidate_needs_review(stock) else "low-risk"
 
-        if stock.get('catalyst_status') == 'WATCH' or stock.get('risk_score_raw', stock.get('risk_score', 10)) >= 4:
+        if candidate_needs_review(stock):
             status = 'WATCH'
             status_color = '#f39c12'
-            price_note = '<br/><small>Unresolved catalyst or elevated risk</small>'
+            price_note = '<br/><small>Unresolved financial/catalyst evidence or elevated risk</small>'
         elif stock['at_bottom']:
             status = "🔎 RESEARCH"
             status_color = "#27ae60"
@@ -1611,8 +1605,8 @@ def _build_summary_table(stocks, heading_html):
             <th style="padding: 10px; text-align: right;">Drop Peak</th>
             <th style="padding: 10px; text-align: center;">RSI</th>
             <th style="padding: 10px; text-align: left;">Shape</th>
-            <th style="padding: 10px; text-align: right;">Target</th>
-            <th style="padding: 10px; text-align: right;">Upside</th>
+            <th style="padding: 10px; text-align: right;">Sensitivity range</th>
+            <th style="padding: 10px; text-align: right;">Base return</th>
             <th style="padding: 10px; text-align: center;">Risk</th>
             <th style="padding: 10px; text-align: left;">Sentiment</th>
             <th style="padding: 10px; text-align: left;">Earnings</th>
@@ -1627,10 +1621,10 @@ def _build_detail_cards(stocks):
     """Full 'Detailed Analysis' card section for one bucket of stocks."""
     html = ""
     for stock in stocks:
-        risk_class = "low-risk"
+        risk_class = "review-risk" if candidate_needs_review(stock) else "low-risk"
 
-        if stock.get('catalyst_status') == 'WATCH' or stock.get('risk_score_raw', stock.get('risk_score', 10)) >= 4:
-            status_html = '<p><strong>WATCH</strong> - Unresolved catalyst or elevated risk</p>'
+        if candidate_needs_review(stock):
+            status_html = '<p><strong>WATCH</strong> - Unresolved financial/catalyst evidence or elevated risk</p>'
         elif stock['at_bottom']:
             status_html = '<p style="color: #27ae60; font-size: 18px;"><strong>🔎 RESEARCH</strong> - Technical bottom signal; verify business value and risks</p>'
         else:
@@ -1638,6 +1632,7 @@ def _build_detail_cards(stocks):
             status_html = f'<p style="color: #f39c12; font-size: 18px;"><strong>⏳ WAIT</strong> - Wait for price to reach: <strong>{wait_range}</strong> (±5%)</p>'
 
         target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f} {stock['currency']}"
+        target_label = "FCF sensitivity range; base return" if stock.get("target_basis") == "fcf_sensitivity" else "Recovery Reference (no time forecast)"
 
         price_txt = format_price_for_email(
             stock["current_price"], stock.get("currency")
@@ -1659,7 +1654,7 @@ def _build_detail_cards(stocks):
             
             <p><strong>📍 Current Price:</strong> {price_txt} (Down {drop_detail})</p>
             <p><strong>RSI:</strong> {format_rsi_for_email(stock.get('rsi'))} | 
-               <strong>🎯 Recovery Reference (no time forecast):</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
+               <strong>🎯 {target_label}:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
             <p><strong>⚠️ Risk Score:</strong> {stock.get('risk_score_raw', stock['risk_score'])}/10 (heuristic) |
                <strong>Piotroski:</strong> {format_piotroski_for_email(stock.get('piotroski_score'), stock.get('piotroski_checks'))}</p>
             <p><strong>📐 Shape:</strong> {format_shape_for_email(stock.get('price_shape'), stock.get('shape_stable_years'), stock.get('shape_recent_drop_pct'))}</p>
@@ -1679,6 +1674,7 @@ def _build_detail_cards(stocks):
             </div>
         """
 
+        html += financial_detail_html(stock)
         if stock['financial_health']:
             health = stock['financial_health']
             de_txt = (
@@ -1785,6 +1781,7 @@ def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
             .header {{ background: #2c3e50; color: white; padding: 20px; }}
             .stock {{ border: 2px solid #ddd; margin: 20px 0; padding: 15px; border-radius: 8px; }}
             .low-risk {{ border-left: 5px solid #27ae60; background: #eafaf1; }}
+            .review-risk {{ border-left: 5px solid #e67e22; background: #fef5e7; }}
             .med-risk {{ border-left: 5px solid #f39c12; background: #fef5e7; }}
             .high-risk {{ border-left: 5px solid #e74c3c; background: #fadbd8; }}
             .news {{ background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 5px; }}
@@ -1803,11 +1800,12 @@ def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     if price_alerts:
         html += """
         <div class="alert-box">
-            <h2>💰 AVERAGING DOWN OPPORTUNITIES</h2>
-            <p>Previously sent stocks that dropped another 10%+:</p>
+            <h2>💰 PRICE DECLINE WATCH</h2>
+            <p>Previously reported stocks with another 10%+ decline. Solvency and the investment thesis must be reassessed before adding money:</p>
         """
         for alert in price_alerts:
-            _, acurr = get_market_info(alert["ticker"])
+            _, fallback_currency = get_market_info(alert["ticker"])
+            acurr = alert.get("currency") or fallback_currency
             op = format_price_for_email(alert["original_price"], acurr)
             cp = format_price_for_email(alert["current_price"], acurr)
             html += f"""
@@ -1820,7 +1818,7 @@ def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     # Fallen Angels section
     if analyzed_stocks:
         heading = f"""
-        <p><strong>Fallen Angels (screened candidates; survival unverified; recovery reference upside: &ge;{MIN_RECOVERY_POTENTIAL_PCT:.0f}%):</strong></p>
+        <p><strong>Fallen Angels (fundamental research; illustrative base/bull scenarios; survival unverified):</strong></p>
         """
         html += _build_summary_table(analyzed_stocks, heading)
         html += "<h2>📊 Detailed Analysis</h2>"
@@ -1833,11 +1831,9 @@ def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     if fresh_crash_stocks:
         heading = f"""
         <h2>⚡ Fresh Crash Watch</h2>
-        <p>Sudden, recent crashes (not yet a deep multi-month decline) that pass every quality
-        gate but land below the {MIN_RECOVERY_POTENTIAL_PCT:.0f}% recovery bar used for Fallen
-        Angels above -- included here instead because the shape classifier confirms a genuine
-        sudden drop and technical signals suggest it's at/near a bottom, not still falling.
-        Riskier than the list above: the market may not be done reacting yet.</p>
+        <p>Sudden-drop candidates with a base sensitivity below 50%. Fundamental evidence,
+        configured base/bull upside thresholds and unresolved review requirements still apply.
+        A technical bottom signal does not establish investment safety.</p>
         """
         html += _build_summary_table(fresh_crash_stocks, heading)
         html += "<h2>📊 Detailed Analysis — Fresh Crash Watch</h2>"
@@ -1902,20 +1898,23 @@ def main():
     print("Two-Stage Process with News Analysis")
     print("="*80 + "\n")
     
+    global _last_research_audit
+    _last_research_audit = []
     # Load memory
     memory = load_memory()
     
     # Check for price alerts first
-    print("Checking for averaging down opportunities...")
+    print("Checking price-decline watch alerts...")
     price_alerts = check_price_alerts(memory)
     if price_alerts:
-        print(f"✅ Found {len(price_alerts)} averaging down alerts")
+        print(f"✅ Found {len(price_alerts)} price watch alerts")
     
     # Stage 1: Quick filter
     candidates, tickers_to_remove = stage1_quick_filter()
     
     if not candidates and not price_alerts:
-        print("✅ No fallen angels found today. Market looking stable!\n")
+        print("✅ No candidates met this run's filters.\n")
+        write_research_report([], [], globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
         
         # Log tickers to remove if any
         if tickers_to_remove:
@@ -1929,9 +1928,17 @@ def main():
     if candidates:
         analyzed_stocks, fresh_crash_stocks = stage2_deep_analysis(candidates, memory)
     
-    if analyzed_stocks or fresh_crash_stocks:
+    selected = analyzed_stocks + fresh_crash_stocks
+    final_tickers = {stock["ticker"] for stock in selected}
+    filtered = {stock["ticker"]: stock.get("overlay_exclusion_reason")
+                for stock in globals().get("_last_overlay_filtered_candidates", [])}
+    for item in _last_research_audit:
+        if item["decision"] == "selected" and item["ticker"] not in final_tickers:
+            item.update(decision="final_filter_excluded", reason=filtered.get(item["ticker"]) or "Final overlay or report-size filter")
+    write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
+    if selected and globals().get("PAPER_TRACKING_ENABLED", True):
         from paper_tracking import record_selections
-        record_selections(analyzed_stocks + fresh_crash_stocks)
+        record_selections(analyzed_stocks + fresh_crash_stocks, path=globals().get("PAPER_LEDGER_PATH", "paper_tracking.json"))
 
     # Generate and send email
     if analyzed_stocks or fresh_crash_stocks or price_alerts:
@@ -1945,7 +1952,7 @@ def main():
         if fresh_crash_stocks:
             subject += f" + {len(fresh_crash_stocks)} fresh crash watch"
         if price_alerts:
-            subject += f" + {len(price_alerts)} averaging down alerts"
+            subject += f" + {len(price_alerts)} price watch alerts"
         
         if send_email(subject, html):
             # Update memory (both buckets share the same dedup/tracking)
@@ -1953,7 +1960,9 @@ def main():
                 memory['sent_stocks'][stock['ticker']] = datetime.now().isoformat()
                 memory['tracked_prices'][stock['ticker']] = {
                     'price': stock['current_price'],
-                    'date': datetime.now().strftime('%Y-%m-%d')
+                    'date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
+                    'recorded_at': datetime.now(timezone.utc).isoformat(),
+                    'currency': stock['currency']
                 }
             
             save_memory(memory)

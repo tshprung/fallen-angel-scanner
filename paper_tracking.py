@@ -42,8 +42,15 @@ def record_selections(stocks, path=LEDGER, now=None):
                 "bucket": stock.get("bucket"), "risk_score": stock.get("risk_score_raw", stock.get("risk_score")),
                 "cause_class": stock.get("cause_class"), "catalyst_status": stock.get("catalyst_status"),
                 "reference_upside_pct": finite(stock.get("recovery_potential")),
+                "upside_basis": stock.get("target_basis", "historical_reference"),
                 "market_cap_usd": finite(stock.get("market_cap_usd")),
                 "currency_context": stock.get("currency_context"),
+                "financial_evidence": stock.get("financial_evidence"),
+                "solvency_status": stock.get("solvency_status"),
+                "solvency": stock.get("solvency"),
+                "valuation": stock.get("valuation"),
+                "policy_id": (stock.get("financial_evidence") or {}).get("policy_id"),
+                "screen_cohort": stock.get("screen_cohort"),
                 "performance": {"status": "pending_next_session"}}
         data["selections"].append(item)
         existing.add(identifier)

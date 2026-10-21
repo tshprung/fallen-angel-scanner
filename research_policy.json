@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "fresh_statement_days": 200,
+  "max_annual_statement_days": 450,
+  "minimum_interest_coverage": 2.5,
+  "minimum_current_debt_coverage": 1.25,
+  "max_net_debt_ebitda": 3.0,
+  "max_debt_equity": 2.5,
+  "minimum_burn_runway_months": 24,
+  "max_annual_share_growth": 0.10,
+  "minimum_base_upside_pct": 20,
+  "minimum_bull_upside_pct": 100,
+  "sustained_drawdown_pct": -30,
+  "sustained_max_recent_loss_pct": -15,
+  "valuation": {
+    "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+    "minimum_annual_fcf_periods": 3,
+    "assumed_share_dilution": 0.05,
+    "bear": {"fcf_factor": 0.65, "equity_fcf_multiple": 10},
+    "base": {"fcf_factor": 1.0, "equity_fcf_multiple": 15},
+    "bull": {"fcf_factor": 1.2, "equity_fcf_multiple": 20}
+  }
+}

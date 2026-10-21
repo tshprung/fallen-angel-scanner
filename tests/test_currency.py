@@ -112,7 +112,7 @@ def test_stage1_rejects_local_cap_that_only_appears_to_clear_usd_floor(monkeypat
     assert scanner.stage1_quick_filter()[0] == []  # PLN 1B = USD 250M
 
 
-def test_stage2_converts_financials_before_leverage_gate(monkeypatch):
+def test_stage2_prepares_usd_before_statement_checks(monkeypatch):
     fx, _ = fx_rates()
     info = {"currency": "PLN", "financialCurrency": "EUR", "marketCap": 4e9,
             "totalDebt": 3e9, "totalCash": 1e9, "totalStockholderEquity": 10e9}
@@ -122,11 +122,16 @@ def test_stage2_converts_financials_before_leverage_gate(monkeypatch):
     monkeypatch.setattr(scanner, "is_biotechnology_company", lambda _: False)
     monkeypatch.setattr(scanner, "profitability_signals", lambda _: (0, False))
     monkeypatch.setattr(scanner, "currency_context", lambda data: currency_context(data, fx))
-    monkeypatch.setattr(scanner, "leverage_info_usd", lambda data, context: leverage_info_usd(data, context, fx))
-    def gate(normalized):
+    monkeypatch.setattr(scanner, "analyze_price_shape", lambda *args: {"shape": "choppy"})
+    monkeypatch.setattr(scanner, "get_financial_health", lambda _: {})
+    def normalize(data, context):
+        normalized = leverage_info_usd(data, context, fx)
         captured.append(normalized)
-        return True, "test gate"
-    monkeypatch.setattr(scanner, "should_exclude_for_leverage", gate)
-    assert scanner.stage2_deep_analysis([{"ticker": "AAA.WA"}], {}) == ([], [])
+        return normalized
+    def stop_at_statements(*args, **kwargs):
+        raise ValueError("test stops at statement boundary")
+    monkeypatch.setattr(scanner, "leverage_info_usd", normalize)
+    monkeypatch.setattr(scanner, "collect_evidence", stop_at_statements)
+    assert scanner.stage2_deep_analysis([{"ticker": "AAA.WA", "current_price": 10}], {}) == ([], [])
     assert captured[0]["marketCap"] == pytest.approx(1e9)
     assert captured[0]["totalDebt"] == pytest.approx(3.3e9)

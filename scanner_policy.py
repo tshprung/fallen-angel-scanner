@@ -205,16 +205,29 @@ def fetch_sp600_tickers():
     return []
 
 
-SP600_TICKERS = fetch_sp600_tickers()
-IWM_TICKERS = fetch_upper_russell_2000() if not SP600_TICKERS else []
-EXTENSION_TICKERS = SP600_TICKERS or IWM_TICKERS
-EXTENSION_SET = set(EXTENSION_TICKERS)
+SP600_TICKERS = []
+IWM_TICKERS = []
+EXTENSION_TICKERS = []
+EXTENSION_SET = set()
+_EXTENSION_LOADED = False
+
+
+def _load_extension():
+    global SP600_TICKERS, IWM_TICKERS, EXTENSION_TICKERS, EXTENSION_SET, _EXTENSION_LOADED
+    if _EXTENSION_LOADED:
+        return
+    SP600_TICKERS = fetch_sp600_tickers()
+    IWM_TICKERS = fetch_upper_russell_2000() if not SP600_TICKERS else []
+    EXTENSION_TICKERS = SP600_TICKERS or IWM_TICKERS
+    EXTENSION_SET = set(EXTENSION_TICKERS)
+    _EXTENSION_LOADED = True
 
 
 _original_get_all_tickers = scanner.get_all_tickers
 
 
 def get_all_tickers_with_extension():
+    _load_extension()
     base = _original_get_all_tickers()
     combined = list(base) + EXTENSION_TICKERS
     seen = set()

@@ -1,8 +1,8 @@
 # Fallen Angel Scanner
 
-Research candidates across US, UK, German, Polish and Israeli markets. Signals are research prompts, not buy instructions or estimates of bankruptcy probability. Recovery references are not twelve-month fair values.
+A research scanner for listed equities in the US, UK, Germany, Poland and Israel. It looks for recent shocks or older drawdowns that have stabilized, checks dated financial evidence, and calculates transparent cash-flow sensitivities. It does not predict one-year returns or guarantee business survival.
 
-## Run and test
+## Run
 
 ```sh
 python -m pip install -r requirements.txt pytest
@@ -10,245 +10,62 @@ python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --
 python scanner_entry.py
 ```
 
-`scanner_entry.py` installs all production overlays. Running it with `SENDER_EMAIL`, `RECEIVER_EMAIL` and `SENDER_PASSWORD` configured sends email. The daily GitHub workflow runs tests before scanning.
+`scanner_entry.py` is the production entry point. With `SENDER_EMAIL`, `RECEIVER_EMAIL` and `SENDER_PASSWORD` configured it sends email. The scheduled workflow runs on weekdays at 18:30 UTC (20:30 Warsaw during summer time, 19:30 during winter time).
 
-## Currency normalization
+For a small validation run without email or additions to the paper ledger:
 
-Size, liquidity, cash/market-cap and net-debt/market-cap comparisons use USD. Quote metadata determines the trading currency; `financialCurrency` independently determines financial amounts. FX uses the newest valid Yahoo observation within seven calendar days, caches each pair for the run and records its observation timestamp. Missing/unsupported currencies and unavailable/stale FX skip the candidate with a diagnostic, rather than assuming USD.
+```sh
+python scanner_entry.py --tickers TTD,LULU,AZN.L --no-email --no-paper --output-dir validation
+```
 
-GBp/GBX and ILA quote prices use a 0.01 major-unit scale. For minor-unit quotes, market cap is checked against shares outstanding and the quote price; inconsistent or missing evidence skips the candidate. Repair-mode history is reconciled back to quote units. Cash and debt are displayed in USD, while share prices and recovery references retain their quote units. Liquidity is a recent average converted at the scan's FX rate, not a historical daily-FX average. Supported major currencies: USD, GBP, EUR, PLN, ILS, CHF, CAD, AUD and JPY. Provider data and repair heuristics still need monitoring.
+These tickers illustrate software use; they are not recommendations. `--no-email` by itself still records genuine selections to paper tracking. `--no-paper` disables those additions. `--output-dir` directs reports and run-state files to that directory. Imports and `--help` do not download index universes. The CLI handles UTF-8 output on Windows.
+
+## Selection process
+
+1. **Eligible security:** configured USD market-cap and liquidity floors; listed equities; biotech exclusions retained.
+2. **Price cohort:** at least a 20% fall across exactly 21 price intervals, or at least a 30% drawdown with the latest 21-session fall no worse than 15%. Older-drawdown screening requires at least 200 observations. The existing persistent-decline shape exclusion remains.
+3. **Financial evidence:** current balance sheet, operating cash flow, capex, earnings, interest and debt. Four consecutive quarters form TTM data; annual fallback is explicitly labeled. Missing figures stay missing.
+4. **Solvency:** statement debt/equity, interest coverage, net leverage, cash burn and stressed coverage of current debt. Hard financial exclusions cannot be offset by favorable technicals. A raw risk score of 4 is no longer compressed to 3.
+5. **Value sensitivity:** positive current cash flow and at least three consecutive positive annual cash-flow periods. Cash flow is conservatively normalized and scenarios show every multiple, growth factor and dilution assumption. The main shortlist requires base sensitivity of at least +20% and bull sensitivity of at least +100%; these are configurable research cutoffs, not predicted returns.
+
+The main shortlist uses these fundamental scenarios, rather than treating a return to a past share price as fair value. Historical recovery helpers remain for compatibility but do not determine the new shortlist. Report-size limits rank using fixed criteria rather than quietly tightening valuation thresholds to fill a report.
+
+## Reports and review queues
+
+Each completed run writes `research_report.md` and `research_report.json`, including exclusions, missing evidence, statement period ends, source row labels, scenario inputs and a policy fingerprint. The daily workflow preserves and commits these alongside paper observations. It also uploads artifacts before attempting the state commit.
+
+- `EXCLUDE`: at least one covered financial check breached policy.
+- `UNVERIFIED`: required evidence is missing, stale, inconsistent or unusable. It cannot enter the ordinary-company shortlist.
+- `SPECIALIST_REVIEW`: a bank, insurer, REIT, other financial business or real-estate company needs a different model. Ordinary-company ratios do not qualify it for the shortlist.
+- `REVIEW`: covered checks did not breach policy, but known questions remain. For indebted companies this includes debt due in months 13–24, covenants and committed facilities. Shortlisted names with this status display WATCH.
+- `SCREEN_PASS`: only the covered checks passed. This does not verify all risks or establish investment suitability.
+
+An empty shortlist is valid. Price-decline alerts are watch prompts, not instructions to average down. Their financial thesis must be reassessed. Legacy non-USD price baselines without verified quote units are skipped rather than compared across ambiguous units.
+
+## Financial model and policy
+
+[research_policy.json](research_policy.json) holds the research thresholds and valuation assumptions. [FUNDAMENTALS.md](FUNDAMENTALS.md) explains calculations, source coverage and limitations. The original [review](SCANNER_REVIEW.md) is retained as historical context.
+
+Statement amounts use `financialCurrency`; price amounts use quote metadata. Size, liquidity, cash/market-cap and net-debt/market-cap comparisons use USD. FX uses a timestamped valid Yahoo observation no older than seven calendar days and is cached for the run. Missing/unsupported currencies and unavailable FX skip the candidate.
+
+GBp/GBX and ILA quote units are explicitly reconciled, including repair-mode changes to major currency units. Minor-unit market cap is checked against shares outstanding and the quote price. Cash/debt in the report are USD; share prices remain in quote units. Liquidity uses the scan's FX rate, rather than a historical daily-FX average. Supported major currencies: USD, GBP, EUR, PLN, ILS, CHF, CAD, AUD and JPY.
 
 ## Forward paper tracking
 
-Final selections from both buckets are appended to `paper_tracking.json` independently of email delivery. Each ticker/day snapshot preserves the original selection, price, risk, recovery reference and currency evidence. Re-running the same day does not rewrite the snapshot. The scheduled workflow refreshes observations and commits the ledger and [readable report](paper_tracking_report.md).
+Final selections are appended to `paper_tracking.json` independently of email delivery. A ticker/day snapshot is immutable and stores financial evidence, policy, solvency status and valuation assumptions. Re-running the same day does not rewrite it. The scheduled workflow refreshes observations and commits the ledger and [readable report](paper_tracking_report.md).
 
 ```sh
 python paper_tracking.py
 ```
 
-The hypothetical entry is the first trading session after the UTC selection date, at that session's adjusted open. Only sessions before the refresh date are used, conservatively avoiding incomplete bars. An observation finishes at the first session on/after 365 calendar days from entry. The latest close provides an interim mark. Quote histories are split/dividend adjusted; returns are in the listing currency before costs, taxes and slippage. This is forward observation, not a portfolio simulation, and it does not calculate USD returns or benchmark excess returns.
+The hypothetical entry is the first session after the UTC selection date, at its adjusted open. Only sessions before the refresh date are used, avoiding incomplete bars. The twelve-month exit is the first session on or after 365 calendar days from entry. Interim marks use the latest close. Returns are split/dividend adjusted in the listing currency, before costs, taxes and slippage. This is forward observation, not a portfolio simulation; USD returns and benchmark excess returns are not yet computed.
 
-The ledger distinguishes reaching 2x at a daily close from ending the twelve-month period at 2x. Missing histories remain unverified; quotes older than seven days are marked stale. Large entry/exit data gaps are unverified. This retains failed or possibly delisted names, but does not supply missing delisting proceeds. It therefore cannot yet provide an unbiased overall strategy success rate. Daily cohorts of the same stock are correlated.
+The ledger distinguishes reaching 2x at a daily close from ending twelve months at 2x. Failed histories remain unverified; stale prices and large data gaps are flagged. This retains possibly delisted names but does not supply missing delisting proceeds, so it cannot yet establish an unbiased success rate. Daily observations of the same stock are correlated; policy versions must not be pooled as if they were one unchanged strategy.
 
-Tracking starts with the next successful scheduled scan that selects candidates. The initial empty ledger contains no backfilled or simulated stock picks. Broader valuation, debt-maturity analysis, sector-specific solvency and benchmark validation remain future work. See [the original review and follow-up](SCANNER_REVIEW.md).
+Tracking begins when a successful scheduled scan selects candidates. There are no backfilled picks or claimed investment results.
 
----
+## Validation and remaining work
 
-# 📦 Dependency Management Guide
+Offline regressions cover currencies, corporate actions, data gaps, period alignment, solvency gates, valuation arithmetic, production integration and paper tracking. Push/PR CI tests Python 3.10 and 3.12 without sending email. SciPy is required by yfinance repair mode and is declared in requirements.
 
-Quick reference for managing Python dependencies in this project.
-
-## 📋 Current Dependencies
-
-See `requirements.txt` for the full list:
-- **yfinance** - Fetch stock data from Yahoo Finance
-- **pandas** - Data manipulation and analysis
-- **numpy** - Numerical computing
-- **scipy** - Required for yfinance repair-mode routines
-- **lxml** - HTML/XML parsing (for Wikipedia tables)
-- **requests** - HTTP library (for fetching web pages)
-
-## 🔄 How to Update Dependencies
-
-### Method 1: Edit requirements.txt (Recommended)
-
-1. **Edit the file:**
-   ```bash
-   vim requirements.txt  # or nano, code, etc.
-   ```
-
-2. **Add, remove, or update versions:**
-   ```txt
-   # Add a new package
-   beautifulsoup4>=4.12.0
-   
-   # Update version
-   yfinance>=0.2.50
-   
-   # Remove a package
-   # Just delete the line
-   ```
-
-3. **Test locally:**
-   ```bash
-   pip install -r requirements.txt --break-system-packages
-   python fallen_angel_scanner.py  # Test scanner
-   python update_tickers.py        # Test updater
-   ```
-
-4. **Commit changes:**
-   ```bash
-   git add requirements.txt
-   git commit -m "Update dependencies: add X, update Y to v1.2"
-   git push
-   ```
-
-5. **GitHub Actions will automatically use the new requirements** ✅
-
-### Method 2: Update Workflows Directly (Not Recommended)
-
-Only do this if you need different dependencies for different workflows.
-
-**Edit `.github/workflows/daily-scan.yml`:**
-```yaml
-- name: Install dependencies
-  run: |
-    pip install yfinance pandas numpy new-package --break-system-packages
-```
-
-**⚠️ Downsides:**
-- Have to update multiple files
-- Easy to forget one
-- Harder to maintain
-
-## 🧪 Testing New Dependencies
-
-### Local Testing
-```bash
-# Create virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Test
-python fallen_angel_scanner.py
-python update_tickers.py
-```
-
-### GitHub Actions Testing
-1. Push changes to a test branch
-2. Go to Actions tab
-3. Manually trigger workflow
-4. Check logs for errors
-
-## 📌 Common Updates
-
-### Update yfinance
-```txt
-# In requirements.txt
-yfinance>=0.2.50  # Update version number
-```
-
-### Add web scraping capability
-```txt
-# In requirements.txt
-beautifulsoup4>=4.12.0
-selenium>=4.15.0
-```
-
-### Add data visualization
-```txt
-# In requirements.txt
-matplotlib>=3.8.0
-plotly>=5.18.0
-```
-
-### Add email with attachments
-```txt
-# Already have standard library smtplib
-# No new dependencies needed!
-```
-
-## 🔍 Checking What's Installed
-
-### Locally
-```bash
-pip list
-pip show yfinance  # Details about specific package
-```
-
-### In GitHub Actions
-Check the workflow logs - they show exactly what gets installed.
-
-## ⚠️ Troubleshooting
-
-### Dependency Conflicts
-```bash
-# If you get conflicts
-pip install --upgrade -r requirements.txt --break-system-packages
-
-# Or start fresh
-pip uninstall -y -r requirements.txt
-pip install -r requirements.txt --break-system-packages
-```
-
-### Missing Dependencies in GitHub Actions
-1. Check requirements.txt is committed
-2. Verify workflow has `pip install -r requirements.txt`
-3. Check workflow logs for errors
-
-### Version Pinning
-**Flexible (recommended for our use case):**
-```txt
-yfinance>=0.2.40  # Allows 0.2.40, 0.2.50, 0.3.0, etc.
-```
-
-**Strict (use if you need exact versions):**
-```txt
-yfinance==0.2.40  # Only allows exactly 0.2.40
-```
-
-## 📚 Best Practices
-
-1. ✅ **Use requirements.txt** - Single source of truth
-2. ✅ **Test locally first** - Before pushing
-3. ✅ **Version constraints** - Use `>=` for flexibility
-4. ✅ **Document changes** - In commit messages
-5. ✅ **Keep it minimal** - Only add what you need
-
-## 🎯 Quick Commands
-
-```bash
-# Install all dependencies
-pip install -r requirements.txt --break-system-packages
-
-# Update all to latest versions
-pip install --upgrade -r requirements.txt --break-system-packages
-
-# Check what's installed
-pip list
-
-# Save current environment
-pip freeze > requirements-frozen.txt  # For exact reproducibility
-
-# Check outdated packages
-pip list --outdated
-```
-
-## 📝 Example: Adding a New Dependency
-
-Let's say you want to add `python-telegram-bot` to send alerts via Telegram:
-
-1. **Add to requirements.txt:**
-   ```txt
-   python-telegram-bot>=20.0.0
-   ```
-
-2. **Test locally:**
-   ```bash
-   pip install -r requirements.txt --break-system-packages
-   ```
-
-3. **Update your code:**
-   ```python
-   import telegram
-   # Your telegram bot code
-   ```
-
-4. **Commit and push:**
-   ```bash
-   git add requirements.txt fallen_angel_scanner.py
-   git commit -m "Add Telegram notifications"
-   git push
-   ```
-
-5. **Done!** GitHub Actions will use the new dependency automatically.
-
-## 🆘 Need Help?
-
-- Check GitHub Actions logs for specific errors
-- Test locally with `pip install -r requirements.txt`
-- Verify requirements.txt syntax (no typos, valid package names)
-- Search PyPI for exact package names: https://pypi.org
+Remaining investment-research work: verified filings/covenants and 13–24 month maturities, sector/jurisdiction-specific financial models, sourced recovery catalysts, defensible peer multiples, and empirical validation. Yahoo statement data does not establish an issuer's going-concern assessment, restricted-cash availability or complete debt obligations. See FUNDAMENTALS.md before treating any output as investable.

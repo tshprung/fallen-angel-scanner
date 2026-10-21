@@ -126,20 +126,8 @@ def _attach_trend_scores(stocks):
     return stocks
 
 
-_original_calculate_risk_score = scanner.calculate_risk_score
-
-
-def _calculate_risk_score_soft_gate(*args, **kwargs):
-    raw = _original_calculate_risk_score(*args, **kwargs)
-    if raw == 4:
-        financial_health = args[0] if args else kwargs.get("financial_health")
-        if isinstance(financial_health, dict):
-            financial_health["_raw_risk_score"] = 4
-        return 3
-    return raw
-
-
-scanner.calculate_risk_score = _calculate_risk_score_soft_gate
+# Risk scores remain unchanged: technical signals cannot silently turn 4/10
+# into 3/10 to bypass the core admission threshold.
 
 
 # Yahoo Finance/WSE ticker migrations are handled here because this enhanced
@@ -189,6 +177,15 @@ def _safe_check_price_alerts(memory):
                 continue
             current_price = float(closes.iloc[-1])
             original_price = float(data["price"])
+            currency = stock.info.get("currency")
+            if not currency or (data.get("currency") and data["currency"] != currency):
+                print(f"  ⚠️  {ticker}: price-baseline currency cannot be reconciled")
+                continue
+            if not data.get("currency") and currency != "USD":
+                print(f"  ⚠️  {ticker}: legacy non-USD baseline has no verified quote units")
+                continue
+            if not np.isfinite(original_price) or original_price <= 0 or not np.isfinite(current_price) or current_price <= 0:
+                continue
             stored_date = data.get("date")
             try:
                 splits = stock.splits
@@ -205,19 +202,24 @@ def _safe_check_price_alerts(memory):
                         split_index = split_index.tz_convert("UTC")
                     recent_splits = splits.copy()
                     recent_splits.index = split_index
-                    recent_splits = recent_splits[recent_splits.index > split_cutoff]
+                    if data.get("recorded_at"):
+                        split_cutoff = pd.Timestamp(data["recorded_at"]).tz_convert("UTC")
+                        recent_splits = recent_splits[recent_splits.index > split_cutoff]
+                    else:
+                        recent_splits = recent_splits[[date.date() > split_cutoff.date() for date in recent_splits.index]]
                     if not recent_splits.empty:
                         cumulative_ratio = float(recent_splits.prod())
                         if cumulative_ratio > 0:
                             original_price /= cumulative_ratio
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"  ⚠️  {ticker}: corporate-action baseline unverified; skipping price alert")
+                continue
             drop_since_alert = current_price / original_price - 1
             if drop_since_alert <= -scanner.PRICE_ALERT_THRESHOLD:
                 alerts.append({"ticker": ticker, "original_price": original_price,
                                "current_price": current_price,
                                "additional_drop": drop_since_alert * 100,
-                               "sent_date": data.get("date")})
+                               "sent_date": data.get("date"), "currency": currency})
         except Exception as exc:
             print(f"  ⚠️  Failed to check {ticker}: {exc}")
             continue
