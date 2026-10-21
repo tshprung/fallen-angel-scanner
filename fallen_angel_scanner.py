@@ -1261,59 +1261,10 @@ def analyze_price_shape(stock, current_price):
         return empty_result
 
 def estimate_recovery_target(stock, info, current_price):
-    """
-    Estimate realistic recovery price target.
-    Returns: (target_low: float, target_high: float, upside_pct: float)
-    """
-    try:
-        hist = stock.history(period="5y")
-        if len(hist) < 250:
-            hist = stock.history(period="1y")
+    """Return recovery reference levels; these are not a timed value forecast."""
+    from recovery_estimates import estimate_recovery_reference
+    return estimate_recovery_reference(stock, info, current_price)
         
-        # Method 1: Historical valuation (5-year average P/E)
-        pe_ratio = info.get('trailingPE', 0) or 0
-        eps = info.get('trailingEps', 0) or 0
-        
-        target_from_pe = None
-        if hist is not None and len(hist) > 250:
-            # Calculate historical average price
-            avg_price_5y = hist['Close'].mean()
-            high_80pct = hist['Close'].quantile(0.80)
-            target_from_pe = (avg_price_5y + high_80pct) / 2
-        
-        # Method 2: Analyst targets
-        target_mean = info.get('targetMeanPrice', 0) or 0
-        target_high = info.get('targetHighPrice', 0) or 0
-        
-        # Method 3: Technical resistance (1-year high at 80th percentile)
-        hist_1y = stock.history(period="1y")
-        resistance = hist_1y['Close'].quantile(0.80).item() if len(hist_1y) > 0 else 0.0
-        
-        # Combine methods (use available data)
-        targets = []
-        if target_from_pe and target_from_pe > current_price * 1.3:
-            targets.append(target_from_pe)
-        if target_mean and target_mean > current_price * 1.3:
-            targets.append(target_mean)
-        if resistance and resistance > current_price * 1.3:
-            targets.append(resistance)
-        
-        if not targets:
-            # Fallback: Use 80th percentile of 1-year data
-            targets.append(resistance if resistance > 0 else current_price * 1.5)
-        
-        # Conservative estimate: average of targets
-        target_avg = sum(targets) / len(targets)
-        target_low = target_avg * 0.90  # -10% margin
-        target_high = target_avg * 1.10  # +10% margin
-        
-        upside_pct = ((target_avg - current_price) / current_price) * 100
-        
-        return target_low, target_high, upside_pct
-        
-    except Exception as e:
-        print(f"    ⚠️ Target estimation error: {e}")
-        return None, None, None
     
 def stage2_deep_analysis(candidates, memory):
     """Stage 2: Comprehensive analysis of candidates"""
@@ -1528,7 +1479,7 @@ def stage2_deep_analysis(candidates, memory):
             else:
                 fresh_crash.append(record)
 
-            status = "BUY NOW" if at_bottom else "WAIT"
+            status = "RESEARCH" if at_bottom else "WAIT"
             bucket_label = "fallen angel" if bucket == "fallen_angel" else "fresh crash watch"
             print(f"  ✅ {ticker} analyzed [{bucket_label}]: Risk {risk}/10, {status}, Upside ~{upside_pct:.0f}%")
             
@@ -1560,8 +1511,12 @@ def _build_summary_table_rows(stocks):
     for stock in stocks:
         risk_class = "low-risk"  # Everything reaching either bucket has risk <4
 
-        if stock['at_bottom']:
-            status = "✅ BUY NOW"
+        if stock.get('catalyst_status') == 'WATCH' or stock.get('risk_score_raw', stock.get('risk_score', 10)) >= 4:
+            status = 'WATCH'
+            status_color = '#f39c12'
+            price_note = '<br/><small>Unresolved catalyst or elevated risk</small>'
+        elif stock['at_bottom']:
+            status = "🔎 RESEARCH"
             status_color = "#27ae60"
             price_note = ""
         else:
@@ -1611,7 +1566,7 @@ def _build_summary_table_rows(stocks):
             <td style="padding: 10px; font-size: 12px;">{shape_txt}</td>
             <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>{target_range}</strong></td>
             <td style="padding: 10px; text-align: right; color: #27ae60;"><strong>+{stock['recovery_potential']:.0f}%</strong></td>
-            <td style="padding: 10px; text-align: center;"><strong>{stock['risk_score']}/10</strong></td>
+            <td style="padding: 10px; text-align: center;"><strong>{stock.get('risk_score_raw', stock['risk_score'])}/10</strong></td>
             <td style="padding: 10px;">{stock['sentiment_reason']}</td>
             <td style="padding: 10px;">{earnings_cell}</td>
         </tr>
@@ -1649,8 +1604,10 @@ def _build_detail_cards(stocks):
     for stock in stocks:
         risk_class = "low-risk"
 
-        if stock['at_bottom']:
-            status_html = '<p style="color: #27ae60; font-size: 18px;"><strong>✅ BUY NOW</strong> - Technical analysis shows stock is at/near bottom</p>'
+        if stock.get('catalyst_status') == 'WATCH' or stock.get('risk_score_raw', stock.get('risk_score', 10)) >= 4:
+            status_html = '<p><strong>WATCH</strong> - Unresolved catalyst or elevated risk</p>'
+        elif stock['at_bottom']:
+            status_html = '<p style="color: #27ae60; font-size: 18px;"><strong>🔎 RESEARCH</strong> - Technical bottom signal; verify business value and risks</p>'
         else:
             wait_range = f"{stock['wait_price_low']:.2f}-{stock['wait_price_high']:.2f} {stock['currency']}"
             status_html = f'<p style="color: #f39c12; font-size: 18px;"><strong>⏳ WAIT</strong> - Wait for price to reach: <strong>{wait_range}</strong> (±5%)</p>'
@@ -1677,8 +1634,8 @@ def _build_detail_cards(stocks):
             
             <p><strong>📍 Current Price:</strong> {price_txt} (Down {drop_detail})</p>
             <p><strong>RSI:</strong> {format_rsi_for_email(stock.get('rsi'))} | 
-               <strong>🎯 Recovery Target:</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
-            <p><strong>⚠️ Risk Score:</strong> {stock['risk_score']}/10 (Low) | 
+               <strong>🎯 Recovery Reference (no time forecast):</strong> {target_range} (+{stock['recovery_potential']:.0f}% upside)</p>
+            <p><strong>⚠️ Risk Score:</strong> {stock.get('risk_score_raw', stock['risk_score'])}/10 (heuristic) |
                <strong>Piotroski:</strong> {format_piotroski_for_email(stock.get('piotroski_score'), stock.get('piotroski_checks'))}</p>
             <p><strong>📐 Shape:</strong> {format_shape_for_email(stock.get('price_shape'), stock.get('shape_stable_years'), stock.get('shape_recent_drop_pct'))}</p>
             
@@ -1735,7 +1692,7 @@ def _build_detail_cards(stocks):
                 else ""
             )
             html += f"""
-            <p><strong>💼 Financial Health (Bankruptcy Risk: LOW):</strong><br/>
+            <p><strong>💼 Financial Health (screening metrics; survival unverified):</strong><br/>
             Cash: {cash_txt} | 
             Debt/Equity: {de_txt} | 
             Net debt: {net_debt_txt} | Debt/EBITDA: {debt_ebitda_txt}{stub_flag}<br/>
@@ -1838,7 +1795,7 @@ def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     # Fallen Angels section
     if analyzed_stocks:
         heading = f"""
-        <p><strong>High-Quality Fallen Angels (Bankruptcy Risk: LOW, Risk Score: &lt;4/10, Upside: &ge;{MIN_RECOVERY_POTENTIAL_PCT:.0f}%):</strong></p>
+        <p><strong>Fallen Angels (screened candidates; survival unverified; recovery reference upside: &ge;{MIN_RECOVERY_POTENTIAL_PCT:.0f}%):</strong></p>
         """
         html += _build_summary_table(analyzed_stocks, heading)
         html += "<h2>📊 Detailed Analysis</h2>"

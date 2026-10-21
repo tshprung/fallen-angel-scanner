@@ -30,39 +30,13 @@ TICKER_ALIASES = {"CCC.WA": "MDV.WA"}
 _ORIGINAL_TICKER = yf.Ticker
 
 
-def _split_normalize_history(hist, ticker_obj):
-    if hist is None or hist.empty or "Close" not in hist.columns:
-        return hist
-    try:
-        splits = ticker_obj.splits
-        if splits is None or splits.empty:
-            return hist
-        out = hist.copy()
-        for split_date, ratio in splits.dropna().items():
-            ratio = float(ratio)
-            if not np.isfinite(ratio) or ratio <= 0 or abs(ratio - 1.0) < 1e-9:
-                continue
-            cutoff = pd.Timestamp(split_date)
-            idx = out.index
-            if getattr(idx, "tz", None) is not None and cutoff.tzinfo is None:
-                cutoff = cutoff.tz_localize(idx.tz)
-            elif getattr(idx, "tz", None) is None and cutoff.tzinfo is not None:
-                cutoff = cutoff.tz_localize(None)
-            out.loc[out.index < cutoff, [c for c in out.columns if c in ("Open", "High", "Low", "Close")]] /= ratio
-        return out
-    except Exception:
-        return hist
-
-
 class _SplitSafeTicker:
     def __init__(self, ticker):
         self._ticker = _ORIGINAL_TICKER(ticker)
 
     def history(self, *args, **kwargs):
-        kwargs = dict(kwargs)
-        kwargs["auto_adjust"] = False
-        hist = self._ticker.history(*args, **kwargs)
-        return _split_normalize_history(hist, self._ticker)
+        from scanner_history import price_history
+        return price_history(self._ticker, *args, **kwargs)
 
     def __getattr__(self, name):
         return getattr(self._ticker, name)
@@ -267,7 +241,7 @@ def stage2_enhanced(candidates, memory):
             stock["risk_label"] = "WATCH (raw risk 4/10)"
         else:
             stock["risk_score_raw"] = stock.get("risk_score")
-            stock["risk_label"] = "LOW RISK" if (stock.get("risk_score") or 10) <= 3 else "WATCH"
+            stock["risk_label"] = "FEWER SCREEN FLAGS" if (stock.get("risk_score") or 10) <= 3 else "WATCH"
         stock.setdefault("overlay_exclusion_reason", None)
 
     analyzed_filtered = _apply_small_cap_quality_overlay(analyzed)

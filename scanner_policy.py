@@ -262,9 +262,10 @@ def estimate_recovery_target_with_valuation_sanity(stock, info, current_price):
         if isinstance(price_to_book, (int, float)) and price_to_book > 6:
             haircut *= 0.85
         if haircut < 1.0:
-            target_low = current_price + (target_low - current_price) * haircut
-            target_high = current_price + (target_high - current_price) * haircut
-            upside_pct = (target_high / current_price - 1) * 100
+            from recovery_estimates import haircut_recovery_reference
+            target_low, target_high, upside_pct = haircut_recovery_reference(
+                target_low, target_high, upside_pct, current_price, haircut
+            )
 
     return target_low, target_high, upside_pct
 

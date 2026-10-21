@@ -83,3 +83,28 @@ def test_email_renders_with_only_fresh_crash():
     assert 'IBM' in html
     assert 'Fresh Crash Watch' in html
     assert 'High-Quality Fallen Angels' not in html
+
+
+def test_unknown_catalyst_remains_watch_despite_bottom_signal():
+    stock = _make_stock('AAA', 'fallen_angel')
+    stock['catalyst_status'] = 'WATCH'
+    html = generate_email_html([stock], [])
+    assert '<strong>WATCH</strong>' in html
+    assert 'BUY NOW' not in html
+    assert 'RESEARCH' not in html
+
+
+def test_raw_risk_is_displayed_and_keeps_candidate_on_watch():
+    stock = _make_stock('AAA', 'fallen_angel')
+    stock['risk_score_raw'] = 4
+    html = generate_email_html([stock], [])
+    assert '<strong>WATCH</strong>' in html
+    assert '4/10' in html
+    assert 'BUY NOW' not in html
+
+
+def test_bottom_signal_is_research_and_not_a_buy_instruction():
+    html = generate_email_html([_make_stock('AAA', 'fallen_angel')], [])
+    assert 'RESEARCH' in html
+    assert 'BUY NOW' not in html
+    assert 'Bankruptcy Risk: LOW' not in html
