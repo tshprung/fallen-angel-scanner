@@ -1,5 +1,824 @@
 {
   "version": 1,
-  "selections": [],
-  "last_refreshed_at": "2026-10-21T13:20:29.240095+00:00"
+  "selections": [
+    {
+      "id": "2026-10-21:LCII",
+      "selected_at": "2026-10-21T22:16:48.885440+00:00",
+      "ticker": "LCII",
+      "quote_currency": "USD",
+      "selection_price": 83.1500015258789,
+      "bucket": "fallen_angel",
+      "risk_score": 1,
+      "cause_class": "unclear",
+      "catalyst_status": "WATCH",
+      "reference_upside_pct": 77.16176666984349,
+      "upside_basis": "fcf_sensitivity",
+      "market_cap_usd": 2021501952.0,
+      "currency_context": {
+        "quote_currency": "USD",
+        "major_currency": "USD",
+        "quote_unit_scale": 1.0,
+        "quote_to_usd": 1.0,
+        "major_to_usd": 1.0,
+        "fx_asof": "2026-10-21T21:55:27.485409+00:00",
+        "financial_currency": "USD",
+        "financial_to_usd": 1.0,
+        "financial_fx_asof": "2026-10-21T21:55:27.485409+00:00"
+      },
+      "financial_evidence": {
+        "financial_currency": "USD",
+        "balance": {
+          "basis": "quarterly",
+          "asof": "2026-06-30",
+          "age_days": 113,
+          "values": {
+            "cash": 216512000.0,
+            "debt": 1146181000.0,
+            "current_debt": 48891000.0,
+            "equity": 1431752000.0,
+            "current_assets": 1484724000.0,
+            "current_liabilities": 597250000.0
+          },
+          "rows": {
+            "cash": "Cash And Cash Equivalents",
+            "debt": "Total Debt",
+            "current_debt": "Current Debt And Capital Lease Obligation",
+            "equity": "Stockholders Equity",
+            "current_assets": "Current Assets",
+            "current_liabilities": "Current Liabilities"
+          }
+        },
+        "cashflow": {
+          "basis": "ttm_quarterly",
+          "asof": "2026-06-30",
+          "periods": [
+            "2026-06-30",
+            "2026-03-31",
+            "2025-12-31",
+            "2025-09-30"
+          ],
+          "age_days": 113,
+          "values": {
+            "ocf": 346257000.0,
+            "capex": -59302000.0,
+            "fcf": 286955000.0
+          },
+          "rows": {
+            "ocf": "Operating Cash Flow",
+            "capex": "Capital Expenditure"
+          }
+        },
+        "income": {
+          "basis": "ttm_quarterly",
+          "asof": "2026-06-30",
+          "periods": [
+            "2026-06-30",
+            "2026-03-31",
+            "2025-12-31",
+            "2025-09-30"
+          ],
+          "age_days": 113,
+          "values": {
+            "ebit": 321384000.0,
+            "interest": 36262000.0,
+            "ebitda": 443406000.0,
+            "revenue": 4028369000.0
+          },
+          "rows": {
+            "ebit": "EBIT",
+            "interest": "Interest Expense",
+            "ebitda": "EBITDA",
+            "revenue": "Total Revenue"
+          }
+        },
+        "annual_fcf": [
+          {
+            "asof": "2025-12-31",
+            "fcf": 278332000.0
+          },
+          {
+            "asof": "2024-12-31",
+            "fcf": 327951000.0
+          },
+          {
+            "asof": "2023-12-31",
+            "fcf": 465020000.0
+          },
+          {
+            "asof": "2022-12-31",
+            "fcf": 471873000.0
+          }
+        ],
+        "annual_share_growth": -0.049640655068138084,
+        "fetch_errors": {},
+        "source": "Yahoo Finance via yfinance; statement period ends, not filing dates",
+        "observed_at": "2026-10-21T22:15:50.092749+00:00",
+        "policy_id": "72aca0f0daf9",
+        "policy": {
+          "version": 1,
+          "fresh_statement_days": 200,
+          "max_annual_statement_days": 450,
+          "minimum_interest_coverage": 2.5,
+          "minimum_current_debt_coverage": 1.25,
+          "max_net_debt_ebitda": 3.0,
+          "max_debt_equity": 2.5,
+          "minimum_burn_runway_months": 24,
+          "max_annual_share_growth": 0.1,
+          "minimum_base_upside_pct": 20,
+          "minimum_bull_upside_pct": 100,
+          "sustained_drawdown_pct": -30,
+          "sustained_max_recent_loss_pct": -15,
+          "valuation": {
+            "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+            "minimum_annual_fcf_periods": 3,
+            "assumed_share_dilution": 0.05,
+            "bear": {
+              "fcf_factor": 0.65,
+              "equity_fcf_multiple": 10
+            },
+            "base": {
+              "fcf_factor": 1.0,
+              "equity_fcf_multiple": 15
+            },
+            "bull": {
+              "fcf_factor": 1.2,
+              "equity_fcf_multiple": 20
+            }
+          },
+          "id": "72aca0f0daf9"
+        }
+      },
+      "filing_review": {
+        "status": "PENDING_DOCUMENT_REVIEW",
+        "search_term": "LCI Industries",
+        "source_links": [
+          {
+            "label": "Issuer website — find investor relations and annual/interim reports",
+            "url": "https://corporate.lippert.com",
+            "role": "quote-provider website; verify issuer identity"
+          },
+          {
+            "label": "SEC EDGAR filing search",
+            "url": "https://www.sec.gov/search-filings",
+            "role": "US filings where applicable; search issuer/ticker and confirm CIK"
+          }
+        ],
+        "checklist": [
+          {
+            "id": "identity",
+            "question": "Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments."
+          },
+          {
+            "id": "maturities",
+            "question": "Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units."
+          },
+          {
+            "id": "covenants",
+            "question": "Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment."
+          },
+          {
+            "id": "liquidity",
+            "question": "Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions."
+          },
+          {
+            "id": "going_concern",
+            "question": "Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events."
+          },
+          {
+            "id": "interest",
+            "question": "Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing."
+          },
+          {
+            "id": "catalyst",
+            "question": "Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it."
+          }
+        ],
+        "evidence_required": [
+          "Filing URL",
+          "Publication date",
+          "Statement period",
+          "Note/page",
+          "Currency and units",
+          "Finding and unresolved questions"
+        ],
+        "notice": "Starting points only: a link or checklist does not verify the issuer, latest filing or any financial fact. No screening status is upgraded."
+      },
+      "solvency_status": "REVIEW",
+      "solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13–24, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 250693000.0,
+          "debt_equity": 0.8005443680190424,
+          "interest_coverage": 8.862831614362142,
+          "net_debt_ebitda": 2.096654082263208,
+          "current_debt_coverage": 8.27415577509153,
+          "current_ratio": 2.4859338635412307
+        },
+        "policy_id": "72aca0f0daf9"
+      },
+      "valuation": {
+        "status": "SENSITIVITY",
+        "reason": null,
+        "policy_id": "72aca0f0daf9",
+        "cases": {
+          "bear": {
+            "price": 63.83433839867451,
+            "return_pct": -23.229901109734495,
+            "fcf_factor": 0.65,
+            "equity_fcf_multiple": 10
+          },
+          "base": {
+            "price": 147.31001168924888,
+            "return_pct": 77.16176666984349,
+            "fcf_factor": 1.0,
+            "equity_fcf_multiple": 15
+          },
+          "bull": {
+            "price": 235.6960187027982,
+            "return_pct": 183.45882667174956,
+            "fcf_factor": 1.2,
+            "equity_fcf_multiple": 20
+          }
+        },
+        "normalized_fcf_usd": 250693000.0,
+        "additional_interest_buffer_usd": 36262000.0,
+        "assumed_share_dilution": 0.05,
+        "normalization_periods": [
+          {
+            "asof": "2025-12-31",
+            "fcf": 278332000.0
+          },
+          {
+            "asof": "2024-12-31",
+            "fcf": 327951000.0
+          },
+          {
+            "asof": "2023-12-31",
+            "fcf": 465020000.0
+          }
+        ],
+        "basis": "ttm_quarterly",
+        "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+        "bull_2x": true,
+        "plausible_upside_screen": true
+      },
+      "policy_id": "72aca0f0daf9",
+      "screen_cohort": "stabilizing_drawdown",
+      "performance": {
+        "status": "pending_next_session"
+      }
+    },
+    {
+      "id": "2026-10-21:LRN",
+      "selected_at": "2026-10-21T22:16:48.885440+00:00",
+      "ticker": "LRN",
+      "quote_currency": "USD",
+      "selection_price": 76.38999938964844,
+      "bucket": "fallen_angel",
+      "risk_score": 1,
+      "cause_class": "unclear",
+      "catalyst_status": "WATCH",
+      "reference_upside_pct": 54.42759873246488,
+      "upside_basis": "fcf_sensitivity",
+      "market_cap_usd": 3174756352.0,
+      "currency_context": {
+        "quote_currency": "USD",
+        "major_currency": "USD",
+        "quote_unit_scale": 1.0,
+        "quote_to_usd": 1.0,
+        "major_to_usd": 1.0,
+        "fx_asof": "2026-10-21T21:55:27.485409+00:00",
+        "financial_currency": "USD",
+        "financial_to_usd": 1.0,
+        "financial_fx_asof": "2026-10-21T21:55:27.485409+00:00"
+      },
+      "financial_evidence": {
+        "financial_currency": "USD",
+        "balance": {
+          "basis": "quarterly",
+          "asof": "2026-06-30",
+          "age_days": 113,
+          "values": {
+            "cash": 754501000.0,
+            "debt": 545980000.0,
+            "current_debt": 63214000.0,
+            "equity": 1632329000.0,
+            "current_assets": 1716123000.0,
+            "current_liabilities": 288851000.0
+          },
+          "rows": {
+            "cash": "Cash And Cash Equivalents",
+            "debt": "Total Debt",
+            "current_debt": "Current Debt And Capital Lease Obligation",
+            "equity": "Stockholders Equity",
+            "current_assets": "Current Assets",
+            "current_liabilities": "Current Liabilities"
+          }
+        },
+        "cashflow": {
+          "basis": "ttm_quarterly",
+          "asof": "2026-06-30",
+          "periods": [
+            "2026-06-30",
+            "2026-03-31",
+            "2025-12-31",
+            "2025-09-30"
+          ],
+          "age_days": 113,
+          "values": {
+            "ocf": 433814000.0,
+            "capex": -78846000.0,
+            "fcf": 354968000.0
+          },
+          "rows": {
+            "ocf": "Operating Cash Flow",
+            "capex": "Capital Expenditure"
+          }
+        },
+        "income": {
+          "basis": "ttm_quarterly",
+          "asof": "2026-06-30",
+          "periods": [
+            "2026-06-30",
+            "2026-03-31",
+            "2025-12-31",
+            "2025-09-30"
+          ],
+          "age_days": 113,
+          "values": {
+            "ebit": 452941000.0,
+            "interest": 11779000.0,
+            "ebitda": 579503000.0,
+            "revenue": 2518082000.0
+          },
+          "rows": {
+            "ebit": "EBIT",
+            "interest": "Interest Expense",
+            "ebitda": "EBITDA",
+            "revenue": "Total Revenue"
+          }
+        },
+        "annual_fcf": [
+          {
+            "asof": "2026-06-30",
+            "fcf": 354968000.0
+          },
+          {
+            "asof": "2025-06-30",
+            "fcf": 372806000.0
+          },
+          {
+            "asof": "2024-06-30",
+            "fcf": 217208000.0
+          },
+          {
+            "asof": "2023-06-30",
+            "fcf": 136602000.0
+          }
+        ],
+        "annual_share_growth": -0.04688775200219786,
+        "fetch_errors": {},
+        "source": "Yahoo Finance via yfinance; statement period ends, not filing dates",
+        "observed_at": "2026-10-21T22:15:55.688497+00:00",
+        "policy_id": "72aca0f0daf9",
+        "policy": {
+          "version": 1,
+          "fresh_statement_days": 200,
+          "max_annual_statement_days": 450,
+          "minimum_interest_coverage": 2.5,
+          "minimum_current_debt_coverage": 1.25,
+          "max_net_debt_ebitda": 3.0,
+          "max_debt_equity": 2.5,
+          "minimum_burn_runway_months": 24,
+          "max_annual_share_growth": 0.1,
+          "minimum_base_upside_pct": 20,
+          "minimum_bull_upside_pct": 100,
+          "sustained_drawdown_pct": -30,
+          "sustained_max_recent_loss_pct": -15,
+          "valuation": {
+            "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+            "minimum_annual_fcf_periods": 3,
+            "assumed_share_dilution": 0.05,
+            "bear": {
+              "fcf_factor": 0.65,
+              "equity_fcf_multiple": 10
+            },
+            "base": {
+              "fcf_factor": 1.0,
+              "equity_fcf_multiple": 15
+            },
+            "bull": {
+              "fcf_factor": 1.2,
+              "equity_fcf_multiple": 20
+            }
+          },
+          "id": "72aca0f0daf9"
+        }
+      },
+      "filing_review": {
+        "status": "PENDING_DOCUMENT_REVIEW",
+        "search_term": "Stride, Inc.",
+        "source_links": [
+          {
+            "label": "Issuer website — find investor relations and annual/interim reports",
+            "url": "https://stridelearning.com",
+            "role": "quote-provider website; verify issuer identity"
+          },
+          {
+            "label": "SEC EDGAR filing search",
+            "url": "https://www.sec.gov/search-filings",
+            "role": "US filings where applicable; search issuer/ticker and confirm CIK"
+          }
+        ],
+        "checklist": [
+          {
+            "id": "identity",
+            "question": "Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments."
+          },
+          {
+            "id": "maturities",
+            "question": "Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units."
+          },
+          {
+            "id": "covenants",
+            "question": "Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment."
+          },
+          {
+            "id": "liquidity",
+            "question": "Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions."
+          },
+          {
+            "id": "going_concern",
+            "question": "Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events."
+          },
+          {
+            "id": "interest",
+            "question": "Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing."
+          },
+          {
+            "id": "catalyst",
+            "question": "Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it."
+          }
+        ],
+        "evidence_required": [
+          "Filing URL",
+          "Publication date",
+          "Statement period",
+          "Note/page",
+          "Currency and units",
+          "Finding and unresolved questions"
+        ],
+        "notice": "Starting points only: a link or checklist does not verify the issuer, latest filing or any financial fact. No screening status is upgraded."
+      },
+      "solvency_status": "REVIEW",
+      "solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13–24, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 343189000.0,
+          "debt_equity": 0.33447913992828654,
+          "interest_coverage": 38.45326428389507,
+          "current_debt_coverage": 16.007415287752714,
+          "current_ratio": 5.941204981114831
+        },
+        "policy_id": "72aca0f0daf9"
+      },
+      "valuation": {
+        "status": "SENSITIVITY",
+        "reason": null,
+        "policy_id": "72aca0f0daf9",
+        "cases": {
+          "bear": {
+            "price": 51.119138082644085,
+            "return_pct": -33.081373882598555,
+            "fcf_factor": 0.65,
+            "equity_fcf_multiple": 10
+          },
+          "base": {
+            "price": 117.96724172917865,
+            "return_pct": 54.42759873246488,
+            "fcf_factor": 1.0,
+            "equity_fcf_multiple": 15
+          },
+          "bull": {
+            "price": 188.74758676668586,
+            "return_pct": 147.08415797194382,
+            "fcf_factor": 1.2,
+            "equity_fcf_multiple": 20
+          }
+        },
+        "normalized_fcf_usd": 343189000.0,
+        "additional_interest_buffer_usd": 11779000.0,
+        "assumed_share_dilution": 0.05,
+        "normalization_periods": [
+          {
+            "asof": "2026-06-30",
+            "fcf": 354968000.0
+          },
+          {
+            "asof": "2025-06-30",
+            "fcf": 372806000.0
+          },
+          {
+            "asof": "2024-06-30",
+            "fcf": 217208000.0
+          }
+        ],
+        "basis": "ttm_quarterly",
+        "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+        "bull_2x": true,
+        "plausible_upside_screen": true
+      },
+      "policy_id": "72aca0f0daf9",
+      "screen_cohort": "stabilizing_drawdown",
+      "performance": {
+        "status": "pending_next_session"
+      }
+    },
+    {
+      "id": "2026-10-21:SFD",
+      "selected_at": "2026-10-21T22:16:48.885440+00:00",
+      "ticker": "SFD",
+      "quote_currency": "USD",
+      "selection_price": 18.299999237060547,
+      "bucket": "fallen_angel",
+      "risk_score": 1,
+      "cause_class": "unclear",
+      "catalyst_status": "WATCH",
+      "reference_upside_pct": 35.404093025406745,
+      "upside_basis": "fcf_sensitivity",
+      "market_cap_usd": 7205943808.0,
+      "currency_context": {
+        "quote_currency": "USD",
+        "major_currency": "USD",
+        "quote_unit_scale": 1.0,
+        "quote_to_usd": 1.0,
+        "major_to_usd": 1.0,
+        "fx_asof": "2026-10-21T21:55:27.485409+00:00",
+        "financial_currency": "USD",
+        "financial_to_usd": 1.0,
+        "financial_fx_asof": "2026-10-21T21:55:27.485409+00:00"
+      },
+      "financial_evidence": {
+        "financial_currency": "USD",
+        "balance": {
+          "basis": "quarterly",
+          "asof": "2026-06-30",
+          "age_days": 113,
+          "values": {
+            "cash": 1350000000.0,
+            "debt": 2396000000.0,
+            "current_debt": 675000000.0,
+            "equity": 7004000000.0,
+            "current_assets": 5006000000.0,
+            "current_liabilities": 1954000000.0
+          },
+          "rows": {
+            "cash": "Cash And Cash Equivalents",
+            "debt": "Total Debt",
+            "current_debt": "Current Debt And Capital Lease Obligation",
+            "equity": "Stockholders Equity",
+            "current_assets": "Current Assets",
+            "current_liabilities": "Current Liabilities"
+          }
+        },
+        "cashflow": {
+          "basis": "ttm_quarterly",
+          "asof": "2026-06-30",
+          "periods": [
+            "2026-06-30",
+            "2026-03-31",
+            "2025-12-31",
+            "2025-09-30"
+          ],
+          "age_days": 113,
+          "values": {
+            "ocf": 1155000000.0,
+            "capex": -348000000.0,
+            "fcf": 807000000.0
+          },
+          "rows": {
+            "ocf": "Operating Cash Flow",
+            "capex": "Capital Expenditure"
+          }
+        },
+        "income": {
+          "basis": "ttm_quarterly",
+          "asof": "2026-06-30",
+          "periods": [
+            "2026-06-30",
+            "2026-03-31",
+            "2025-12-31",
+            "2025-09-30"
+          ],
+          "age_days": 113,
+          "values": {
+            "ebit": 1369000000.0,
+            "interest": 35000000.0,
+            "ebitda": 1705000000.0,
+            "revenue": 15474000000.0
+          },
+          "rows": {
+            "ebit": "EBIT",
+            "interest": "Interest Expense",
+            "ebitda": "EBITDA",
+            "revenue": "Total Revenue"
+          }
+        },
+        "annual_fcf": [
+          {
+            "asof": "2025-12-31",
+            "fcf": 718000000.0
+          },
+          {
+            "asof": "2024-12-31",
+            "fcf": 787000000.0
+          },
+          {
+            "asof": "2023-12-31",
+            "fcf": 681000000.0
+          },
+          {
+            "asof": "2022-12-31",
+            "fcf": 179000000.0
+          }
+        ],
+        "annual_share_growth": 0.0,
+        "fetch_errors": {},
+        "source": "Yahoo Finance via yfinance; statement period ends, not filing dates",
+        "observed_at": "2026-10-21T22:14:07.023569+00:00",
+        "policy_id": "72aca0f0daf9",
+        "policy": {
+          "version": 1,
+          "fresh_statement_days": 200,
+          "max_annual_statement_days": 450,
+          "minimum_interest_coverage": 2.5,
+          "minimum_current_debt_coverage": 1.25,
+          "max_net_debt_ebitda": 3.0,
+          "max_debt_equity": 2.5,
+          "minimum_burn_runway_months": 24,
+          "max_annual_share_growth": 0.1,
+          "minimum_base_upside_pct": 20,
+          "minimum_bull_upside_pct": 100,
+          "sustained_drawdown_pct": -30,
+          "sustained_max_recent_loss_pct": -15,
+          "valuation": {
+            "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+            "minimum_annual_fcf_periods": 3,
+            "assumed_share_dilution": 0.05,
+            "bear": {
+              "fcf_factor": 0.65,
+              "equity_fcf_multiple": 10
+            },
+            "base": {
+              "fcf_factor": 1.0,
+              "equity_fcf_multiple": 15
+            },
+            "bull": {
+              "fcf_factor": 1.2,
+              "equity_fcf_multiple": 20
+            }
+          },
+          "id": "72aca0f0daf9"
+        }
+      },
+      "filing_review": {
+        "status": "PENDING_DOCUMENT_REVIEW",
+        "search_term": "Smithfield Foods, Inc.",
+        "source_links": [
+          {
+            "label": "Issuer website — find investor relations and annual/interim reports",
+            "url": "https://www.smithfieldfoods.com",
+            "role": "quote-provider website; verify issuer identity"
+          },
+          {
+            "label": "SEC EDGAR filing search",
+            "url": "https://www.sec.gov/search-filings",
+            "role": "US filings where applicable; search issuer/ticker and confirm CIK"
+          }
+        ],
+        "checklist": [
+          {
+            "id": "identity",
+            "question": "Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments."
+          },
+          {
+            "id": "maturities",
+            "question": "Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units."
+          },
+          {
+            "id": "covenants",
+            "question": "Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment."
+          },
+          {
+            "id": "liquidity",
+            "question": "Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions."
+          },
+          {
+            "id": "going_concern",
+            "question": "Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events."
+          },
+          {
+            "id": "interest",
+            "question": "Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing."
+          },
+          {
+            "id": "catalyst",
+            "question": "Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it."
+          }
+        ],
+        "evidence_required": [
+          "Filing URL",
+          "Publication date",
+          "Statement period",
+          "Note/page",
+          "Currency and units",
+          "Finding and unresolved questions"
+        ],
+        "notice": "Starting points only: a link or checklist does not verify the issuer, latest filing or any financial fact. No screening status is upgraded."
+      },
+      "solvency_status": "REVIEW",
+      "solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13–24, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 772000000.0,
+          "debt_equity": 0.3420902341519132,
+          "interest_coverage": 39.114285714285714,
+          "net_debt_ebitda": 0.6134897360703813,
+          "current_debt_coverage": 2.8577777777777778,
+          "current_ratio": 2.5619242579324464
+        },
+        "policy_id": "72aca0f0daf9"
+      },
+      "valuation": {
+        "status": "SENSITIVITY",
+        "reason": null,
+        "policy_id": "72aca0f0daf9",
+        "cases": {
+          "bear": {
+            "price": 10.737544129259213,
+            "return_pct": -41.32489302232375,
+            "fcf_factor": 0.65,
+            "equity_fcf_multiple": 10
+          },
+          "base": {
+            "price": 24.778947990598187,
+            "return_pct": 35.404093025406745,
+            "fcf_factor": 1.0,
+            "equity_fcf_multiple": 15
+          },
+          "bull": {
+            "price": 39.646316784957094,
+            "return_pct": 116.64654884065078,
+            "fcf_factor": 1.2,
+            "equity_fcf_multiple": 20
+          }
+        },
+        "normalized_fcf_usd": 683000000.0,
+        "additional_interest_buffer_usd": 35000000.0,
+        "assumed_share_dilution": 0.05,
+        "normalization_periods": [
+          {
+            "asof": "2025-12-31",
+            "fcf": 718000000.0
+          },
+          {
+            "asof": "2024-12-31",
+            "fcf": 787000000.0
+          },
+          {
+            "asof": "2023-12-31",
+            "fcf": 681000000.0
+          }
+        ],
+        "basis": "ttm_quarterly",
+        "description": "Illustrative cash-flow sensitivities after an additional interest buffer; not forecasts or peer-derived multiples",
+        "bull_2x": true,
+        "plausible_upside_screen": true
+      },
+      "policy_id": "72aca0f0daf9",
+      "screen_cohort": "stabilizing_drawdown",
+      "performance": {
+        "status": "pending_next_session"
+      }
+    }
+  ],
+  "last_refreshed_at": "2026-10-21T22:16:51.227010+00:00"
 }
