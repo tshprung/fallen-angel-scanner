@@ -6,6 +6,8 @@ import json
 import math
 from pathlib import Path
 
+from filing_review import write_filing_queue, filing_links_html
+
 
 def clean(value):
     if isinstance(value, dict):
@@ -48,6 +50,7 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
               "A REVIEW status commonly means the 13–24 month contractual debt schedule still needs filing review. UNVERIFIED and SPECIALIST_REVIEW candidates cannot enter the ordinary-company shortlist.",
               "An empty shortlist is a valid result. Scenario assumptions are configurable in research_policy.json and are not empirically calibrated predictions."]
     Path(f"{prefix}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_filing_queue(audit, Path(prefix).with_name("filing_review.md"))
     return data
 
 
@@ -89,5 +92,6 @@ def financial_detail_html(stock):
         parts.append("</table><p>A bull case at 2× is a sensitivity flag, not a one-year forecast.</p>")
     elif valuation:
         parts.append("<p>Valuation unavailable: " + escape(valuation.get("reason") or "insufficient data") + "</p>")
+    parts.append(filing_links_html(stock.get("filing_review")))
     parts.append(f"<p>Research policy: {escape(evidence.get('policy_id') or '')}</p></div>")
     return "".join(parts)

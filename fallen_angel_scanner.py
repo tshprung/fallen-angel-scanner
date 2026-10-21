@@ -27,6 +27,7 @@ import os
 import json
 import time
 
+from filing_review import filing_review_plan
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -1288,6 +1289,8 @@ def stage2_deep_analysis(candidates, memory):
                 print(f"  ❌ Failed to fetch {ticker} after retries")
                 continue
 
+            audit.update(company=info.get("longName") or info.get("shortName") or ticker,
+                         filing_review=filing_review_plan(ticker, info.get("longName") or info.get("shortName"), info.get("website")))
             if specialist_requirements(info):
                 solvency = assess_solvency({}, info, policy)
                 audit.update(decision="specialist_review", solvency=solvency,
@@ -1473,6 +1476,7 @@ def stage2_deep_analysis(candidates, memory):
                 'sentiment_reason': sentiment_reason,
                 'financial_health': health,
                 'financial_evidence': evidence,
+                'filing_review': audit["filing_review"],
                 'solvency': solvency,
                 'solvency_status': solvency["status"],
                 'valuation': valuation,

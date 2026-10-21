@@ -46,6 +46,7 @@ def record_selections(stocks, path=LEDGER, now=None):
                 "market_cap_usd": finite(stock.get("market_cap_usd")),
                 "currency_context": stock.get("currency_context"),
                 "financial_evidence": stock.get("financial_evidence"),
+                "filing_review": stock.get("filing_review"),
                 "solvency_status": stock.get("solvency_status"),
                 "solvency": stock.get("solvency"),
                 "valuation": stock.get("valuation"),

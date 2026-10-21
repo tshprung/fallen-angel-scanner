@@ -40,6 +40,8 @@ Each completed run writes `research_report.md` and `research_report.json`, inclu
 - `REVIEW`: covered checks did not breach policy, but known questions remain. For indebted companies this includes debt due in months 13–24, covenants and committed facilities. Shortlisted names with this status display WATCH.
 - `SCREEN_PASS`: only the covered checks passed. This does not verify all risks or establish investment suitability.
 
+No paid data subscription is required to continue. Each run also produces `filing_review.md`: a focused queue with issuer website/public filing links and the exact evidence still needed. US candidates link to SEC EDGAR; UK candidates to FCA/Companies House; Israeli candidates to MAYA; Polish candidates to KNF's official source directory; German candidates to the Company Register (some deposited documents may carry fees; issuer investor-relations reports are another starting point). Routes follow the listing market, so confirm issuer identity and reporting jurisdiction. These links are starting points and do not automatically verify or upgrade a financial status.
+
 An empty shortlist is valid. Price-decline alerts are watch prompts, not instructions to average down. Their financial thesis must be reassessed. Legacy non-USD price baselines without verified quote units are skipped rather than compared across ambiguous units.
 
 ## Financial model and policy
