@@ -31,7 +31,7 @@ jobs:
         run: pip install -r requirements.txt pytest --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py filing_contents.py
 
       - name: Offline regression tests
         run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider

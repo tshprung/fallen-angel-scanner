@@ -15,6 +15,11 @@ def load_review_holds(path=None):
         for source in record["sources"]:
             if not source.get("url", "").startswith("https://") or not source.get("published_at"):
                 raise ValueError(f"Incomplete review source: {ticker}")
+        known_sources = {(source["url"], source["published_at"]) for source in record["sources"]}
+        for note in record.get("review_notes", []):
+            if (not isinstance(note.get("finding"), str) or not note["finding"].strip()
+                    or (note.get("source_url"), note.get("published_at")) not in known_sources):
+                raise ValueError(f"Review note needs a matching dated source: {ticker}")
         if record["status"] == "RESOLVED" and not record.get("resolution"):
             raise ValueError(f"Resolution evidence required: {ticker}")
     return {ticker: record for ticker, record in records.items() if record["status"] == "PENDING"}

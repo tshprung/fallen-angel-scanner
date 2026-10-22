@@ -74,6 +74,14 @@ python sec_filings.py --probe-output sec_source_probe.json
 
 ## Financial model and policy
 
+### Filing contents and research findings
+
+The daily run now fetches bounded filing bodies for final selections and filing/event holds, including the latest periodic report, an available annual report and recent current reports. It can follow one same-issuer, same-accession HTML exhibit. The default limit is 12 issuers, three primary documents plus one exhibit each, with a 12 MiB limit per document. Selections are processed first; deferred work and unavailable sources remain explicit. Downloads share SEC throttling and contact identification. Decoded public filing bodies are cached privately under `.sec-cache` for up to seven days; amendments use new accession URLs. Headers/contact details are never cached or published.
+
+`filing_contents.md` and the JSON audit provide source URLs, retrieval times, decoded-content fingerprints and paragraph/table block locations for liquidity, debt, covenants, going concern, listing/transactions, dilution and outlook. Hidden inline-XBRL data and scripts/styles are excluded. Extracted amount/date tokens retain raw context; they are not a complete repayment calendar, normalized financial statement or legal interpretation. Negations, conditional clauses and ordinary risk boilerplate are not classified as actual defaults. This index never clears a hold or upgrades a recovery case. The live Actions probe verifies the latest primary filing body for each of LCII/LRN/SFD; its deliberate document-budget deferrals are visible.
+
+Manual source-backed `review_notes` in `review_holds.json` appear in the filing queue and review email, while the hold remains pending. Notes must cite a matching dated source in that record. This separates incremental research findings, including possible financing improvements, from a completed recovery thesis.
+
 [research_policy.json](research_policy.json) holds the research thresholds and valuation assumptions. [FUNDAMENTALS.md](FUNDAMENTALS.md) explains calculations, source coverage and limitations. The original [review](SCANNER_REVIEW.md) is retained as historical context.
 
 Statement amounts use `financialCurrency`; price amounts use quote metadata. Size, liquidity, cash/market-cap and net-debt/market-cap comparisons use USD. FX uses a timestamped valid Yahoo observation no older than seven calendar days and is cached for the run. Missing/unsupported currencies and unavailable FX skip the candidate.

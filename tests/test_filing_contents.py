@@ -63,6 +63,11 @@ def test_access_errors_are_retained_and_do_not_become_empty_success(tmp_path):
     assert "403" in (tmp_path / "index.md").read_text(encoding="utf-8")
 
 
+def test_non_us_content_is_not_misreported_as_sec_access_failure():
+    result = collect_filing_contents({"status": "NOT_COVERED"})
+    assert result["status"] == "NOT_COVERED" and result["documents"] == []
+
+
 def test_budget_is_visible_and_does_not_fetch_all_exhibit_or_archive_links():
     data = check()
     data["event_filings"] = [dict(DOC, url=BASE + "event.htm", form="8-K")]

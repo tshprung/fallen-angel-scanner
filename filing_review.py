@@ -85,6 +85,10 @@ def write_filing_queue(audit, path):
                 url = safe_website(source["url"])
                 if url:
                     lines.append(f"- [{escape(source['published_at'])} disclosure](<{url}>)")
+            if hold.get("review_notes"):
+                lines += ["", "Reviewed findings (the hold remains unresolved):", ""]
+                for note in hold["review_notes"]:
+                    lines.append(f"- {escape(note['finding'])} [{escape(note['published_at'])} source](<{note['source_url']}>)")
             lines += [""]
         questions = solvency.get("missing", []) + solvency.get("review", [])
         if questions:

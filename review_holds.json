@@ -13,7 +13,11 @@
     "status": "PENDING",
     "reviewed_at": "2026-10-22",
     "reason": "September-quarter results were published October 20; June-only financial evidence misses the latest results. Review the September 2027 convertible maturity and dilution as well.",
-    "release_condition": "Reconcile the September 30 statements and trailing cash flow, enrollment and guidance; verify settlement funding and conversion/capped-call effects for the $420m notes due September 1, 2027. A provider refresh alone does not resolve the hold.",
+    "release_condition": "Reconcile September statements, including $418.431m current debt carrying value and $85.463m current finance leases, with unrestricted funding. Verify the $420m contractual note principal due September 1, 2027 and conversion/capped-call effects; assess enrollment recovery. A provider refresh alone does not resolve the hold.",
+    "review_notes": [
+      {"finding": "September balances show $418.431m current debt carrying value and $85.463m current finance leases. The earlier June current-debt proxy therefore misses material near-term obligations; carrying value is not contractual principal.", "published_at": "2026-10-20", "source_url": "https://www.globenewswire.com/news-release/2026/10/20/3384980/0/en/stride-reports-first-quarter-2027-financial-results.html"},
+      {"finding": "Convertible principal is settled in cash; conversion premiums can use cash or shares. Capped-call protection has an upper strike of $86.174, so generic 5% dilution is not sufficient underwriting for a doubling case.", "published_at": "2026-08-05", "source_url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"}
+    ],
     "sources": [
       {"published_at": "2026-10-20", "url": "https://www.globenewswire.com/news-release/2026/10/20/3384980/0/en/stride-reports-first-quarter-2027-financial-results.html"},
       {"published_at": "2026-08-05", "url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"}
@@ -23,9 +27,14 @@
     "status": "PENDING",
     "reviewed_at": "2026-10-22",
     "reason": "September 8 profit warning: Fresh Pork margin compression and lower hog prices undermine an unchanged historical cash-flow assumption.",
-    "release_condition": "Reconcile the next published results and revised outlook with normalized cash flow, capital spending and debt liquidity; source evidence for recovery rather than assuming the commodity weakness is temporary.",
+    "release_condition": "Reconcile next results and outlook with normalized cash flow, capital spending and debt liquidity. Verify drawing/redemption of the October facility and covenant headroom; source evidence for operating recovery rather than assuming commodity weakness is temporary.",
+    "review_notes": [
+      {"finding": "A $600m conditional delayed-draw facility is available through December 23, 2026 and matures three years after funding. Intended 2027-note redemption is a plan, not completed repayment; proceeds must not also be counted as extra cash.", "published_at": "2026-10-16", "source_url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000060/sfd-20261014.htm"},
+      {"finding": "The facility requires debt/capital at most 50% (55% for specified acquisitions) and defined EBITDA/interest coverage at least 3.5x. Actual headroom and operating recovery remain unresolved.", "published_at": "2026-10-16", "source_url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000060/sfd-20261014.htm"}
+    ],
     "sources": [
-      {"published_at": "2026-09-08", "url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000056/smithfieldformxpressreleas.htm"}
+      {"published_at": "2026-09-08", "url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000056/smithfieldformxpressreleas.htm"},
+      {"published_at": "2026-10-16", "url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000060/sfd-20261014.htm"}
     ]
   }
 }

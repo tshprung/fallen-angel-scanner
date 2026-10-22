@@ -184,6 +184,8 @@ def extract_content(body, document, cik):
 def collect_filing_contents(check, client=None, max_primary=3, max_exhibits=1):
     result = {"status": "UNVERIFIED", "checked_at": utc().isoformat(), "documents": [], "notice": NOTICE,
               "document_budget": {"primary": max_primary, "exhibits": max_exhibits}, "deferred_documents": 0}
+    if check and check.get("status") == "NOT_COVERED":
+        return dict(result, status="NOT_COVERED", reason="Use local-regulator/issuer documents; this collector covers SEC filings only")
     if not check or not check.get("cik"):
         result["reason"] = "Verified SEC issuer/document metadata unavailable"
         return result

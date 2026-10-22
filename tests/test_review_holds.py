@@ -27,6 +27,19 @@ def test_sourced_holds_block_production_selection_before_provider_or_dedup(monke
     for item in audit:
         assert item["review_hold"]["release_condition"] in output
         assert item["review_hold"]["sources"][0]["url"] in output
+        for note in item["review_hold"].get("review_notes", []):
+            assert note["finding"] in output
+            assert note["source_url"] in output
+
+
+def test_dated_research_notes_do_not_clear_a_hold_and_require_matching_sources(tmp_path):
+    records = load_review_holds()
+    assert records["SFD"]["review_notes"] and records["SFD"]["status"] == "PENDING"
+    records["SFD"]["review_notes"][0]["source_url"] = "https://example.com/unreviewed"
+    path = tmp_path / "holds.json"
+    path.write_text(json.dumps(records), encoding="utf-8")
+    with pytest.raises(ValueError, match="matching dated source"):
+        load_review_holds(path)
 
 
 def test_holds_do_not_expire_or_clear_without_recorded_resolution(tmp_path):

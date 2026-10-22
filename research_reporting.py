@@ -85,7 +85,11 @@ def filing_review_summary_html(audit):
         links = [f'<a href="{escape(document["url"], quote=True)}">{escape(document["form"])} {escape(document["filingDate"])}</a>' for document in documents]
         for source in (item.get("review_hold") or {}).get("sources", []):
             links.append(f'<a href="{escape(source["url"], quote=True)}">Disclosure {escape(source["published_at"])}</a>')
-        rows.append(f"<li><strong>{escape(item['ticker'])}</strong>: {escape(item.get('reason', 'Review required'))}. {'; '.join(links)}</li>")
+        notes = (item.get("review_hold") or {}).get("review_notes", [])
+        findings = ("<ul>" + "".join(f'<li>{escape(note["finding"])} <a href="{escape(note["source_url"], quote=True)}">Source</a></li>' for note in notes) + "</ul>") if notes else ""
+        content = item.get("filing_content_review") or {}
+        content_note = f" Content index: {escape(content['status'])}; contents still require interpretation." if content else ""
+        rows.append(f"<li><strong>{escape(item['ticker'])}</strong>: {escape(item.get('reason', 'Review required'))}.{content_note} {'; '.join(links)}{findings}</li>")
     return ("<h2>Held for filing review</h2><p>These names did not qualify for selection. "
             "An unavailable source is unverified; it is not an empty event search. "
             "Filing metadata does not verify document contents.</p><ul>" + "".join(rows) + "</ul>")
