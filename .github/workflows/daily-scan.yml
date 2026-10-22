@@ -63,6 +63,7 @@ jobs:
           path: |
             paper_tracking.json
             paper_tracking_report.md
+            paper_tracking_summary.json
             research_report.json
             research_report.md
             filing_review.md
@@ -83,6 +84,7 @@ jobs:
           git add scanner_memory.json 2>/dev/null || true
           git add failed_tickers.json 2>/dev/null || true
           git add paper_tracking.json paper_tracking_report.md 2>/dev/null || true
+          git add paper_tracking_summary.json 2>/dev/null || true
           git add research_report.json research_report.md filing_review.md recovery_review.md filing_contents.md scan_coverage.json 2>/dev/null || true
           git add disclosure_watch.json disclosure_watch.md disclosure_watch_state.json 2>/dev/null || true
           if [ -d logs ]; then

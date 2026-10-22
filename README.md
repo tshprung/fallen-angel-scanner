@@ -104,6 +104,10 @@ The ledger distinguishes reaching 2x at a daily close from ending twelve months 
 
 Tracking begins when a successful scheduled scan selects candidates. There are no backfilled picks or claimed investment results.
 
+Paper performance method v2 rejects duplicate session dates, unusable closes, contradictory supplied OHLC bounds and gaps over ten calendar days within the holding window. It does not infer every exchange trading session or supply missing delisting proceeds. An entry and a year-end quote alone cannot establish a completed outcome. Previously completed observations without the current method version are rechecked on the next refresh; selection snapshots remain unchanged. Completed observations assessed under the current method stay frozen.
+
+The daily refresh also writes `paper_tracking_summary.json` and a cohort table in `paper_tracking_report.md`. These separate the financial policy, price-screen cohort and research status recorded at selection; missing legacy labels remain explicit. Each cohort shows observation and unique-ticker counts, pending/tracking/unverified counts, completed observations, touches of 2x, twelve-month exits at 2x and exits below entry. Only completed observations under the current performance method contribute to those outcome counts. Repeated ticker/day cohorts are correlated, unresolved outcomes are retained, and neither these counts nor a small sample establishes a success probability, a bankruptcy rate or a delisting rate. Policy labels do not capture every change to code, sources or manual holds; inspect recorded evidence before combining observations for research. Benchmark excess returns and USD returns remain future work.
+
 ## Validation and remaining work
 
 For an independent research run, open **Actions → Research-only universe scan → Run workflow**. Leave `tickers` empty for the configured universe, or enter a comma-separated subset. This workflow uploads its reports without sending email, appending paper selections or committing scanner state. The initial addition of this workflow also runs it once on main.

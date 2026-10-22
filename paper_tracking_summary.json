@@ -1,0 +1,26 @@
+{
+  "method_version": 2,
+  "last_refreshed_at": "2026-10-21T22:16:51.227010+00:00",
+  "notice": "Correlated forward observations, not a portfolio backtest or calibrated success rate. Unknown outcomes stay in cohort totals.",
+  "cohorts": [
+    {
+      "policy_id": "72aca0f0daf9",
+      "screen_cohort": "stabilizing_drawdown",
+      "research_status": "legacy/unknown",
+      "observations": 3,
+      "tickers": [
+        "LCII",
+        "LRN",
+        "SFD"
+      ],
+      "pending": 3,
+      "tracking": 0,
+      "complete_12m": 0,
+      "unverified": 0,
+      "touched_2x": 0,
+      "ended_2x": 0,
+      "ended_loss": 0,
+      "unique_tickers": 3
+    }
+  ]
+}
