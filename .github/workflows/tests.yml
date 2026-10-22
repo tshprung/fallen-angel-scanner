@@ -6,6 +6,7 @@ on:
       - '**.py'
       - 'research_policy.json'
       - 'review_holds.json'
+      - 'sec_filing_reviews.json'
       - 'requirements.txt'
       - '.github/workflows/**'
   pull_request:
@@ -29,3 +30,26 @@ jobs:
       - run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
       - name: Production CLI loads without a scan
         run: python scanner_entry.py --help
+
+  sec-source-access:
+    # A separate live health check. Offline regressions do not depend on SEC access.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install requests
+      - name: Probe public SEC endpoints without scanning or sending email
+        env:
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: python sec_filings.py
+      - name: Preserve source access results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sec-source-access-${{ github.run_id }}
+          path: sec_source_probe.json

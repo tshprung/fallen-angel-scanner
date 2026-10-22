@@ -46,6 +46,27 @@ An empty shortlist is valid. Price-decline alerts are watch prompts, not instruc
 
 `review_holds.json` records sourced manual findings that block ordinary-company selection with decision `event_review`, before deduplication or provider requests. The research audit and filing queue retain the reason, dated sources and release condition. Holds do not expire automatically: resolve them only with recorded evidence after the condition is met. This is a small manually maintained registry, not a comprehensive corporate-action or latest-publication feed. No record does not mean no event. Existing paper snapshots remain historical observations and are not rewritten by a later hold.
 
+## Automated official filing checks
+
+US candidates that pass the financial-evidence gates are checked against the SEC ticker/exchange mapping and submissions API before selection. The checker confirms ticker/CIK identity, compares all three provider statement period ends with the latest periodic filing, and flags covered current-report items, merger forms and financial-report amendments. New results/outlook disclosures after the latest periodic filing require review, even when a provider news feed is empty. This detects publication metadata; it does not read or interpret the filing bodies or attached earnings releases.
+
+- `METADATA_CHECKED`: the covered metadata checks found no unresolved flag. It does not verify financial amounts, covenant terms, debt maturities, guidance or a recovery thesis.
+- `REVIEW_REQUIRED` / decision `filing_review`: newer statements or covered events need reconciliation; the company is held out of selection and its valuation target is suppressed.
+- `UNVERIFIED` / decision `filing_unverified`: access, identity, schema or coverage could not be established. The company is held out of selection. HTTP 403 and missing mappings never become empty successful searches.
+- `NOT_COVERED`: supported non-US listing suffixes continue through the existing financial screen with WATCH review labeling and local-regulator links. They do not receive a verified SEC status.
+
+Coverage is limited to merger forms in the last 365 days and specified 8-K/6-K items in the last 180 days. Older unresolved situations, guidance only on an issuer website, and events not identifiable from filing metadata can still be missed. Read `sec_filings.py` for the exact forms/items. The manual holds remain necessary and never clear automatically. Known event flags can be resolved in `sec_filing_reviews.json` only for an exact `10-digit CIK:accession` key, with `reviewed_at`, `source_url` matching that filing, and a substantive `finding`. A new accession or amendment requires a new review. Resolving an event cannot bypass stale statement dates or unavailable SEC access.
+
+Every checked candidate retains dated sources and findings in the JSON/Markdown report and filing queue; selected paper snapshots retain the filing check as observed at selection. Emails show filing holds even when no stocks qualify. These added selection rules distinguish new observations from earlier cohorts even if their financial-policy fingerprint is unchanged.
+
+The daily GitHub Actions job restores a public-response cache. Submissions expire after 15 minutes and ticker mappings after seven days; expired cache is never used as clearance when a source is unavailable. Requests are sequential, throttled below two per second and bounded by timeouts/retries. Optional repository variable `SEC_USER_AGENT` overrides the application identity; otherwise the daily scan uses its configured sender address as SEC contact identification. The address is sent to the SEC in the HTTP User-Agent, never printed in reports. Outside the workflow, `SEC_CONTACT_EMAIL` can supply contact identification; without it the public repository URL identifies the application. No paid API key is required. See the [SEC API documentation](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) and [fair-access guidance](https://www.sec.gov/about/developer-resources).
+
+Pushes to main also run a separate live SEC access health check on GitHub's runner, alongside offline tests. Its artifact records access status for LCII/LRN/SFD; it sends no email and changes no scanner or paper state. A failed health check is visible in Actions and must not be interpreted as a passed integration. Local access can differ from runner access. To probe manually:
+
+```sh
+python sec_filings.py --probe-output sec_source_probe.json
+```
+
 ## Financial model and policy
 
 [research_policy.json](research_policy.json) holds the research thresholds and valuation assumptions. [FUNDAMENTALS.md](FUNDAMENTALS.md) explains calculations, source coverage and limitations. The original [review](SCANNER_REVIEW.md) is retained as historical context.
@@ -72,4 +93,4 @@ Tracking begins when a successful scheduled scan selects candidates. There are n
 
 Offline regressions cover currencies, corporate actions, data gaps, period alignment, solvency gates, valuation arithmetic, production integration and paper tracking. Push/PR CI tests Python 3.10 and 3.12 without sending email. SciPy is required by yfinance repair mode and is declared in requirements.
 
-Remaining investment-research work: verified filings/covenants and 13–24 month maturities, sector/jurisdiction-specific financial models, sourced recovery catalysts, defensible peer multiples, and empirical validation. Yahoo statement data does not establish an issuer's going-concern assessment, restricted-cash availability or complete debt obligations. See FUNDAMENTALS.md before treating any output as investable.
+Remaining investment-research work: interpreting filing contents/covenants and 13–24 month maturities, broader event/publication coverage, sector/jurisdiction-specific financial models, sourced recovery catalysts, defensible peer multiples, and empirical validation. Yahoo statement data does not establish an issuer's going-concern assessment, restricted-cash availability or complete debt obligations. See FUNDAMENTALS.md before treating any output as investable.

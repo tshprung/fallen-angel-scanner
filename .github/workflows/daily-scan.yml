@@ -2,7 +2,7 @@ name: Daily Fallen Angel Scan
 
 on:
   schedule:
-    # Run at 18:30 UTC (19:30 Polish time) on weekdays
+    # Run at 18:30 UTC on weekdays (Poland: 19:30 winter / 20:30 summer)
     - cron: "30 18 * * 1-5"
   workflow_dispatch:
 
@@ -31,16 +31,24 @@ jobs:
         run: pip install -r requirements.txt pytest --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py
 
       - name: Offline regression tests
         run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
+
+      - name: Restore public SEC response cache
+        uses: actions/cache@v4
+        with:
+          path: .sec-cache
+          key: sec-filings-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: sec-filings-${{ runner.os }}-
 
       - name: Run fallen angel scanner
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           PYTHONUNBUFFERED: 1
         run: python -u scanner_entry.py
 

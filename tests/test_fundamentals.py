@@ -227,7 +227,9 @@ def test_statement_date_mismatch_is_visible():
     assert any("align" in message for message in assess_solvency(data, INFO)["missing"])
 
 
-def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch):
+@pytest.mark.parametrize("filing_status,blocked", [("METADATA_CHECKED", False), ("NOT_COVERED", False),
+                                                    ("UNVERIFIED", True), ("REVIEW_REQUIRED", True)])
+def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, filing_status, blocked):
     import fallen_angel_scanner as scanner
     stock = company()
     stock.history = lambda **kwargs: pd.DataFrame({"Close": np.repeat(10., 252)})
@@ -239,6 +241,8 @@ def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch):
     monkeypatch.setattr(scanner, "analyze_price_shape", lambda *args: {"shape": "choppy", "stable_years": 3, "recent_drop_pct": -35})
     monkeypatch.setattr(scanner, "get_financial_health", lambda _: {})
     monkeypatch.setattr(scanner, "collect_evidence", lambda *args, **kwargs: data)
+    monkeypatch.setattr(scanner, "check_sec_filings", lambda *args, **kwargs: {
+        "status": filing_status, "blocks_selection": blocked, "findings": ["Fixture filing review"]})
     monkeypatch.setattr(scanner, "compute_piotroski_score", lambda *args: (8, 9))
     monkeypatch.setattr(scanner, "get_earnings_date", lambda _: (None, None))
     monkeypatch.setattr(scanner, "search_recent_news", lambda *args: [])
@@ -248,6 +252,12 @@ def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch):
         raise AssertionError("Historical price target must not determine value")
     monkeypatch.setattr(scanner, "estimate_recovery_target", no_rebound_targets)
     chosen, _ = scanner.stage2_deep_analysis([{"ticker": "AAA", "current_price": 10, "drop_21d_pct": 0}], {})
+    if blocked:
+        assert chosen == []
+        audit = scanner._last_research_audit[0]
+        assert audit["decision"] == ("filing_unverified" if filing_status == "UNVERIFIED" else "filing_review")
+        assert "valuation" not in audit
+        return
     assert len(chosen) == 1
     assert chosen[0]["target_basis"] == "fcf_sensitivity"
     assert chosen[0]["solvency_status"] == "REVIEW"

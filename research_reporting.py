@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 
 from filing_review import write_filing_queue, filing_links_html
+from sec_filings import filing_check_lines
 
 
 def clean(value):
@@ -46,6 +47,10 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
         reasons = solvency.get("flags", []) + solvency.get("missing", []) + solvency.get("review", [])
         reason = item.get("reason") or (reasons[0] if reasons else "")
         lines.append(f"| {text(item['ticker'])} | {text(item.get('decision', 'not_selected'))} | {solvency.get('status', 'not_evaluated')} | {upside('base')} | {upside('bull')} | {text(reason)} |")
+    for item in audit:
+        check = item.get("official_filing_check")
+        if check:
+            lines += ["", f"## Official filing evidence: {text(item['ticker'])}", ""] + filing_check_lines(check)
     lines += ["", "Full statement period ends, row labels, missing fields, assumptions and exclusions are in research_report.json.",
               "A REVIEW status commonly means the 13–24 month contractual debt schedule still needs filing review. UNVERIFIED and SPECIALIST_REVIEW candidates cannot enter the ordinary-company shortlist.",
               "An empty shortlist is a valid result. Scenario assumptions are configurable in research_policy.json and are not empirically calibrated predictions."]
@@ -56,8 +61,26 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
 
 def candidate_needs_review(stock):
     return (stock.get("catalyst_status") == "WATCH"
+            or (stock.get("official_filing_check") or {}).get("status") == "NOT_COVERED"
             or stock.get("solvency_status") in ("REVIEW", "UNVERIFIED", "SPECIALIST_REVIEW")
             or stock.get("risk_score_raw", stock.get("risk_score", 10)) >= 4)
+
+
+def filing_review_summary_html(audit):
+    held = [item for item in audit if item.get("decision") in {"event_review", "filing_review", "filing_unverified"}]
+    if not held:
+        return ""
+    rows = []
+    for item in held:
+        check = item.get("official_filing_check") or {}
+        documents = ([check["latest_financial_report"]] if check.get("latest_financial_report") else []) + check.get("event_filings", [])
+        links = [f'<a href="{escape(document["url"], quote=True)}">{escape(document["form"])} {escape(document["filingDate"])}</a>' for document in documents]
+        for source in (item.get("review_hold") or {}).get("sources", []):
+            links.append(f'<a href="{escape(source["url"], quote=True)}">Disclosure {escape(source["published_at"])}</a>')
+        rows.append(f"<li><strong>{escape(item['ticker'])}</strong>: {escape(item.get('reason', 'Review required'))}. {'; '.join(links)}</li>")
+    return ("<h2>Held for filing review</h2><p>These names did not qualify for selection. "
+            "An unavailable source is unverified; it is not an empty event search. "
+            "Filing metadata does not verify document contents.</p><ul>" + "".join(rows) + "</ul>")
 
 
 def financial_detail_html(stock):
@@ -83,7 +106,14 @@ def financial_detail_html(stock):
         block = evidence.get(name, {})
         if block:
             dates.append(f"{name}: {block.get('asof') or 'unavailable'} ({block.get('basis')})")
-    parts.append("<p>Statement period ends: " + escape("; ".join(dates)) + ". Filing dates are not verified.</p>")
+    parts.append("<p>Statement period ends: " + escape("; ".join(dates)) + ". Provider numbers are not reconciled to filing contents.</p>")
+    check = stock.get("official_filing_check")
+    if check:
+        parts.append(f"<p><strong>Official filing check: {escape(check['status'])}</strong>. {escape(check['notice'])}</p>")
+        parts.append("<ul>" + "".join(f"<li>{escape(finding)}</li>" for finding in check.get("findings", [])) + "</ul>")
+        document = check.get("latest_financial_report")
+        if document:
+            parts.append(f'<p><a href="{escape(document["url"], quote=True)}">Latest SEC {escape(document["form"])}: period {escape(document["reportDate"])}; filed {escape(document["filingDate"])}</a></p>')
     if valuation and valuation.get("status") == "SENSITIVITY":
         parts.append(f"<p>{escape(valuation['description'])}. Assumed share dilution: {valuation['assumed_share_dilution']:.0%}. No probabilities assigned.</p>")
         parts.append("<table><tr><th>Case</th><th>FCF factor</th><th>Equity FCF multiple</th><th>Price (quote units)</th><th>Return</th></tr>")

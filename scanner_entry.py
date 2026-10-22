@@ -4,6 +4,7 @@ import fallen_angel_scanner as scanner
 import scanner_bugfixes as bugfixes
 import scanner_enhanced  # noqa: F401 - installs enhanced scanner patches
 import scanner_safety  # noqa: F401 - installs final financial-risk guards
+from research_reporting import filing_review_summary_html
 
 
 _original_generate_email_html = scanner.generate_email_html
@@ -22,7 +23,7 @@ def generate_email_html_consistent(analyzed_stocks, price_alerts, fresh_crash_st
     _apply_consistent_sentiment(fresh_crash_stocks)
     return _original_generate_email_html(
         analyzed_stocks, price_alerts, fresh_crash_stocks
-    )
+    ) + filing_review_summary_html(getattr(scanner, "_last_research_audit", []))
 
 
 scanner.generate_email_html = generate_email_html_consistent

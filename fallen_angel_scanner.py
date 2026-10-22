@@ -29,6 +29,7 @@ import time
 
 from filing_review import filing_review_plan
 from review_holds import load_review_holds
+from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -1269,6 +1270,8 @@ def stage2_deep_analysis(candidates, memory):
     _last_research_audit = []
     policy = load_policy()
     review_holds = load_review_holds()
+    sec_client = SecClient()
+    filing_resolutions = load_filing_resolutions()
     analyzed = []
     fresh_crash = []
     analysis_count = 0  # Track number of stocks analyzed
@@ -1354,6 +1357,15 @@ def stage2_deep_analysis(candidates, memory):
             if solvency["status"] in ("EXCLUDE", "UNVERIFIED", "SPECIALIST_REVIEW"):
                 audit.update(decision=solvency["status"].lower(), reason="; ".join(solvency["flags"] + solvency["missing"]))
                 print(f"  ⏭️  {ticker}: {solvency['status']}: {audit['reason']}")
+                continue
+            filing_check = check_sec_filings(ticker, evidence, client=sec_client, resolutions=filing_resolutions)
+            audit["official_filing_check"] = filing_check
+            if filing_check["blocks_selection"]:
+                decision = "filing_unverified" if filing_check["status"] == "UNVERIFIED" else "filing_review"
+                audit.update(decision=decision, reason="; ".join(filing_check["findings"]))
+                print(f"  ⏸️  {ticker}: {filing_check['status']}: {audit['reason']}")
+                # A stale or event-unreviewed value is not a valid target.
+                audit.pop("valuation", None)
                 continue
             health = authoritative_health(health, evidence, usd_info["_financial_to_usd"], usd_info["marketCap"])
 
@@ -1485,6 +1497,7 @@ def stage2_deep_analysis(candidates, memory):
                 'financial_health': health,
                 'financial_evidence': evidence,
                 'filing_review': audit["filing_review"],
+                'official_filing_check': filing_check,
                 'solvency': solvency,
                 'solvency_status': solvency["status"],
                 'valuation': valuation,
@@ -1953,14 +1966,17 @@ def main():
         record_selections(analyzed_stocks + fresh_crash_stocks, path=globals().get("PAPER_LEDGER_PATH", "paper_tracking.json"))
 
     # Generate and send email
-    if analyzed_stocks or fresh_crash_stocks or price_alerts:
+    filing_holds = [item for item in _last_research_audit if item.get("decision") in {"event_review", "filing_review", "filing_unverified"}]
+    if analyzed_stocks or fresh_crash_stocks or price_alerts or filing_holds:
         print("\n" + "="*80)
         print("GENERATING EMAIL REPORT")
         print("="*80)
         
         html = generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
         
-        subject = f"🌍 Fallen Angels: {len(analyzed_stocks)} opportunities"
+        subject = f"🌍 Fallen Angels: {len(analyzed_stocks)} research candidates"
+        if filing_holds:
+            subject += f" + {len(filing_holds)} filing review holds"
         if fresh_crash_stocks:
             subject += f" + {len(fresh_crash_stocks)} fresh crash watch"
         if price_alerts:

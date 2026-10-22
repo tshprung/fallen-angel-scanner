@@ -3,6 +3,7 @@
 from html import escape
 from pathlib import Path
 from urllib.parse import urlsplit
+from sec_filings import filing_check_lines
 
 
 def safe_website(value):
@@ -63,11 +64,11 @@ def filing_links_html(plan):
 
 
 def write_filing_queue(audit, path):
-    decisions = {"selected", "unverified", "specialist_review", "valuation_unverified", "currency_unverified", "event_review"}
+    decisions = {"selected", "unverified", "specialist_review", "valuation_unverified", "currency_unverified", "event_review", "filing_review", "filing_unverified"}
     queued = [item for item in audit if item.get("decision") in decisions]
     lines = ["# Public filing review queue", "",
              "No paid data subscription is required for this workflow. Start with issuer investor-relations reports and the public filing sources below; source access can vary.", "",
-             "Financial statuses remain unchanged until findings are actually checked. This file does not claim that any filing or fact has been verified.", ""]
+             "Financial contents remain unverified until findings are actually checked. Official publication metadata, where available, is reported separately below.", ""]
     if not queued:
         lines += ["No candidates currently require this queue. An empty shortlist is valid; do not relax exclusions to force picks.", ""]
     for item in queued:
@@ -75,6 +76,7 @@ def write_filing_queue(audit, path):
         lines += [f"## {escape(item['ticker'])}", "", f"Search issuer name: {escape(plan['search_term'])}", "",
                   f"Scanner decision: {escape(item.get('decision', ''))}.", ""]
         solvency = item.get("solvency") or {}
+        lines += filing_check_lines(item.get("official_filing_check"))
         hold = item.get("review_hold")
         if hold:
             lines += [f"Sourced hold (reviewed {escape(hold['reviewed_at'])}): {escape(hold['reason'])}", "",
