@@ -117,3 +117,19 @@ Offline regressions cover currencies, corporate actions, data gaps, period align
 Remaining investment-research work: interpreting filing contents/covenants and 13–24 month maturities, broader event/publication coverage, sector/jurisdiction-specific financial models, sourced recovery catalysts, defensible peer multiples, and empirical validation. Yahoo statement data does not establish an issuer's going-concern assessment, restricted-cash availability or complete debt obligations. See FUNDAMENTALS.md before treating any output as investable.
 
 Price-history repair is not proof of correctness. When full OHLC bars are present, the history adapter rejects contradictory bounds (for example, a repaired close below the day's low) as a source error rather than dropping rows, clamping prices or manufacturing a decline. Consistent bars can still be wrong; this check does not replace independent price verification.
+
+## Independent disclosure follow-up
+
+The existing daily Actions run also checks `disclosure_watchlist.json`, initially PNR, ASB.WA and LZB. These checks run before stock screening, including for held companies and names outside the price screen. SEC checks compare the latest periodic filing and covered current reports; ASBIS checks its issuer financial-report index for the configured quarter. ASBIS links require manual content review and do not establish regulatory coverage. Expected dates are research checkpoints, not guaranteed publication times; LZB has no confirmed next date configured.
+
+`disclosure_watch.json` and `disclosure_watch.md` record source times, documents, new links and unresolved questions. `disclosure_watch_state.json` retains comparison history between successful daily runs. A first observation establishes a baseline; subsequent new documents, an already-listed expected report on first observation, or the first overdue checkpoint can trigger the normal report email even with no candidates. The first overdue checkpoint means the target report was not confirmed by this checker, not that the issuer failed to report. Source failures remain explicitly `UNVERIFIED`; previous metadata is never presented as current clearance. They appear in artifacts and any otherwise-generated daily email, but do not independently trigger email. This is a daily check, not immediate or guaranteed notification delivery.
+
+New disclosures never clear holds, approve financial evidence, change valuations or create paper selections. Review the linked documents and reconcile the question before changing a research case. The existing scan's provider-outage guard can still prevent email; Actions preserves the disclosure artifacts. No additional server, schedule or paid API is required.
+
+For a standalone check without scanning, sending mail or changing the paper ledger:
+
+```sh
+python disclosure_watch.py --output-dir disclosure-output
+```
+
+To include it in a research-only scan, add `--watch-disclosures --no-email --no-paper` to `scanner_entry.py`. Push CI preserves a separate live disclosure probe alongside the SEC access results; unavailable sources are recorded in its JSON, rather than treated as successful financial verification.

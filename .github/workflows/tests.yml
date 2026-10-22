@@ -6,6 +6,7 @@ on:
       - '**.py'
       - 'research_policy.json'
       - 'review_holds.json'
+      - 'disclosure_watchlist.json'
       - 'sec_filing_reviews.json'
       - 'recovery_cases.json'
       - 'requirements.txt'
@@ -55,6 +56,11 @@ jobs:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: python filing_contents.py
+      - name: Check research disclosures without scanning or sending email
+        env:
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: python disclosure_watch.py --output-dir disclosure-probe
       - name: Preserve source access results
         if: always()
         uses: actions/upload-artifact@v4
@@ -64,3 +70,6 @@ jobs:
             sec_source_probe.json
             filing_content_probe.json
             filing_content_probe.md
+            disclosure-probe/disclosure_watch.json
+            disclosure-probe/disclosure_watch.md
+            disclosure-probe/disclosure_watch_state.json

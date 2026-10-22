@@ -5,6 +5,7 @@ import scanner_bugfixes as bugfixes
 import scanner_enhanced  # noqa: F401 - installs enhanced scanner patches
 import scanner_safety  # noqa: F401 - installs final financial-risk guards
 from research_reporting import filing_review_summary_html
+from disclosure_watch import summary_html as disclosure_summary_html
 
 
 _original_generate_email_html = scanner.generate_email_html
@@ -27,7 +28,8 @@ def generate_email_html_consistent(analyzed_stocks, price_alerts, fresh_crash_st
                     f"{len(selected) - documented} research watches. Goal: a recent meaningful decline, a financially resilient business, "
                     "and a sourced recovery case supporting roughly 2x within a year. Neither return nor continued listing is guaranteed.</p>")
     html = _original_generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
-    html = html.replace("<body>", "<body>" + goal_summary, 1) if "<body>" in html else goal_summary + html
+    followup = disclosure_summary_html(getattr(scanner, "_last_disclosure_watch", None))
+    html = html.replace("<body>", "<body>" + goal_summary + followup, 1) if "<body>" in html else goal_summary + followup + html
     return html + filing_review_summary_html(getattr(scanner, "_last_research_audit", []))
 
 
@@ -46,6 +48,8 @@ def run_cli():
     parser.add_argument("--no-paper", action="store_true", help="Do not append selections to the paper ledger")
     parser.add_argument("--tickers", help="Optional comma-separated subset instead of the full universe")
     parser.add_argument("--output-dir", help="Directory for reports and run state")
+    parser.add_argument("--watch-disclosures", action="store_true",
+                        help="Check configured research disclosures independently of stock selection")
     args = parser.parse_args()
     scanner.REPORT_SCOPE = {"type": "configured_universe", "email_disabled": args.no_email,
                             "paper_disabled": args.no_paper}
@@ -71,6 +75,12 @@ def run_cli():
         # determine whether a supplied US ticker belongs to the small-cap set.
         original_liquidity = scanner.get_min_avg_dollar_volume_usd
         scanner.get_min_avg_dollar_volume_usd = lambda ticker: original_liquidity(ticker) if ticker.endswith((".L", ".DE", ".WA", ".TA")) else 2_000_000
+    scanner._last_disclosure_watch = None
+    if args.watch_disclosures:
+        from disclosure_watch import run_watch
+        report_dir = Path(getattr(scanner, "REPORT_PREFIX", "research_report")).parent
+        scanner._last_disclosure_watch = run_watch(report_dir)
+        scanner.REPORT_SCOPE["disclosure_watch"] = scanner._last_disclosure_watch
     scanner.main()
 
 

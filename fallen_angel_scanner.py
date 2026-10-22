@@ -34,6 +34,7 @@ from recovery_cases import load_recovery_cases, assess_recovery_case
 from filing_contents import enrich_research_audit
 from scan_coverage import new_coverage, record_outcome, checkpoint, provider_health
 from screening import drawdown_candidate
+from disclosure_watch import has_updates as has_disclosure_updates
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
 from research_reporting import candidate_needs_review, financial_detail_html, write_research_report
@@ -2014,7 +2015,8 @@ def _run_main():
         write_research_report([], [], globals().get("REPORT_PREFIX", "research_report"), scope)
         raise RuntimeError("Systemic price-source failure; reports preserve the gaps; mail and paper output aborted")
     
-    if not candidates and not price_alerts:
+    disclosure_updates = has_disclosure_updates(globals().get("_last_disclosure_watch"))
+    if not candidates and not price_alerts and not disclosure_updates:
         print("✅ No candidates met this run's filters.\n")
         write_research_report([], [], globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
         
@@ -2058,7 +2060,7 @@ def _run_main():
 
     # Generate and send email
     filing_holds = [item for item in _last_research_audit if item.get("decision") in {"event_review", "filing_review", "filing_unverified"}]
-    if analyzed_stocks or fresh_crash_stocks or price_alerts or filing_holds:
+    if analyzed_stocks or fresh_crash_stocks or price_alerts or filing_holds or disclosure_updates:
         print("\n" + "="*80)
         print("GENERATING EMAIL REPORT")
         print("="*80)
@@ -2067,6 +2069,8 @@ def _run_main():
         
         documented_count = sum((stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE" for stock in selected)
         subject = f"🌍 Fallen Angels: {documented_count} documented 12m cases; {len(selected) - documented_count} research watches"
+        if disclosure_updates:
+            subject += " + disclosure updates to review"
         if filing_holds:
             subject += f" + {len(filing_holds)} filing review holds"
         if fresh_crash_stocks:
