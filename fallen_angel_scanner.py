@@ -32,6 +32,7 @@ from review_holds import load_review_holds
 from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
 from recovery_cases import load_recovery_cases, assess_recovery_case
 from filing_contents import enrich_research_audit
+from scan_coverage import new_coverage, record_outcome, checkpoint
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -671,6 +672,10 @@ def stage1_quick_filter():
     policy = load_policy()
     all_tickers = get_all_tickers()
     failed_tickers = load_failed_tickers()
+    coverage = new_coverage(all_tickers)
+    globals()["_last_stage1_coverage"] = coverage
+    prefix = globals().get("REPORT_PREFIX", "research_report")
+    checkpoint(coverage, prefix)
     
     print(f"Scanning {len(all_tickers)} stocks across 5 markets")
     if failed_tickers:
@@ -682,12 +687,14 @@ def stage1_quick_filter():
     tickers_to_remove = []
     
     for i, ticker in enumerate(all_tickers):
+        outcome, stage, error_type = "data_error", "quote", None
         if (i + 1) % 50 == 0:
             print(f"  Progress: {i+1}/{len(all_tickers)}")
         
         try:
             stock, info = get_stock_with_retry(ticker)
             if not stock or not info:
+                outcome = "quote_unavailable"
                 # Record failure
                 should_remove = record_ticker_failure(ticker, failed_tickers, "Failed to fetch data")
                 if should_remove:
@@ -697,32 +704,43 @@ def stage1_quick_filter():
             
             # Success - clear from failed list
             record_ticker_success(ticker, failed_tickers)
+            coverage["quote_successes"] += 1
+            stage = "currency_and_security"
             
             # Quick checks only
             context = currency_context(info)
             market_cap = market_cap_usd(info, context)
 
             if not is_tradeable_equity(info):
+                outcome = "not_equity"
                 continue
             if not not_penny_delist_risk(info, ticker):
+                outcome = "price_listing_filter"
                 continue
             if is_biotechnology_company(info):
+                outcome = "biotechnology"
                 continue
 
             min_cap = get_min_market_cap_usd(ticker)
             if market_cap < min_cap:
+                outcome = "below_market_cap"
                 continue
             
             # Get price history
+            stage = "price_history"
             hist = stock.history(period="1y")
-            if len(hist) < 10:
+            if hist is None or len(hist) < 22:
+                outcome = "insufficient_history"
                 continue
+            coverage["histories_checked"] += 1
 
             if not passes_avg_dollar_liquidity(hist, get_min_avg_dollar_volume_usd(ticker), context["quote_to_usd"]):
+                outcome = "liquidity_filter_or_missing_volume"
                 continue
             
             signals = drawdown_candidate(hist, policy, MIN_DROP_PERCENT)
             if signals:
+                outcome = "candidate"
                 candidates.append({
                     "ticker": ticker,
                     "current_price": float(hist["Close"].iloc[-1]),
@@ -732,10 +750,14 @@ def stage1_quick_filter():
                     **signals,
                 })
                 print(f"  ✓ {ticker}: {signals['screen_cohort']}, 21-session change {signals['drop_21d_pct']:.1f}%")
+            else:
+                outcome = "no_recent_decline_or_price_unverified"
 
         except CurrencyUnavailable as exc:
+            outcome, error_type = "currency_unverified", type(exc).__name__
             print(f"  ⏭️  {ticker}: currency unverified; skipped: {exc}")
         except Exception as e:
+            outcome, error_type = "data_error", type(e).__name__
             # Record failure for any exception
             error_msg = str(e)
             if "404" in error_msg or "Not Found" in error_msg:
@@ -744,9 +766,15 @@ def stage1_quick_filter():
                     tickers_to_remove.append(ticker)
                     print(f"  ❌ {ticker} flagged for removal (3+ failures)")
             continue
+        finally:
+            record_outcome(coverage, ticker, outcome, stage, error_type)
+            if coverage["processed_count"] % 25 == 0 or coverage["processed_count"] == len(all_tickers):
+                checkpoint(coverage, prefix)
     
     # Save failed ticker tracking
     save_failed_tickers(failed_tickers)
+    coverage["completed"] = True
+    checkpoint(coverage, prefix)
     
     print(f"\n✅ Stage 1 complete: Found {len(candidates)} candidates")
     if tickers_to_remove:
@@ -1947,6 +1975,7 @@ def main():
     
     global _last_research_audit
     _last_research_audit = []
+    globals()["_last_stage1_coverage"] = None
     # Load memory
     memory = load_memory()
     
@@ -1958,6 +1987,10 @@ def main():
     
     # Stage 1: Quick filter
     candidates, tickers_to_remove = stage1_quick_filter()
+    if globals().get("_last_stage1_coverage"):
+        scope = dict(globals().get("REPORT_SCOPE") or {})
+        scope["stage1_coverage"] = globals()["_last_stage1_coverage"]
+        globals()["REPORT_SCOPE"] = scope
     
     if not candidates and not price_alerts:
         print("✅ No candidates met this run's filters.\n")

@@ -104,6 +104,10 @@ Tracking begins when a successful scheduled scan selects candidates. There are n
 
 ## Validation and remaining work
 
+For an independent research run, open **Actions → Research-only universe scan → Run workflow**. Leave `tickers` empty for the configured universe, or enter a comma-separated subset. This workflow uploads its reports without sending email, appending paper selections or committing scanner state. The initial addition of this workflow also runs it once on main.
+
+`scan_coverage.json` checkpoints the requested symbols, processed count, outcome counts and source gaps every 25 symbols. A stopped run retains `completed: false`. Completed research reports include these coverage counts. Configured or fallback index lists are not the whole market; missing quotes, currency verification and insufficient history are data gaps, not evidence that a company failed the investment criteria. Some price/liquidity outcomes combine a screen rejection with unusable price/volume evidence and are labeled accordingly.
+
 Offline regressions cover currencies, corporate actions, data gaps, period alignment, solvency gates, valuation arithmetic, production integration and paper tracking. Push/PR CI tests Python 3.10 and 3.12 without sending email. SciPy is required by yfinance repair mode and is declared in requirements.
 
 Remaining investment-research work: interpreting filing contents/covenants and 13–24 month maturities, broader event/publication coverage, sector/jurisdiction-specific financial models, sourced recovery catalysts, defensible peer multiples, and empirical validation. Yahoo statement data does not establish an issuer's going-concern assessment, restricted-cash availability or complete debt obligations. See FUNDAMENTALS.md before treating any output as investable.

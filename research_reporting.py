@@ -42,6 +42,9 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
              "|---|---|---|---|---:|---:|---|"]
     def text(value):
         return str(value).replace("|", "/").replace("\n", " ")
+    coverage = data["scan_scope"].get("stage1_coverage")
+    if coverage:
+        lines[8:8] = [f"Stage 1 completed: {coverage['completed']}; processed {coverage['processed_count']}/{coverage['requested_count']}; quote responses {coverage['quote_successes']}; histories checked {coverage['histories_checked']}; recorded data gaps {len(coverage['data_gaps'])}.", "", coverage["notice"], ""]
     for item in audit:
         solvency = item.get("solvency") or {}
         valuation = item.get("valuation") or {}

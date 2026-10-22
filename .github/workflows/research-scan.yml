@@ -1,0 +1,57 @@
+name: Research-only universe scan
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/research-scan.yml']
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: Optional comma-separated subset; empty scans the configured universe
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-only-scan-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt pytest
+      - name: Offline checks
+        run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
+      - name: Restore public SEC response cache
+        uses: actions/cache@v4
+        with:
+          path: .sec-cache
+          key: sec-filings-research-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: sec-filings-${{ runner.os }}-
+      - name: Scan without mail, paper entries or state commits
+        env:
+          RESEARCH_TICKERS: ${{ inputs.tickers }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          PYTHONUNBUFFERED: '1'
+        shell: bash
+        run: |
+          args=(--no-email --no-paper --output-dir research-artifacts)
+          if [ -n "$RESEARCH_TICKERS" ]; then
+            args+=(--tickers "$RESEARCH_TICKERS")
+          fi
+          python -u scanner_entry.py "${args[@]}"
+      - name: Preserve research and partial coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-only-${{ github.run_id }}
+          path: research-artifacts/
