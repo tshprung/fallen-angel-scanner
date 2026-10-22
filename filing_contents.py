@@ -130,7 +130,9 @@ def extract_content(body, document, cik):
     if len(body.encode()) > MAX_BYTES:
         raise SourceUnavailable("Filing document exceeds content limit")
     try:
-        tree = html.fromstring(body, parser=html.HTMLParser(no_network=True, recover=True))
+        # SEC inline-XBRL commonly includes an XML encoding declaration.
+        # lxml rejects declarations in Unicode input, so parse decoded UTF-8 as bytes.
+        tree = html.fromstring(body.encode("utf-8"), parser=html.HTMLParser(encoding="utf-8", no_network=True, recover=True))
     except (ValueError, TypeError, etree.ParserError, etree.XMLSyntaxError) as exc:
         raise SourceUnavailable("Filing HTML could not be parsed") from exc
     for element in list(tree.iter()):

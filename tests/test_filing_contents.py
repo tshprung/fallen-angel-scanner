@@ -39,6 +39,13 @@ def test_content_index_keeps_raw_facts_and_never_interprets_boilerplate_as_distr
     assert "EXCLUDE" not in result and "PASS" not in result
 
 
+def test_real_sec_xml_encoding_declarations_are_supported():
+    body = '<?xml version="1.0" encoding="UTF-8"?>' + BODY
+    result = extract_content(body, DOC, CIK)
+    assert result["status"] == "INDEXED_FOR_REVIEW"
+    assert result["topics"]["debt_maturities"]["matched_blocks"] > 0
+
+
 @pytest.mark.parametrize("url", ["http://www.sec.gov/Archives/edgar/data/1234/000000123426000001/report.htm",
     BASE + "../other.htm", BASE + "%2e%2e%2fother.htm", BASE + "report.htm?redirect=elsewhere",
     BASE + "report.pdf", "https://www.sec.gov.evil.example/report.htm", "https://user:password@www.sec.gov/report.htm",
