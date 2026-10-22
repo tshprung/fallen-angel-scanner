@@ -112,11 +112,11 @@ class SecClient:
                 failure = SourceUnavailable(f"SEC network request failed ({type(exc).__name__})")
                 if isinstance(exc, (requests.exceptions.SSLError, requests.exceptions.InvalidHeader)):
                     break
-            except ValueError:
-                failure = SourceUnavailable("SEC returned malformed JSON")
-                break
             except UnicodeError:
                 failure = SourceUnavailable("SEC contact header encoding is invalid")
+                break
+            except ValueError:
+                failure = SourceUnavailable("SEC returned malformed JSON")
                 break
             if attempt < 2:
                 time.sleep(2 ** attempt)
@@ -288,7 +288,8 @@ def probe(output):
             endpoints.append({"url": url, "status": "AVAILABLE", "retrieved_at": stamp})
         except SourceUnavailable as exc:
             endpoints.append({"url": url, "status": "UNAVAILABLE", "reason": str(exc)})
-    Path(output).write_text(json.dumps({"checks": checks, "endpoints": endpoints}, indent=2) + "\n", encoding="utf-8")
+    Path(output).write_text(json.dumps({"scope": "live_source_access_probe_without_provider_statement_reconciliation",
+                                      "checks": checks, "endpoints": endpoints}, indent=2) + "\n", encoding="utf-8")
     for check in checks:
         print(f"{check['ticker']}: {check['status']}; issuer identity verified: {'issuer' in check}")
     for endpoint in endpoints:

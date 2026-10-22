@@ -194,6 +194,14 @@ def test_contact_identity_strips_copied_newlines_before_http_requests(tmp_path, 
     assert "\n" not in header and "\r" not in header
 
 
+def test_invalid_contact_encoding_has_a_distinct_non_sensitive_diagnostic(tmp_path, monkeypatch):
+    monkeypatch.setattr("sec_filings.time.sleep", lambda _: None)
+    error = UnicodeEncodeError("latin-1", "sensitive-contact", 0, 1, "fixture")
+    session = SimpleNamespace(get=Mock(side_effect=error))
+    result = check_sec_filings("AAA", evidence(), SecClient(tmp_path, session, NOW), NOW)
+    assert result["findings"] == ["SEC contact header encoding is invalid"]
+
+
 def test_all_held_run_still_sends_a_review_report_without_paper_selections(monkeypatch, tmp_path):
     import scanner_entry
     scanner = scanner_entry.scanner
