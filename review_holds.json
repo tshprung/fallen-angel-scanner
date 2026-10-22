@@ -16,11 +16,13 @@
     "release_condition": "Reconcile September statements, including $418.431m current debt carrying value and $85.463m current finance leases, with unrestricted funding. Verify the $420m contractual note principal due September 1, 2027 and conversion/capped-call effects; assess enrollment recovery. A provider refresh alone does not resolve the hold.",
     "review_notes": [
       {"finding": "September balances show $418.431m current debt carrying value and $85.463m current finance leases. The earlier June current-debt proxy therefore misses material near-term obligations; carrying value is not contractual principal.", "published_at": "2026-10-20", "source_url": "https://www.globenewswire.com/news-release/2026/10/20/3384980/0/en/stride-reports-first-quarter-2027-financial-results.html"},
-      {"finding": "Convertible principal is settled in cash; conversion premiums can use cash or shares. Capped-call protection has an upper strike of $86.174, so generic 5% dilution is not sufficient underwriting for a doubling case.", "published_at": "2026-08-05", "source_url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"}
+      {"finding": "Convertible principal is settled in cash; conversion premiums can use cash or shares. Capped-call protection has an upper strike of $86.174, so generic 5% dilution is not sufficient underwriting for a doubling case.", "published_at": "2026-08-05", "source_url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"},
+      {"finding": "The September 30 10-Q confirms $420m principal remains outstanding, all $418.431m carrying value is current, and maturity is September 1, 2027. Its fiscal-2028 maturity label does not mean calendar 2028. Initial conversion is 18.9109 shares per $1,000; premium settlement and capped calls still need a company-specific cash/share model.", "published_at": "2026-10-21", "source_url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001157408/1d1a2d21-a0d6-4164-b728-a643ec91008e.html"}
     ],
     "sources": [
       {"published_at": "2026-10-20", "url": "https://www.globenewswire.com/news-release/2026/10/20/3384980/0/en/stride-reports-first-quarter-2027-financial-results.html"},
-      {"published_at": "2026-08-05", "url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"}
+      {"published_at": "2026-08-05", "url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"},
+      {"published_at": "2026-10-21", "url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001157408/1d1a2d21-a0d6-4164-b728-a643ec91008e.html"}
     ]
   },
   "SFD": {
