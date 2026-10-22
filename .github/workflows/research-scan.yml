@@ -38,7 +38,7 @@ jobs:
           path: .sec-cache
           key: sec-filings-research-${{ runner.os }}-${{ github.run_id }}
           restore-keys: sec-filings-${{ runner.os }}-
-      - name: Scan without mail, paper entries or state commits
+      - name: Scan with run-scoped quotes, without mail, paper entries or state commits
         env:
           RESEARCH_TICKERS: ${{ inputs.tickers }}
           SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}

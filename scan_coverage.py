@@ -26,3 +26,18 @@ def checkpoint(coverage, report_prefix):
     temporary = path.with_suffix(".tmp")
     temporary.write_text(json.dumps(coverage, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+
+def provider_health(coverage=None, audit=None):
+    """Operational source coverage, never an investment-quality assessment."""
+    coverage = coverage or {}
+    processed = coverage.get("processed_count", 0)
+    gaps = len(coverage.get("data_gaps", []))
+    errors = sum(item.get("decision") == "analysis_error" for item in (audit or []))
+    count = len(audit or [])
+    systemic = (processed >= 10 and gaps * 2 >= processed) or (count >= 10 and errors * 2 >= count)
+    return {"status": "DEGRADED" if gaps or errors else "NO_RECORDED_SOURCE_ERRORS",
+            "price_symbols_processed": processed, "recorded_price_source_gaps": gaps,
+            "company_candidates": count, "company_analysis_errors": errors,
+            "systemic_failure": systemic,
+            "notice": "A source gap is not a failed investment criterion. At least 50% source failures in 10 or more observations abort mail/paper output. Other unverified evidence and combined price/liquidity outcomes remain in their individual decisions."}

@@ -72,3 +72,70 @@ def test_document_enrichment_crash_preserves_financial_audit_and_does_not_send(m
     assert "PENDING" in (tmp_path / "research_report.md").read_text(encoding="utf-8")
     send.assert_not_called()
     assert not (tmp_path / "paper_tracking.json").exists()
+
+
+def test_quotes_are_fetched_once_per_run_and_never_reused_across_runs(monkeypatch):
+    from types import SimpleNamespace
+    import fallen_angel_scanner as scanner
+    ticker_factory = Mock(side_effect=lambda ticker: SimpleNamespace(info={"currency": "USD", "marketCap": 1e9}))
+    monkeypatch.setattr(scanner.yf, "Ticker", ticker_factory)
+    def run():
+        first, info = scanner.get_stock_with_retry("AAA")
+        info["currency"] = "EUR"  # A caller cannot corrupt the cached quote snapshot.
+        second, cached = scanner.get_stock_with_retry("AAA")
+        assert first is second and cached["currency"] == "USD"
+        assert cached["_scanner_quote_observed_at"]
+    monkeypatch.setattr(scanner, "_run_main", run)
+    scanner.main()
+    assert scanner._run_quote_cache is None and ticker_factory.call_count == 1
+    scanner.main()
+    assert scanner._run_quote_cache is None and ticker_factory.call_count == 2
+
+
+def test_partial_yahoo_quote_without_currency_is_not_accepted(monkeypatch):
+    from types import SimpleNamespace
+    import fallen_angel_scanner as scanner
+    from scanner_currency import CurrencyUnavailable
+    monkeypatch.setattr(scanner, "_run_quote_cache", {})
+    monkeypatch.setattr(scanner.yf, "Ticker", lambda ticker: SimpleNamespace(info={"trailingPegRatio": None}))
+    with pytest.raises(CurrencyUnavailable, match="verified currency"):
+        scanner.get_stock_with_retry("AAA")
+    assert scanner._run_quote_cache == {}
+
+
+def test_systemic_company_source_failure_preserves_report_and_fails_before_mail(monkeypatch, tmp_path):
+    import fallen_angel_scanner as scanner
+    audit = [{"ticker": f"TEST{i}", "decision": "analysis_error" if i < 8 else "not_selected",
+              "reason": "Fixture incomplete provider response"} for i in range(12)]
+    monkeypatch.setattr(scanner, "load_memory", lambda: {})
+    monkeypatch.setattr(scanner, "check_price_alerts", lambda memory: [])
+    monkeypatch.setattr(scanner, "stage1_quick_filter", lambda: ([{"ticker": "TEST"}], []))
+    def analyze(*args):
+        monkeypatch.setattr(scanner, "_last_research_audit", audit)
+        return [], []
+    monkeypatch.setattr(scanner, "stage2_deep_analysis", analyze)
+    monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path / "research_report"), raising=False)
+    monkeypatch.setattr(scanner, "REPORT_SCOPE", {"type": "fixture"}, raising=False)
+    send, enrich = Mock(), Mock()
+    monkeypatch.setattr(scanner, "send_email", send)
+    monkeypatch.setattr(scanner, "enrich_research_audit", enrich)
+    with pytest.raises(RuntimeError, match="Systemic company-analysis"):
+        scanner.main()
+    saved = json.loads((tmp_path / "research_report.json").read_text(encoding="utf-8"))
+    assert saved["candidates"] == audit
+    assert saved["scan_scope"]["provider_health"]["company_analysis_errors"] == 8
+    assert saved["scan_scope"]["provider_health"]["systemic_failure"] is True
+    assert saved["scan_scope"]["filing_content_collection"] == "SKIPPED_SOURCE_FAILURE"
+    assert scanner._run_quote_cache is None
+    send.assert_not_called()
+    enrich.assert_not_called()
+
+
+def test_source_health_does_not_label_price_outage_as_no_matches():
+    from scan_coverage import provider_health
+    coverage = new_coverage([f"TEST{i}" for i in range(12)])
+    for ticker in coverage["requested_symbols"]:
+        record_outcome(coverage, ticker, "quote_unavailable", "quote")
+    assert provider_health(coverage)["systemic_failure"] is True
+    assert provider_health(audit=[{"decision": "analysis_error"}, {"decision": "unverified"}])["status"] == "DEGRADED"
+    assert not provider_health(audit=[{"decision": "analysis_error"}, {"decision": "unverified"}])["systemic_failure"]

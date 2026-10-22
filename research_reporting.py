@@ -47,6 +47,9 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
         lines[8:8] = [f"Stage 1 completed: {coverage['completed']}; processed {coverage['processed_count']}/{coverage['requested_count']}; quote responses {coverage['quote_successes']}; histories checked {coverage['histories_checked']}; recorded data gaps {len(coverage['data_gaps'])}.", "", coverage["notice"], ""]
     if data["scan_scope"].get("filing_content_collection"):
         lines[8:8] = [f"Filing content collection: {data['scan_scope']['filing_content_collection']}. Collection completion does not clear financial risks; inspect each document's status.", ""]
+    health = data["scan_scope"].get("provider_health")
+    if health:
+        lines[8:8] = [f"Provider health: {health['status']}; systemic failure: {health['systemic_failure']}; company analysis errors: {health['company_analysis_errors']}/{health['company_candidates']}.", "", health["notice"], ""]
     for item in audit:
         solvency = item.get("solvency") or {}
         valuation = item.get("valuation") or {}

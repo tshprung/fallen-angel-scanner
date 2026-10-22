@@ -32,7 +32,7 @@ from review_holds import load_review_holds
 from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
 from recovery_cases import load_recovery_cases, assess_recovery_case
 from filing_contents import enrich_research_audit
-from scan_coverage import new_coverage, record_outcome, checkpoint
+from scan_coverage import new_coverage, record_outcome, checkpoint, provider_health
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -50,8 +50,15 @@ from tickers_config import (
 # RETRY LOGIC FOR RATE LIMITS
 # ============================================================================
 
+_run_quote_cache = None
+
+
 def get_stock_with_retry(ticker, max_retries=5):
     """Fetch stock data with exponential backoff on rate limits"""
+    cache = _run_quote_cache
+    if cache is not None and ticker in cache:
+        stock, info = cache[ticker]
+        return stock, dict(info)
     for attempt in range(max_retries):
         try:
             stock = yf.Ticker(ticker)
@@ -59,6 +66,11 @@ def get_stock_with_retry(ticker, max_retries=5):
             # Verify we got actual data
             if not info or len(info) == 0:
                 raise Exception("Empty info returned")
+            if not isinstance(info.get("currency"), str) or not info["currency"].strip():
+                raise CurrencyUnavailable("Yahoo quote lacks a verified currency")
+            info = dict(info, _scanner_quote_observed_at=datetime.now(timezone.utc).isoformat())
+            if cache is not None:
+                cache[ticker] = (stock, dict(info))
             return stock, info
         except Exception as e:
             error_msg = str(e)
@@ -1336,6 +1348,8 @@ def stage2_deep_analysis(candidates, memory):
                 continue
 
             audit.update(company=info.get("longName") or info.get("shortName") or ticker,
+                         quote_observed_at=info.get("_scanner_quote_observed_at"),
+                         observed_price=candidate.get("current_price"), quote_currency=info.get("currency"),
                          filing_review=filing_review_plan(ticker, info.get("longName") or info.get("shortName"), info.get("website")))
             if specialist_requirements(info):
                 solvency = assess_solvency({}, info, policy)
@@ -1967,7 +1981,7 @@ def send_email(subject, html_body):
 # MAIN
 # ============================================================================
 
-def main():
+def _run_main():
     print("\n" + "="*80)
     print("🔍 FALLEN ANGEL SCANNER v2.0")
     print("Two-Stage Process with News Analysis")
@@ -1991,6 +2005,14 @@ def main():
         scope = dict(globals().get("REPORT_SCOPE") or {})
         scope["stage1_coverage"] = globals()["_last_stage1_coverage"]
         globals()["REPORT_SCOPE"] = scope
+
+    scope = dict(globals().get("REPORT_SCOPE") or {})
+    scope["quote_policy"] = "Observed quote/ticker objects are reused only within this run; no cross-run quote cache."
+    scope["provider_health"] = provider_health(globals().get("_last_stage1_coverage"))
+    globals()["REPORT_SCOPE"] = scope
+    if scope["provider_health"]["systemic_failure"]:
+        write_research_report([], [], globals().get("REPORT_PREFIX", "research_report"), scope)
+        raise RuntimeError("Systemic price-source failure; reports preserve the gaps; mail and paper output aborted")
     
     if not candidates and not price_alerts:
         print("✅ No candidates met this run's filters.\n")
@@ -2018,6 +2040,12 @@ def main():
     # Preserve the completed financial analysis before optional document parsing.
     # An unexpected collector failure must leave a reviewable audit and a failed job.
     scope = dict(globals().get("REPORT_SCOPE") or {})
+    scope["provider_health"] = provider_health(globals().get("_last_stage1_coverage"), _last_research_audit)
+    if scope["provider_health"]["systemic_failure"]:
+        scope["filing_content_collection"] = "SKIPPED_SOURCE_FAILURE"
+        globals()["REPORT_SCOPE"] = scope
+        write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), scope)
+        raise RuntimeError("Systemic company-analysis source failure; reports preserve the gaps; mail and paper output aborted")
     scope["filing_content_collection"] = "PENDING"
     globals()["REPORT_SCOPE"] = scope
     write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), scope)
@@ -2063,6 +2091,15 @@ def main():
     print("\n" + "="*80)
     print("✅ SCAN COMPLETE")
     print("="*80 + "\n")
+
+def main():
+    global _run_quote_cache
+    _run_quote_cache = {}
+    try:
+        return _run_main()
+    finally:
+        _run_quote_cache = None
+
 
 if __name__ == "__main__":
     main()
