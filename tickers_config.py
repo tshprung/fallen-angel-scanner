@@ -151,6 +151,11 @@ def get_us_scan_tickers():
     else:
         combined = get_sp500_tickers() + get_nasdaq100_tickers() + r2k
 
+    # Ferguson cancelled its secondary London listing July 20, 2026;
+    # retain the NYSE listing even when the index downloads use fallbacks.
+    # https://www.corporate.ferguson.com/pressroom/news-releases/news-details/2026/Ferguson-Announces-Completion-of-Cancellation-of-Secondary-Listing-on-London-Stock-Exchange/default.aspx
+    combined += ["FERG"]
+
     seen = set()
     unique = []
     for ticker in combined:
@@ -174,7 +179,7 @@ def get_wse_tickers():
 
 
 def get_ftse100_tickers():
-    return ['SHEL.L','BP.L','RIO.L','GLEN.L','BHP.L','ANTO.L','HSBA.L','BARC.L','LLOY.L','NWG.L','STAN.L','LSEG.L','PRU.L','LGEN.L','III.L','AZN.L','ULVR.L','DGE.L','BATS.L','REL.L','TSCO.L','SBRY.L','BRBY.L','NG.L','SSE.L','BA.L','RR.L','RKT.L','WPP.L','EXPN.L','CNA.L','VOD.L','BT-A.L','AAL.L','GSK.L','CPG.L','IMB.L','MNG.L','STJ.L','INF.L','FERG.L','PSN.L','AUTO.L','SGE.L','AV.L','ENT.L','SPX.L','WTB.L','CRDA.L']
+    return ['SHEL.L','BP.L','RIO.L','GLEN.L','BHP.L','ANTO.L','HSBA.L','BARC.L','LLOY.L','NWG.L','STAN.L','LSEG.L','PRU.L','LGEN.L','III.L','AZN.L','ULVR.L','DGE.L','BATS.L','REL.L','TSCO.L','SBRY.L','BRBY.L','NG.L','SSE.L','BA.L','RR.L','RKT.L','WPP.L','EXPN.L','CNA.L','VOD.L','BT-A.L','AAL.L','GSK.L','CPG.L','IMB.L','MNG.L','STJ.L','INF.L','PSN.L','AUTO.L','SGE.L','AV.L','ENT.L','SPX.L','WTB.L','CRDA.L']
 
 
 def get_tase_tickers():
