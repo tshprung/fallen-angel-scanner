@@ -6,6 +6,7 @@ yfinance>=0.2.40
 pandas>=2.0.0
 numpy>=1.24.0
 scipy>=1.10.0  # Required by yfinance repair=True (unit/split repair)
+scikit-learn>=1.3.0  # Also used by yfinance's price-history repair paths
 
 # For ticker updater (Wikipedia parsing)
 lxml>=4.9.0

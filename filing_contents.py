@@ -136,8 +136,10 @@ def extract_content(body, document, cik):
     except (ValueError, TypeError, etree.ParserError, etree.XMLSyntaxError) as exc:
         raise SourceUnavailable("Filing HTML could not be parsed") from exc
     for element in list(tree.iter()):
+        if not isinstance(element.tag, str):
+            continue  # Comments/processing instructions have no HTML attributes.
         tag = str(element.tag).lower().split("}")[-1]
-        style = re.sub(r"\s+", "", element.get("style", "").lower())
+        style = re.sub(r"\s+", "", (element.get("style") or "").lower())
         if (tag in {"script", "style", "head", "ix:hidden"} or tag.endswith(":hidden")
                 or element.get("hidden") is not None or element.get("aria-hidden") == "true" or "display:none" in style):
             if element.getparent() is not None:
@@ -248,7 +250,7 @@ def write_content_report(audit, path):
              "Amounts/dates below are raw search tokens, not verified obligations or funding. Block indices refer to the parser's visible paragraph/table sequence, not printed page numbers.", ""]
     checked = [item for item in audit if item.get("filing_content_review")]
     if not checked:
-        lines += ["No eligible candidates received content collection in this run.", ""]
+        lines += ["No filing-content review is attached yet; see research_report.json scan_scope for collection status.", ""]
     for item in checked:
         review = item["filing_content_review"]
         lines += [f"## {item['ticker']}: {review['status']}", ""]

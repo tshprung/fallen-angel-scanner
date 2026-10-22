@@ -2015,7 +2015,14 @@ def main():
     for item in _last_research_audit:
         if item["decision"] == "selected" and item["ticker"] not in final_tickers:
             item.update(decision="final_filter_excluded", reason=filtered.get(item["ticker"]) or "Final overlay or report-size filter")
+    # Preserve the completed financial analysis before optional document parsing.
+    # An unexpected collector failure must leave a reviewable audit and a failed job.
+    scope = dict(globals().get("REPORT_SCOPE") or {})
+    scope["filing_content_collection"] = "PENDING"
+    globals()["REPORT_SCOPE"] = scope
+    write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), scope)
     enrich_research_audit(_last_research_audit, selected, sec_client=globals().get("_last_sec_client"))
+    scope["filing_content_collection"] = "COLLECTION_FINISHED"
     write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
     if selected and globals().get("PAPER_TRACKING_ENABLED", True):
         from paper_tracking import record_selections

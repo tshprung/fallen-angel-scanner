@@ -4,6 +4,8 @@ The objective is a recent price decline, a business financially resilient enough
 
 `recovery_cases.json` is a reviewed-research registry, initially empty. Do not create an issuer record until the relevant source contents have actually been examined. A URL is provenance, not proof that its contents support an assumption. The evaluator validates completeness, freshness, input alignment and arithmetic; it does not authenticate a researcher's conclusions or assign return/survival probabilities.
 
+The current official-filing prerequisite supports US SEC issuers only. Non-US candidates can appear as research watches, but cannot receive `DOCUMENTED_12M_CASE` until equivalent official-source validation is implemented. Scanning five listing markets does not imply five-market filing clearance.
+
 Each source-backed block needs a nonempty `finding` and at least one `sources` object with an HTTPS `url` and `published_at`. Identify the document section/page in the finding, explain units, and distinguish reported numbers from forward assumptions. Cite official filings or issuer releases where available. A peer multiple needs a dated peer comparison; a financial report by itself does not justify an arbitrary multiple. Do not enter unknown amounts as zero.
 
 For each ticker, record:

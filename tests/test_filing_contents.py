@@ -46,6 +46,14 @@ def test_real_sec_xml_encoding_declarations_are_supported():
     assert result["topics"]["debt_maturities"]["matched_blocks"] > 0
 
 
+def test_real_filing_comments_and_empty_style_attributes_do_not_crash_indexing():
+    body = BODY.replace("<body>", "<body><!-- SEC document comment --><?filing instruction?>")
+    body = body.replace("<p>", "<p style>", 1)
+    result = extract_content(body, DOC, CIK)
+    assert result["status"] == "INDEXED_FOR_REVIEW"
+    assert result["topics"]["covenants"]["matched_blocks"] > 0
+
+
 @pytest.mark.parametrize("url", ["http://www.sec.gov/Archives/edgar/data/1234/000000123426000001/report.htm",
     BASE + "../other.htm", BASE + "%2e%2e%2fother.htm", BASE + "report.htm?redirect=elsewhere",
     BASE + "report.pdf", "https://www.sec.gov.evil.example/report.htm", "https://user:password@www.sec.gov/report.htm",
