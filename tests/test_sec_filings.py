@@ -4,6 +4,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
+import requests
 
 from sec_filings import (SEC_MAPPING, SecClient, SourceUnavailable, check_sec_filings,
                          load_filing_resolutions)
@@ -170,6 +171,16 @@ def test_review_registry_rejects_blanket_or_undocumented_clearance(tmp_path):
     path.write_text(json.dumps({"AAA": {"finding": "safe"}}), encoding="utf-8")
     with pytest.raises(ValueError):
         load_filing_resolutions(path)
+
+
+def test_network_diagnostics_do_not_print_exception_headers_or_contact(tmp_path, monkeypatch):
+    monkeypatch.setattr("sec_filings.time.sleep", lambda _: None)
+    session = SimpleNamespace(get=Mock(side_effect=requests.exceptions.SSLError("sensitive-header@example.com")))
+    result = check_sec_filings("AAA", evidence(), SecClient(tmp_path, session, NOW), NOW)
+    assert result["status"] == "UNVERIFIED"
+    assert result["findings"] == ["SEC network request failed (SSLError)"]
+    assert "sensitive" not in json.dumps(result)
+    assert session.get.call_count == 1
 
 
 def test_all_held_run_still_sends_a_review_report_without_paper_selections(monkeypatch, tmp_path):

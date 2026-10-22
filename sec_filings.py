@@ -104,8 +104,12 @@ class SecClient:
                     except OSError:
                         pass
                     return payload, stamp
-            except requests.RequestException:
-                failure = SourceUnavailable("SEC network request failed")
+            except requests.RequestException as exc:
+                # Exception text can contain headers/contact information. Keep
+                # only its class so diagnostics never disclose the User-Agent.
+                failure = SourceUnavailable(f"SEC network request failed ({type(exc).__name__})")
+                if isinstance(exc, (requests.exceptions.SSLError, requests.exceptions.InvalidHeader)):
+                    break
             except ValueError:
                 failure = SourceUnavailable("SEC returned malformed JSON")
                 break
@@ -270,9 +274,20 @@ def probe(output):
     """Live access check only; never sends email or changes scanner/paper state."""
     client = SecClient()
     checks = [check_sec_filings(ticker, {}, client) for ticker in ("LCII", "LRN", "SFD")]
-    Path(output).write_text(json.dumps(checks, indent=2) + "\n", encoding="utf-8")
+    endpoints = []
+    # Probe the API independently: mapping-host failure does not demonstrate
+    # that the separate data.sec.gov submissions host is unreachable.
+    for url in (SEC_MAPPING, "https://data.sec.gov/submissions/CIK0000763744.json"):
+        try:
+            _, stamp = client.get_json(url)
+            endpoints.append({"url": url, "status": "AVAILABLE", "retrieved_at": stamp})
+        except SourceUnavailable as exc:
+            endpoints.append({"url": url, "status": "UNAVAILABLE", "reason": str(exc)})
+    Path(output).write_text(json.dumps({"checks": checks, "endpoints": endpoints}, indent=2) + "\n", encoding="utf-8")
     for check in checks:
         print(f"{check['ticker']}: {check['status']}; issuer identity verified: {'issuer' in check}")
+    for endpoint in endpoints:
+        print(f"{endpoint['url']}: {endpoint['status']}; {endpoint.get('reason', '')}")
     return all("issuer" in check and check["status"] != "UNVERIFIED" for check in checks)
 
 
