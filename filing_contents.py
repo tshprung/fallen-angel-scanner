@@ -228,8 +228,25 @@ def enrich_research_audit(audit, selected, sec_client=None, max_issuers=12):
     sec_client = sec_client or SecClient()
     client = DocumentClient(sec_client)
     by_ticker = {stock["ticker"]: stock for stock in selected}
-    eligible = [item for item in audit if item.get("decision") in {"selected", "event_review", "filing_review", "filing_unverified"}]
-    eligible.sort(key=lambda item: item["ticker"] not in by_ticker)
+    def upside_near_miss(item):
+        # Research a financially covered near miss without bypassing its risk
+        # exclusion. Illustrative upside alone cannot prioritize a hard failure.
+        return (item.get("decision") == "risk_excluded"
+                and (item.get("solvency") or {}).get("status") == "REVIEW"
+                and (item.get("valuation") or {}).get("plausible_upside_screen") is True)
+
+    eligible = [item for item in audit if item.get("decision") in
+                {"selected", "event_review", "filing_review", "filing_unverified"}
+                or upside_near_miss(item)]
+    def priority(item):
+        if item["ticker"] in by_ticker or item.get("decision") == "selected":
+            return 0
+        if upside_near_miss(item):
+            return 1
+        if item.get("review_hold"):
+            return 2
+        return 3
+    eligible.sort(key=priority)
     for index, item in enumerate(eligible):
         if index >= max_issuers:
             review = {"status": "DEFERRED_BUDGET", "documents": [], "notice": NOTICE,

@@ -123,3 +123,41 @@ def test_enrichment_preserves_selection_and_manual_holds_and_exposes_deferred_is
     assert audit[0]["filing_content_review"]["status"] == "DEFERRED_BUDGET"
     assert selected[0]["goal_fit"]["status"] == "RESEARCH_WATCH"
     assert selected[0]["filing_content_review"]["status"] == "INDEXED_FOR_REVIEW"
+
+
+def test_budget_prioritizes_upside_near_misses_and_sourced_holds_without_admitting_them(monkeypatch):
+    fetched = []
+    def metadata(ticker, *args, **kwargs):
+        fetched.append(ticker)
+        return check()
+    monkeypatch.setattr("filing_contents.check_sec_filings", metadata)
+    monkeypatch.setattr("filing_contents.collect_filing_contents", lambda *args, **kwargs:
+                        {"status": "INDEXED_FOR_REVIEW", "documents": []})
+    audit = [{"ticker": "ORDINARY", "decision": "filing_review"},
+             {"ticker": "HOLD", "decision": "event_review", "review_hold": {"status": "PENDING"}},
+             {"ticker": "NEAR", "decision": "risk_excluded", "solvency": {"status": "REVIEW"},
+              "valuation": {"plausible_upside_screen": True}},
+             {"ticker": "SELECTED", "decision": "selected"}]
+    original = deepcopy(audit)
+    selected = [{"ticker": "SELECTED"}]
+    enrich_research_audit(audit, selected, max_issuers=3)
+    assert fetched == ["SELECTED", "NEAR", "HOLD"]
+    assert audit[0]["filing_content_review"]["status"] == "DEFERRED_BUDGET"
+    assert [item["decision"] for item in audit] == [item["decision"] for item in original]
+    assert audit[1]["review_hold"] == original[1]["review_hold"]
+    assert selected == [{"ticker": "SELECTED", "filing_content_review":
+                         {"status": "INDEXED_FOR_REVIEW", "documents": []}}]
+
+
+def test_upside_does_not_expand_collection_to_hard_failures_or_unknown_financials(monkeypatch):
+    collect = Mock()
+    monkeypatch.setattr("filing_contents.collect_filing_contents", collect)
+    audit = [{"ticker": status, "decision": "risk_excluded", "solvency": {"status": status},
+              "valuation": {"plausible_upside_screen": True}}
+             for status in ("EXCLUDE", "UNVERIFIED", "SPECIALIST_REVIEW")]
+    audit += [{"ticker": "NO_UPSIDE", "decision": "risk_excluded", "solvency": {"status": "REVIEW"},
+               "valuation": {"plausible_upside_screen": False}}]
+    original = deepcopy(audit)
+    enrich_research_audit(audit, [], max_issuers=3)
+    assert audit == original
+    collect.assert_not_called()

@@ -47,6 +47,36 @@ def test_already_split_adjusted_history_is_preserved():
     assert stock.options == {"period": "5y", "auto_adjust": False, "repair": True}
 
 
+@pytest.mark.parametrize("row", [
+    {"Open": 150, "High": 152.5, "Low": 145, "Close": 138.636364},
+    {"Open": 150, "High": 152.5, "Low": 145, "Close": 160},
+    {"Open": 155, "High": 152.5, "Low": 145, "Close": 150},
+    {"Open": 150, "High": 145, "Low": 152.5, "Close": 150},
+])
+def test_repaired_or_raw_contradictory_candles_are_source_failures(row):
+    stock = History([])
+    stock.frame = pd.DataFrame([row])
+    original = stock.frame.copy(deep=True)
+    with pytest.raises(ValueError, match="inconsistent OHLC"):
+        price_history(stock)
+    pd.testing.assert_frame_equal(stock.frame, original)
+
+
+def test_valid_split_adjusted_candles_and_rounding_noise_are_preserved():
+    stock = History([])
+    stock.frame = pd.DataFrame({"Open": [50, 51], "High": [52, 53],
+                               "Low": [49, 50], "Close": [52.000001, 52]})
+    pd.testing.assert_frame_equal(price_history(stock), stock.frame)
+
+
+def test_fx_history_is_validated_before_currency_adapter_early_return():
+    stock = History([])
+    stock.ticker = "PLNUSD=X"
+    stock.frame = pd.DataFrame({"Open": [.25], "High": [.26], "Low": [.24], "Close": [.20]})
+    with pytest.raises(ValueError, match="inconsistent OHLC"):
+        price_history(stock)
+
+
 def test_invalid_history_values_do_not_leak_into_estimates():
     _, _, upside = estimate_recovery_reference(
         History([float("inf"), -1, float("nan")]), {"targetMeanPrice": 80}, 100

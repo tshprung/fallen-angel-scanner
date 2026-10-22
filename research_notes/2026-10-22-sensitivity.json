@@ -1,0 +1,46 @@
+{
+  "reviewed_at": "2026-10-22",
+  "status": "RESEARCH_ONLY_NO_ADMISSION_OR_FORECAST",
+  "notice": "October 21 scan observations; fixed FX and illustrative dilution/multiples. No probabilities or dividends. Calendar-2027 full-year earnings extend beyond October 22, 2027.",
+  "LZB": {
+    "observed_price_usd": 28.68000030517578,
+    "source_run": "https://github.com/tshprung/fallen-angel-scanner/actions/runs/39736578913",
+    "normalized_fcf_usd": 101712000,
+    "market_cap_implied_by_saved_model_usd": 1148713472.0000002,
+    "assumed_share_dilution": 0.05,
+    "required_future_diluted_eps_usd_by_multiple": {
+      "10": 5.736000061035156,
+      "12": 4.78000005086263,
+      "15": 3.824000040690104
+    },
+    "required_equity_fcf_usd_at_20x": 120614914.56000003,
+    "required_multiple_at_unchanged_fcf": 23.716948749410108,
+    "required_fcf_growth_pct_at_20x": 18.584743747050524
+  },
+  "ASB.WA": {
+    "observed_price_pln": 152.5,
+    "usd_per_pln": 0.25795799493789673,
+    "initial_shares": 55500000,
+    "observed_market_cap_usd": 2183292016.8015747,
+    "market_cap_from_price_shares_fx_usd": 2183291979.6556234,
+    "market_cap_reconciliation_difference_pct": -0.0000017013734754378618,
+    "reconciliation_note": "Quote-summary market cap and price-times-share-count differ slightly; use saved market cap for reverse requirements and explicit shares for scenario prices.",
+    "assumed_share_dilution": 0.05,
+    "analyst_2027_net_income_usd": 212300000,
+    "analyst_source": "https://investor.asbis.com/download/Argus_Sponsored_ASB_AUG26.pdf",
+    "analyst_source_note": "Sponsored August 18 research, not independently verified forecasts. Financial-table net income is used rather than rounded EPS.",
+    "price_pln_on_analyst_profit_by_multiple": {
+      "16": 225.96371282533568,
+      "20": 282.4546410316696
+    },
+    "return_pct_on_analyst_profit_by_multiple": {
+      "16": 48.17292644284306,
+      "20": 85.21615805355384
+    },
+    "net_income_usd_required_to_double_by_multiple": {
+      "16": 286557077.2052067,
+      "20": 229245661.76416534
+    },
+    "multiple_required_to_double_on_analyst_profit": 21.59638829620022
+  }
+}

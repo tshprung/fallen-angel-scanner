@@ -1,5 +1,27 @@
 """Yahoo prices are already split adjusted, including with auto_adjust=False."""
 
+import numpy as np
+import pandas as pd
+
+
+def validate_price_bars(history):
+    """Reject contradictory candles; never repair them by inventing prices."""
+    columns = ["Open", "High", "Low", "Close"]
+    if not all(column in history for column in columns):
+        return  # Close-only inputs are validated by their individual consumers.
+    bars = history[columns].apply(pd.to_numeric, errors="coerce")
+    complete = bars.notna().all(axis=1)
+    tolerance = bars.abs().max(axis=1).clip(lower=1) * 1e-6
+    invalid = complete & (
+        ~np.isfinite(bars).all(axis=1)
+        | (bars["Low"] > bars["High"] + tolerance)
+        | (bars["Close"] < bars["Low"] - tolerance)
+        | (bars["Close"] > bars["High"] + tolerance)
+        | (bars["Open"] < bars["Low"] - tolerance)
+        | (bars["Open"] > bars["High"] + tolerance))
+    if invalid.any():
+        raise ValueError("Price history contains inconsistent OHLC bounds; source review required")
+
 
 def price_history(ticker, *args, **kwargs):
     # Delegate detection of missing/incorrect split adjustments to yfinance's
@@ -10,6 +32,7 @@ def price_history(ticker, *args, **kwargs):
     history = ticker.history(*args, **kwargs)
     if history is None or history.empty:
         return history
+    validate_price_bars(history)
     if str(getattr(ticker, "ticker", "")).endswith("=X"):
         return history
     info = getattr(ticker, "info", None)
