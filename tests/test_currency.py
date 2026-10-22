@@ -100,12 +100,13 @@ def test_minor_price_display_preserves_units():
     assert scanner.format_price_for_email(1000, "ILA") == "1000.00 ILA"
 
 
-def test_stage1_rejects_local_cap_that_only_appears_to_clear_usd_floor(monkeypatch):
+def test_stage1_rejects_local_cap_that_only_appears_to_clear_usd_floor(monkeypatch, tmp_path):
     fx, _ = fx_rates()
     info = {"currency": "PLN", "marketCap": 1e9, "currentPrice": 10}
     monkeypatch.setattr(scanner, "get_all_tickers", lambda: ["AAA.WA"])
     monkeypatch.setattr(scanner, "load_failed_tickers", lambda: {})
     monkeypatch.setattr(scanner, "save_failed_tickers", lambda _: None)
+    monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path / "research_report"), raising=False)
     monkeypatch.setattr(scanner, "get_stock_with_retry", lambda _: (Mock(), info))
     monkeypatch.setattr(scanner, "currency_context", lambda data: currency_context(data, fx))
     monkeypatch.setattr(scanner, "get_min_market_cap_usd", lambda _: 400e6)
