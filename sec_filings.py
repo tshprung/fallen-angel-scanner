@@ -50,7 +50,9 @@ class SecClient:
         self.cache_dir = Path(cache_dir or os.getenv("SEC_CACHE_DIR", ".sec-cache"))
         contact = os.getenv("SEC_CONTACT_EMAIL") or os.getenv("SENDER_EMAIL")
         identity = contact or "https://github.com/tshprung/fallen-angel-scanner"
-        self.user_agent = os.getenv("SEC_USER_AGENT") or f"FallenAngelScanner/1.0 ({identity})"
+        # Secrets copied from a form can retain a trailing newline. Collapse
+        # whitespace before putting contact identification in an HTTP header.
+        self.user_agent = " ".join((os.getenv("SEC_USER_AGENT") or f"FallenAngelScanner/1.0 ({identity.strip()})").split())
         self.session = session or requests.Session()
         self.memory = {}
         self.last_request = 0.0
@@ -112,6 +114,9 @@ class SecClient:
                     break
             except ValueError:
                 failure = SourceUnavailable("SEC returned malformed JSON")
+                break
+            except UnicodeError:
+                failure = SourceUnavailable("SEC contact header encoding is invalid")
                 break
             if attempt < 2:
                 time.sleep(2 ** attempt)

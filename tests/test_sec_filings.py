@@ -183,6 +183,17 @@ def test_network_diagnostics_do_not_print_exception_headers_or_contact(tmp_path,
     assert session.get.call_count == 1
 
 
+def test_contact_identity_strips_copied_newlines_before_http_requests(tmp_path, monkeypatch):
+    monkeypatch.setenv("SEC_USER_AGENT", "")
+    monkeypatch.setenv("SEC_CONTACT_EMAIL", "  contact@example.com\r\n")
+    response = SimpleNamespace(status_code=200, json=lambda: {"fields": [], "data": []})
+    session = SimpleNamespace(get=Mock(return_value=response))
+    SecClient(tmp_path, session, NOW).get_json(SEC_MAPPING)
+    header = session.get.call_args.kwargs["headers"]["User-Agent"]
+    assert header == "FallenAngelScanner/1.0 (contact@example.com)"
+    assert "\n" not in header and "\r" not in header
+
+
 def test_all_held_run_still_sends_a_review_report_without_paper_selections(monkeypatch, tmp_path):
     import scanner_entry
     scanner = scanner_entry.scanner
