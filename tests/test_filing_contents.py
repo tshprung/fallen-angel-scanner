@@ -161,3 +161,45 @@ def test_upside_does_not_expand_collection_to_hard_failures_or_unknown_financial
     enrich_research_audit(audit, [], max_issuers=3)
     assert audit == original
     collect.assert_not_called()
+
+
+def test_routine_filing_queue_rotates_full_batches_without_starving_held_issuers(monkeypatch):
+    from datetime import date, timedelta
+    fetched = []
+    def metadata(ticker, *args, **kwargs):
+        fetched.append(ticker)
+        return check()
+    monkeypatch.setattr("filing_contents.check_sec_filings", metadata)
+    monkeypatch.setattr("filing_contents.collect_filing_contents", lambda *args, **kwargs:
+                        {"status": "INDEXED_FOR_REVIEW", "documents": []})
+    routine = [{"ticker": f"R{i}", "decision": "filing_review"} for i in range(8)]
+    seen = []
+    for index in range(4):
+        audit = deepcopy(routine) + [{"ticker": "HOLD", "decision": "event_review",
+                                     "review_hold": {"status": "PENDING"}}]
+        fetched.clear()
+        enrich_research_audit(audit, [], max_issuers=3,
+                              rotation_day=date(2026, 10, 22) + timedelta(days=index))
+        assert fetched[0] == "HOLD" and len(fetched) == 3
+        seen.extend(fetched[1:])
+        assert sum(x["filing_content_review"]["status"] == "DEFERRED_BUDGET" for x in audit) == 6
+        assert all(x["decision"] == "filing_review" for x in audit[:-1])
+    assert sorted(seen) == [f"R{i}" for i in range(8)]
+
+
+def test_routine_rotation_is_stable_within_a_day_and_independent_of_input_order(monkeypatch):
+    from datetime import date
+    fetched = []
+    def metadata(ticker, *args, **kwargs):
+        fetched.append(ticker)
+        return check()
+    monkeypatch.setattr("filing_contents.check_sec_filings", metadata)
+    monkeypatch.setattr("filing_contents.collect_filing_contents", lambda *args, **kwargs:
+                        {"status": "INDEXED_FOR_REVIEW", "documents": []})
+    routine = [{"ticker": f"R{i}", "decision": "filing_review"} for i in range(7)]
+    enrich_research_audit(deepcopy(routine), [], max_issuers=3, rotation_day=date(2026, 10, 22))
+    first = list(fetched)
+    fetched.clear()
+    enrich_research_audit(list(reversed(deepcopy(routine))), [], max_issuers=3,
+                          rotation_day=date(2026, 10, 22))
+    assert fetched == first

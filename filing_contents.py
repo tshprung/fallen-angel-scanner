@@ -224,7 +224,7 @@ def collect_filing_contents(check, client=None, max_primary=3, max_exhibits=1):
     return result
 
 
-def enrich_research_audit(audit, selected, sec_client=None, max_issuers=12):
+def enrich_research_audit(audit, selected, sec_client=None, max_issuers=12, rotation_day=None):
     sec_client = sec_client or SecClient()
     client = DocumentClient(sec_client)
     by_ticker = {stock["ticker"]: stock for stock in selected}
@@ -247,10 +247,20 @@ def enrich_research_audit(audit, selected, sec_client=None, max_issuers=12):
             return 2
         return 3
     eligible.sort(key=priority)
+    urgent = [item for item in eligible if priority(item) < 3]
+    routine = sorted((item for item in eligible if priority(item) == 3), key=lambda item: item["ticker"])
+    slots = max(0, max_issuers - len(urgent))
+    if slots and len(routine) > slots:
+        # Advance by a full batch each UTC day, so a stable routine queue is
+        # covered instead of repeatedly indexing only its first issuers.
+        day = rotation_day or utc().date()
+        offset = (day.toordinal() * slots) % len(routine)
+        routine = routine[offset:] + routine[:offset]
+    eligible = urgent + routine
     for index, item in enumerate(eligible):
         if index >= max_issuers:
             review = {"status": "DEFERRED_BUDGET", "documents": [], "notice": NOTICE,
-                      "reason": f"Content collection limited to {max_issuers} issuers per scan"}
+                      "reason": f"Content collection limited to {max_issuers} issuers per scan; routine queue rotates daily in UTC"}
         else:
             check = item.get("official_filing_check")
             if not check:

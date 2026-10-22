@@ -1,4 +1,5 @@
 import json
+from html import escape
 
 import pytest
 
@@ -15,7 +16,7 @@ def test_sourced_holds_block_production_selection_before_provider_or_dedup(monke
 
     monkeypatch.setattr(scanner, "get_stock_with_retry", unexpected)
     monkeypatch.setattr(scanner, "should_send_stock", unexpected)
-    tickers = ["LCII", "LRN", "SFD"]
+    tickers = ["LCII", "LRN", "SFD", "PNR"]
     assert scanner.stage2_deep_analysis([{"ticker": ticker} for ticker in tickers], {}) == ([], [])
     audit = scanner._last_research_audit
     assert [item["ticker"] for item in audit] == tickers
@@ -25,10 +26,10 @@ def test_sourced_holds_block_production_selection_before_provider_or_dedup(monke
     write_filing_queue(audit, path)
     output = path.read_text(encoding="utf-8")
     for item in audit:
-        assert item["review_hold"]["release_condition"] in output
+        assert escape(item["review_hold"]["release_condition"]) in output
         assert item["review_hold"]["sources"][0]["url"] in output
         for note in item["review_hold"].get("review_notes", []):
-            assert note["finding"] in output
+            assert escape(note["finding"]) in output
             assert note["source_url"] in output
 
 

@@ -25,6 +25,21 @@
       {"published_at": "2026-10-21", "url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001157408/1d1a2d21-a0d6-4164-b728-a643ec91008e.html"}
     ]
   },
+  "PNR": {
+    "status": "PENDING",
+    "reviewed_at": "2026-10-22",
+    "reason": "Taco acquisition closed October 1 after the June financial period used by the scanner; acquisition funding and pro forma liquidity require reconciliation before using historical leverage or recovery sensitivities.",
+    "release_condition": "Verify actual post-close term-loan drawings, cash, refinancing and contractual maturities through 24 months, including the 18-month tranche. Recalculate contractual covenant headroom and sustainable combined-company cash flow; source evidence that Pool destocking reverses within the recovery horizon. A newer pre-acquisition balance sheet alone does not resolve the hold.",
+    "review_notes": [
+      {"finding": "Pentair reports completion of the Taco acquisition for approximately $1.4bn, subject to adjustments, on October 1. The scan's June debt/cash snapshot predates the completed transaction.", "published_at": "2026-10-01", "source_url": "https://investors.pentair.com/news-releases/news-release-details/pentair-completes-acquisition-taco-group-holdings"},
+      {"finding": "September financing provides $400m due 18 months after acquisition closing and $1bn due May 5, 2030. Full drawing was intended, but no loans were outstanding on September 1; actual funding/refinancing remains to be reconciled. If the first tranche was funded at the October 1 close, its stated term points to April 2028, within the 24-month review horizon.", "published_at": "2026-09-02", "source_url": "https://www.sec.gov/Archives/edgar/data/77360/000110465926104725/tm2624576d1_8k.htm"},
+      {"finding": "The financing summary sets leverage at most 3.75x, conditionally 4.25x for material acquisitions, and EBITDA/cash-interest at least 3.00x under contractual definitions. Reported pre-acquisition provider ratios are not current covenant headroom.", "published_at": "2026-09-02", "source_url": "https://www.sec.gov/Archives/edgar/data/77360/000110465926104725/tm2624576d1_8k.htm"}
+    ],
+    "sources": [
+      {"published_at": "2026-10-01", "url": "https://investors.pentair.com/news-releases/news-release-details/pentair-completes-acquisition-taco-group-holdings"},
+      {"published_at": "2026-09-02", "url": "https://www.sec.gov/Archives/edgar/data/77360/000110465926104725/tm2624576d1_8k.htm"}
+    ]
+  },
   "SFD": {
     "status": "PENDING",
     "reviewed_at": "2026-10-22",
