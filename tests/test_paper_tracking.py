@@ -64,13 +64,17 @@ def test_touching_double_is_distinct_from_ending_double():
 def test_daily_snapshots_are_idempotent_and_immutable(tmp_path):
     path = tmp_path / "ledger.json"
     first = stock()
+    first["goal_fit"] = {"status": "RESEARCH_WATCH", "record_id": None}
     record_selections([first], path, now="2026-10-21T18:30Z")
     first["current_price"] = 200
+    first["goal_fit"] = {"status": "DOCUMENTED_12M_CASE", "record_id": "fixture"}
     data = record_selections([first], path, now="2026-10-21T19:30Z")
     assert len(data["selections"]) == 1
     assert data["selections"][0]["selection_price"] == 100
+    assert data["selections"][0]["goal_fit"]["status"] == "RESEARCH_WATCH"
     data = record_selections([first], path, now="2026-10-22T18:30Z")
     assert len(data["selections"]) == 2
+    assert data["selections"][1]["goal_fit"]["status"] == "DOCUMENTED_12M_CASE"
 
 
 def test_refresh_retains_failed_histories_and_fetches_each_ticker_once(tmp_path):

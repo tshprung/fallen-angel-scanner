@@ -30,6 +30,7 @@ import time
 from filing_review import filing_review_plan
 from review_holds import load_review_holds
 from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
+from recovery_cases import load_recovery_cases, assess_recovery_case
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -633,6 +634,7 @@ def classify_recovery_bucket(upside_pct, price_shape, at_bottom):
 def narrow_analyzed_results(analyzed, max_results=20):
     """Rank with fixed, visible criteria; never change economic cutoffs to fill a report."""
     return sorted(analyzed, key=lambda stock: (
+        (stock.get("goal_fit") or {}).get("status") != "DOCUMENTED_12M_CASE",
         stock.get("solvency_status") != "SCREEN_PASS",
         stock.get("risk_score_raw", stock["risk_score"]),
         -stock["recovery_potential"],
@@ -1272,6 +1274,7 @@ def stage2_deep_analysis(candidates, memory):
     review_holds = load_review_holds()
     sec_client = SecClient()
     filing_resolutions = load_filing_resolutions()
+    recovery_cases = load_recovery_cases()
     analyzed = []
     fresh_crash = []
     analysis_count = 0  # Track number of stocks analyzed
@@ -1279,7 +1282,9 @@ def stage2_deep_analysis(candidates, memory):
     for candidate in candidates:
         ticker = candidate['ticker']
         audit = {"ticker": ticker, "decision": "not_selected", "reason": "Did not complete eligibility checks",
-                 "screen_cohort": candidate.get("screen_cohort", "recent_shock")}
+                 "screen_cohort": candidate.get("screen_cohort", "recent_shock"),
+                 "price_dislocation": {key: candidate.get(key) for key in (
+                     "drop_21d_pct", "drop_recent_peak_pct", "recent_peak_age_sessions", "recent_peak_date", "recent_window_sessions")}}
         _last_research_audit.append(audit)
 
         hold = review_holds.get(ticker.upper())
@@ -1461,12 +1466,22 @@ def stage2_deep_analysis(candidates, memory):
                 audit.update(decision="valuation_unverified", reason=valuation["reason"])
                 print(f"  ⏭️  {ticker}: {audit['reason']}")
                 continue
-            if not valuation["plausible_upside_screen"]:
+            goal_fit = assess_recovery_case({"price_dislocation": audit["price_dislocation"],
+                "solvency": solvency, "official_filing_check": filing_check,
+                "financial_evidence": evidence, "valuation": valuation, "market_cap_usd": cap_usd,
+                "current_price": candidate["current_price"]}, recovery_cases.get(ticker), policy)
+            audit["goal_fit"] = goal_fit
+            documented = goal_fit["status"] == "DOCUMENTED_12M_CASE"
+            if not valuation["plausible_upside_screen"] and not documented:
                 audit.update(decision="insufficient_value_upside", reason="Base/bull sensitivity does not meet configured upside thresholds")
                 continue
             target_low = valuation["cases"]["bear"]["price"]
             target_high = valuation["cases"]["bull"]["price"]
             upside_pct = valuation["cases"]["base"]["return_pct"]
+            if documented:
+                target_low = goal_fit["cases"]["bear"]["price"]
+                target_high = goal_fit["cases"]["recovery"]["price"]
+                upside_pct = goal_fit["cases"]["base"]["return_pct"]
             bucket = "fresh_crash" if upside_pct < 50 and shape_info["shape"] == "sudden_drop" else "fallen_angel"
 
             record = {
@@ -1501,7 +1516,9 @@ def stage2_deep_analysis(candidates, memory):
                 'solvency': solvency,
                 'solvency_status': solvency["status"],
                 'valuation': valuation,
-                'target_basis': "fcf_sensitivity",
+                'goal_fit': goal_fit,
+                'price_dislocation': audit["price_dislocation"],
+                'target_basis': "documented_recovery_case" if documented else "fcf_sensitivity",
                 'screen_cohort': candidate.get("screen_cohort", "recent_shock"),
                 'piotroski_score': piotroski_score,
                 'piotroski_checks': piotroski_checks,
@@ -1516,7 +1533,8 @@ def stage2_deep_analysis(candidates, memory):
                 'bucket': bucket,
             }
 
-            audit.update(decision="selected", reason="Passed covered checks and configured FCF sensitivity thresholds")
+            audit.update(decision="selected", reason="Documented conditional twelve-month recovery case" if documented
+                         else "Research watch only: numerical sensitivity passed; recovery/resilience evidence remains unresolved")
             if bucket == "fallen_angel":
                 analyzed.append(record)
             else:
@@ -1657,7 +1675,9 @@ def _build_detail_cards(stocks):
             status_html = f'<p style="color: #f39c12; font-size: 18px;"><strong>⏳ WAIT</strong> - Wait for price to reach: <strong>{wait_range}</strong> (±5%)</p>'
 
         target_range = f"{stock['target_low']:.2f}-{stock['target_high']:.2f} {stock['currency']}"
-        target_label = "FCF sensitivity range; base return" if stock.get("target_basis") == "fcf_sensitivity" else "Recovery Reference (no time forecast)"
+        target_label = ("Conditional company-specific range; base return" if stock.get("target_basis") == "documented_recovery_case"
+                        else "FCF sensitivity range; base return" if stock.get("target_basis") == "fcf_sensitivity"
+                        else "Recovery Reference (no time forecast)")
 
         price_txt = format_price_for_email(
             stock["current_price"], stock.get("currency")
@@ -1816,7 +1836,7 @@ def generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     <body>
         <div class="header">
             <h1>🌍 Multi-Market Fallen Angel Scanner</h1>
-            <p>Found {total_found} recovery opportunities across 5 markets</p>
+            <p>Found {total_found} research selections across configured markets; evidence status shown below</p>
             <p>{datetime.now().strftime('%B %d, %Y at %H:%M')}</p>
         </div>
     """
@@ -1974,7 +1994,8 @@ def main():
         
         html = generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
         
-        subject = f"🌍 Fallen Angels: {len(analyzed_stocks)} research candidates"
+        documented_count = sum((stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE" for stock in selected)
+        subject = f"🌍 Fallen Angels: {documented_count} documented 12m cases; {len(selected) - documented_count} research watches"
         if filing_holds:
             subject += f" + {len(filing_holds)} filing review holds"
         if fresh_crash_stocks:

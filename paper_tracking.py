@@ -51,6 +51,8 @@ def record_selections(stocks, path=LEDGER, now=None):
                 "solvency_status": stock.get("solvency_status"),
                 "solvency": stock.get("solvency"),
                 "valuation": stock.get("valuation"),
+                "goal_fit": stock.get("goal_fit"),
+                "price_dislocation": stock.get("price_dislocation"),
                 "policy_id": (stock.get("financial_evidence") or {}).get("policy_id"),
                 "screen_cohort": stock.get("screen_cohort"),
                 "performance": {"status": "pending_next_session"}}

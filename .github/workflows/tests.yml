@@ -7,6 +7,7 @@ on:
       - 'research_policy.json'
       - 'review_holds.json'
       - 'sec_filing_reviews.json'
+      - 'recovery_cases.json'
       - 'requirements.txt'
       - '.github/workflows/**'
   pull_request:

@@ -4,6 +4,16 @@
 
 This model screens ordinary operating companies. All thresholds are conservative, configurable research choices; none are statistically calibrated bankruptcy probabilities, fair-value estimates or one-year forecasts. Banks/insurers/REITs go to specialist review rather than receive exemptions that imply safety.
 
+## Recent decline and one-year recovery objective
+
+The default discovery screen now requires a meaningful decline in the latest 63 trading intervals, rather than admitting old year-long drawdowns because prices remain low. It accepts a 20% drop across 21 intervals or from a peak in that 63-interval window, bounded by 100 calendar days. Dated price histories must have a current observation within seven calendar days; missing rows, duplicate dates and sparse suspended histories cannot manufacture recentness.
+
+Generic FCF sensitivities identify research watches. They do not substantiate the one-year objective. `recovery_cases.py` separately checks reviewed, sourced company-specific assumptions, a measurable catalyst/invalidation condition and a future target date within 365 days. Positive current OCF, FCF and EBIT, covered hard solvency checks, current official publication/event checks and documented reviews of the five survival/listing topics are required. Records must match current financial periods and the latest periodic filing accession and expire after 30 days. Source dates cannot follow the recorded review date. See RECOVERY_CASES.md for the schema and its limits.
+
+For discovery, reverse sensitivities calculate the cash flow or multiple needed to double. At unchanged normalized cash flow, the required equity FCF multiple is `2 × current USD market cap × (1 + generic assumed dilution) / normalized USD FCF`. At a specified multiple, required equity FCF is that same required equity value divided by the multiple. This is arithmetic about assumptions, not a forecast or a minimum/maximum-loss bound.
+
+`DOCUMENTED_12M_CASE` means the reviewed research record meets the schema and conditional valuation thresholds. It does not authenticate document contents, guarantee a business outcome, or replace independent investment judgment. The actual registry starts empty; placeholders and fictional test cases are not investment candidates. New paper snapshots retain the goal status and source-record fingerprint; historical snapshots are never retroactively upgraded.
+
 ## Dated evidence
 
 `fundamental_analysis.py` reads quarterly and annual balance sheets, cash-flow statements and income statements through yfinance. It records observation time, statement period ends, source row labels and fetch failures. These are provider statement dates, not verified publication dates. Do not use them retrospectively to claim a point-in-time historical backtest.

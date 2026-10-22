@@ -1,5 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
+  "recent_drawdown_window_sessions": 63,
+  "recent_drawdown_max_calendar_days": 100,
+  "allow_older_drawdowns": false,
+  "max_recovery_review_age_days": 30,
   "fresh_statement_days": 200,
   "max_annual_statement_days": 450,
   "minimum_interest_coverage": 2.5,

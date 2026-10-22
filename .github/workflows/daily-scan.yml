@@ -31,7 +31,7 @@ jobs:
         run: pip install -r requirements.txt pytest --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py
 
       - name: Offline regression tests
         run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
@@ -66,6 +66,7 @@ jobs:
             research_report.json
             research_report.md
             filing_review.md
+            recovery_review.md
 
       - name: Commit scanner state
         run: |
@@ -77,7 +78,7 @@ jobs:
           git add scanner_memory.json 2>/dev/null || true
           git add failed_tickers.json 2>/dev/null || true
           git add paper_tracking.json paper_tracking_report.md 2>/dev/null || true
-          git add research_report.json research_report.md filing_review.md 2>/dev/null || true
+          git add research_report.json research_report.md filing_review.md recovery_review.md 2>/dev/null || true
           if [ -d logs ]; then
             git add logs/*.txt 2>/dev/null || true
           fi

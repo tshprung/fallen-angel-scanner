@@ -1,6 +1,6 @@
 # Fallen Angel Scanner
 
-A research scanner for listed equities in the US, UK, Germany, Poland and Israel. It looks for recent shocks or older drawdowns that have stabilized, checks dated financial evidence, and calculates transparent cash-flow sensitivities. It does not predict one-year returns or guarantee business survival.
+A research scanner for listed equities in the US, UK, Germany, Poland and Israel. Its goal is to find companies whose shares fell recently, whose finances can withstand the setback, and whose sourced recovery case could support doubling within about a year. Research watches are explicitly distinguished from documented conditional twelve-month cases. It does not predict returns or guarantee survival or continued listing.
 
 ## Run
 
@@ -23,12 +23,17 @@ These tickers illustrate software use; they are not recommendations. `--no-email
 ## Selection process
 
 1. **Eligible security:** configured USD market-cap and liquidity floors; listed equities; biotech exclusions retained.
-2. **Price cohort:** at least a 20% fall across exactly 21 price intervals, or at least a 30% drawdown with the latest 21-session fall no worse than 15%. Older-drawdown screening requires at least 200 observations. The existing persistent-decline shape exclusion remains.
+2. **Recent price decline:** at least a 20% fall across exactly 21 price intervals or from a peak within the latest 63 trading intervals, roughly three trading months. Dated peaks must also be within 100 calendar days; the latest price cannot be over seven calendar days old. Old declines without a new qualifying fall no longer enter by default. Missing rows are not dropped to manufacture a recent window. The persistent-decline shape exclusion remains.
 3. **Financial evidence:** current balance sheet, operating cash flow, capex, earnings, interest and debt. Four consecutive quarters form TTM data; annual fallback is explicitly labeled. Missing figures stay missing.
 4. **Solvency:** statement debt/equity, interest coverage, net leverage, cash burn and stressed coverage of current debt. Hard financial exclusions cannot be offset by favorable technicals. A raw risk score of 4 is no longer compressed to 3.
-5. **Value sensitivity:** positive current cash flow and at least three consecutive positive annual cash-flow periods. Cash flow is conservatively normalized and scenarios show every multiple, growth factor and dilution assumption. The main shortlist requires base sensitivity of at least +20% and bull sensitivity of at least +100%; these are configurable research cutoffs, not predicted returns.
+5. **Research watches:** positive current cash flow and at least three consecutive positive annual cash-flow periods. Generic base sensitivity of at least +20% and bull sensitivity of at least +100% identifies a watch for further work. It does not establish a one-year doubling thesis. Reverse sensitivities show the equity cash flow or multiple that doubling would require.
+6. **Documented twelve-month case:** requires current sourced research on the cause, a measurable catalyst, an invalidation condition, and company-specific bear/base/recovery valuations including dilution. The catalyst and target must lie ahead within 365 days. Covered solvency gates, positive current operating earnings/cash flow, current SEC publication checks, and reviewed liquidity/debt, covenants, going concern and listing/corporate-action concerns are mandatory. Records expire after 30 days and must match current statement periods and the exact latest filing accession. A documented case can pass its own valuation thresholds even if the generic sensitivity does not. It remains conditional research, not a recommendation or calibrated probability.
 
-The main shortlist uses these fundamental scenarios, rather than treating a return to a past share price as fair value. Historical recovery helpers remain for compatibility but do not determine the new shortlist. Report-size limits rank using fixed criteria rather than quietly tightening valuation thresholds to fill a report.
+The main shortlist uses fundamental scenarios, rather than treating a return to a past share price as fair value. Historical recovery helpers remain for compatibility but do not determine the new shortlist. Report-size limits prioritize documented cases and then use fixed financial criteria. They never loosen assumptions to fill a report. Headlines mentioning earnings, guidance or a downgrade cannot establish a recovery catalyst by themselves.
+
+`recovery_cases.json` initially contains no issuer claims. [RECOVERY_CASES.md](RECOVERY_CASES.md) defines how reviewed research is recorded; it is not automatically filled with invented forecasts. US SEC metadata checks are live, but reading and reconciling source contents still requires research. Non-US listings can remain research watches while their local sources are unresolved; they cannot become documented cases through absent SEC coverage.
+
+Each run produces `recovery_review.md` with the specific missing evidence and doubling requirements for selected watches. Email subjects report documented cases and research watches separately. `research_report.json` preserves both ticker lists and case details. New paper observations store the research-case status and fingerprint as they were at selection; earlier observations remain unchanged. This policy revision creates a new financial-policy fingerprint and must not be pooled with older cohorts as if selection rules were unchanged.
 
 ## Reports and review queues
 

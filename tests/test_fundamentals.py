@@ -176,9 +176,9 @@ def test_statement_health_replaces_quote_defaults_consistently_in_usd():
     assert result["current_ratio"] == 2
 
 
-def test_old_drawdown_that_stabilized_is_not_missed():
+def test_old_drawdown_that_stabilized_does_not_count_as_a_recent_decline():
     history = pd.DataFrame({"Close": np.r_[np.linspace(100, 60, 220), np.repeat(60., 32)]})
-    assert drawdown_candidate(history, load_policy())["screen_cohort"] == "stabilizing_drawdown"
+    assert drawdown_candidate(history, load_policy()) is None
 
 
 def test_exactly_21_price_intervals_identify_recent_shock():
@@ -227,9 +227,9 @@ def test_statement_date_mismatch_is_visible():
     assert any("align" in message for message in assess_solvency(data, INFO)["missing"])
 
 
-@pytest.mark.parametrize("filing_status,blocked", [("METADATA_CHECKED", False), ("NOT_COVERED", False),
-                                                    ("UNVERIFIED", True), ("REVIEW_REQUIRED", True)])
-def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, filing_status, blocked):
+@pytest.mark.parametrize("filing_status,blocked,documented", [("METADATA_CHECKED", False, False), ("NOT_COVERED", False, False),
+    ("UNVERIFIED", True, False), ("REVIEW_REQUIRED", True, False), ("METADATA_CHECKED", False, True), ("UNVERIFIED", True, True)])
+def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, filing_status, blocked, documented):
     import fallen_angel_scanner as scanner
     stock = company()
     stock.history = lambda **kwargs: pd.DataFrame({"Close": np.repeat(10., 252)})
@@ -248,6 +248,15 @@ def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, 
     monkeypatch.setattr(scanner, "search_recent_news", lambda *args: [])
     monkeypatch.setattr(scanner, "calculate_risk_score", lambda *args, **kwargs: 2)
     monkeypatch.setattr(scanner, "detect_bottom", lambda *args: (True, 9, 10, "LOW"))
+    if documented:
+        original_valuation = scanner.valuation_scenarios
+        def low_generic_sensitivity(*args, **kwargs):
+            result = original_valuation(*args, **kwargs)
+            result["plausible_upside_screen"] = False
+            return result
+        monkeypatch.setattr(scanner, "valuation_scenarios", low_generic_sensitivity)
+        monkeypatch.setattr(scanner, "assess_recovery_case", lambda *args, **kwargs: {
+            "status": "DOCUMENTED_12M_CASE", "cases": {"bear": {"price": 5}, "base": {"price": 15, "return_pct": 50}, "recovery": {"price": 25}}})
     def no_rebound_targets(*args, **kwargs):
         raise AssertionError("Historical price target must not determine value")
     monkeypatch.setattr(scanner, "estimate_recovery_target", no_rebound_targets)
@@ -259,7 +268,9 @@ def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, 
         assert "valuation" not in audit
         return
     assert len(chosen) == 1
-    assert chosen[0]["target_basis"] == "fcf_sensitivity"
+    assert chosen[0]["target_basis"] == ("documented_recovery_case" if documented else "fcf_sensitivity")
+    if documented:
+        assert (chosen[0]["target_low"], chosen[0]["target_high"], chosen[0]["recovery_potential"]) == (5, 25, 50)
     assert chosen[0]["solvency_status"] == "REVIEW"
     assert chosen[0]["financial_health"]["cash"] == 200e6
     assert scanner._last_research_audit[0]["decision"] == "selected"

@@ -21,9 +21,14 @@ def _apply_consistent_sentiment(stocks):
 def generate_email_html_consistent(analyzed_stocks, price_alerts, fresh_crash_stocks=None):
     _apply_consistent_sentiment(analyzed_stocks)
     _apply_consistent_sentiment(fresh_crash_stocks)
-    return _original_generate_email_html(
-        analyzed_stocks, price_alerts, fresh_crash_stocks
-    ) + filing_review_summary_html(getattr(scanner, "_last_research_audit", []))
+    selected = list(analyzed_stocks or []) + list(fresh_crash_stocks or [])
+    documented = sum((stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE" for stock in selected)
+    goal_summary = (f"<h2>Twelve-month recovery research</h2><p>{documented} documented conditional recovery cases; "
+                    f"{len(selected) - documented} research watches. Goal: a recent meaningful decline, a financially resilient business, "
+                    "and a sourced recovery case supporting roughly 2x within a year. Neither return nor continued listing is guaranteed.</p>")
+    html = _original_generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
+    html = html.replace("<body>", "<body>" + goal_summary, 1) if "<body>" in html else goal_summary + html
+    return html + filing_review_summary_html(getattr(scanner, "_last_research_audit", []))
 
 
 scanner.generate_email_html = generate_email_html_consistent

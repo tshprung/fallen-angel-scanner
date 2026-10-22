@@ -25,6 +25,14 @@ def load_policy(path=POLICY_PATH):
         if finite(policy.get(name)) is None or policy[name] <= 0:
             raise ValueError(f"Policy {name} must be positive and finite")
     valuation = policy["valuation"]
+    if type(policy.get("recent_drawdown_window_sessions")) is not int or not 21 <= policy["recent_drawdown_window_sessions"] <= 126:
+        raise ValueError("Recent drawdown window must be 21–126 trading intervals")
+    if type(policy.get("allow_older_drawdowns")) is not bool:
+        raise ValueError("allow_older_drawdowns must be a boolean")
+    if type(policy.get("recent_drawdown_max_calendar_days")) is not int or not 21 <= policy["recent_drawdown_max_calendar_days"] <= 200:
+        raise ValueError("Recent decline must have a bounded calendar window")
+    if type(policy.get("max_recovery_review_age_days")) is not int or not 1 <= policy["max_recovery_review_age_days"] <= 90:
+        raise ValueError("Recovery reviews must expire within 1–90 days")
     if not 0 <= valuation["assumed_share_dilution"] <= 1:
         raise ValueError("Assumed dilution must be between zero and one")
     if type(valuation["minimum_annual_fcf_periods"]) is not int or valuation["minimum_annual_fcf_periods"] < 3:

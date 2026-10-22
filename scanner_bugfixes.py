@@ -267,6 +267,8 @@ _original_generate_email_html = scanner.generate_email_html
 
 
 def _catalyst_display(stock):
+    if (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE":
+        return "DOCUMENTED CONDITIONAL CASE", "A sourced recovery research record is available; its outcome and continued listing are not guaranteed."
     headlines = [str(h).strip() for h in (stock.get("news_headlines") or []) if str(h).strip()]
     text = " ".join(headlines).lower()
     if not text or "no verified company-specific recent news" in text or "unable to determine cause" in text:
@@ -278,7 +280,7 @@ def _catalyst_display(stock):
         r"\brecall\b", r"\bcriminal\b", r"\bsec inquiry\b"
     )
     if any(re.search(pattern, text) for pattern in serious_patterns):
-        return "🔴 VERIFIED FUNDAMENTAL RISK", "Recent company-specific news contains a potentially fundamental problem."
+        return "🔴 FUNDAMENTAL RISK REQUIRES REVIEW", "Recent company-specific news contains a potentially fundamental problem."
 
     # A catalyst must describe a negative, company-specific event that can
     # plausibly explain the decline. Positive/neutral articles, analyst targets,
@@ -295,7 +297,7 @@ def _catalyst_display(stock):
         r".{0,80}\b(?:miss|warning|cut|lowered|weak|headwind|disappoint|guidance|outlook)\b"
     )
     if any(re.search(pattern, text) for pattern in negative_event_patterns):
-        return "🟢 VERIFIED CATALYST", "Recent company-specific news describes a plausible negative event that may explain the decline."
+        return "🟡 DECLINE EVENT; RECOVERY UNVERIFIED", "Company-specific coverage suggests a reason for the decline; it does not establish a temporary setback or a recovery catalyst."
 
     return "🟡 NO VERIFIED CATALYST", "Company-specific news exists, but it does not clearly identify a negative event explaining the decline."
 

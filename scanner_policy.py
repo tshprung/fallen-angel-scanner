@@ -352,9 +352,9 @@ def classify_drop_cause(stock_record):
         if supportive:
             return {
                 "cause_class": "potential_overreaction",
-                "cause_confidence": "MEDIUM",
-                "cause_label": "🟢 POTENTIAL OVERREACTION",
-                "cause_detail": f"Coverage points to {', '.join(temporary_hits[:3])}; current business metrics do not show an obvious broad deterioration.",
+                "cause_confidence": "LOW",
+                "cause_label": "🟡 RECOVERY THESIS UNVERIFIED",
+                "cause_detail": f"Headlines mention {', '.join(temporary_hits[:3])}; keywords and positive business metrics do not verify a temporary problem or a recovery catalyst.",
             }
         return {
             "cause_class": "temporary_candidate",
@@ -381,14 +381,17 @@ def _apply_catalyst_analysis(stocks):
             print(f"  ⏭️  {stock['ticker']} removed by catalyst gate: {cause['cause_detail']}")
             continue
 
-        # Unknown cause is deliberately a WATCH, never an automatic BUY.
-        if cause["cause_class"] == "unclear":
+        documented = (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE"
+        # A reviewed source record can provide evidence absent from a news feed.
+        if documented:
+            stock["catalyst_status"] = "PASS"
+        elif cause["cause_class"] == "unclear":
             stock["catalyst_status"] = "WATCH"
             # Do not fabricate a technical entry range or overwrite the
             # scanner's bottom detection. The absence of verified news is
             # uncertainty, not evidence that the price should be lower.
         else:
-            stock["catalyst_status"] = "PASS"
+            stock["catalyst_status"] = "WATCH"
 
         result.append(stock)
     return result
