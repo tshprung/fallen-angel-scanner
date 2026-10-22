@@ -1,0 +1,31 @@
+{
+  "LCII": {
+    "status": "PENDING",
+    "reviewed_at": "2026-10-22",
+    "reason": "Pending Patrick merger: fixed 1.2440 PATK shares per LCII share changes the standalone investment thesis. DOJ second request adds execution risk.",
+    "release_condition": "Verify current transaction status and assess combined-company value, exchange ratio, regulatory conditions and downside if the deal fails before using an ordinary-company valuation.",
+    "sources": [
+      {"published_at": "2026-10-19", "url": "https://www.sec.gov/Archives/edgar/data/763744/000076374426000091/a20261019lciimergerproxya.htm"},
+      {"published_at": "2026-10-13", "url": "https://www.sec.gov/Archives/edgar/data/763744/000076374426000090/lciiform-hsrsecondreques.htm"}
+    ]
+  },
+  "LRN": {
+    "status": "PENDING",
+    "reviewed_at": "2026-10-22",
+    "reason": "September-quarter results were published October 20; June-only financial evidence misses the latest results. Review the September 2027 convertible maturity and dilution as well.",
+    "release_condition": "Reconcile the September 30 statements and trailing cash flow, enrollment and guidance; verify settlement funding and conversion/capped-call effects for the $420m notes due September 1, 2027. A provider refresh alone does not resolve the hold.",
+    "sources": [
+      {"published_at": "2026-10-20", "url": "https://www.globenewswire.com/news-release/2026/10/20/3384980/0/en/stride-reports-first-quarter-2027-financial-results.html"},
+      {"published_at": "2026-08-05", "url": "https://www.sec.gov/Archives/edgar/data/1157408/000110465926090515/lrn-20260630x10k.htm"}
+    ]
+  },
+  "SFD": {
+    "status": "PENDING",
+    "reviewed_at": "2026-10-22",
+    "reason": "September 8 profit warning: Fresh Pork margin compression and lower hog prices undermine an unchanged historical cash-flow assumption.",
+    "release_condition": "Reconcile the next published results and revised outlook with normalized cash flow, capital spending and debt liquidity; source evidence for recovery rather than assuming the commodity weakness is temporary.",
+    "sources": [
+      {"published_at": "2026-09-08", "url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000056/smithfieldformxpressreleas.htm"}
+    ]
+  }
+}

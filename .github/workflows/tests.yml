@@ -5,6 +5,7 @@ on:
     paths:
       - '**.py'
       - 'research_policy.json'
+      - 'review_holds.json'
       - 'requirements.txt'
       - '.github/workflows/**'
   pull_request:

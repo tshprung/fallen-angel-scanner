@@ -44,6 +44,8 @@ No paid data subscription is required to continue. Each run also produces `filin
 
 An empty shortlist is valid. Price-decline alerts are watch prompts, not instructions to average down. Their financial thesis must be reassessed. Legacy non-USD price baselines without verified quote units are skipped rather than compared across ambiguous units.
 
+`review_holds.json` records sourced manual findings that block ordinary-company selection with decision `event_review`, before deduplication or provider requests. The research audit and filing queue retain the reason, dated sources and release condition. Holds do not expire automatically: resolve them only with recorded evidence after the condition is met. This is a small manually maintained registry, not a comprehensive corporate-action or latest-publication feed. No record does not mean no event. Existing paper snapshots remain historical observations and are not rewritten by a later hold.
+
 ## Financial model and policy
 
 [research_policy.json](research_policy.json) holds the research thresholds and valuation assumptions. [FUNDAMENTALS.md](FUNDAMENTALS.md) explains calculations, source coverage and limitations. The original [review](SCANNER_REVIEW.md) is retained as historical context.

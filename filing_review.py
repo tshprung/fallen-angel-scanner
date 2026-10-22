@@ -63,7 +63,7 @@ def filing_links_html(plan):
 
 
 def write_filing_queue(audit, path):
-    decisions = {"selected", "unverified", "specialist_review", "valuation_unverified", "currency_unverified"}
+    decisions = {"selected", "unverified", "specialist_review", "valuation_unverified", "currency_unverified", "event_review"}
     queued = [item for item in audit if item.get("decision") in decisions]
     lines = ["# Public filing review queue", "",
              "No paid data subscription is required for this workflow. Start with issuer investor-relations reports and the public filing sources below; source access can vary.", "",
@@ -75,6 +75,15 @@ def write_filing_queue(audit, path):
         lines += [f"## {escape(item['ticker'])}", "", f"Search issuer name: {escape(plan['search_term'])}", "",
                   f"Scanner decision: {escape(item.get('decision', ''))}.", ""]
         solvency = item.get("solvency") or {}
+        hold = item.get("review_hold")
+        if hold:
+            lines += [f"Sourced hold (reviewed {escape(hold['reviewed_at'])}): {escape(hold['reason'])}", "",
+                      f"Release condition: {escape(hold['release_condition'])}", "", "Finding sources:", ""]
+            for source in hold["sources"]:
+                url = safe_website(source["url"])
+                if url:
+                    lines.append(f"- [{escape(source['published_at'])} disclosure](<{url}>)")
+            lines += [""]
         questions = solvency.get("missing", []) + solvency.get("review", [])
         if questions:
             lines += ["Scanner questions:", ""] + [f"- {escape(question)}" for question in questions] + [""]

@@ -28,6 +28,7 @@ import json
 import time
 
 from filing_review import filing_review_plan
+from review_holds import load_review_holds
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -1267,6 +1268,7 @@ def stage2_deep_analysis(candidates, memory):
     global _last_research_audit
     _last_research_audit = []
     policy = load_policy()
+    review_holds = load_review_holds()
     analyzed = []
     fresh_crash = []
     analysis_count = 0  # Track number of stocks analyzed
@@ -1276,6 +1278,12 @@ def stage2_deep_analysis(candidates, memory):
         audit = {"ticker": ticker, "decision": "not_selected", "reason": "Did not complete eligibility checks",
                  "screen_cohort": candidate.get("screen_cohort", "recent_shock")}
         _last_research_audit.append(audit)
+
+        hold = review_holds.get(ticker.upper())
+        if hold:
+            audit.update(decision="event_review", reason=hold["reason"], review_hold=hold)
+            print(f"  ⏸️  {ticker}: sourced review hold: {hold['reason']}")
+            continue
         
         # Check deduplication
         if not should_send_stock(ticker, memory):

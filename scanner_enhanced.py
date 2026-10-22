@@ -285,9 +285,9 @@ def _trend_section(stocks):
         return ""
     return """
     <h2>📈 Recovery Confirmation</h2>
-    <p><strong>Raw Risk</strong> is the scanner's original 1–10 score. A raw
-    4/10 candidate is admitted as <strong>WATCH</strong> rather than silently
-    discarded; raw risk ≥5 remains excluded. Trend Template is informational
+    <p><strong>Raw Risk</strong> is a heuristic 1–10 score, not a bankruptcy
+    probability or a measure of potential loss. Raw risk ≥4 is excluded.
+    A score of 1/10 does not establish safety. Trend Template is informational
     because a fallen angel near its bottom can legitimately score low.</p>
     <table style="width:100%;border-collapse:collapse;margin:15px 0">
       <tr style="background:#34495e;color:white">
