@@ -1,0 +1,88 @@
+{
+  "checked_at": "2026-10-22T21:51:48.760022+00:00",
+  "notice": "Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.",
+  "watches": [
+    {
+      "ticker": "PNR",
+      "source": "SEC",
+      "expected_report_date": "2026-10-27",
+      "expected_period_end": "2026-09-30",
+      "question": "Reconcile Pool recovery, Taco's actual post-close financing, 24-month maturities and covenant headroom. A September balance sheet alone predates the October acquisition.",
+      "checked_at": "2026-10-22T21:51:48.760022+00:00",
+      "documents": [
+        {
+          "id": "0000077360-26-000045",
+          "url": "https://www.sec.gov/Archives/edgar/data/77360/000007736026000045/pnr-20260630.htm",
+          "label": "10-Q filed 2026-07-28",
+          "period": "2026-06-30",
+          "filed_at": "2026-07-28"
+        },
+        {
+          "id": "0001104659-26-104725",
+          "url": "https://www.sec.gov/Archives/edgar/data/77360/000110465926104725/tm2624576d1_8k.htm",
+          "label": "8-K filed 2026-09-02",
+          "period": "2026-09-01",
+          "filed_at": "2026-09-02"
+        },
+        {
+          "id": "0001104659-26-056228",
+          "url": "https://www.sec.gov/Archives/edgar/data/77360/000110465926056228/tm2613486d1_8k.htm",
+          "label": "8-K filed 2026-05-06",
+          "period": "2026-05-05",
+          "filed_at": "2026-05-06"
+        }
+      ],
+      "new_documents": [],
+      "actionable_change": false,
+      "latest_financial_period": "2026-06-30",
+      "issuer": "PENTAIR plc",
+      "source_checked_at": "2026-10-22T21:51:48.760022+00:00",
+      "status": "AWAITING_EXPECTED_REPORT",
+      "source_status": "AVAILABLE",
+      "expected_report_listed": false,
+      "omitted_document_count": 0
+    },
+    {
+      "ticker": "ASB.WA",
+      "source": "ASBIS",
+      "expected_report_date": "2026-11-05",
+      "expected_period_end": "2026-09-30",
+      "question": "Verify profit and cash conversion, collections, factoring, committed funding and covenant headroom behind sales growth. Issuer links do not verify filing contents.",
+      "checked_at": "2026-10-22T21:51:48.760022+00:00",
+      "documents": [],
+      "new_documents": [],
+      "actionable_change": false,
+      "source_index": "https://investor.asbis.com/financial-reports",
+      "status": "AWAITING_EXPECTED_REPORT",
+      "source_status": "AVAILABLE",
+      "expected_report_listed": false,
+      "omitted_document_count": 0
+    },
+    {
+      "ticker": "LZB",
+      "source": "SEC",
+      "expected_report_date": null,
+      "expected_period_end": null,
+      "question": "Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here.",
+      "checked_at": "2026-10-22T21:51:48.760022+00:00",
+      "documents": [
+        {
+          "id": "0000057131-26-000035",
+          "url": "https://www.sec.gov/Archives/edgar/data/57131/000005713126000035/lzb-20260725.htm",
+          "label": "10-Q filed 2026-08-18",
+          "period": "2026-07-25",
+          "filed_at": "2026-08-18"
+        }
+      ],
+      "new_documents": [],
+      "actionable_change": false,
+      "latest_financial_period": "2026-07-25",
+      "issuer": "LA-Z-BOY INC",
+      "source_checked_at": "2026-10-22T21:51:48.760022+00:00",
+      "status": "BASELINE_RECORDED",
+      "source_status": "AVAILABLE",
+      "expected_report_listed": false,
+      "omitted_document_count": 0
+    }
+  ]
+}

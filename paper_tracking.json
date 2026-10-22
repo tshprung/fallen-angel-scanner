@@ -271,7 +271,8 @@
       "policy_id": "72aca0f0daf9",
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
-        "status": "pending_next_session"
+        "status": "pending_next_session",
+        "method_version": 2
       }
     },
     {
@@ -543,7 +544,8 @@
       "policy_id": "72aca0f0daf9",
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
-        "status": "pending_next_session"
+        "status": "pending_next_session",
+        "method_version": 2
       }
     },
     {
@@ -816,9 +818,10 @@
       "policy_id": "72aca0f0daf9",
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
-        "status": "pending_next_session"
+        "status": "pending_next_session",
+        "method_version": 2
       }
     }
   ],
-  "last_refreshed_at": "2026-10-21T22:16:51.227010+00:00"
+  "last_refreshed_at": "2026-10-22T22:14:28.635219+00:00"
 }
