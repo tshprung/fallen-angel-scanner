@@ -178,6 +178,7 @@ def analyze_filings(cik, rows, evidence, now=None, resolutions=None):
     if not periodic:
         raise SourceUnavailable("No dated periodic financial report in covered SEC history")
     latest = max(periodic, key=lambda row: (row["reportDate"], row["filingDate"]))
+    annual = [row for row in periodic if row["form"] in {"10-K", "20-F", "40-F"}]
     if utc(latest["reportDate"]).date() > now.date():
         raise SourceUnavailable("SEC financial report period is in the future")
     findings, documents = [], []
@@ -212,7 +213,9 @@ def analyze_filings(cik, rows, evidence, now=None, resolutions=None):
                 findings.append(f"{form} filed {row['filingDate']}: {reason}")
     return {"status": "REVIEW_REQUIRED" if findings else "METADATA_CHECKED",
             "blocks_selection": bool(findings), "findings": findings,
-            "latest_financial_report": latest, "event_filings": documents, "notice": NOTICE}
+            "latest_financial_report": latest,
+            "latest_annual_report": max(annual, key=lambda row: (row["reportDate"], row["filingDate"])) if annual else None,
+            "event_filings": documents, "notice": NOTICE}
 
 
 def check_sec_filings(ticker, evidence, client=None, now=None, resolutions=None):

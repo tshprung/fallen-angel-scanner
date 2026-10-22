@@ -67,6 +67,7 @@ jobs:
             research_report.md
             filing_review.md
             recovery_review.md
+            filing_contents.md
 
       - name: Commit scanner state
         run: |
@@ -78,7 +79,7 @@ jobs:
           git add scanner_memory.json 2>/dev/null || true
           git add failed_tickers.json 2>/dev/null || true
           git add paper_tracking.json paper_tracking_report.md 2>/dev/null || true
-          git add research_report.json research_report.md filing_review.md recovery_review.md 2>/dev/null || true
+          git add research_report.json research_report.md filing_review.md recovery_review.md filing_contents.md 2>/dev/null || true
           if [ -d logs ]; then
             git add logs/*.txt 2>/dev/null || true
           fi

@@ -31,6 +31,7 @@ from filing_review import filing_review_plan
 from review_holds import load_review_holds
 from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
 from recovery_cases import load_recovery_cases, assess_recovery_case
+from filing_contents import enrich_research_audit
 from screening import drawdown_candidate
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -1273,6 +1274,7 @@ def stage2_deep_analysis(candidates, memory):
     policy = load_policy()
     review_holds = load_review_holds()
     sec_client = SecClient()
+    globals()["_last_sec_client"] = sec_client
     filing_resolutions = load_filing_resolutions()
     recovery_cases = load_recovery_cases()
     analyzed = []
@@ -1980,6 +1982,7 @@ def main():
     for item in _last_research_audit:
         if item["decision"] == "selected" and item["ticker"] not in final_tickers:
             item.update(decision="final_filter_excluded", reason=filtered.get(item["ticker"]) or "Final overlay or report-size filter")
+    enrich_research_audit(_last_research_audit, selected, sec_client=globals().get("_last_sec_client"))
     write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
     if selected and globals().get("PAPER_TRACKING_ENABLED", True):
         from paper_tracking import record_selections

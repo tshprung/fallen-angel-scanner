@@ -42,15 +42,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install requests
+      - run: python -m pip install requests lxml
       - name: Probe public SEC endpoints without scanning or sending email
         env:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: python sec_filings.py
+      - name: Probe latest SEC filing contents without risk upgrades
+        env:
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: python filing_contents.py
       - name: Preserve source access results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sec-source-access-${{ github.run_id }}
-          path: sec_source_probe.json
+          path: |
+            sec_source_probe.json
+            filing_content_probe.json
+            filing_content_probe.md

@@ -208,6 +208,7 @@ def test_all_held_run_still_sends_a_review_report_without_paper_selections(monke
     monkeypatch.setattr(scanner, "load_memory", lambda: {"sent_stocks": {}, "tracked_prices": {}})
     monkeypatch.setattr(scanner, "check_price_alerts", lambda _: [])
     monkeypatch.setattr(scanner, "stage1_quick_filter", lambda: ([{"ticker": "LCII"}], []))
+    monkeypatch.setattr(scanner, "enrich_research_audit", lambda *args, **kwargs: None)
     monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path / "research_report"), raising=False)
     send = Mock(return_value=False)
     monkeypatch.setattr(scanner, "send_email", send)

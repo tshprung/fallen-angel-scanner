@@ -12,6 +12,8 @@ __pycache__/
 .Python
 .sec-cache/
 sec_source_probe.json
+filing_content_probe.json
+filing_content_probe.md
 venv/
 env/
 ENV/

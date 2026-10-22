@@ -9,6 +9,7 @@ from pathlib import Path
 from filing_review import write_filing_queue, filing_links_html
 from sec_filings import filing_check_lines
 from recovery_cases import RISK_TOPICS, write_recovery_queue
+from filing_contents import write_content_report
 
 
 def clean(value):
@@ -61,6 +62,7 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
     Path(f"{prefix}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     write_filing_queue(audit, Path(prefix).with_name("filing_review.md"))
     write_recovery_queue(audit, Path(prefix).with_name("recovery_review.md"))
+    write_content_report(audit, Path(prefix).with_name("filing_contents.md"))
     return data
 
 
@@ -118,6 +120,9 @@ def financial_detail_html(stock):
             sources = {source["url"]: source["published_at"] for block in blocks for source in block.get("sources", [])}
             parts.append("<p>Research sources: " + "; ".join(f'<a href="{escape(url, quote=True)}">Disclosure {escape(date)}</a>' for url, date in sources.items()) + "</p>")
         parts.append(f"<p>{escape(fit['notice'])}</p>")
+    content = stock.get("filing_content_review")
+    if content:
+        parts.append(f"<p>Filing-content index: {escape(content['status'])}. {escape(content['notice'])}</p>")
     if solvency:
         parts.append(f"<p><strong>Solvency screen: {escape(solvency['status'])}</strong> (not a survival guarantee)</p>")
         messages = solvency["flags"] + solvency["missing"] + solvency["review"]
