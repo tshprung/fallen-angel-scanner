@@ -5,19 +5,19 @@
       "0001104659-26-056228",
       "0001104659-26-104725"
     ],
-    "observed_at": "2026-10-22T21:51:48.760022+00:00",
+    "observed_at": "2026-10-23T21:35:19.232476+00:00",
     "status": "AWAITING_EXPECTED_REPORT"
   },
   "ASB.WA": {
     "document_ids": [],
-    "observed_at": "2026-10-22T21:51:48.760022+00:00",
+    "observed_at": "2026-10-23T21:35:19.232476+00:00",
     "status": "AWAITING_EXPECTED_REPORT"
   },
   "LZB": {
     "document_ids": [
       "0000057131-26-000035"
     ],
-    "observed_at": "2026-10-22T21:51:48.760022+00:00",
-    "status": "BASELINE_RECORDED"
+    "observed_at": "2026-10-23T21:35:19.232476+00:00",
+    "status": "UNCHANGED"
   }
 }

@@ -271,7 +271,16 @@
       "policy_id": "72aca0f0daf9",
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
-        "status": "pending_next_session",
+        "status": "tracking",
+        "entry_session": "2026-10-22",
+        "mark_session": "2026-10-22",
+        "entry_adjusted_open": 83.0199966430664,
+        "mark_adjusted_close": 86.5999984741211,
+        "return_local_pct": 4.312216304279604,
+        "worst_close_return_pct": 4.312216304279604,
+        "touched_2x_at_close": false,
+        "ended_2x": null,
+        "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
         "method_version": 2
       }
     },
@@ -544,7 +553,16 @@
       "policy_id": "72aca0f0daf9",
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
-        "status": "pending_next_session",
+        "status": "tracking",
+        "entry_session": "2026-10-22",
+        "mark_session": "2026-10-22",
+        "entry_adjusted_open": 78.23999786376953,
+        "mark_adjusted_close": 80.68000030517578,
+        "return_local_pct": 3.118612612508942,
+        "worst_close_return_pct": 3.118612612508942,
+        "touched_2x_at_close": false,
+        "ended_2x": null,
+        "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
         "method_version": 2
       }
     },
@@ -818,10 +836,19 @@
       "policy_id": "72aca0f0daf9",
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
-        "status": "pending_next_session",
+        "status": "tracking",
+        "entry_session": "2026-10-22",
+        "mark_session": "2026-10-22",
+        "entry_adjusted_open": 18.43000030517578,
+        "mark_adjusted_close": 18.809999465942383,
+        "return_local_pct": 2.0618510823349423,
+        "worst_close_return_pct": 2.0618510823349423,
+        "touched_2x_at_close": false,
+        "ended_2x": null,
+        "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
         "method_version": 2
       }
     }
   ],
-  "last_refreshed_at": "2026-10-22T22:14:28.635219+00:00"
+  "last_refreshed_at": "2026-10-23T21:57:15.236008+00:00"
 }

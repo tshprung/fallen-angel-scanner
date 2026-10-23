@@ -5,7 +5,7 @@ Daily selections can repeat the same stock. These are correlated observations, n
 
 Saved selections: 3. Completed twelve-month observations under method v2: 0.
 
-Stored status counts (older methods may need refresh): pending_next_session: 3
+Stored status counts (older methods may need refresh): tracking: 3
 
 Unverified/stale names remain visible; their missing outcomes must not be interpreted as zero losses. No benchmark excess return or USD return is computed.
 
@@ -17,12 +17,12 @@ Groups keep financial policy, price-screen cohort and research status as recorde
 
 | Policy | Price screen | Research status | Observations | Unique tickers | Pending | Tracking | Unverified/stale/old method | Complete | Touched 2x | Ended 2x | Ended below entry |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 72aca0f0daf9 | stabilizing_drawdown | legacy/unknown | 3 | 3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 72aca0f0daf9 | stabilizing_drawdown | legacy/unknown | 3 | 3 | 0 | 3 | 0 | 0 | 0 | 0 | 0 |
 
 ## Most recent 20 selections
 
 | Selected | Ticker | Status | Local return | Entry session | Mark session |
 |---|---|---|---:|---|---|
-| 2026-10-21 | SFD | pending_next_session | unverified/pending | — | — |
-| 2026-10-21 | LRN | pending_next_session | unverified/pending | — | — |
-| 2026-10-21 | LCII | pending_next_session | unverified/pending | — | — |
+| 2026-10-21 | SFD | tracking | +2.1% | 2026-10-22 | 2026-10-22 |
+| 2026-10-21 | LRN | tracking | +3.1% | 2026-10-22 | 2026-10-22 |
+| 2026-10-21 | LCII | tracking | +4.3% | 2026-10-22 | 2026-10-22 |

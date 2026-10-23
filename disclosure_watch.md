@@ -2,7 +2,7 @@
 
 Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.
 
-Checked: 2026-10-22T21:51:48.760022+00:00
+Checked: 2026-10-23T21:35:19.232476+00:00
 
 ## PNR: AWAITING_EXPECTED_REPORT
 
@@ -15,7 +15,7 @@ Reconcile Pool recovery, Taco's actual post-close financing, 24-month maturities
 
 Verify profit and cash conversion, collections, factoring, committed funding and covenant headroom behind sales growth. Issuer links do not verify filing contents.
 
-## LZB: BASELINE_RECORDED
+## LZB: UNCHANGED
 
 Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here.
 
