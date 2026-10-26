@@ -273,11 +273,11 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-22",
+        "mark_session": "2026-10-23",
         "entry_adjusted_open": 83.0199966430664,
-        "mark_adjusted_close": 86.5999984741211,
-        "return_local_pct": 4.312216304279604,
-        "worst_close_return_pct": 4.312216304279604,
+        "mark_adjusted_close": 84.87000274658203,
+        "return_local_pct": 2.228386145893846,
+        "worst_close_return_pct": 2.228386145893846,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
@@ -555,11 +555,11 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-22",
+        "mark_session": "2026-10-23",
         "entry_adjusted_open": 78.23999786376953,
-        "mark_adjusted_close": 80.68000030517578,
-        "return_local_pct": 3.118612612508942,
-        "worst_close_return_pct": 3.118612612508942,
+        "mark_adjusted_close": 79.4000015258789,
+        "return_local_pct": 1.4826223080030676,
+        "worst_close_return_pct": 1.4826223080030676,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
@@ -838,11 +838,11 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-22",
+        "mark_session": "2026-10-23",
         "entry_adjusted_open": 18.43000030517578,
-        "mark_adjusted_close": 18.809999465942383,
-        "return_local_pct": 2.0618510823349423,
-        "worst_close_return_pct": 2.0618510823349423,
+        "mark_adjusted_close": 18.635000228881836,
+        "return_local_pct": 1.112316442276362,
+        "worst_close_return_pct": 1.112316442276362,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
@@ -850,5 +850,5 @@
       }
     }
   ],
-  "last_refreshed_at": "2026-10-23T21:57:15.236008+00:00"
+  "last_refreshed_at": "2026-10-26T23:12:31.691945+00:00"
 }
