@@ -273,10 +273,10 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-23",
+        "mark_session": "2026-10-26",
         "entry_adjusted_open": 83.0199966430664,
-        "mark_adjusted_close": 84.87000274658203,
-        "return_local_pct": 2.228386145893846,
+        "mark_adjusted_close": 87.9000015258789,
+        "return_local_pct": 5.878107781422148,
         "worst_close_return_pct": 2.228386145893846,
         "touched_2x_at_close": false,
         "ended_2x": null,
@@ -555,11 +555,11 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-23",
+        "mark_session": "2026-10-26",
         "entry_adjusted_open": 78.23999786376953,
-        "mark_adjusted_close": 79.4000015258789,
-        "return_local_pct": 1.4826223080030676,
-        "worst_close_return_pct": 1.4826223080030676,
+        "mark_adjusted_close": 78.41999816894531,
+        "return_local_pct": 0.23006174602560048,
+        "worst_close_return_pct": 0.23006174602560048,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
@@ -838,11 +838,11 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-23",
+        "mark_session": "2026-10-26",
         "entry_adjusted_open": 18.43000030517578,
-        "mark_adjusted_close": 18.635000228881836,
-        "return_local_pct": 1.112316442276362,
-        "worst_close_return_pct": 1.112316442276362,
+        "mark_adjusted_close": 18.309999465942383,
+        "return_local_pct": -0.6511168597197359,
+        "worst_close_return_pct": -0.6511168597197359,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
@@ -850,5 +850,5 @@
       }
     }
   ],
-  "last_refreshed_at": "2026-10-26T23:12:31.691945+00:00"
+  "last_refreshed_at": "2026-10-27T22:53:38.329045+00:00"
 }
