@@ -273,10 +273,10 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-26",
+        "mark_session": "2026-10-27",
         "entry_adjusted_open": 83.0199966430664,
-        "mark_adjusted_close": 87.9000015258789,
-        "return_local_pct": 5.878107781422148,
+        "mark_adjusted_close": 89.83999633789062,
+        "return_local_pct": 8.21488794337817,
         "worst_close_return_pct": 2.228386145893846,
         "touched_2x_at_close": false,
         "ended_2x": null,
@@ -555,10 +555,10 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-26",
+        "mark_session": "2026-10-27",
         "entry_adjusted_open": 78.23999786376953,
-        "mark_adjusted_close": 78.41999816894531,
-        "return_local_pct": 0.23006174602560048,
+        "mark_adjusted_close": 79.20999908447266,
+        "return_local_pct": 1.2397766451784475,
         "worst_close_return_pct": 0.23006174602560048,
         "touched_2x_at_close": false,
         "ended_2x": null,
@@ -838,10 +838,10 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-26",
+        "mark_session": "2026-10-27",
         "entry_adjusted_open": 18.43000030517578,
-        "mark_adjusted_close": 18.309999465942383,
-        "return_local_pct": -0.6511168597197359,
+        "mark_adjusted_close": 18.329999923706055,
+        "return_local_pct": -0.5425956582412184,
         "worst_close_return_pct": -0.6511168597197359,
         "touched_2x_at_close": false,
         "ended_2x": null,
@@ -850,5 +850,5 @@
       }
     }
   ],
-  "last_refreshed_at": "2026-10-27T22:53:38.329045+00:00"
+  "last_refreshed_at": "2026-10-28T23:08:27.437160+00:00"
 }

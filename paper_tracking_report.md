@@ -23,6 +23,6 @@ Groups keep financial policy, price-screen cohort and research status as recorde
 
 | Selected | Ticker | Status | Local return | Entry session | Mark session |
 |---|---|---|---:|---|---|
-| 2026-10-21 | SFD | tracking | -0.7% | 2026-10-22 | 2026-10-26 |
-| 2026-10-21 | LRN | tracking | +0.2% | 2026-10-22 | 2026-10-26 |
-| 2026-10-21 | LCII | tracking | +5.9% | 2026-10-22 | 2026-10-26 |
+| 2026-10-21 | SFD | tracking | -0.5% | 2026-10-22 | 2026-10-27 |
+| 2026-10-21 | LRN | tracking | +1.2% | 2026-10-22 | 2026-10-27 |
+| 2026-10-21 | LCII | tracking | +8.2% | 2026-10-22 | 2026-10-27 |

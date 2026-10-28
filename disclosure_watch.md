@@ -2,7 +2,7 @@
 
 Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.
 
-Checked: 2026-10-27T22:31:59.530740+00:00
+Checked: 2026-10-28T22:46:33.366936+00:00
 
 ## PNR: EXPECTED_REPORT_REQUIRES_REVIEW
 
