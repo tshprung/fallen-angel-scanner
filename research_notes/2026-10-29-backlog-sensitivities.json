@@ -1,0 +1,58 @@
+{
+  "reviewed_at": "2026-10-29",
+  "status": "PRELIMINARY_RESEARCH_ONLY_NO_ADMISSION",
+  "notice": "Historical October 28 price observations, separately timed FX/capitalization, issuer guidance and illustrative multiples. No forecasts or assigned probabilities. EPS guidance is a current-year estimate, not a one-year-forward guarantee. The TTM FCF proxy is OCF less gross PP&E purchases, without a newly verified gross-interest buffer.",
+  "SFM": {
+    "sources": [
+      "https://investors.sprouts.com/news/news-details/2026/Sprouts-Farmers-Market-Inc--Reports-Third-Quarter-2026-Results/default.aspx",
+      "https://investors.sprouts.com/news/news-details/2026/Sprouts-Farmers-Market-Inc--Reports-Fourth-Quarter-and-Full-Year-2025-Results/"
+    ],
+    "financial_units": "USD millions except per-share amounts",
+    "period_2026_ytd": "39 weeks ended 2026-09-27",
+    "period_2025_ytd": "39 weeks ended 2025-09-28",
+    "annual_2025_end": "2025-12-28",
+    "ytd_ocf": 555.127,
+    "ytd_gross_ppe_purchases": 284.21,
+    "prior_ytd_ocf": 577.471,
+    "prior_ytd_gross_ppe_purchases": 176.081,
+    "annual_ocf": 715.998,
+    "annual_gross_ppe_purchases": 248.267,
+    "ytd_fcf_proxy": 270.917,
+    "prior_ytd_fcf_proxy": 401.39,
+    "ytd_fcf_proxy_change_pct": -32.50529410299211,
+    "ttm_fcf_proxy": 337.25800000000004,
+    "dated_price_usd": 62.0,
+    "price_date": "2026-10-28",
+    "full_year_2026_guided_eps_52weeks": 4.8,
+    "eps_required_to_double_at_20x": 6.2,
+    "pe_required_to_double_at_guided_eps": 25.833333333333336,
+    "required_eps_growth_at_20x_pct": 29.166666666666675,
+    "lease_and_other_finance_obligations_total": 2235.5609999999997
+  },
+  "BIRK": {
+    "source": "https://www.birkenstock-holding.com/news/birkenstock-reports-fiscal-third-quarter-2026-results-with-15percent-constant-fx-revenue-growth-led-by/ea946937-0de8-419e-b169-012ebbc89b2f",
+    "dated_price_usd": 31.59000015258789,
+    "price_date": "2026-10-28",
+    "usd_per_eur": 1.1129660606384277,
+    "fx_asof": "2026-10-29T00:00:00+00:00",
+    "fy2026_guided_adjusted_eps_eur": [
+      1.9,
+      2.05
+    ],
+    "pe_required_to_double_at_guidance": [
+      29.877489454163218,
+      27.691331689224448
+    ],
+    "eps_eur_required_to_double_at_20x": 2.838361498145505
+  },
+  "KAI": {
+    "source": "https://investor.kadant.com/news-releases/news-release-details/kadant-reports-second-quarter-2026-results",
+    "dated_price_usd": 265.79998779296875,
+    "price_date": "2026-10-28",
+    "fy2026_guided_adjusted_eps_usd": [
+      12.43,
+      12.68
+    ],
+    "pe_required_to_double_at_guided_midpoint": 42.34169459067603
+  }
+}
