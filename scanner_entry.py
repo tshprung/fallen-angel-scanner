@@ -54,9 +54,12 @@ def run_cli():
     parser.add_argument("--output-dir", help="Directory for reports and run state")
     parser.add_argument("--watch-disclosures", action="store_true",
                         help="Check configured research disclosures independently of stock selection")
+    parser.add_argument("--growth-shadow", action="store_true",
+                        help="Collect bounded growth-recovery research without changing selections")
     args = parser.parse_args()
     scanner.REPORT_SCOPE = {"type": "configured_universe", "email_disabled": args.no_email,
                             "paper_disabled": args.no_paper}
+    scanner.GROWTH_SHADOW_ENABLED = args.growth_shadow
     if args.no_email:
         scanner.send_email = lambda *unused: False
         scanner.check_price_alerts = lambda memory: []

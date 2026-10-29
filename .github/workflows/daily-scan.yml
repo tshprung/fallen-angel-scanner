@@ -31,7 +31,7 @@ jobs:
         run: pip install -r requirements.txt pytest --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py filing_contents.py disclosure_watch.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py filing_contents.py disclosure_watch.py growth_recovery.py
 
       - name: Offline regression tests
         run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
@@ -50,7 +50,7 @@ jobs:
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           PYTHONUNBUFFERED: 1
-        run: python -u scanner_entry.py --watch-disclosures
+        run: python -u scanner_entry.py --watch-disclosures --growth-shadow
 
       - name: Refresh paper observations
         run: python paper_tracking.py
@@ -73,6 +73,9 @@ jobs:
             disclosure_watch.json
             disclosure_watch.md
             disclosure_watch_state.json
+            growth_recovery_shadow.json
+            growth_recovery_shadow.md
+            growth_recovery_shadow_history.json
 
       - name: Commit scanner state
         run: |
@@ -87,6 +90,7 @@ jobs:
           git add paper_tracking_summary.json 2>/dev/null || true
           git add research_report.json research_report.md filing_review.md recovery_review.md filing_contents.md scan_coverage.json 2>/dev/null || true
           git add disclosure_watch.json disclosure_watch.md disclosure_watch_state.json 2>/dev/null || true
+          git add growth_recovery_shadow.json growth_recovery_shadow.md growth_recovery_shadow_history.json 2>/dev/null || true
           if [ -d logs ]; then
             git add logs/*.txt 2>/dev/null || true
           fi

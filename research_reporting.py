@@ -59,6 +59,15 @@ def decision_summary_html(audit, scope=None):
     if health:
         parts.append(f"<p>Source health: {escape(health['status'])}; "
                      f"company-analysis errors: {health['company_analysis_errors']}/{health['company_candidates']}.</p>")
+    shadow = scope.get("growth_recovery_shadow")
+    if shadow:
+        counts = shadow.get("counts", {})
+        parts.append(f"<p>Growth-recovery shadow collection: {escape(shadow['status'])}; "
+                     f"{counts.get('OBSERVE_REVIEW_REQUIRED', 0)} observations require review; "
+                     f"{counts.get('UNVERIFIED', 0)} unverified; {counts.get('SOURCE_ERROR', 0)} source errors; "
+                     f"{counts.get('DEFERRED_BUDGET', 0)} deferred. "
+                     "These are separate research observations, with no doubling forecast or selection. "
+                     "See growth_recovery_shadow.json and .md in the Actions artifacts.</p>")
     parts.append(f"<p>{summary['audited_candidates']} price-screen candidates received an audit outcome. "
                  "Zero selections does not mean zero price-screen candidates. Outcomes below count each audit record once; "
                  "they do not show every criterion a company might fail.</p><table><tr><th>Outcome</th><th>Count</th></tr>")

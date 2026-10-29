@@ -1982,6 +1982,28 @@ def send_email(subject, html_body):
 # MAIN
 # ============================================================================
 
+def _collect_growth_shadow(candidates):
+    if not globals().get("GROWTH_SHADOW_ENABLED", False):
+        return
+    from pathlib import Path
+    from growth_recovery import run_shadow
+    directory = Path(globals().get("REPORT_PREFIX", "research_report")).parent
+    scope = globals().setdefault("REPORT_SCOPE", {})
+    try:
+        scope["growth_recovery_shadow"] = run_shadow(
+            candidates, globals().get("_last_research_audit", []), get_stock_with_retry, directory)
+    except Exception as exc:
+        # Optional research failures must remain visible without changing core selection.
+        failed = {"status": "FAILED", "error_type": type(exc).__name__,
+                  "generated_at": datetime.now(timezone.utc).isoformat(), "selection_eligible": False}
+        scope["growth_recovery_shadow"] = failed
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "growth_recovery_shadow.json").write_text(json.dumps(failed)+"\n", encoding="utf-8")
+        (directory / "growth_recovery_shadow.md").write_text(
+            "# Growth recovery shadow research\n\nCollection failed: " + failed["error_type"] +
+            ". Previous observations are not current clearance.\n", encoding="utf-8")
+
+
 def _run_main():
     print("\n" + "="*80)
     print("🔍 FALLEN ANGEL SCANNER v2.0")
@@ -2018,6 +2040,7 @@ def _run_main():
     disclosure_updates = has_disclosure_updates(globals().get("_last_disclosure_watch"))
     if not candidates and not price_alerts and not disclosure_updates:
         print("✅ No candidates met this run's filters.\n")
+        _collect_growth_shadow([])
         write_research_report([], [], globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
         
         # Log tickers to remove if any
@@ -2051,6 +2074,7 @@ def _run_main():
     scope["filing_content_collection"] = "PENDING"
     globals()["REPORT_SCOPE"] = scope
     write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), scope)
+    _collect_growth_shadow(candidates)
     enrich_research_audit(_last_research_audit, selected, sec_client=globals().get("_last_sec_client"))
     scope["filing_content_collection"] = "COLLECTION_FINISHED"
     write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
