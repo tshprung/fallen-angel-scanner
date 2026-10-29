@@ -75,6 +75,8 @@ def write_filing_queue(audit, path):
         plan = item.get("filing_review") or filing_review_plan(item["ticker"], item.get("company"))
         lines += [f"## {escape(item['ticker'])}", "", f"Search issuer name: {escape(plan['search_term'])}", "",
                   f"Scanner decision: {escape(item.get('decision', ''))}.", ""]
+        if item.get("reason"):
+            lines += [f"Decision reason: {escape(item['reason'])}", ""]
         solvency = item.get("solvency") or {}
         lines += filing_check_lines(item.get("official_filing_check"))
         hold = item.get("review_hold")

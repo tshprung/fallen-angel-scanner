@@ -4,7 +4,7 @@ import fallen_angel_scanner as scanner
 import scanner_bugfixes as bugfixes
 import scanner_enhanced  # noqa: F401 - installs enhanced scanner patches
 import scanner_safety  # noqa: F401 - installs final financial-risk guards
-from research_reporting import filing_review_summary_html
+from research_reporting import filing_review_summary_html, decision_summary_html
 from disclosure_watch import summary_html as disclosure_summary_html
 
 
@@ -29,8 +29,12 @@ def generate_email_html_consistent(analyzed_stocks, price_alerts, fresh_crash_st
                     "and a sourced recovery case supporting roughly 2x within a year. Neither return nor continued listing is guaranteed.</p>")
     html = _original_generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
     followup = disclosure_summary_html(getattr(scanner, "_last_disclosure_watch", None))
-    html = html.replace("<body>", "<body>" + goal_summary + followup, 1) if "<body>" in html else goal_summary + followup + html
-    return html + filing_review_summary_html(getattr(scanner, "_last_research_audit", []))
+    audit = getattr(scanner, "_last_research_audit", [])
+    summary = decision_summary_html(audit, getattr(scanner, "REPORT_SCOPE", {}))
+    intro = goal_summary + summary + followup
+    html = html.replace("<body>", "<body>" + intro, 1) if "<body>" in html else intro + html
+    held = filing_review_summary_html(audit)
+    return html.replace("</body>", held + "</body>", 1) if "</body>" in html else html + held
 
 
 scanner.generate_email_html = generate_email_html_consistent

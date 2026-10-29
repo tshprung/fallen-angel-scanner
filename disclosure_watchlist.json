@@ -1,6 +1,6 @@
 {
   "watches": [
-    {"ticker": "PNR", "source": "SEC", "expected_report_date": "2026-10-27", "expected_period_end": "2026-09-30", "question": "Reconcile Pool recovery, Taco's actual post-close financing, 24-month maturities and covenant headroom. A September balance sheet alone predates the October acquisition."},
+    {"ticker": "PNR", "source": "SEC", "expected_report_date": "2026-10-27", "expected_period_end": "2026-09-30", "question": "The acquisition-loan draw is documented in the October 27 filing. Reconcile post-close liquidity, 24-month payments and covenant headroom; test Pool recovery and recurring combined cash flow."},
     {"ticker": "ASB.WA", "source": "ASBIS", "expected_report_date": "2026-11-05", "expected_period_end": "2026-09-30", "question": "Verify profit and cash conversion, collections, factoring, committed funding and covenant headroom behind sales growth. Issuer links do not verify filing contents."},
     {"ticker": "LZB", "source": "SEC", "expected_report_date": null, "expected_period_end": null, "question": "Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here."}
   ]

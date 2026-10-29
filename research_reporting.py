@@ -1,12 +1,13 @@
 """Inspectable research output and escaped financial evidence in email."""
 
 from datetime import datetime, timezone
+from collections import Counter
 from html import escape
 import json
 import math
 from pathlib import Path
 
-from filing_review import write_filing_queue, filing_links_html
+from filing_review import write_filing_queue, filing_links_html, safe_website
 from sec_filings import filing_check_lines
 from recovery_cases import RISK_TOPICS, write_recovery_queue
 from filing_contents import write_content_report
@@ -24,13 +25,66 @@ def clean(value):
     return value
 
 
+def decision_summary(audit):
+    """Mutually exclusive final audit outcomes, not independent risk tests."""
+    groups = {"Selected": 0, "Financial/risk exclusions": 0,
+              "Price-pattern/timing/other exclusions": 0, "Specialist model required": 0,
+              "Financial evidence unverified": 0, "Filing/event review unresolved": 0,
+              "Valuation upside/evidence insufficient": 0, "Analysis errors": 0}
+    mapping = {"selected": "Selected", "exclude": "Financial/risk exclusions",
+               "risk_excluded": "Financial/risk exclusions",
+               "specialist_review": "Specialist model required",
+               "unverified": "Financial evidence unverified",
+               "event_review": "Filing/event review unresolved",
+               "filing_review": "Filing/event review unresolved",
+               "filing_unverified": "Filing/event review unresolved",
+               "insufficient_value_upside": "Valuation upside/evidence insufficient",
+               "valuation_unverified": "Valuation upside/evidence insufficient",
+               "analysis_error": "Analysis errors"}
+    for item in audit:
+        groups[mapping.get(item.get("decision"), "Price-pattern/timing/other exclusions")] += 1
+    return {"audited_candidates": len(audit), "outcomes": groups}
+
+
+def decision_summary_html(audit, scope=None):
+    scope = scope or {}
+    summary = decision_summary(audit)
+    parts = ["<h2>What happened in this scan</h2>"]
+    coverage = scope.get("stage1_coverage")
+    if coverage:
+        parts.append(f"<p>Processed {coverage['processed_count']}/{coverage['requested_count']} configured symbols; "
+                     f"price-screen stage completed: {escape(str(coverage['completed']))}; "
+                     f"recorded price-source gaps: {len(coverage['data_gaps'])}.</p>")
+    health = scope.get("provider_health")
+    if health:
+        parts.append(f"<p>Source health: {escape(health['status'])}; "
+                     f"company-analysis errors: {health['company_analysis_errors']}/{health['company_candidates']}.</p>")
+    parts.append(f"<p>{summary['audited_candidates']} price-screen candidates received an audit outcome. "
+                 "Zero selections does not mean zero price-screen candidates. Outcomes below count each audit record once; "
+                 "they do not show every criterion a company might fail.</p><table><tr><th>Outcome</th><th>Count</th></tr>")
+    for label, count in summary["outcomes"].items():
+        parts.append(f"<tr><td>{escape(label)}</td><td>{count}</td></tr>")
+    parts.append("</table><p>Unverified evidence is unresolved, not a demonstrated financial failure. "
+                 "A filing hold can occur before risk and valuation checks; resolving it alone does not qualify a stock. "
+                 "Price-watch alerts refer to older saved baselines and are separate from new selections.</p>")
+    held = [item for item in audit if item.get("decision") in {"event_review", "filing_review", "filing_unverified"}]
+    if held:
+        counts = Counter((item.get("filing_content_review") or {}).get("status", "NOT_COLLECTED") for item in held)
+        parts.append("<p>Held-company document collection: " + "; ".join(
+            f"{escape(status)}: {count}" for status, count in sorted(counts.items()))
+            + ". Indexed documents still require financial interpretation; deferred or partial collection is not clearance.</p>")
+    parts.append("<p>Full evidence and remaining questions: research_report.json, filing_review.md and filing_contents.md "
+                 "in this run's Actions artifacts.</p>")
+    return "".join(parts)
+
+
 def write_research_report(audit, selected, prefix="research_report", scope=None):
     data = clean({"generated_at": datetime.now(timezone.utc).isoformat(),
                   "selected_tickers": [stock["ticker"] for stock in selected],
                   "documented_12m_tickers": [stock["ticker"] for stock in selected if (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE"],
                   "research_watch_tickers": [stock["ticker"] for stock in selected if (stock.get("goal_fit") or {}).get("status") != "DOCUMENTED_12M_CASE"],
                   "scan_scope": scope or {"type": "unspecified"},
-                  "candidates": audit,
+                  "candidates": audit, "decision_summary": decision_summary(audit),
                   "notice": "Research screens and illustrative sensitivities; no guaranteed return or survival probability"})
     Path(f"{prefix}.json").write_text(json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     lines = ["# Financial research report", "", data["notice"], "",
@@ -90,14 +144,22 @@ def filing_review_summary_html(audit):
     for item in held:
         check = item.get("official_filing_check") or {}
         documents = ([check["latest_financial_report"]] if check.get("latest_financial_report") else []) + check.get("event_filings", [])
-        links = [f'<a href="{escape(document["url"], quote=True)}">{escape(document["form"])} {escape(document["filingDate"])}</a>' for document in documents]
+        sources = [(doc["url"], f"{doc['form']} {doc['filingDate']}") for doc in documents]
         for source in (item.get("review_hold") or {}).get("sources", []):
-            links.append(f'<a href="{escape(source["url"], quote=True)}">Disclosure {escape(source["published_at"])}</a>')
+            sources.append((source["url"], f"Disclosure {source['published_at']}"))
+        unique = dict(sources)
+        safe_sources = [(url, label) for url, label in unique.items() if safe_website(url)]
+        links = [f'<a href="{escape(url, quote=True)}">{escape(label)}</a>' for url, label in safe_sources[:2]]
+        if len(safe_sources) > 2:
+            links.append(f"{len(safe_sources) - 2} more source links in filing_review.md")
         notes = (item.get("review_hold") or {}).get("review_notes", [])
         findings = ("<ul>" + "".join(f'<li>{escape(note["finding"])} <a href="{escape(note["source_url"], quote=True)}">Source</a></li>' for note in notes) + "</ul>") if notes else ""
         content = item.get("filing_content_review") or {}
         content_note = f" Content index: {escape(content['status'])}; contents still require interpretation." if content else ""
-        rows.append(f"<li><strong>{escape(item['ticker'])}</strong>: {escape(item.get('reason', 'Review required'))}.{content_note} {'; '.join(links)}{findings}</li>")
+        reason = item.get('reason', 'Review required')
+        if len(reason) > 260:
+            reason = reason[:260].rsplit(" ", 1)[0] + "… (full reason in filing_review.md)"
+        rows.append(f"<li><strong>{escape(item['ticker'])}</strong>: {escape(reason)}.{content_note} {'; '.join(links)}{findings}</li>")
     return ("<h2>Held for filing review</h2><p>These names did not qualify for selection. "
             "An unavailable source is unverified; it is not an empty event search. "
             "Filing metadata does not verify document contents.</p><ul>" + "".join(rows) + "</ul>")
