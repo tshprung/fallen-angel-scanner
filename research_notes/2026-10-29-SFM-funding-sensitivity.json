@@ -1,0 +1,175 @@
+{
+  "reviewed_at": "2026-10-29",
+  "status": "ILLUSTRATIVE_RESEARCH_NOT_ADMITTED",
+  "sources": {
+    "q3_2026": "https://www.sec.gov/Archives/edgar/data/1575515/000157551526000060/sfm-20260927.htm",
+    "annual_2025": "https://investors.sprouts.com/news/news-details/2026/Sprouts-Farmers-Market-Inc--Reports-Fourth-Quarter-and-Full-Year-2025-Results/",
+    "credit_agreement": "https://www.sec.gov/Archives/edgar/data/1575515/000157551525000216/ex101sprouts-jpmxcreditagr.htm"
+  },
+  "basis": "USD millions except shares in millions, per-share prices and ratios. Fiscal-date-aligned 52-week bridge to September 27, 2026. Values are historical proxies, not forward forecasts.",
+  "source_inputs": {
+    "annual_2025_ocf": 715.998,
+    "annual_2025_gross_ppe_purchases": 248.267,
+    "prior_ytd_ocf": 577.471,
+    "prior_ytd_gross_ppe_purchases": 176.081,
+    "current_ytd_ocf": 555.127,
+    "current_ytd_gross_ppe_purchases": 284.21,
+    "annual_2025_finance_lease_principal": 1.017,
+    "prior_ytd_finance_lease_principal": 0.793,
+    "current_ytd_finance_lease_principal": 0.598,
+    "annual_2025_buybacks_excluding_excise": 471.926,
+    "prior_ytd_buybacks_excluding_excise": 341.925,
+    "current_ytd_buybacks_excluding_excise": 299.221,
+    "shares_outstanding_at_2026_09_27": 92.673774,
+    "cash_excluding_separately_reported_restricted_cash": 228.664,
+    "revolver_commitment": 600,
+    "revolver_drawings": 0,
+    "issued_letters_of_credit": 22,
+    "revolver_maturity": "2030-07-25",
+    "reported_covenant_compliance_asof": "2026-09-27"
+  },
+  "calculations": {
+    "ttm_ocf": 693.654,
+    "ttm_gross_ppe_purchases": 356.39599999999996,
+    "ttm_finance_lease_principal": 0.8219999999999998,
+    "ttm_proxy_after_identified_finance_lease_principal": 336.43600000000004,
+    "ttm_buybacks_excluding_excise": 429.222,
+    "nominal_revolver_capacity_less_issued_lcs": 578,
+    "required_annual_equity_cashflow_for_double_at_20x": 603.30626874,
+    "required_cashflow_growth_pct": 79.32274451604462,
+    "dated_reference_price": 62.0,
+    "reference_price_date": "2026-10-28",
+    "assumed_dilution": 0.05
+  },
+  "matrix": [
+    {
+      "annual_equity_cashflow_proxy_usd_m": 250,
+      "cases": [
+        {
+          "multiple": 10,
+          "illustrative_price_usd": 25.69176022714237,
+          "return_vs_dated_price_pct": -58.561677052996174
+        },
+        {
+          "multiple": 15,
+          "illustrative_price_usd": 38.53764034071356,
+          "return_vs_dated_price_pct": -37.84251557949426
+        },
+        {
+          "multiple": 20,
+          "illustrative_price_usd": 51.38352045428474,
+          "return_vs_dated_price_pct": -17.123354105992348
+        },
+        {
+          "multiple": 25,
+          "illustrative_price_usd": 64.22940056785593,
+          "return_vs_dated_price_pct": 3.5958073675095736
+        }
+      ]
+    },
+    {
+      "annual_equity_cashflow_proxy_usd_m": 336.43600000000004,
+      "cases": [
+        {
+          "multiple": 10,
+          "illustrative_price_usd": 34.57453217511549,
+          "return_vs_dated_price_pct": -44.234625524007264
+        },
+        {
+          "multiple": 15,
+          "illustrative_price_usd": 51.86179826267324,
+          "return_vs_dated_price_pct": -16.351938286010903
+        },
+        {
+          "multiple": 20,
+          "illustrative_price_usd": 69.14906435023099,
+          "return_vs_dated_price_pct": 11.53074895198547
+        },
+        {
+          "multiple": 25,
+          "illustrative_price_usd": 86.43633043778873,
+          "return_vs_dated_price_pct": 39.41343618998181
+        }
+      ]
+    },
+    {
+      "annual_equity_cashflow_proxy_usd_m": 450,
+      "cases": [
+        {
+          "multiple": 10,
+          "illustrative_price_usd": 46.24516840885627,
+          "return_vs_dated_price_pct": -25.411018695393107
+        },
+        {
+          "multiple": 15,
+          "illustrative_price_usd": 69.36775261328441,
+          "return_vs_dated_price_pct": 11.88347195691033
+        },
+        {
+          "multiple": 20,
+          "illustrative_price_usd": 92.49033681771255,
+          "return_vs_dated_price_pct": 49.177962609213786
+        },
+        {
+          "multiple": 25,
+          "illustrative_price_usd": 115.61292102214068,
+          "return_vs_dated_price_pct": 86.47245326151722
+        }
+      ]
+    },
+    {
+      "annual_equity_cashflow_proxy_usd_m": 600,
+      "cases": [
+        {
+          "multiple": 10,
+          "illustrative_price_usd": 61.660224545141695,
+          "return_vs_dated_price_pct": -0.5480249271908155
+        },
+        {
+          "multiple": 15,
+          "illustrative_price_usd": 92.49033681771255,
+          "return_vs_dated_price_pct": 49.177962609213786
+        },
+        {
+          "multiple": 20,
+          "illustrative_price_usd": 123.32044909028339,
+          "return_vs_dated_price_pct": 98.90395014561837
+        },
+        {
+          "multiple": 25,
+          "illustrative_price_usd": 154.15056136285423,
+          "return_vs_dated_price_pct": 148.62993768202296
+        }
+      ]
+    }
+  ],
+  "stress": [
+    {
+      "ocf_decline_fraction": 0,
+      "ocf_after_shock_usd_m": 693.654,
+      "cashflow_proxy_usd_m_before_buybacks": 336.43600000000004,
+      "cashflow_proxy_after_unchanged_buybacks_usd_m": -92.78599999999994
+    },
+    {
+      "ocf_decline_fraction": 0.3,
+      "ocf_after_shock_usd_m": 485.5578,
+      "cashflow_proxy_usd_m_before_buybacks": 128.33980000000003,
+      "cashflow_proxy_after_unchanged_buybacks_usd_m": -300.88219999999995
+    },
+    {
+      "ocf_decline_fraction": 0.5,
+      "ocf_after_shock_usd_m": 346.827,
+      "cashflow_proxy_usd_m_before_buybacks": -10.39099999999996,
+      "cashflow_proxy_after_unchanged_buybacks_usd_m": -439.61299999999994
+    }
+  ],
+  "limitations": [
+    "Multiples, dilution and shocks are assumptions, not peer-supported estimates or probabilities.",
+    "The share count is a reported September snapshot, not a verified current diluted share count.",
+    "Operating lease payments are reflected in OCF; their full balance-sheet present value is not deducted again from this equity cash-flow proxy.",
+    "The extra principal deduction covers the identified finance-lease cash-flow line only; other obligations, commitments, working-capital changes and maturity timing need review.",
+    "Nominal revolver arithmetic does not establish unconditional drawability or current covenant headroom.",
+    "Stress holds investment and identified finance principal fixed and excludes extra costs, excise tax and working-capital shocks; it is not a liquidity forecast.",
+    "No registry, filing clearance, scanner threshold, paper ledger or selection is modified."
+  ]
+}
