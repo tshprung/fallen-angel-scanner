@@ -1,0 +1,176 @@
+{
+  "reviewed_at": "2026-10-29",
+  "status": "RESEARCH_ONLY_NOT_A_DOCUMENTED_RECOVERY_CASE",
+  "sources": {
+    "fy2025_20f": "https://www.sec.gov/Archives/edgar/data/1977102/000119312525323599/birk-20250930.htm",
+    "june_2026_6k": "https://www.sec.gov/Archives/edgar/data/1977102/000119312526347699/birk-20260630.htm",
+    "august_redemption_6k": "https://www.sec.gov/Archives/edgar/data/1977102/000119312526354080/project_cork_6-k_closing.htm",
+    "june_notes_closing_6k": "https://www.sec.gov/Archives/edgar/data/1977102/000119312526276652/project_boston_6-k_closi.htm"
+  },
+  "cashflow_basis": "EUR millions; FY2025 minus nine months ended June 30 2025 plus nine months ended June 30 2026. IFRS financing outflows reconciled separately, not annualized from a seasonal quarter.",
+  "source_inputs": {
+    "annual_2025": {
+      "ocf": 384.3,
+      "ppe": 76.727,
+      "intangibles": 8.228,
+      "rou_initial_costs": 1.43,
+      "interest_paid": 51.668,
+      "lease_principal": 42.719,
+      "lease_interest": 8.996,
+      "tra_paid": 0.0,
+      "refinance_fees": 0.25,
+      "interest_received": 5.445
+    },
+    "nine_months_2025": {
+      "ocf": 230.715,
+      "ppe": 54.092,
+      "intangibles": 7.799,
+      "rou_initial_costs": 1.43,
+      "interest_paid": 45.071,
+      "lease_principal": 31.512,
+      "lease_interest": 6.82,
+      "tra_paid": 0.0,
+      "refinance_fees": 0.25,
+      "interest_received": 4.317
+    },
+    "nine_months_2026": {
+      "ocf": 246.757,
+      "ppe": 84.663,
+      "intangibles": 1.236,
+      "rou_initial_costs": 0.808,
+      "interest_paid": 42.366,
+      "lease_principal": 39.513,
+      "lease_interest": 7.059,
+      "tra_paid": 14.627,
+      "refinance_fees": 3.614,
+      "interest_received": 2.518
+    }
+  },
+  "ttm_bridge": {
+    "ocf": 400.342,
+    "ppe": 107.298,
+    "intangibles": 1.6649999999999994,
+    "rou_initial_costs": 0.808,
+    "interest_paid": 48.963,
+    "lease_principal": 50.72,
+    "lease_interest": 9.235,
+    "tra_paid": 14.627,
+    "refinance_fees": 3.614,
+    "interest_received": 3.646
+  },
+  "cashflow_proxy_before_financing_outflows": 291.37899999999996,
+  "cashflow_proxy_after_identified_interest_leases_and_tra": 167.02599999999995,
+  "cashflow_proxy_if_interest_received_added": 170.67199999999994,
+  "cashflow_proxy_after_separately_identified_refinancing_fees": 163.41199999999995,
+  "capital_actions": {
+    "june_shares_m": 177.887817,
+    "august_shares_cancelled_m": 12.761613,
+    "derived_share_count_after_cancellation_m": 165.126204,
+    "august_redemption_usd_m": 499.99999734,
+    "subsequent_rcf_repayment_eur_m": 80,
+    "rcf_repaid_date": "2026-07-20"
+  },
+  "valuation_assumptions": {
+    "dated_reference_price_usd": 31.59000015258789,
+    "price_date": "2026-10-28",
+    "usd_per_eur": 1.1129660606384277,
+    "fx_asof": "2026-10-29T00:00:00+00:00",
+    "assumed_dilution": 0.05,
+    "share_base": "June reported outstanding less announced August cancellation; no assumption of additional buybacks or issuances",
+    "required_cashflow_eur_m_for_double_at_20x": 492.1222527569464,
+    "required_growth_vs_proxy_pct": 194.63811188494398,
+    "current_year_guidance_is_not_forward_forecast": true
+  },
+  "matrix": [
+    {
+      "annual_cashflow_eur_m": 167.02599999999995,
+      "cases": [
+        {
+          "cashflow_multiple": 15,
+          "illustrative_price_usd": 16.082440905467674,
+          "return_vs_dated_reference_pct": -49.09008918079989
+        },
+        {
+          "cashflow_multiple": 20,
+          "illustrative_price_usd": 21.443254540623567,
+          "return_vs_dated_reference_pct": -32.120118907733186
+        },
+        {
+          "cashflow_multiple": 25,
+          "illustrative_price_usd": 26.80406817577946,
+          "return_vs_dated_reference_pct": -15.150148634666472
+        }
+      ]
+    },
+    {
+      "annual_cashflow_eur_m": 250,
+      "cases": [
+        {
+          "cashflow_multiple": 15,
+          "illustrative_price_usd": 24.071762637954087,
+          "return_vs_dated_reference_pct": -23.79942221690018
+        },
+        {
+          "cashflow_multiple": 20,
+          "illustrative_price_usd": 32.095683517272114,
+          "return_vs_dated_reference_pct": 1.6007703774664206
+        },
+        {
+          "cashflow_multiple": 25,
+          "illustrative_price_usd": 40.11960439659015,
+          "return_vs_dated_reference_pct": 27.000962971833033
+        }
+      ]
+    },
+    {
+      "annual_cashflow_eur_m": 350,
+      "cases": [
+        {
+          "cashflow_multiple": 15,
+          "illustrative_price_usd": 33.70046769313572,
+          "return_vs_dated_reference_pct": 6.680808896339752
+        },
+        {
+          "cashflow_multiple": 20,
+          "illustrative_price_usd": 44.93395692418096,
+          "return_vs_dated_reference_pct": 42.241078528453
+        },
+        {
+          "cashflow_multiple": 25,
+          "illustrative_price_usd": 56.1674461552262,
+          "return_vs_dated_reference_pct": 77.80134816056623
+        }
+      ]
+    },
+    {
+      "annual_cashflow_eur_m": 500,
+      "cases": [
+        {
+          "cashflow_multiple": 15,
+          "illustrative_price_usd": 48.143525275908175,
+          "return_vs_dated_reference_pct": 52.40115556619964
+        },
+        {
+          "cashflow_multiple": 20,
+          "illustrative_price_usd": 64.19136703454423,
+          "return_vs_dated_reference_pct": 103.20154075493284
+        },
+        {
+          "cashflow_multiple": 25,
+          "illustrative_price_usd": 80.2392087931803,
+          "return_vs_dated_reference_pct": 154.00192594366607
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "The interim cash snapshot predates the August redemption; current cash, complete 24-month maturities and covenant headroom are not cleared.",
+    "The cash proxy excludes acquisitions, escrow movements, mandatory term-loan repayments, optional buybacks and some noncash financing accruals; liquidity needs and economic normalization require further analysis.",
+    "Tax receivable agreement payments are retained in the cash proxy and must not be ignored merely because they sit in financing activities.",
+    "Refinancing fees are shown separately; no additional gross-interest buffer or net-debt deduction is applied on top of identified cash financing costs.",
+    "Cash interest received is excluded from the main proxy and shown separately; no recurring income is assumed on cash spent in the August redemption.",
+    "All multiples, dilution, growth and FX assumptions are illustrative. No probabilities, peer-derived targets or forward estimates are established.",
+    "The derived share count is not a certified current diluted share count. No additional EPS uplift is mechanically added to issuer guidance.",
+    "No filing resolution, risk clearance or recovery-case registry entry is created."
+  ]
+}
