@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-10-29T22:57:10.837528+00:00",
+  "started_at": "2026-10-30T22:36:55.864954+00:00",
   "completed": true,
   "requested_symbols": [
     "TTD",
@@ -1704,14 +1704,15 @@
   ],
   "requested_count": 1699,
   "processed_count": 1699,
-  "quote_successes": 1698,
-  "histories_checked": 1587,
+  "quote_successes": 1697,
+  "histories_checked": 1598,
   "outcomes": {
-    "candidate": 320,
-    "no_recent_decline_or_price_unverified": 1266,
-    "insufficient_history": 6,
-    "biotechnology": 70,
-    "currency_unverified": 13,
+    "candidate": 368,
+    "no_recent_decline_or_price_unverified": 1229,
+    "insufficient_history": 5,
+    "biotechnology": 69,
+    "currency_unverified": 2,
+    "data_error": 2,
     "price_listing_filter": 3,
     "below_market_cap": 20,
     "liquidity_filter_or_missing_volume": 1
@@ -1724,28 +1725,16 @@
       "error_type": null
     },
     {
-      "ticker": "ITT",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "LBRDK",
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
     },
     {
-      "ticker": "MSM",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "QRVO",
+      "ticker": "PB",
       "stage": "price_history",
-      "outcome": "insufficient_history",
-      "error_type": null
+      "outcome": "data_error",
+      "error_type": "YFRateLimitError"
     },
     {
       "ticker": "WBS",
@@ -1754,46 +1743,10 @@
       "error_type": null
     },
     {
-      "ticker": "CRDA.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ICL.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "NICE.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ALV.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PUM.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "FRE.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CON.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
+      "ticker": "ANIP",
+      "stage": "quote",
+      "outcome": "data_error",
+      "error_type": "Exception"
     },
     {
       "ticker": "BLFS",
@@ -1818,21 +1771,9 @@
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
-    },
-    {
-      "ticker": "MCY",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PMT",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
     }
   ],
   "notice": "Configured/fallback universe only, not every listed company. Missing data and unverified prices do not establish that a stock failed the investment criteria.",
-  "updated_at": "2026-10-29T23:11:00.437634+00:00",
+  "updated_at": "2026-10-30T22:51:42.464135+00:00",
   "last_symbol": "ZWS"
 }

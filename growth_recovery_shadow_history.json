@@ -1434,5 +1434,1413 @@
       ]
     },
     "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "RUN",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 7.480000019073486,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 1801535360.0,
+    "core_decision": "not_selected",
+    "core_reason": "Persistent pre-drop decline rather than stable-business price history",
+    "price_dislocation": {
+      "drop_21d_pct": -2.094238877070942,
+      "drop_recent_peak_pct": -32.18494832131269,
+      "recent_peak_date": "2026-08-04"
+    },
+    "reasons": [
+      "Positive trailing operating and free cash flow required",
+      "Positive cash flow after financing buffer required"
+    ],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": -3261690000.0,
+      "current_debt_coverage": 1.2693043657976881,
+      "cash": 712425000.0,
+      "total_debt": 15230687000.0,
+      "current_debt": 561272000.0,
+      "annual_share_growth": 0.03522967978658342
+    },
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-06-30",
+      "comparison_asof": "2025-06-30",
+      "latest_revenue": 869988000.0,
+      "year_ago_revenue": 569336000.0,
+      "growth_pct": 52.80748099540518
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 712425000.0,
+          "debt": 15230687000.0,
+          "current_debt": 561272000.0,
+          "equity": 3490084000.0,
+          "current_assets": 2166508000.0,
+          "current_liabilities": 1523449000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": -200131000.0,
+          "capex": -2010977000.0,
+          "fcf": -2211108000.0
+        }
+      },
+      "income": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ebit": 133481000.0,
+          "interest": 1050582000.0,
+          "ebitda": 881800000.0,
+          "revenue": 3475609000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "EXCLUDE",
+      "flags": [
+        "Statement debt/equity exceeds policy",
+        "Insufficient interest coverage",
+        "Net debt/EBITDA exceeds policy",
+        "Cash runway under policy minimum at the current FCF burn rate"
+      ],
+      "missing": [],
+      "review": [
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+        "Non-positive operating cash flow"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": -3261690000.0,
+        "debt_equity": 4.363988660444849,
+        "interest_coverage": 0.12705433750054732,
+        "net_debt_ebitda": 16.464347924699478,
+        "current_debt_coverage": 1.2693043657976881,
+        "cash_runway_months": 2.6210645401616954,
+        "current_ratio": 1.4221073367076942
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "RUSHA",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 42.97999954223633,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 5019817984.0,
+    "core_decision": "exclude",
+    "core_reason": "Cash plus stressed annual FCF does not cover current debt adequately; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days",
+    "price_dislocation": {
+      "drop_21d_pct": -6.949554405521241,
+      "drop_recent_peak_pct": -22.10004758231111,
+      "recent_peak_date": "2026-08-04"
+    },
+    "reasons": [
+      "Cash plus stressed cash flow insufficient for current debt",
+      "Invalid quarterly revenues",
+      "Fresh income statement required",
+      "Four consecutive quarters required for income",
+      "Statement periods do not align within 120 days"
+    ],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": 300293000.0,
+      "current_debt_coverage": 0.48386218681176574,
+      "cash": 264937000.0,
+      "total_debt": 1485150000.0,
+      "current_debt": 1013009000.0,
+      "annual_share_growth": -0.03424622452810244
+    },
+    "revenue_growth": {
+      "status": "UNVERIFIED",
+      "reason": "Invalid quarterly revenues"
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 264937000.0,
+          "debt": 1485150000.0,
+          "current_debt": 1013009000.0,
+          "equity": 2331388000.0,
+          "current_assets": 2293235000.0,
+          "current_liabilities": 1579501000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 674332000.0,
+          "capex": -325888000.0,
+          "fcf": 348444000.0
+        }
+      },
+      "income": {
+        "asof": "2025-12-31",
+        "basis": "annual",
+        "periods": [
+          "2025-12-31"
+        ],
+        "values": {
+          "ebit": 394017000.0,
+          "interest": 48151000.0,
+          "ebitda": 646860000.0,
+          "revenue": 7434195000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "EXCLUDE",
+      "flags": [
+        "Cash plus stressed annual FCF does not cover current debt adequately"
+      ],
+      "missing": [
+        "Fresh income statement (maximum 200 days from period end)",
+        "Financial statement dates do not align within 120 days"
+      ],
+      "review": [
+        "income: annual fallback; current TTM quarters unavailable",
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": 300293000.0,
+        "debt_equity": 0.6370239531129096,
+        "interest_coverage": 8.18294531785425,
+        "net_debt_ebitda": 1.8863633552855332,
+        "current_debt_coverage": 0.48386218681176574,
+        "current_ratio": 1.4518730915649942
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SAFE",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 11.300000190734863,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 800224000.0,
+    "core_decision": "specialist_review",
+    "core_reason": "FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex",
+    "price_dislocation": {
+      "drop_21d_pct": -4.1560625335333,
+      "drop_recent_peak_pct": -31.30699290790997,
+      "recent_peak_date": "2026-08-03"
+    },
+    "reasons": [
+      "Specialist financial model required"
+    ],
+    "metrics": {},
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-06-30",
+      "comparison_asof": "2025-06-30",
+      "latest_revenue": 114646000.0,
+      "year_ago_revenue": 93842000.0,
+      "growth_pct": 22.169177980008946
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 15922000.0,
+          "debt": 4559251000.0,
+          "current_debt": null,
+          "equity": 2439146000.0,
+          "current_assets": 2590746000.0,
+          "current_liabilities": 143489000.0
+        }
+      },
+      "cashflow": {
+        "asof": null,
+        "basis": "unavailable",
+        "periods": [],
+        "values": {
+          "ocf": null,
+          "capex": null,
+          "fcf": null
+        }
+      },
+      "income": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ebit": 333836000.0,
+          "interest": 213698000.0,
+          "ebitda": 343839000.0,
+          "revenue": 419533000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "SPECIALIST_REVIEW",
+      "flags": [],
+      "missing": [
+        "FFO/AFFO with issuer reconciliation",
+        "Property/debt maturities, secured debt and occupancy",
+        "Distribution coverage and maintenance capex"
+      ],
+      "review": [
+        "Ordinary-company solvency model does not apply"
+      ],
+      "metrics": {},
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SAH",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 63.22999954223633,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 1999003904.0,
+    "core_decision": "exclude",
+    "core_reason": "Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days",
+    "price_dislocation": {
+      "drop_21d_pct": -0.831240265446942,
+      "drop_recent_peak_pct": -28.36750657427035,
+      "recent_peak_date": "2026-08-04"
+    },
+    "reasons": [
+      "Positive trailing operating and free cash flow required",
+      "Positive cash flow after financing buffer required",
+      "Cash plus stressed cash flow insufficient for current debt",
+      "Invalid quarterly revenues",
+      "Fresh income statement required",
+      "Four consecutive quarters required for income",
+      "Statement periods do not align within 120 days"
+    ],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": -244300000.0,
+      "current_debt_coverage": 0.007700637709060282,
+      "cash": 19200000.0,
+      "total_debt": 4671800000.0,
+      "current_debt": 2493300000.0,
+      "annual_share_growth": -0.015770852379150213
+    },
+    "revenue_growth": {
+      "status": "UNVERIFIED",
+      "reason": "Invalid quarterly revenues"
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 19200000.0,
+          "debt": 4671800000.0,
+          "current_debt": 2493300000.0,
+          "equity": 1025600000.0,
+          "current_assets": 3099200000.0,
+          "current_liabilities": 3063900000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 170100000.0,
+          "capex": -225300000.0,
+          "fcf": -55200000.0
+        }
+      },
+      "income": {
+        "asof": "2025-12-31",
+        "basis": "annual",
+        "periods": [
+          "2025-12-31"
+        ],
+        "values": {
+          "ebit": 361900000.0,
+          "interest": 189100000.0,
+          "ebitda": 525300000.0,
+          "revenue": 15153600000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "EXCLUDE",
+      "flags": [
+        "Statement debt/equity exceeds policy",
+        "Insufficient interest coverage",
+        "Net debt/EBITDA exceeds policy",
+        "Cash plus stressed annual FCF does not cover current debt adequately",
+        "Cash runway under policy minimum at the current FCF burn rate"
+      ],
+      "missing": [
+        "Fresh income statement (maximum 200 days from period end)",
+        "Financial statement dates do not align within 120 days"
+      ],
+      "review": [
+        "income: annual fallback; current TTM quarters unavailable",
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": -244300000.0,
+        "debt_equity": 4.5551872074882995,
+        "interest_coverage": 1.913802221047065,
+        "net_debt_ebitda": 8.85703407576623,
+        "current_debt_coverage": 0.007700637709060282,
+        "cash_runway_months": 0.9431027425296766,
+        "current_ratio": 1.011521263748817
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SANM",
+    "status": "OBSERVE_REVIEW_REQUIRED",
+    "selection_eligible": false,
+    "observed_price": 165.57000732421875,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 8874115072.0,
+    "core_decision": "risk_excluded",
+    "core_reason": "Risk score 4/10 exceeds policy",
+    "price_dislocation": {
+      "drop_21d_pct": -25.405477421138233,
+      "drop_recent_peak_pct": -27.71131148376472,
+      "recent_peak_date": "2026-10-02"
+    },
+    "reasons": [],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": 499634000.0,
+      "current_debt_coverage": 10.32403488372093,
+      "cash": 1844942000.0,
+      "total_debt": 2172310000.0,
+      "current_debt": 215000000.0,
+      "annual_share_growth": -0.009588101110884484
+    },
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-06-30",
+      "comparison_asof": "2025-06-30",
+      "latest_revenue": 3464016000.0,
+      "year_ago_revenue": 2041562000.0,
+      "growth_pct": 69.67478822587803
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 1844942000.0,
+          "debt": 2172310000.0,
+          "current_debt": 215000000.0,
+          "equity": 2559551000.0,
+          "current_assets": 7828414000.0,
+          "current_liabilities": 4396880000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 901056000.0,
+          "capex": -306908000.0,
+          "fcf": 594148000.0
+        }
+      },
+      "income": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ebit": 552323000.0,
+          "interest": 94514000.0,
+          "ebitda": 716793000.0,
+          "revenue": 12763372000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-09-30",
+    "ordinary_solvency": {
+      "status": "REVIEW",
+      "flags": [],
+      "missing": [],
+      "review": [
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": 499634000.0,
+        "debt_equity": 0.8487074490799363,
+        "interest_coverage": 5.84382207926868,
+        "net_debt_ebitda": 0.45671204936432136,
+        "current_debt_coverage": 10.32403488372093,
+        "current_ratio": 1.7804474991357508
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": {
+      "checker_version": 1,
+      "checked_at": "2026-10-30T22:54:23.392349+00:00",
+      "ticker": "SANM",
+      "notice": "SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.",
+      "cik": "0000897723",
+      "mapping_retrieved_at": "2026-10-29T22:55:16.726911+00:00",
+      "issuer": "SANMINA CORP",
+      "submissions_retrieved_at": "2026-10-30T22:54:23.416297+00:00",
+      "archive_sources": [],
+      "status": "METADATA_CHECKED",
+      "blocks_selection": false,
+      "findings": [],
+      "latest_financial_report": {
+        "accessionNumber": "0000897723-26-000037",
+        "filingDate": "2026-07-27",
+        "reportDate": "2026-06-27",
+        "form": "10-Q",
+        "primaryDocument": "sanm-20260627.htm",
+        "items": "",
+        "accepted_at": "2026-07-27T20:06:34.000Z",
+        "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+      },
+      "latest_annual_report": {
+        "accessionNumber": "0000897723-25-000042",
+        "filingDate": "2025-11-13",
+        "reportDate": "2025-09-27",
+        "form": "10-K",
+        "primaryDocument": "sanm-20250927.htm",
+        "items": "",
+        "accepted_at": "2025-11-13T19:29:45.000Z",
+        "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/sanm-20250927.htm"
+      },
+      "event_filings": []
+    },
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SARO",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 23.3799991607666,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 7736896000.0,
+    "core_decision": "exclude",
+    "core_reason": "Net debt/EBITDA exceeds policy",
+    "price_dislocation": {
+      "drop_21d_pct": 10.439296535229591,
+      "drop_recent_peak_pct": -24.60496940276985,
+      "recent_peak_date": "2026-08-05"
+    },
+    "reasons": [
+      "Quarterly revenue growth below exploratory threshold"
+    ],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": 51894000.0,
+      "current_debt_coverage": 4.434524778256978,
+      "cash": 179063000.0,
+      "total_debt": 2563045000.0,
+      "current_debt": 49156000.0,
+      "annual_share_growth": -0.0005004609945840066
+    },
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-06-30",
+      "comparison_asof": "2025-06-30",
+      "latest_revenue": 1599693000.0,
+      "year_ago_revenue": 1528943000.0,
+      "growth_pct": 4.627379830379552
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 179063000.0,
+          "debt": 2563045000.0,
+          "current_debt": 49156000.0,
+          "equity": 2753493000.0,
+          "current_assets": 3029262000.0,
+          "current_liabilities": 1419069000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 290581000.0,
+          "capex": -72666000.0,
+          "fcf": 217915000.0
+        }
+      },
+      "income": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ebit": 598157000.0,
+          "interest": 166021000.0,
+          "ebitda": 788102000.0,
+          "revenue": 6324532000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "EXCLUDE",
+      "flags": [
+        "Net debt/EBITDA exceeds policy"
+      ],
+      "missing": [],
+      "review": [
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": 51894000.0,
+        "debt_equity": 0.930834035169147,
+        "interest_coverage": 3.6028996331789354,
+        "net_debt_ebitda": 3.0249663114672973,
+        "current_debt_coverage": 4.434524778256978,
+        "current_ratio": 2.134682668707441
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SCHW",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 88.05000305175781,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 152268013568.0,
+    "core_decision": "specialist_review",
+    "core_reason": "Business-specific capital, funding, asset quality and regulatory requirements",
+    "price_dislocation": {
+      "drop_21d_pct": -10.491002751530164,
+      "drop_recent_peak_pct": -22.525295319324556,
+      "recent_peak_date": "2026-08-24"
+    },
+    "reasons": [
+      "Specialist financial model required"
+    ],
+    "metrics": {},
+    "revenue_growth": {
+      "status": "UNVERIFIED",
+      "reason": "Invalid quarterly revenues"
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 40580000000.0,
+          "debt": 37345000000.0,
+          "current_debt": 14445000000.0,
+          "equity": 50147000000.0,
+          "current_assets": null,
+          "current_liabilities": null
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 11417000000.0,
+          "capex": -628000000.0,
+          "fcf": 10789000000.0
+        }
+      },
+      "income": {
+        "asof": null,
+        "basis": "unavailable",
+        "periods": [],
+        "values": {
+          "ebit": null,
+          "interest": null,
+          "ebitda": null,
+          "revenue": null
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "SPECIALIST_REVIEW",
+      "flags": [],
+      "missing": [
+        "Business-specific capital, funding, asset quality and regulatory requirements"
+      ],
+      "review": [
+        "Ordinary-company solvency model does not apply"
+      ],
+      "metrics": {},
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SEDG",
+    "status": "UNVERIFIED",
+    "selection_eligible": false,
+    "observed_price": 30.049999237060547,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 1848848640.0,
+    "core_decision": "not_selected",
+    "core_reason": "Persistent pre-drop decline rather than stable-business price history",
+    "price_dislocation": {
+      "drop_21d_pct": -2.65630573333413,
+      "drop_recent_peak_pct": -38.37161552200058,
+      "recent_peak_date": "2026-08-04"
+    },
+    "reasons": [
+      "Gross interest expense required for funding buffer"
+    ],
+    "metrics": {
+      "cash": 527257000.0,
+      "total_debt": 407353000.0,
+      "current_debt": 13473000.0,
+      "annual_share_growth": 0.04020581684503899
+    },
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-06-30",
+      "comparison_asof": "2025-06-30",
+      "latest_revenue": 346245000.0,
+      "year_ago_revenue": 289429000.0,
+      "growth_pct": 19.63037567071717
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 527257000.0,
+          "debt": 407353000.0,
+          "current_debt": 13473000.0,
+          "equity": 412085000.0,
+          "current_assets": 1868137000.0,
+          "current_liabilities": 920325000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 114081000.0,
+          "capex": -24085000.0,
+          "fcf": 89996000.0
+        }
+      },
+      "income": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ebit": -264702000.0,
+          "interest": null,
+          "ebitda": -238731000.0,
+          "revenue": 1332281000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "UNVERIFIED",
+      "flags": [],
+      "missing": [
+        "Usable statement interest expense and EBIT for a company with debt"
+      ],
+      "review": [
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Non-positive operating earnings require a turnaround thesis"
+      ],
+      "metrics": {
+        "debt_equity": 0.9885169321863208,
+        "current_ratio": 2.0298666232037594
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SEZL",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 134.85000610351562,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 4555691520.0,
+    "core_decision": "specialist_review",
+    "core_reason": "Business-specific capital, funding, asset quality and regulatory requirements",
+    "price_dislocation": {
+      "drop_21d_pct": 22.90936572445976,
+      "drop_recent_peak_pct": -24.46647228725942,
+      "recent_peak_date": "2026-08-06"
+    },
+    "reasons": [
+      "Specialist financial model required"
+    ],
+    "metrics": {},
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-06-30",
+      "comparison_asof": "2025-06-30",
+      "latest_revenue": 149683000.0,
+      "year_ago_revenue": 98702000.0,
+      "growth_pct": 51.65143563453629
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 79757000.0,
+          "debt": 122115000.0,
+          "current_debt": 281000.0,
+          "equity": 232973000.0,
+          "current_assets": 408364000.0,
+          "current_liabilities": 101664000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 275597000.0,
+          "capex": -3696000.0,
+          "fcf": 271901000.0
+        }
+      },
+      "income": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ebit": 200934000.0,
+          "interest": null,
+          "ebitda": 202630000.0,
+          "revenue": 531887000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "SPECIALIST_REVIEW",
+      "flags": [],
+      "missing": [
+        "Business-specific capital, funding, asset quality and regulatory requirements"
+      ],
+      "review": [
+        "Ordinary-company solvency model does not apply"
+      ],
+      "metrics": {},
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SF",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 66.69000244140625,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 10007568384.0,
+    "core_decision": "specialist_review",
+    "core_reason": "Business-specific capital, funding, asset quality and regulatory requirements",
+    "price_dislocation": {
+      "drop_21d_pct": -5.1890731966362065,
+      "drop_recent_peak_pct": -22.16386297400885,
+      "recent_peak_date": "2026-08-13"
+    },
+    "reasons": [
+      "Specialist financial model required"
+    ],
+    "metrics": {},
+    "revenue_growth": {
+      "status": "UNVERIFIED",
+      "reason": "Invalid quarterly revenues"
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-06-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 2626413000.0,
+          "debt": 1960945000.0,
+          "current_debt": null,
+          "equity": 6013241000.0,
+          "current_assets": null,
+          "current_liabilities": null
+        }
+      },
+      "cashflow": {
+        "asof": "2026-06-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31",
+          "2025-09-30"
+        ],
+        "values": {
+          "ocf": 454294000.0,
+          "capex": -93321000.0,
+          "fcf": 360973000.0
+        }
+      },
+      "income": {
+        "asof": null,
+        "basis": "unavailable",
+        "periods": [],
+        "values": {
+          "ebit": null,
+          "interest": null,
+          "ebitda": null,
+          "revenue": null
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "SPECIALIST_REVIEW",
+      "flags": [],
+      "missing": [
+        "Business-specific capital, funding, asset quality and regulatory requirements"
+      ],
+      "review": [
+        "Ordinary-company solvency model does not apply"
+      ],
+      "metrics": {},
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": null
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SFD",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 18.34000015258789,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 7222307328.0,
+    "core_decision": "event_review",
+    "core_reason": "September 8 profit warning: Fresh Pork margin compression and lower hog prices undermine an unchanged historical cash-flow assumption.",
+    "price_dislocation": {
+      "drop_21d_pct": -1.2917102911930045,
+      "drop_recent_peak_pct": -29.407234504480652,
+      "recent_peak_date": "2026-08-03"
+    },
+    "reasons": [
+      "Quarterly revenue growth below exploratory threshold"
+    ],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": 897000000.0,
+      "current_debt_coverage": 2.7377958579881656,
+      "cash": 1178000000.0,
+      "total_debt": 2390000000.0,
+      "current_debt": 676000000.0,
+      "annual_share_growth": 0.0
+    },
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-09-30",
+      "comparison_asof": "2025-09-30",
+      "latest_revenue": 3437000000.0,
+      "year_ago_revenue": 3747000000.0,
+      "growth_pct": -8.273285294902589
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-09-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 1178000000.0,
+          "debt": 2390000000.0,
+          "current_debt": 676000000.0,
+          "equity": 7015000000.0,
+          "current_assets": 5116000000.0,
+          "current_liabilities": 2137000000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-09-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-09-30",
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31"
+        ],
+        "values": {
+          "ocf": 1303000000.0,
+          "capex": -376000000.0,
+          "fcf": 927000000.0
+        }
+      },
+      "income": {
+        "asof": "2026-09-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-09-30",
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31"
+        ],
+        "values": {
+          "ebit": 1166000000.0,
+          "interest": 30000000.0,
+          "ebitda": 1505000000.0,
+          "revenue": 15164000000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "REVIEW",
+      "flags": [],
+      "missing": [],
+      "review": [
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": 897000000.0,
+        "debt_equity": 0.3406985032074127,
+        "interest_coverage": 38.86666666666667,
+        "net_debt_ebitda": 0.8053156146179402,
+        "current_debt_coverage": 2.7377958579881656,
+        "current_ratio": 2.3940102948058026
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": null,
+    "review_hold": {
+      "status": "PENDING",
+      "reviewed_at": "2026-10-22",
+      "reason": "September 8 profit warning: Fresh Pork margin compression and lower hog prices undermine an unchanged historical cash-flow assumption.",
+      "release_condition": "Reconcile next results and outlook with normalized cash flow, capital spending and debt liquidity. Verify drawing/redemption of the October facility and covenant headroom; source evidence for operating recovery rather than assuming commodity weakness is temporary.",
+      "review_notes": [
+        {
+          "finding": "A $600m conditional delayed-draw facility is available through December 23, 2026 and matures three years after funding. Intended 2027-note redemption is a plan, not completed repayment; proceeds must not also be counted as extra cash.",
+          "published_at": "2026-10-16",
+          "source_url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000060/sfd-20261014.htm"
+        },
+        {
+          "finding": "The facility requires debt/capital at most 50% (55% for specified acquisitions) and defined EBITDA/interest coverage at least 3.5x. Actual headroom and operating recovery remain unresolved.",
+          "published_at": "2026-10-16",
+          "source_url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000060/sfd-20261014.htm"
+        }
+      ],
+      "sources": [
+        {
+          "published_at": "2026-09-08",
+          "url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000056/smithfieldformxpressreleas.htm"
+        },
+        {
+          "published_at": "2026-10-16",
+          "url": "https://investors.smithfieldfoods.com/sec-filings/sec-filings/content/0000091388-26-000060/sfd-20261014.htm"
+        }
+      ]
+    }
+  },
+  {
+    "date": "2026-10-30",
+    "method_id": "af057861180c",
+    "policy_id": "ed389e0b3210",
+    "observed_at": "2026-10-30T22:56:37.229928+00:00",
+    "ticker": "SFM",
+    "status": "NOT_MATCHED",
+    "selection_eligible": false,
+    "observed_price": 49.70000076293945,
+    "currency_context": {
+      "quote_currency": "USD",
+      "major_currency": "USD",
+      "quote_unit_scale": 1.0,
+      "quote_to_usd": 1.0,
+      "major_to_usd": 1.0,
+      "fx_asof": "2026-10-30T22:35:27.336405+00:00"
+    },
+    "market_cap_usd": 4583962112.0,
+    "core_decision": "risk_excluded",
+    "core_reason": "Risk score 4/10 exceeds policy",
+    "price_dislocation": {
+      "drop_21d_pct": -22.92183905788341,
+      "drop_recent_peak_pct": -44.03783117981833,
+      "recent_peak_date": "2026-08-03"
+    },
+    "reasons": [
+      "Quarterly revenue growth below exploratory threshold"
+    ],
+    "metrics": {
+      "fcf_after_additional_interest_buffer": 334334000.0,
+      "current_debt_coverage": 2.4452188593404127,
+      "cash": 228664000.0,
+      "total_debt": 2235561000.0,
+      "current_debt": 196062000.0,
+      "annual_share_growth": -0.03353998078243603
+    },
+    "revenue_growth": {
+      "status": "AVAILABLE",
+      "asof": "2026-09-30",
+      "comparison_asof": "2025-09-30",
+      "latest_revenue": 2304720000.0,
+      "year_ago_revenue": 2200430000.0,
+      "growth_pct": 4.739528183127839
+    },
+    "review_required": true,
+    "statement_snapshot": {
+      "balance": {
+        "asof": "2026-09-30",
+        "basis": "quarterly",
+        "periods": null,
+        "values": {
+          "cash": 228664000.0,
+          "debt": 2235561000.0,
+          "current_debt": 196062000.0,
+          "equity": 1529328000.0,
+          "current_assets": 735866000.0,
+          "current_liabilities": 759148000.0
+        }
+      },
+      "cashflow": {
+        "asof": "2026-09-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-09-30",
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31"
+        ],
+        "values": {
+          "ocf": 693654000.0,
+          "capex": -356396000.0,
+          "fcf": 337258000.0
+        }
+      },
+      "income": {
+        "asof": "2026-09-30",
+        "basis": "ttm_quarterly",
+        "periods": [
+          "2026-09-30",
+          "2026-06-30",
+          "2026-03-31",
+          "2025-12-31"
+        ],
+        "values": {
+          "ebit": 667485000.0,
+          "interest": 2924000.0,
+          "ebitda": 1006779000.0,
+          "revenue": 9108394000.0
+        }
+      }
+    },
+    "share_comparison_asof": "2025-12-31",
+    "ordinary_solvency": {
+      "status": "REVIEW",
+      "flags": [],
+      "missing": [],
+      "review": [
+        "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+        "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+        "Current assets below current liabilities"
+      ],
+      "metrics": {
+        "fcf_after_interest_buffer": 334334000.0,
+        "debt_equity": 1.461793022817865,
+        "interest_coverage": 228.2780437756498,
+        "net_debt_ebitda": 1.9933838508749189,
+        "current_debt_coverage": 2.4452188593404127,
+        "current_ratio": 0.9693314083683287
+      },
+      "policy_id": "ed389e0b3210"
+    },
+    "financial_currency": "USD",
+    "official_filing_check": {
+      "checker_version": 1,
+      "checked_at": "2026-10-30T22:54:30.862795+00:00",
+      "ticker": "SFM",
+      "notice": "SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.",
+      "cik": "0001575515",
+      "mapping_retrieved_at": "2026-10-29T22:55:16.726911+00:00",
+      "issuer": "Sprouts Farmers Market, Inc.",
+      "submissions_retrieved_at": "2026-10-30T22:54:30.889160+00:00",
+      "archive_sources": [],
+      "status": "METADATA_CHECKED",
+      "blocks_selection": false,
+      "findings": [],
+      "latest_financial_report": {
+        "accessionNumber": "0001575515-26-000060",
+        "filingDate": "2026-10-28",
+        "reportDate": "2026-09-27",
+        "form": "10-Q",
+        "primaryDocument": "sfm-20260927.htm",
+        "items": "",
+        "accepted_at": "2026-10-28T20:06:45.000Z",
+        "url": "https://www.sec.gov/Archives/edgar/data/1575515/000157551526000060/sfm-20260927.htm"
+      },
+      "latest_annual_report": {
+        "accessionNumber": "0001575515-26-000008",
+        "filingDate": "2026-02-19",
+        "reportDate": "2025-12-28",
+        "form": "10-K",
+        "primaryDocument": "sfm-20251228.htm",
+        "items": "",
+        "accepted_at": "2026-02-19T21:08:24.000Z",
+        "url": "https://www.sec.gov/Archives/edgar/data/1575515/000157551526000008/sfm-20251228.htm"
+      },
+      "event_filings": []
+    },
+    "review_hold": null
   }
 ]

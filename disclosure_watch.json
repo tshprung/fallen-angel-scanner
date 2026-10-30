@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-29T22:55:16.526239+00:00",
+  "checked_at": "2026-10-30T22:35:27.346367+00:00",
   "notice": "Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.",
   "watches": [
     {
@@ -8,7 +8,7 @@
       "expected_report_date": "2026-10-27",
       "expected_period_end": "2026-09-30",
       "question": "The acquisition-loan draw is documented in the October 27 filing. Reconcile post-close liquidity, 24-month payments and covenant headroom; test Pool recovery and recurring combined cash flow.",
-      "checked_at": "2026-10-29T22:55:16.526239+00:00",
+      "checked_at": "2026-10-30T22:35:27.346367+00:00",
       "documents": [
         {
           "id": "0000077360-26-000058",
@@ -36,7 +36,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-09-30",
       "issuer": "PENTAIR plc",
-      "source_checked_at": "2026-10-29T22:55:16.526239+00:00",
+      "source_checked_at": "2026-10-30T22:35:27.346367+00:00",
       "status": "EXPECTED_REPORT_REQUIRES_REVIEW",
       "source_status": "AVAILABLE",
       "expected_report_listed": true,
@@ -48,7 +48,7 @@
       "expected_report_date": "2026-11-05",
       "expected_period_end": "2026-09-30",
       "question": "Verify profit and cash conversion, collections, factoring, committed funding and covenant headroom behind sales growth. Issuer links do not verify filing contents.",
-      "checked_at": "2026-10-29T22:55:16.526239+00:00",
+      "checked_at": "2026-10-30T22:35:27.346367+00:00",
       "documents": [],
       "new_documents": [],
       "actionable_change": false,
@@ -64,7 +64,7 @@
       "expected_report_date": null,
       "expected_period_end": null,
       "question": "Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here.",
-      "checked_at": "2026-10-29T22:55:16.526239+00:00",
+      "checked_at": "2026-10-30T22:35:27.346367+00:00",
       "documents": [
         {
           "id": "0000057131-26-000035",
@@ -78,7 +78,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-07-25",
       "issuer": "LA-Z-BOY INC",
-      "source_checked_at": "2026-10-29T22:55:16.526239+00:00",
+      "source_checked_at": "2026-10-30T22:35:27.346367+00:00",
       "status": "UNCHANGED",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
