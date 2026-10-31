@@ -76,6 +76,16 @@
       }
     ]
   },
+  "ALB": {
+    "status": "PENDING",
+    "reviewed_at": "2026-10-31",
+    "reason": "Mandatory preferred conversion expected March 1, 2027 can materially dilute common shares; quarterly cash conversion includes Talison dividend timing and non-recurring working-capital benefits. A generic 5% dilution or unchanged cash run rate is not sufficient underwriting.",
+    "release_condition": "Model contractual preferred conversion shares and preferred dividends through conversion, normalize JV distributions and working capital, and review five-year debt/funding resilience across a lithium-price downturn before admitting a common-equity recovery case.",
+    "sources": [
+      {"published_at": "2026-02-11", "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000018/alb-20251231.htm"},
+      {"published_at": "2026-08-05", "url": "https://investors.albemarle.com/news-and-events/news/news-details/2026/Albemarle-Reports-Second-Quarter-2026-Results/default.aspx"}
+    ]
+  },
   "SFD": {
     "status": "PENDING",
     "reviewed_at": "2026-10-22",

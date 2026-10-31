@@ -18,6 +18,45 @@ from scanner_history import validate_price_bars
 
 LEDGER = "paper_tracking.json"
 PERFORMANCE_VERSION = 3
+BENCHMARK_VERSION = 1
+
+
+def benchmark_observation(selection, history):
+    """SPY comparison for USD observations, at the stock's exact entry/mark sessions."""
+    result = {"method_version": BENCHMARK_VERSION, "status": "UNVERIFIED", "ticker": "SPY"}
+    if selection.get("quote_currency") != "USD":
+        return dict(result, status="UNSUPPORTED_CURRENCY", reason="No non-USD benchmark or FX conversion configured")
+    performance = selection["performance"]
+    if performance.get("status") not in {"tracking", "complete_12m"} or performance.get("method_version") != PERFORMANCE_VERSION:
+        return dict(result, reason="Usable current-method stock outcome required")
+    try:
+        entry_day = pd.Timestamp(performance["entry_session"]).date()
+        mark_day = pd.Timestamp(performance["mark_session"]).date()
+        if history is None or history.empty:
+            raise ValueError("Benchmark history missing")
+        frame = history.copy()
+        frame.index = pd.Index([pd.Timestamp(stamp).date() for stamp in frame.index])
+        frame = frame[(frame.index >= entry_day) & (frame.index <= mark_day)].sort_index()
+        if (frame.empty or frame.index.has_duplicates or frame.index[0] != entry_day
+                or frame.index[-1] != mark_day):
+            raise ValueError("Benchmark sessions do not match stock endpoints or are duplicated")
+        if any((right-left).days > 10 for left, right in zip(frame.index, frame.index[1:])):
+            raise ValueError("Benchmark holding-window gap exceeds ten days")
+        closes = pd.to_numeric(frame["Close"], errors="coerce")
+        if not closes.map(lambda value: finite(value) is not None and value > 0).all():
+            raise ValueError("Benchmark holding-window close invalid")
+        validate_price_bars(frame)
+        entry = finite(frame.iloc[0]["Open"])
+        end = finite(frame.iloc[-1]["Close"])
+        stock_return = finite(performance.get("return_local_pct"))
+        if entry is None or entry <= 0 or end is None or end <= 0 or stock_return is None:
+            raise ValueError("Benchmark or stock return invalid")
+        benchmark_return = (end/entry-1)*100
+        return dict(result, status="MATCHED", entry_session=str(entry_day), mark_session=str(mark_day),
+                    return_pct=benchmark_return, stock_minus_benchmark_pp=stock_return-benchmark_return,
+                    return_basis="USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes")
+    except (ValueError, TypeError, KeyError, OverflowError) as exc:
+        return dict(result, reason=str(exc) if isinstance(exc, ValueError) else f"Malformed benchmark history ({type(exc).__name__})")
 
 
 def _write(path, data):
@@ -171,6 +210,32 @@ def refresh(path=LEDGER, loader=None, now=None):
     for selection in data["selections"]:
         if _needs_refresh(selection):
             selection["performance"] = assess_selection(selection, histories[selection["ticker"]], now)
+    benchmark_pending = []
+    for selection in data["selections"]:
+        performance = selection["performance"]
+        saved = performance.get("benchmark") or {}
+        if (performance.get("status") == "complete_12m" and saved.get("status") == "MATCHED"
+                and saved.get("method_version") == BENCHMARK_VERSION
+                and saved.get("entry_session") == performance.get("entry_session")
+                and saved.get("mark_session") == performance.get("mark_session")):
+            continue
+        if (selection.get("quote_currency") == "USD" and performance.get("status") in {"tracking", "complete_12m"}
+                and performance.get("entry_session") and performance.get("mark_session")
+                and performance.get("method_version") == PERFORMANCE_VERSION):
+            benchmark_pending.append(selection)
+        else:
+            performance["benchmark"] = benchmark_observation(selection, None)
+    if benchmark_pending:
+        start = min(row["selected_at"][:10] for row in benchmark_pending)
+        try:
+            benchmark_history = histories.get("SPY")
+            if benchmark_history is None:
+                benchmark_history = loader("SPY", start)
+        except Exception as exc:
+            print(f"Paper benchmark unavailable: {type(exc).__name__}")
+            benchmark_history = None
+        for selection in benchmark_pending:
+            selection["performance"]["benchmark"] = benchmark_observation(selection, benchmark_history)
     data["last_refreshed_at"] = pd.Timestamp(now or datetime.now(timezone.utc)).isoformat()
     _write(path, data)
     return data
@@ -186,7 +251,8 @@ def cohort_summary(data):
         group = groups.setdefault(key, {"policy_id": key[0], "screen_cohort": key[1],
             "research_status": key[2], "observations": 0, "tickers": set(),
             "pending": 0, "tracking": 0, "complete_12m": 0, "unverified": 0,
-            "touched_50pct": 0, "ended_50pct": 0, "touched_2x": 0, "ended_2x": 0, "ended_loss": 0})
+            "touched_50pct": 0, "ended_50pct": 0, "touched_2x": 0, "ended_2x": 0, "ended_loss": 0,
+            "benchmark_verified_complete": 0, "outperformed_benchmark": 0})
         group["observations"] += 1
         group["tickers"].add(selection["ticker"])
         performance = selection["performance"]
@@ -201,6 +267,11 @@ def cohort_summary(data):
             group["ended_2x"] += performance.get("ended_2x") is True
             value = finite(performance.get("return_local_pct"))
             group["ended_loss"] += value is not None and value < 0
+            benchmark = performance.get("benchmark") or {}
+            excess = finite(benchmark.get("stock_minus_benchmark_pp"))
+            if benchmark.get("status") == "MATCHED" and benchmark.get("method_version") == BENCHMARK_VERSION and excess is not None:
+                group["benchmark_verified_complete"] += 1
+                group["outperformed_benchmark"] += excess > 0
         elif status == "tracking" and performance.get("method_version") == PERFORMANCE_VERSION:
             group["tracking"] += 1
         else:
@@ -225,7 +296,7 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
              "Daily selections can repeat the same stock. These are correlated observations, not independent trades or a portfolio backtest.", "",
              f"Saved selections: {len(selections)}. Completed twelve-month observations under method v{PERFORMANCE_VERSION}: {sum(group['complete_12m'] for group in groups)}.", "",
              "Stored status counts (older methods may need refresh): " + (", ".join(f"{key}: {value}" for key, value in sorted(counts.items())) or "No selections recorded yet."), "",
-             "Unverified/stale names remain visible; their missing outcomes must not be interpreted as zero losses. No benchmark excess return or USD return is computed.", "",
+             "Unverified/stale names remain visible; their missing outcomes must not be interpreted as zero losses. USD observations compare against dividend/split-adjusted SPY at the same entry and mark sessions. Non-USD comparisons remain unsupported; no FX conversion is performed. Excess is a percentage-point difference, not risk-adjusted alpha.", "",
              "Completion requires usable holding-window closes, no duplicate sessions, no observed gap over ten calendar days and consistent supplied OHLC bounds. This coarse guard cannot detect every missing exchange session or verify delisting proceeds. Older completed metrics require refresh under the current method.", "",
              "## Cohorts", "",
              "Groups keep financial policy, price-screen cohort and research status as recorded at selection. Legacy/unknown values remain separate. Counts of +50%, doubled or losing outcomes use current-method completed observations only; unresolved outcomes remain in the total. These counts do not establish a success probability or a bankruptcy/delisting rate.", "",
@@ -236,8 +307,8 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
             "unique_tickers", "pending", "tracking", "unverified", "complete_12m", "touched_50pct", "ended_50pct", "touched_2x", "ended_2x", "ended_loss")]
         lines.append("| " + " | ".join(_cell(value) for value in values) + " |")
     lines += ["", "## Most recent 20 selections", "",
-             "| Selected | Ticker | Status | Local return | Entry session | Mark session |",
-             "|---|---|---|---:|---|---|"]
+             "| Selected | Ticker | Status | Local return | Entry session | Mark session | SPY return | Stock minus SPY |",
+             "|---|---|---|---:|---|---|---:|---:|"]
     for selection in reversed(selections[-20:]):
         performance = selection["performance"]
         value = performance.get("return_local_pct")
@@ -245,12 +316,17 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
         if status == "complete_12m" and performance.get("method_version") != PERFORMANCE_VERSION:
             status, value = "unverified (old method)", None
         result = f"{value:+.1f}%" if value is not None else "unverified/pending"
+        benchmark = performance.get("benchmark") or {}
+        matched = (performance.get("method_version") == PERFORMANCE_VERSION
+                   and benchmark.get("method_version") == BENCHMARK_VERSION and benchmark.get("status") == "MATCHED")
+        benchmark_return = f"{benchmark['return_pct']:+.1f}%" if matched else benchmark.get("status", "unverified/pending")
+        excess = f"{benchmark['stock_minus_benchmark_pp']:+.1f} pp" if matched else "unverified/pending"
         values = [selection['selected_at'][:10], selection['ticker'], status, result,
-                  performance.get('entry_session', '—'), performance.get('mark_session', '—')]
+                  performance.get('entry_session', '—'), performance.get('mark_session', '—'), benchmark_return, excess]
         lines.append("| " + " | ".join(_cell(value) for value in values) + " |")
     Path(path).write_text("\n".join(lines) + "\n", encoding="utf-8")
     if summary_path is not None:
-        _write(summary_path, {"method_version": PERFORMANCE_VERSION,
+        _write(summary_path, {"method_version": PERFORMANCE_VERSION, "benchmark_method_version": BENCHMARK_VERSION,
             "last_refreshed_at": (data or {}).get("last_refreshed_at"),
             "notice": "Correlated forward observations, not a portfolio backtest or calibrated success rate. Unknown outcomes stay in cohort totals.",
             "cohorts": groups})

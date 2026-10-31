@@ -204,4 +204,6 @@ def run_shadow(candidates, audit, fetch, output_dir, now=None, budget=None):
             (row["ticker"], row["status"], row["core_decision"], "; ".join(row.get("reasons", [])))) + " |")
     (directory/"growth_recovery_shadow.md").write_text("\n".join(lines)+"\n", encoding="utf-8")
     return {"status": "COLLECTED", "method_id": METHOD_ID, "counts": report["counts"],
+            "observations": [{key: row.get(key) for key in ("ticker", "core_decision", "core_reason")}
+                             for row in records if row["status"] == "OBSERVE_REVIEW_REQUIRED"],
             "notice": NOTICE}

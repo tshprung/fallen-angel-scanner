@@ -173,7 +173,9 @@ def test_current_method_completed_result_is_not_refetched(tmp_path):
     path.write_text(json.dumps(data), encoding="utf-8")
     def forbidden(*args):
         pytest.fail("Completed current-method observation should stay frozen")
-    assert refresh(path, forbidden)["selections"][0]["performance"] == performance
+    updated = refresh(path, forbidden)["selections"][0]["performance"]
+    assert {key: updated[key] for key in performance} == performance
+    assert updated["benchmark"]["status"] == "UNVERIFIED"  # Missing endpoints cannot trigger a benchmark fetch.
 
 
 def test_cohorts_keep_unknown_outcomes_and_separate_policy_screen_and_research_status(tmp_path):

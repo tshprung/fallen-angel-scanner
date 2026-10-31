@@ -1,0 +1,1628 @@
+{
+  "review_date": "2026-10-31",
+  "source_retrieved_at_utc": "2026-10-31T08:24:54.225166+00:00",
+  "scope": "Purposive 24-company current-source diagnostic, not a full-universe scan or unbiased performance test.",
+  "status": "NO_ADMITTED_CASES",
+  "price_source": "Yahoo Finance via yfinance, complete sessions through 2026-10-30",
+  "historical_window": "2023-10-31 through 2026-10-30; WDC post-2025-02-24 separation only",
+  "companies": [
+    {
+      "ticker": "ALB",
+      "price": 91.0,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 215.6199951171875,
+      "peak_date": "2026-04-16",
+      "return_to_peak_pct": 136.9450495793269,
+      "target_50pct": 136.5,
+      "market_cap_usd": 10738459648,
+      "shares_outstanding": 118005057,
+      "current_recent_drop": {
+        "drop_21d_pct": -13.358087158297117,
+        "drop_from_peak_pct": -57.796121852918915,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -36.474694589877835,
+        "recent_peak_age_sessions": 49,
+        "recent_peak_date": "2026-08-21",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "EXCLUDE",
+        "flags": [
+          "Insufficient interest coverage"
+        ],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 1169592000.0,
+          "debt_equity": 0.18265237291960842,
+          "interest_coverage": 1.9937955781919203,
+          "net_debt_ebitda": 0.24850373167242396,
+          "current_debt_coverage": 33.59644870575947,
+          "current_ratio": 2.0856649569033894
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 1743313000.0,
+        "year_ago_revenue": 1329992000.0,
+        "growth_pct": 31.076953846338927
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 1169592000.0,
+        "current_debt_coverage": 33.59644870575947,
+        "cash": 1631688000.0,
+        "total_debt": 1876784000.0,
+        "current_debt": 74677000.0,
+        "annual_share_growth": 0.001327843655092531
+      }
+    },
+    {
+      "ticker": "APTV",
+      "price": 43.93000030517578,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 90.47000122070312,
+      "peak_date": "2023-12-28",
+      "return_to_peak_pct": 105.94127155069484,
+      "target_50pct": 65.89500045776367,
+      "market_cap_usd": 9296489472,
+      "shares_outstanding": 211620527,
+      "current_recent_drop": {
+        "drop_21d_pct": -0.09097319630846368,
+        "drop_from_peak_pct": -50.456748379001006,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -23.239558524275385,
+        "recent_peak_age_sessions": 63,
+        "recent_peak_date": "2026-08-03",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 356000000.0,
+          "debt_equity": 0.6493773563349708,
+          "interest_coverage": 3.323170731707317,
+          "net_debt_ebitda": 2.360019175455417,
+          "current_debt_coverage": 9.178571428571429,
+          "current_ratio": 2.01781512605042
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 3274000000.0,
+        "year_ago_revenue": 3199000000.0,
+        "growth_pct": 2.3444826508283834
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 356000000.0,
+        "current_debt_coverage": 9.178571428571429,
+        "cash": 761000000.0,
+        "total_debt": 5684000000.0,
+        "current_debt": 112000000.0,
+        "annual_share_growth": -0.09483170557308307
+      }
+    },
+    {
+      "ticker": "BFAM",
+      "price": 54.97999954223633,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 140.72000122070312,
+      "peak_date": "2024-08-30",
+      "return_to_peak_pct": 155.9476216666758,
+      "target_50pct": 82.46999931335449,
+      "market_cap_usd": 2673968896,
+      "shares_outstanding": 48635306,
+      "current_recent_drop": {
+        "drop_21d_pct": -15.19358631901201,
+        "drop_from_peak_pct": -49.665844683189455,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -27.91398720058226,
+        "recent_peak_age_sessions": 63,
+        "recent_peak_date": "2026-08-03",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold",
+        "Cash plus stressed cash flow insufficient for current debt"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "EXCLUDE",
+        "flags": [
+          "Net debt/EBITDA exceeds policy",
+          "Cash plus stressed annual FCF does not cover current debt adequately"
+        ],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+          "Current assets below current liabilities"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 186032000.0,
+          "debt_equity": 2.177790802304988,
+          "interest_coverage": 6.234984067178387,
+          "net_debt_ebitda": 4.638427086450398,
+          "current_debt_coverage": 0.9308697614303739,
+          "current_ratio": 0.4786080076404383
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 779178000.0,
+        "year_ago_revenue": 731570000.0,
+        "growth_pct": 6.507647935262528
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 186032000.0,
+        "current_debt_coverage": 0.9308697614303739,
+        "cash": 163691000.0,
+        "total_debt": 2054787000.0,
+        "current_debt": 325733000.0,
+        "annual_share_growth": -0.031054772205554637
+      }
+    },
+    {
+      "ticker": "BROS",
+      "price": 42.869998931884766,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 85.37000274658203,
+      "peak_date": "2025-02-18",
+      "return_to_peak_pct": 99.13693695729879,
+      "target_50pct": 64.30499839782715,
+      "market_cap_usd": 7519244800,
+      "shares_outstanding": 137940798,
+      "current_recent_drop": {
+        "drop_21d_pct": 11.033406511760258,
+        "drop_from_peak_pct": -41.52230206034246,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -34.719049600708594,
+        "recent_peak_age_sessions": 61,
+        "recent_peak_date": "2026-08-05",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Annual share-count growth above exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+          "Annual share-count growth exceeds policy; dilution needs review"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 66663000.0,
+          "debt_equity": 1.5136024231118332,
+          "interest_coverage": 6.544797687861272,
+          "net_debt_ebitda": 2.931297328524365,
+          "current_debt_coverage": 6.9992805676376255,
+          "current_ratio": 1.3501288872035881
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 550851000.0,
+        "year_ago_revenue": 415813000.0,
+        "growth_pct": 32.475656124267395
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 66663000.0,
+        "current_debt_coverage": 6.9992805676376255,
+        "cash": 268624000.0,
+        "total_debt": 1207328000.0,
+        "current_debt": 45522000.0,
+        "annual_share_growth": 0.10068265299050516
+      }
+    },
+    {
+      "ticker": "CGNX",
+      "price": 56.150001525878906,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 72.41999816894531,
+      "peak_date": "2026-06-30",
+      "return_to_peak_pct": 28.975950491413172,
+      "target_50pct": 84.22500228881836,
+      "market_cap_usd": 9445769216,
+      "shares_outstanding": 168223842,
+      "current_recent_drop": {
+        "drop_21d_pct": -9.75570487903572,
+        "drop_from_peak_pct": -22.466165499080613,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -21.490486351522453,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "UNVERIFIED",
+      "shadow_reasons": [
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.044476559551534005,
+          "current_ratio": 3.9340650184464265
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 291263000.0,
+        "year_ago_revenue": 249093000.0,
+        "growth_pct": 16.92941993552608
+      },
+      "provider_cash_metrics": {
+        "cash": 302521000.0,
+        "total_debt": 72477000.0,
+        "current_debt": 12281000.0,
+        "annual_share_growth": -0.02016616402830418
+      }
+    },
+    {
+      "ticker": "DOCN",
+      "price": 89.6500015258789,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 181.2899932861328,
+      "peak_date": "2026-06-15",
+      "return_to_peak_pct": 102.21973251590026,
+      "target_50pct": 134.47500228881836,
+      "market_cap_usd": 10480811008,
+      "shares_outstanding": 116908096,
+      "current_recent_drop": {
+        "drop_21d_pct": -35.87267555874944,
+        "drop_from_peak_pct": -50.54884171991616,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -38.66310941457657,
+        "recent_peak_age_sessions": 29,
+        "recent_peak_date": "2026-09-21",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Positive trailing operating and free cash flow required",
+        "Positive cash flow after financing buffer required"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+          "Cash burn requires a funded turnaround thesis"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": -35320000.0,
+          "debt_equity": 1.6437799965833306,
+          "interest_coverage": 6.537211590339268,
+          "net_debt_ebitda": 2.0177817627828736,
+          "current_debt_coverage": 1.3511971870684067,
+          "cash_runway_months": 260.5977349943375,
+          "current_ratio": 1.3111638526398253
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 281184000.0,
+        "year_ago_revenue": 218700000.0,
+        "growth_pct": 28.57064471879287
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": -35320000.0,
+        "current_debt_coverage": 1.3511971870684067,
+        "cash": 767026000.0,
+        "total_debt": 1529917000.0,
+        "current_debt": 567664000.0,
+        "annual_share_growth": -0.003110581692534864
+      }
+    },
+    {
+      "ticker": "ENPH",
+      "price": 25.649999618530273,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 137.33999633789062,
+      "peak_date": "2023-12-26",
+      "return_to_peak_pct": 435.43859017710236,
+      "target_50pct": 38.47499942779541,
+      "market_cap_usd": 3393861120,
+      "shares_outstanding": 132314277,
+      "current_recent_drop": {
+        "drop_21d_pct": -21.84643553614861,
+        "drop_from_peak_pct": -64.53753771713923,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -39.361701935783046,
+        "recent_peak_age_sessions": 57,
+        "recent_peak_date": "2026-08-11",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 133255000.0,
+          "debt_equity": 0.46846468218312515,
+          "interest_coverage": 40.30293005671078,
+          "net_debt_ebitda": 1.207572051982928,
+          "current_debt_coverage": 55.2940313111546,
+          "current_ratio": 4.092221456686496
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 293329000.0,
+        "year_ago_revenue": 410427000.0,
+        "growth_pct": -28.53077404751637
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 133255000.0,
+        "current_debt_coverage": 55.2940313111546,
+        "cash": 380398000.0,
+        "total_debt": 581850000.0,
+        "current_debt": 8687000.0,
+        "annual_share_growth": -0.010328581783039414
+      }
+    },
+    {
+      "ticker": "FND",
+      "price": 47.59000015258789,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 133.75,
+      "peak_date": "2024-03-21",
+      "return_to_peak_pct": 181.04643742626004,
+      "target_50pct": 71.38500022888184,
+      "market_cap_usd": 5067857408,
+      "shares_outstanding": 106489965,
+      "current_recent_drop": {
+        "drop_21d_pct": 3.3890971424328287,
+        "drop_from_peak_pct": -37.91259073032066,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -24.08677429399043,
+        "recent_peak_age_sessions": 59,
+        "recent_peak_date": "2026-08-07",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "EXCLUDE",
+        "flags": [
+          "Net debt/EBITDA exceeds policy"
+        ],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 196175000.0,
+          "debt_equity": 0.8064485627078931,
+          "interest_coverage": 20.666206805938774,
+          "net_debt_ebitda": 3.0177945335934684,
+          "current_debt_coverage": 2.8406214510849432,
+          "current_ratio": 1.3333741555387646
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 1250270000.0,
+        "year_ago_revenue": 1214150000.0,
+        "growth_pct": 2.974920726434127
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 196175000.0,
+        "current_debt_coverage": 2.8406214510849432,
+        "cash": 320614000.0,
+        "total_debt": 2012794000.0,
+        "current_debt": 164663000.0,
+        "annual_share_growth": 0.0038873105981660494
+      }
+    },
+    {
+      "ticker": "FOUR",
+      "price": 40.029998779296875,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 125.66000366210938,
+      "peak_date": "2025-02-18",
+      "return_to_peak_pct": 213.91458279808768,
+      "target_50pct": 60.04499816894531,
+      "market_cap_usd": 3160773632,
+      "shares_outstanding": 78960120,
+      "current_recent_drop": {
+        "drop_21d_pct": 12.507017198515635,
+        "drop_from_peak_pct": -45.744104850094494,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -28.01654677226264,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "EXCLUDE",
+        "flags": [
+          "Statement debt/equity exceeds policy",
+          "Insufficient interest coverage",
+          "Net debt/EBITDA exceeds policy"
+        ],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 36900000.0,
+          "debt_equity": 2.822620519159456,
+          "interest_coverage": 1.60650535501785,
+          "net_debt_ebitda": 4.4893390191897655,
+          "current_debt_coverage": 14.210185185185185,
+          "current_ratio": 1.211111111111111
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 1295000000.0,
+        "year_ago_revenue": 966000000.0,
+        "growth_pct": 34.05797101449275
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 36900000.0,
+        "current_debt_coverage": 14.210185185185185,
+        "cash": 356000000.0,
+        "total_debt": 4567000000.0,
+        "current_debt": 27000000.0,
+        "annual_share_growth": -0.0644985568345301
+      }
+    },
+    {
+      "ticker": "FSLR",
+      "price": 174.39999389648438,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 318.25,
+      "peak_date": "2026-06-03",
+      "return_to_peak_pct": 82.48280455152894,
+      "target_50pct": 261.59999084472656,
+      "market_cap_usd": 18742730752,
+      "shares_outstanding": 107469788,
+      "current_recent_drop": {
+        "drop_21d_pct": 1.3305405136318837,
+        "drop_from_peak_pct": -45.200316136218575,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -30.253952502297977,
+        "recent_peak_age_sessions": 59,
+        "recent_peak_date": "2026-08-07",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 205921000.0,
+          "debt_equity": 0.029866921649488138,
+          "interest_coverage": 72.87025940675127,
+          "current_debt_coverage": 13.825411060688376,
+          "current_ratio": 2.5708286130402627
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 1230936000.0,
+        "year_ago_revenue": 1594856000.0,
+        "growth_pct": -22.818361030713742
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 205921000.0,
+        "current_debt_coverage": 13.825411060688376,
+        "cash": 1576003000.0,
+        "total_debt": 324974000.0,
+        "current_debt": 125164000.0,
+        "annual_share_growth": 0.0023305842061072113
+      }
+    },
+    {
+      "ticker": "IPGP",
+      "price": 72.58999633789062,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 153.91000366210938,
+      "peak_date": "2026-02-13",
+      "return_to_peak_pct": 112.02646566572594,
+      "target_50pct": 108.88499450683594,
+      "market_cap_usd": 3080982016,
+      "shares_outstanding": 42443616,
+      "current_recent_drop": {
+        "drop_21d_pct": -13.232138225727198,
+        "drop_from_peak_pct": -52.83607653128701,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -22.834063385370072,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold",
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.007641109488721677,
+          "current_ratio": 6.178979872390034
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 278580000.0,
+        "year_ago_revenue": 250721000.0,
+        "growth_pct": 11.111554277463798
+      },
+      "provider_cash_metrics": {
+        "cash": 399225000.0,
+        "total_debt": 16254000.0,
+        "current_debt": 5186000.0,
+        "annual_share_growth": -0.009906186956592955
+      }
+    },
+    {
+      "ticker": "LZB",
+      "price": 30.440000534057617,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 48.02000045776367,
+      "peak_date": "2025-01-30",
+      "return_to_peak_pct": 57.75295537211562,
+      "target_50pct": 45.660000801086426,
+      "market_cap_usd": 1219206400,
+      "shares_outstanding": 40052771,
+      "current_recent_drop": {
+        "drop_21d_pct": 3.3967390688160792,
+        "drop_from_peak_pct": -27.7645918961852,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -27.7645918961852,
+        "recent_peak_age_sessions": 59,
+        "recent_peak_date": "2026-08-07",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-07-31",
+        "cashflow": "2026-07-31",
+        "income": "2026-07-31"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 101712000.0,
+          "debt_equity": 0.5344245307226181,
+          "interest_coverage": 179.34782608695653,
+          "net_debt_ebitda": 1.10843154372181,
+          "current_debt_coverage": 3.8446851847706873,
+          "current_ratio": 1.6647225964154764
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-07-31",
+        "comparison_asof": "2025-07-31",
+        "latest_revenue": 475689000.0,
+        "year_ago_revenue": 492229000.0,
+        "growth_pct": -3.3602246109026512
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 101712000.0,
+        "current_debt_coverage": 3.8446851847706873,
+        "cash": 267254000.0,
+        "total_debt": 541511000.0,
+        "current_debt": 89354000.0,
+        "annual_share_growth": -0.019798853367019698
+      }
+    },
+    {
+      "ticker": "MDB",
+      "price": 352.9599914550781,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 500.8999938964844,
+      "peak_date": "2024-02-09",
+      "return_to_peak_pct": 41.91409962118464,
+      "target_50pct": 529.4399871826172,
+      "market_cap_usd": 28433166336,
+      "shares_outstanding": 80556341,
+      "current_recent_drop": {
+        "drop_21d_pct": 0.3496944901860477,
+        "drop_from_peak_pct": -25.266259063469832,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -25.266259063469832,
+        "recent_peak_age_sessions": 55,
+        "recent_peak_date": "2026-08-13",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-07-31",
+        "cashflow": "2026-07-31",
+        "income": "2026-07-31"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 656654000.0,
+          "debt_equity": 0.009595701984577078,
+          "interest_coverage": 32.90701606086221,
+          "current_debt_coverage": 159.5231565467933,
+          "current_ratio": 4.866370365757786
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-07-31",
+        "comparison_asof": "2025-07-31",
+        "latest_revenue": 771773000.0,
+        "year_ago_revenue": 591402000.0,
+        "growth_pct": 30.498882316935006
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 656654000.0,
+        "current_debt_coverage": 159.5231565467933,
+        "cash": 1002401000.0,
+        "total_debt": 28595000.0,
+        "current_debt": 9371000.0,
+        "annual_share_growth": 0.0003102234258616221
+      }
+    },
+    {
+      "ticker": "MLI",
+      "price": 54.560001373291016,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 70.41500091552734,
+      "peak_date": "2026-05-08",
+      "return_to_peak_pct": 29.059749162685854,
+      "target_50pct": 81.84000205993652,
+      "market_cap_usd": 11892682752,
+      "shares_outstanding": 217974381,
+      "current_recent_drop": {
+        "drop_21d_pct": -11.024132999308856,
+        "drop_from_peak_pct": -22.516508323640615,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -21.451191919915303,
+        "recent_peak_age_sessions": 60,
+        "recent_peak_date": "2026-08-06",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 689259000.0,
+          "debt_equity": 0.007552718235282224,
+          "interest_coverage": 3463.269696969697,
+          "current_debt_coverage": 240.15930204131524,
+          "current_ratio": 4.392208873811761
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 1418598000.0,
+        "year_ago_revenue": 1077824000.0,
+        "growth_pct": 31.616850246422423
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 689259000.0,
+        "current_debt_coverage": 240.15930204131524,
+        "cash": 1447799000.0,
+        "total_debt": 26521000.0,
+        "current_debt": 8181000.0,
+        "annual_share_growth": -0.02260528812167284
+      }
+    },
+    {
+      "ticker": "NOW",
+      "price": 105.12000274658203,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 234.0780029296875,
+      "peak_date": "2025-01-28",
+      "return_to_peak_pct": 122.67693760814566,
+      "target_50pct": 157.68000411987305,
+      "market_cap_usd": 109105840128,
+      "shares_outstanding": 1037917000,
+      "current_recent_drop": {
+        "drop_21d_pct": -23.693374754478704,
+        "drop_from_peak_pct": -43.7668506129848,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -33.87015707932045,
+        "recent_peak_age_sessions": 5,
+        "recent_peak_date": "2026-10-23",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+          "Current assets below current liabilities"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 4592000000.0,
+          "debt_equity": 0.6425626145387905,
+          "interest_coverage": 13.79746835443038,
+          "net_debt_ebitda": 1.747026399767914,
+          "current_debt_coverage": 2.648366606170599,
+          "current_ratio": 0.7186943620178041
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 4106000000.0,
+        "year_ago_revenue": 3407000000.0,
+        "growth_pct": 20.51658350454946
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 4592000000.0,
+        "current_debt_coverage": 2.648366606170599,
+        "cash": 2393000000.0,
+        "total_debt": 8415000000.0,
+        "current_debt": 2204000000.0,
+        "annual_share_growth": 0.014376691995137802
+      }
+    },
+    {
+      "ticker": "PATH",
+      "price": 13.729999542236328,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 26.8799991607666,
+      "peak_date": "2024-02-12",
+      "return_to_peak_pct": 95.77567412204309,
+      "target_50pct": 20.594999313354492,
+      "market_cap_usd": 7155463680,
+      "shares_outstanding": 456464703,
+      "current_recent_drop": {
+        "drop_21d_pct": 3.078077003045454,
+        "drop_from_peak_pct": -28.823230219836503,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -26.45956354510215,
+        "recent_peak_age_sessions": 43,
+        "recent_peak_date": "2026-08-31",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold",
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-07-31",
+        "cashflow": "2026-07-31",
+        "income": "2026-07-31"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.040932980455733514,
+          "current_ratio": 2.386634756174606
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-07-31",
+        "comparison_asof": "2025-07-31",
+        "latest_revenue": 410256000.0,
+        "year_ago_revenue": 361728000.0,
+        "growth_pct": 13.415605095541405
+      },
+      "provider_cash_metrics": {
+        "cash": 607414000.0,
+        "total_debt": 79760000.0,
+        "current_debt": 10322000.0,
+        "annual_share_growth": -0.029764043960273767
+      }
+    },
+    {
+      "ticker": "PINS",
+      "price": 19.360000610351562,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 44.97999954223633,
+      "peak_date": "2024-06-25",
+      "return_to_peak_pct": 132.33470105463766,
+      "target_50pct": 29.040000915527344,
+      "market_cap_usd": 10844646400,
+      "shares_outstanding": 481750308,
+      "current_recent_drop": {
+        "drop_21d_pct": -0.5138667976653855,
+        "drop_from_peak_pct": -42.55192827282623,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -24.315869163041548,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold",
+        "Nonnegative cash, total debt and current debt required",
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Statement current_debt",
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.38537645728231246,
+          "net_debt_ebitda": 1.8302277362797672,
+          "current_ratio": 4.281092870306186
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 1173929000.0,
+        "year_ago_revenue": 1049205000.0,
+        "growth_pct": 11.887476708555521
+      },
+      "provider_cash_metrics": {
+        "cash": 654344000.0,
+        "total_debt": 1196333000.0,
+        "current_debt": null,
+        "annual_share_growth": -0.016846344238260258
+      }
+    },
+    {
+      "ticker": "SANM",
+      "price": 165.57000732421875,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 282.7200012207031,
+      "peak_date": "2026-06-03",
+      "return_to_peak_pct": 70.7555648451966,
+      "target_50pct": 248.35501098632812,
+      "market_cap_usd": 8874115072,
+      "shares_outstanding": 53597356,
+      "current_recent_drop": {
+        "drop_21d_pct": -25.405477421138233,
+        "drop_from_peak_pct": -41.43675487785251,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -27.71131148376472,
+        "recent_peak_age_sessions": 20,
+        "recent_peak_date": "2026-10-02",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 499634000.0,
+          "debt_equity": 0.8487074490799363,
+          "interest_coverage": 5.84382207926868,
+          "net_debt_ebitda": 0.45671204936432136,
+          "current_debt_coverage": 10.32403488372093,
+          "current_ratio": 1.7804474991357508
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 3464016000.0,
+        "year_ago_revenue": 2041562000.0,
+        "growth_pct": 69.67478822587803
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 499634000.0,
+        "current_debt_coverage": 10.32403488372093,
+        "cash": 1844942000.0,
+        "total_debt": 2172310000.0,
+        "current_debt": 215000000.0,
+        "annual_share_growth": -0.009588101110884484
+      }
+    },
+    {
+      "ticker": "SEDG",
+      "price": 30.049999237060547,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 102.23999786376953,
+      "peak_date": "2023-12-19",
+      "return_to_peak_pct": 240.23294662076844,
+      "target_50pct": 45.07499885559082,
+      "market_cap_usd": 1848848640,
+      "shares_outstanding": 61525748,
+      "current_recent_drop": {
+        "drop_21d_pct": -2.65630573333413,
+        "drop_from_peak_pct": -61.72462308061357,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -38.37161552200058,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "UNVERIFIED",
+      "shadow_reasons": [
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Non-positive operating earnings require a turnaround thesis"
+        ],
+        "metrics": {
+          "debt_equity": 0.9885169321863208,
+          "current_ratio": 2.0298666232037594
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 346245000.0,
+        "year_ago_revenue": 289429000.0,
+        "growth_pct": 19.63037567071717
+      },
+      "provider_cash_metrics": {
+        "cash": 527257000.0,
+        "total_debt": 407353000.0,
+        "current_debt": 13473000.0,
+        "annual_share_growth": 0.04020581684503899
+      }
+    },
+    {
+      "ticker": "SFM",
+      "price": 49.70000076293945,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 179.52999877929688,
+      "peak_date": "2025-06-02",
+      "return_to_peak_pct": 261.22735618380455,
+      "target_50pct": 74.55000114440918,
+      "market_cap_usd": 4583962112,
+      "shares_outstanding": 92232635,
+      "current_recent_drop": {
+        "drop_21d_pct": -22.92183905788341,
+        "drop_from_peak_pct": -44.79004374994332,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -44.03783117981833,
+        "recent_peak_age_sessions": 63,
+        "recent_peak_date": "2026-08-03",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule",
+          "Current assets below current liabilities"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 334334000.0,
+          "debt_equity": 1.461793022817865,
+          "interest_coverage": 228.2780437756498,
+          "net_debt_ebitda": 1.9933838508749189,
+          "current_debt_coverage": 2.4452188593404127,
+          "current_ratio": 0.9693314083683287
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 2304720000.0,
+        "year_ago_revenue": 2200430000.0,
+        "growth_pct": 4.739528183127839
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 334334000.0,
+        "current_debt_coverage": 2.4452188593404127,
+        "cash": 228664000.0,
+        "total_debt": 2235561000.0,
+        "current_debt": 196062000.0,
+        "annual_share_growth": -0.03353998078243603
+      }
+    },
+    {
+      "ticker": "TTD",
+      "price": 12.289999961853027,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 139.50999450683594,
+      "peak_date": "2024-12-04",
+      "return_to_peak_pct": 1035.1504877124612,
+      "target_50pct": 18.43499994277954,
+      "market_cap_usd": 5810651648,
+      "shares_outstanding": 429686475,
+      "current_recent_drop": {
+        "drop_21d_pct": 1.5702444164735097,
+        "drop_from_peak_pct": -75.55688094623918,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -36.452947958180346,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold",
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.1686288432972647,
+          "current_ratio": 1.723831611110236
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 715057000.0,
+        "year_ago_revenue": 694039000.0,
+        "growth_pct": 3.0283600777477826
+      },
+      "provider_cash_metrics": {
+        "cash": 1122979000.0,
+        "total_debt": 434110000.0,
+        "current_debt": 80922000.0,
+        "annual_share_growth": -0.0406731693747846
+      }
+    },
+    {
+      "ticker": "TWLO",
+      "price": 205.02999877929688,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 301.2699890136719,
+      "peak_date": "2026-10-01",
+      "return_to_peak_pct": 46.93946778879508,
+      "target_50pct": 307.5449981689453,
+      "market_cap_usd": 31487526912,
+      "shares_outstanding": 153575220,
+      "current_recent_drop": {
+        "drop_21d_pct": -31.94476507582292,
+        "drop_from_peak_pct": -31.94476507582292,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -31.94476507582292,
+        "recent_peak_age_sessions": 21,
+        "recent_peak_date": "2026-10-01",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "UNVERIFIED",
+      "shadow_reasons": [
+        "Invalid quarterly revenues",
+        "Fresh income statement required",
+        "Four consecutive quarters required for income",
+        "Statement periods do not align within 120 days",
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2025-12-31"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Fresh income statement (maximum 200 days from period end)",
+          "Financial statement dates do not align within 120 days",
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "income: annual fallback; current TTM quarters unavailable",
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.11868364750059257,
+          "net_debt_ebitda": 0.6545302262749071,
+          "current_ratio": 4.621289870554074
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "UNVERIFIED",
+        "reason": "Invalid quarterly revenues"
+      },
+      "provider_cash_metrics": {
+        "cash": 823261000.0,
+        "total_debt": 1065519000.0,
+        "current_debt": 29433000.0,
+        "annual_share_growth": -0.0013062714732244851
+      }
+    },
+    {
+      "ticker": "WDC",
+      "price": 366.1099853515625,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 746.22998046875,
+      "peak_date": "2026-06-18",
+      "return_to_peak_pct": 103.82672156624508,
+      "target_50pct": 549.1649780273438,
+      "market_cap_usd": 137043484672,
+      "shares_outstanding": 374323269,
+      "current_recent_drop": {
+        "drop_21d_pct": -20.85135176325178,
+        "drop_from_peak_pct": -50.938719304524895,
+        "screen_cohort": "recent_shock",
+        "drop_recent_peak_pct": -33.25980986930114,
+        "recent_peak_age_sessions": 62,
+        "recent_peak_date": "2026-08-04",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Only post-Sandisk-separation prices used; historical combined-company prices are not a comparable target.",
+      "shadow_status": "OBSERVE_REVIEW_REQUIRED",
+      "shadow_reasons": [],
+      "provider_statement_periods": {
+        "balance": "2026-09-30",
+        "cashflow": "2026-09-30",
+        "income": "2026-09-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "REVIEW",
+        "flags": [],
+        "missing": [],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review",
+          "Current debt is a balance-sheet proxy, not a complete contractual maturity schedule"
+        ],
+        "metrics": {
+          "fcf_after_interest_buffer": 4172000000.0,
+          "debt_equity": 0.084403080872914,
+          "interest_coverage": 91.64957264957265,
+          "current_debt_coverage": 5.6311787072243344,
+          "current_ratio": 1.434017595307918
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-09-30",
+        "comparison_asof": "2025-09-30",
+        "latest_revenue": 4381000000.0,
+        "year_ago_revenue": 2818000000.0,
+        "growth_pct": 55.46486870120653
+      },
+      "provider_cash_metrics": {
+        "fcf_after_additional_interest_buffer": 4172000000.0,
+        "current_debt_coverage": 5.6311787072243344,
+        "cash": 1314000000.0,
+        "total_debt": 789000000.0,
+        "current_debt": 789000000.0,
+        "annual_share_growth": 0.04034582132564846
+      }
+    },
+    {
+      "ticker": "YELP",
+      "price": 19.09000015258789,
+      "price_date": "2026-10-30",
+      "historical_peak_close": 48.43000030517578,
+      "peak_date": "2023-12-22",
+      "return_to_peak_pct": 153.6930325723988,
+      "target_50pct": 28.635000228881836,
+      "market_cap_usd": 1035892544,
+      "shares_outstanding": 54263621,
+      "current_recent_drop": {
+        "drop_21d_pct": 5.411372220916255,
+        "drop_from_peak_pct": -42.25650526436277,
+        "screen_cohort": "recent_drawdown",
+        "drop_recent_peak_pct": -28.79522367451539,
+        "recent_peak_age_sessions": 63,
+        "recent_peak_date": "2026-08-03",
+        "recent_window_sessions": 63
+      },
+      "comparability_notice": "Historical split-adjusted provider prices; business and corporate-action comparability still require review.",
+      "shadow_status": "NOT_MATCHED",
+      "shadow_reasons": [
+        "Quarterly revenue growth below exploratory threshold",
+        "Gross interest expense required for funding buffer"
+      ],
+      "provider_statement_periods": {
+        "balance": "2026-06-30",
+        "cashflow": "2026-06-30",
+        "income": "2026-06-30"
+      },
+      "provider_ordinary_solvency": {
+        "status": "UNVERIFIED",
+        "flags": [],
+        "missing": [
+          "Usable statement interest expense and EBIT for a company with debt"
+        ],
+        "review": [
+          "Debt due in months 13\u201324, covenants and committed facilities require filing review"
+        ],
+        "metrics": {
+          "debt_equity": 0.19130773419887762,
+          "net_debt_ebitda": 0.12072898596925574,
+          "current_ratio": 1.7486222571746888
+        },
+        "policy_id": "9fec8c3c34c7"
+      },
+      "provider_revenue_growth": {
+        "status": "AVAILABLE",
+        "asof": "2026-06-30",
+        "comparison_asof": "2025-06-30",
+        "latest_revenue": 375519000.0,
+        "year_ago_revenue": 370394000.0,
+        "growth_pct": 1.3836617223821124
+      },
+      "provider_cash_metrics": {
+        "cash": 94142000.0,
+        "total_debt": 123303000.0,
+        "current_debt": 7352000.0,
+        "annual_share_growth": -0.08872665369649801
+      }
+    }
+  ],
+  "reverse_sensitivities": [
+    {
+      "ticker": "SANM",
+      "current_price": 165.57000732421875,
+      "market_cap_usd": 8874115072,
+      "provider_fcf_after_additional_interest_buffer_usd": 499634000.0,
+      "illustrative_dilution_fraction": 0.05,
+      "required_annual_equity_fcf_for_50pct_usd": {
+        "15": 931782082.5600001,
+        "20": 698836561.9200001,
+        "25": 559069249.536,
+        "30": 465891041.28000003
+      },
+      "required_multiple_at_unchanged_provider_cash_proxy": 27.973939400441125,
+      "notice": "Reverse sensitivity only. Multiples are not peer-supported fair values; cash proxy is not a verified forecast."
+    },
+    {
+      "ticker": "WDC",
+      "current_price": 366.1099853515625,
+      "market_cap_usd": 137043484672,
+      "provider_fcf_after_additional_interest_buffer_usd": 4172000000.0,
+      "illustrative_dilution_fraction": 0.05,
+      "required_annual_equity_fcf_for_50pct_usd": {
+        "15": 14389565890.56,
+        "20": 10792174417.92,
+        "25": 8633739534.336,
+        "30": 7194782945.28
+      },
+      "required_multiple_at_unchanged_provider_cash_proxy": 51.73621485100671,
+      "notice": "Reverse sensitivity only. Multiples are not peer-supported fair values; cash proxy is not a verified forecast."
+    },
+    {
+      "ticker": "NOW",
+      "current_price": 105.12000274658203,
+      "market_cap_usd": 109105840128,
+      "provider_fcf_after_additional_interest_buffer_usd": 4592000000.0,
+      "illustrative_dilution_fraction": 0.05,
+      "required_annual_equity_fcf_for_50pct_usd": {
+        "15": 11456113213.44,
+        "20": 8592084910.08,
+        "25": 6873667928.064,
+        "30": 5728056606.72
+      },
+      "required_multiple_at_unchanged_provider_cash_proxy": 37.42197260487805,
+      "notice": "Reverse sensitivity only. Multiples are not peer-supported fair values; cash proxy is not a verified forecast."
+    },
+    {
+      "ticker": "MDB",
+      "current_price": 352.9599914550781,
+      "market_cap_usd": 28433166336,
+      "provider_fcf_after_additional_interest_buffer_usd": 656654000.0,
+      "illustrative_dilution_fraction": 0.05,
+      "required_annual_equity_fcf_for_50pct_usd": {
+        "15": 2985482465.28,
+        "20": 2239111848.96,
+        "25": 1791289479.1680002,
+        "30": 1492741232.64
+      },
+      "required_multiple_at_unchanged_provider_cash_proxy": 68.19761545532351,
+      "notice": "Reverse sensitivity only. Multiples are not peer-supported fair values; cash proxy is not a verified forecast."
+    },
+    {
+      "ticker": "FOUR",
+      "current_price": 40.029998779296875,
+      "market_cap_usd": 3160773632,
+      "provider_fcf_after_additional_interest_buffer_usd": 36900000.0,
+      "illustrative_dilution_fraction": 0.05,
+      "required_annual_equity_fcf_for_50pct_usd": {
+        "15": 331881231.36,
+        "20": 248910923.52000004,
+        "25": 199128738.816,
+        "30": 165940615.68
+      },
+      "required_multiple_at_unchanged_provider_cash_proxy": 134.9110696585366,
+      "notice": "Reverse sensitivity only. Multiples are not peer-supported fair values; cash proxy is not a verified forecast."
+    }
+  ],
+  "SANM_mechanical_five_year_stress": [
+    {
+      "ocf_reduction": 0.3,
+      "annual_ocf_usd_millions": 630.7392,
+      "fixed_annual_ppe_usd_millions": 306.908,
+      "annual_ocf_less_ppe_usd_millions": 323.83119999999997,
+      "initial_cash_less_India_designated_cash_usd_millions": 1596.942,
+      "principal_including_remainder_FY2026_through_FY2031_usd_millions": 1568,
+      "ending_cash_before_omitted_items_usd_millions": 1648.098
+    },
+    {
+      "ocf_reduction": 0.5,
+      "annual_ocf_usd_millions": 450.528,
+      "fixed_annual_ppe_usd_millions": 306.908,
+      "annual_ocf_less_ppe_usd_millions": 143.62,
+      "initial_cash_less_India_designated_cash_usd_millions": 1596.942,
+      "principal_including_remainder_FY2026_through_FY2031_usd_millions": 1568,
+      "ending_cash_before_omitted_items_usd_millions": 747.0419999999999
+    },
+    {
+      "ocf_reduction": 0.7,
+      "annual_ocf_usd_millions": 270.31680000000006,
+      "fixed_annual_ppe_usd_millions": 306.908,
+      "annual_ocf_less_ppe_usd_millions": -36.59119999999996,
+      "initial_cash_less_India_designated_cash_usd_millions": 1596.942,
+      "principal_including_remainder_FY2026_through_FY2031_usd_millions": 1568,
+      "ending_cash_before_omitted_items_usd_millions": -154.01399999999967
+    }
+  ],
+  "stress_notice": "No refinancing or new acquisitions; buybacks paused. Uses provider TTM OCF and PP&E; cash interest already within GAAP OCF. India-designated cash excluded. Omitted items include changes in investment needs, covenant acceleration, factoring availability, contingent consideration, legal losses, equity tax withholding and new working-capital shocks. This is not an adequate five-year funding or covenant clearance."
+}

@@ -33,6 +33,8 @@ def reviewed_case():
     return {"reviewed_at": "2026-10-21", "target_by": "2027-10-01",
             "statement_periods": {name: "2026-09-30" for name in ("balance", "cashflow", "income")},
             "filing_accession": "0000001234-26-000001", "cause": source_block(),
+            "historical_reference": source_block(price=20, currency="USD", observed_on="2026-09-10",
+                price_basis="split_adjusted_comparable_business", comparability="Fixture unchanged business and adjusted share basis"),
             "catalyst": source_block(expected_by="2027-03-01", metric="Fixture: restored operating margin", invalidation="Fixture: margin recovery does not occur"),
             "risk_reviews": {topic: source_block(status="REVIEWED_NO_UNRESOLVED_CONCERN") for topic in RISK_TOPICS},
             "valuation": source_block(basis="equity_fcf_usd_after_financing", expected_dilution_fraction=.05,
@@ -90,6 +92,41 @@ def test_lower_return_goal_does_not_clear_a_filing_or_risk_hold():
     data = stock()
     data["official_filing_check"]["blocks_selection"] = True
     assert assess_recovery_case(data, record, now=NOW)["status"] == "RESEARCH_WATCH"
+
+
+@pytest.mark.parametrize("problem", ["missing_five_year", "unresolved_five_year", "missing_reference",
+    "lower_price", "future_price", "after_review", "wrong_currency", "unadjusted", "no_comparability"])
+def test_documented_case_requires_five_year_review_and_comparable_historical_reference(problem):
+    record = reviewed_case()
+    if problem == "missing_five_year": del record["risk_reviews"]["resilience_5y"]
+    if problem == "unresolved_five_year": record["risk_reviews"]["resilience_5y"]["status"] = "UNRESOLVED"
+    if problem == "missing_reference": del record["historical_reference"]
+    if problem == "lower_price": record["historical_reference"]["price"] = 9
+    if problem == "future_price": record["historical_reference"]["observed_on"] = "2027-01-01"
+    if problem == "after_review": record["historical_reference"]["observed_on"] = "2026-10-22"
+    if problem == "wrong_currency": record["historical_reference"]["currency"] = "GBp"
+    if problem == "unadjusted": record["historical_reference"]["price_basis"] = "unadjusted"
+    if problem == "no_comparability": record["historical_reference"]["comparability"] = ""
+    result = assess_recovery_case(stock(), record, now=NOW)
+    assert result["status"] == "RESEARCH_WATCH" and result["missing"]
+
+
+def test_historical_reference_is_comparison_not_a_required_return_target():
+    record = reviewed_case()
+    record["historical_reference"]["price"] = 12
+    result = assess_recovery_case(stock(), record, now=NOW)
+    assert result["status"] == "DOCUMENTED_12M_CASE"
+    assert result["historical_reference"]["return_to_reference_pct"] == pytest.approx(20)
+    assert result["cases"]["recovery"]["price"] > 12
+    assert result["resilience_horizon_years"] == 5
+
+
+def test_historical_reference_can_be_on_review_day_but_not_after_it():
+    record = reviewed_case()
+    record["historical_reference"]["observed_on"] = "2026-10-21"
+    assert assess_recovery_case(stock(), record, now=NOW)["status"] == "DOCUMENTED_12M_CASE"
+    record["historical_reference"]["observed_on"] = "2026-10-22"
+    assert assess_recovery_case(stock(), record, now="2026-10-23")["status"] == "RESEARCH_WATCH"
 
 
 def test_case_review_cannot_claim_to_use_a_later_publication():

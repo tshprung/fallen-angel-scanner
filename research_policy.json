@@ -1,5 +1,6 @@
 {
-  "version": 3,
+  "version": 4,
+  "resilience_horizon_years": 5,
   "recent_drawdown_window_sessions": 63,
   "recent_drawdown_max_calendar_days": 100,
   "allow_older_drawdowns": false,

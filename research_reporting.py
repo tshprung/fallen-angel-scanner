@@ -68,6 +68,12 @@ def decision_summary_html(audit, scope=None):
                      f"{counts.get('DEFERRED_BUDGET', 0)} deferred. "
                      "These are separate research observations, with no return forecast or selection. "
                      "See growth_recovery_shadow.json and .md in the Actions artifacts.</p>")
+        observations = shadow.get("observations", [])
+        if observations:
+            parts.append("<p>Shadow names requiring review (not buy recommendations):</p><ul>" + "".join(
+                f"<li>{escape(str(row.get('ticker', '')))} — core outcome: {escape(str(row.get('core_decision') or 'unavailable'))}; "
+                f"{escape(str(row.get('core_reason') or 'Core reasons unavailable; financial and filing review required'))}</li>"
+                for row in observations[:12]) + "</ul>")
     parts.append(f"<p>{summary['audited_candidates']} price-screen candidates received an audit outcome. "
                  "Zero selections does not mean zero price-screen candidates. Outcomes below count each audit record once; "
                  "they do not show every criterion a company might fail.</p><table><tr><th>Outcome</th><th>Count</th></tr>")
@@ -184,6 +190,11 @@ def financial_detail_html(stock):
     fit = stock.get("goal_fit")
     if fit:
         parts.append(f"<h4>Twelve-month goal: {escape(fit['status'])}</h4>")
+        historical = fit.get("historical_reference")
+        if historical:
+            parts.append(f"<p>Reviewed historical reference: {historical['price']:.2f} {escape(historical['currency'])} "
+                         f"on {escape(historical['observed_on'])}; return to reference {historical['return_to_reference_pct']:+.1f}%. "
+                         "This is not fair value or a promised target.</p>")
         signal = stock.get("price_dislocation") or {}
         fall, age = signal.get("drop_recent_peak_pct"), signal.get("recent_peak_age_sessions")
         if fall is not None and age is not None:
@@ -200,7 +211,7 @@ def financial_detail_html(stock):
             parts.append(f"<p>Conditional catalyst: {escape(catalyst['finding'])}. Milestone: {escape(catalyst['metric'])} by {escape(catalyst['expected_by'])}. Thesis fails if: {escape(catalyst['invalidation'])}. Valuation date: {escape(record['target_by'])}.</p>")
             parts.append("<table><tr><th>Company-specific case</th><th>Price</th><th>Return</th></tr>" + "".join(
                 f"<tr><td>{escape(name)}</td><td>{case['price']:.2f} {escape(stock['currency'])}</td><td>{case['return_pct']:+.1f}%</td></tr>" for name, case in fit["cases"].items()) + "</table>")
-            blocks = [record["cause"], catalyst, record["valuation"]] + [record["risk_reviews"][name] for name in RISK_TOPICS] + [record["valuation"]["cases"][name] for name in ("bear", "base", "recovery")]
+            blocks = [record["cause"], catalyst, record["valuation"], record.get("historical_reference", {})] + [record["risk_reviews"].get(name, {}) for name in RISK_TOPICS] + [record["valuation"]["cases"][name] for name in ("bear", "base", "recovery")]
             sources = {source["url"]: source["published_at"] for block in blocks for source in block.get("sources", [])}
             parts.append("<p>Research sources: " + "; ".join(f'<a href="{escape(url, quote=True)}">Disclosure {escape(date)}</a>' for url, date in sources.items()) + "</p>")
         parts.append(f"<p>{escape(fit['notice'])}</p>")

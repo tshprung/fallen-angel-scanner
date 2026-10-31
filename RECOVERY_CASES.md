@@ -14,6 +14,7 @@ For each ticker, record:
 - `statement_periods`: exact current provider `balance`, `cashflow` and `income` period ends.
 - `filing_accession`: exact accession of the latest periodic filing returned by the official checker. New statements or a new periodic filing invalidate alignment.
 - `cause`: a source-backed explanation of the recent decline. Identify the actual event rather than labeling all guidance cuts temporary.
+- `historical_reference`: a source-backed higher historical price within five years, with `price`, matching quote `currency`, `observed_on` no later than the review date, `price_basis: split_adjusted_comparable_business`, and a nonempty `comparability` explanation. Review splits, spin-offs, acquisitions, dilution and changes in the business. An earlier price is context, not proof of fair value; the recovery scenario may differ from it.
 - `catalyst`: a source-backed explanation with `expected_by`, `metric` and `invalidation`. The milestone must be future-dated within 365 days. State why its resolution could change earnings/cash generation or the valuation.
 - `target_by`: a future date after/on the catalyst, no more than 365 days from the scan. This is the case's valuation horizon, not a promised result.
 - `risk_reviews`: the five source-backed topics below. Use `REVIEWED_NO_UNRESOLVED_CONCERN` only after actually checking the contents and documenting the analysis. Any other status keeps the candidate a watch.
@@ -28,6 +29,7 @@ Required risk-review topics:
 | `going_concern` | Auditor opinion, management liquidity statements, subsequent events and funding dependencies. |
 | `listing_and_corporate_actions` | Listing compliance, minimum-price notices, proposed delisting, merger/tender terms and whether the ticker will continue. |
 | `dilution` | Convertible settlement, capped calls, share issuance, stock compensation and repurchases relevant to the modeled share base. |
+| `resilience_5y` | Contractual maturities and funding through five years, stressed cash generation and investment needs, refinancing dependencies, structural competitive risk and contingent obligations. Distinguish cash from conditional facilities and liquid investments. Explain adverse paths, not just today's ratios. This review is not a five-year survival guarantee. |
 
 The target calculation is `current quote price × scenario equity value USD / (current market cap USD × (1 + expected dilution))`, where equity value is the scenario's after-financing equity cash-flow proxy times its supported multiple. Returns exclude dividends, taxes and trading costs. The generic reverse sensitivity uses its own explicitly labeled dilution assumption and does not become the company's forecast.
 

@@ -19,6 +19,8 @@ POLICY_PATH = Path(__file__).with_name("research_policy.json")
 
 def load_policy(path=POLICY_PATH):
     policy = json.loads(Path(path).read_text(encoding="utf-8"))
+    if type(policy.get("resilience_horizon_years")) is not int or policy["resilience_horizon_years"] != 5:
+        raise ValueError("The investment mandate requires a five-year resilience review")
     for name in ("fresh_statement_days", "max_annual_statement_days", "minimum_interest_coverage",
                  "minimum_current_debt_coverage", "max_net_debt_ebitda", "max_debt_equity",
                  "minimum_burn_runway_months", "minimum_base_upside_pct", "minimum_bull_upside_pct"):

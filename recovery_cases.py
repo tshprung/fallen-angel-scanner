@@ -13,7 +13,7 @@ from urllib.parse import urlsplit
 from scanner_currency import finite
 
 RISK_TOPICS = ("liquidity_and_maturities_24m", "covenants", "going_concern",
-               "listing_and_corporate_actions", "dilution")
+               "listing_and_corporate_actions", "dilution", "resilience_5y")
 
 
 def load_recovery_cases(path=None):
@@ -54,8 +54,9 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
     today = (now or datetime.now(timezone.utc)).date() if not isinstance(now, str) else day(now)
     missing = []
     minimum_upside = policy["minimum_bull_upside_pct"]
-    result = {"version": 2, "status": "RESEARCH_WATCH", "checked_at": today.isoformat(),
+    result = {"version": 3, "status": "RESEARCH_WATCH", "checked_at": today.isoformat(),
               "minimum_recovery_upside_pct": minimum_upside,
+              "resilience_horizon_years": policy["resilience_horizon_years"],
               "missing": missing, "cases": {}, "notice": "Documented conditional research assumptions; no guaranteed return, survival or continued listing."}
     signal = stock.get("price_dislocation") or {}
     age, fall = finite(signal.get("recent_peak_age_sessions")), finite(signal.get("drop_recent_peak_pct"))
@@ -92,11 +93,12 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
             "basis": "Reverse sensitivity using current market cap and the generic model's dilution; not a recovery forecast"}
     if not record:
         missing += ["A sourced cause of the recent decline", "A measurable recovery catalyst and invalidation condition within 12 months",
-                    "Current filing-content reviews of liquidity, debt, covenants, going concern, listing status and dilution",
+                    "Current filing-content reviews of liquidity, debt, covenants, going concern, listing status, dilution and five-year resilience",
+                    "A sourced higher historical price with split and business-comparability review",
                     "Company-specific bear/base/recovery cash-flow and valuation assumptions"]
         return result
     if (not isinstance(record, dict) or any(not isinstance(record.get(name, {}), dict)
-            for name in ("cause", "catalyst", "risk_reviews", "valuation"))
+            for name in ("cause", "catalyst", "risk_reviews", "valuation", "historical_reference"))
             or not isinstance((record.get("valuation") or {}).get("cases", {}), dict)):
         missing.append("Malformed recovery research record")
         return result
@@ -123,6 +125,23 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
         missing.append("Recovery case must reference the current statement periods and exact latest filing accession")
     if not sourced(record.get("cause"), source_cutoff):
         missing.append("Sourced explanation of the decline")
+    historical = record.get("historical_reference") or {}
+    historical_price = finite(historical.get("price"))
+    try:
+        historical_age = (today-day(historical.get("observed_on"))).days
+    except (ValueError, TypeError):
+        historical_age = -1
+    if (not sourced(historical, source_cutoff) or historical_price is None or price is None or price <= 0
+            or historical_price <= price or not 0 < historical_age <= 5*366
+            or (today-source_cutoff).days > historical_age
+            or not isinstance(historical.get("currency"), str) or not historical["currency"].strip()
+            or historical.get("currency") != stock.get("currency")
+            or historical.get("price_basis") != "split_adjusted_comparable_business"
+            or not str(historical.get("comparability") or "").strip()):
+        missing.append("Sourced higher historical price within five years, with currency, split and business-comparability review")
+    else:
+        result["historical_reference"] = dict(historical, return_to_reference_pct=(historical_price/price-1)*100,
+            notice="A historical price is a comparison, not fair value or a promised target")
     catalyst = record.get("catalyst") or {}
     if (not sourced(catalyst, source_cutoff) or not isinstance(catalyst.get("metric"), str) or not catalyst["metric"].strip()
             or not isinstance(catalyst.get("invalidation"), str) or not catalyst["invalidation"].strip()):

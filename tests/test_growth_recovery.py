@@ -176,3 +176,7 @@ def test_email_summary_labels_shadow_separately_and_exposes_failures():
     assert "no return forecast or selection" in summary
     failed = decision_summary_html([], {"growth_recovery_shadow": {"status": "FAILED"}})
     assert "collection: FAILED" in failed
+    named = decision_summary_html([], {"growth_recovery_shadow": {"status": "COLLECTED", "observations": [
+        {"ticker": "<AAA>", "core_decision": "risk_excluded", "core_reason": "Unresolved <risk>"}]}})
+    assert "&lt;AAA&gt;" in named and "&lt;risk&gt;" in named
+    assert "not buy recommendations" in named and "risk_excluded" in named
