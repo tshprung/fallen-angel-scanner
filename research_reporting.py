@@ -66,7 +66,7 @@ def decision_summary_html(audit, scope=None):
                      f"{counts.get('OBSERVE_REVIEW_REQUIRED', 0)} observations require review; "
                      f"{counts.get('UNVERIFIED', 0)} unverified; {counts.get('SOURCE_ERROR', 0)} source errors; "
                      f"{counts.get('DEFERRED_BUDGET', 0)} deferred. "
-                     "These are separate research observations, with no doubling forecast or selection. "
+                     "These are separate research observations, with no return forecast or selection. "
                      "See growth_recovery_shadow.json and .md in the Actions artifacts.</p>")
     parts.append(f"<p>{summary['audited_candidates']} price-screen candidates received an audit outcome. "
                  "Zero selections does not mean zero price-screen candidates. Outcomes below count each audit record once; "
@@ -189,10 +189,11 @@ def financial_detail_html(stock):
         if fall is not None and age is not None:
             parts.append(f"<p>Decline from recent peak: {fall:.1f}%; peak {age} trading sessions ago.</p>")
         if fit["missing"]:
-            parts.append("<p>Research watch; the one-year doubling thesis is unverified.</p><ul>" + "".join(f"<li>{escape(message)}</li>" for message in fit["missing"]) + "</ul>")
-        required = fit.get("doubling_requirements")
+            parts.append("<p>Research watch; the one-year upside thesis is unverified.</p><ul>" + "".join(f"<li>{escape(message)}</li>" for message in fit["missing"]) + "</ul>")
+        required = fit.get("upside_requirements") or fit.get("doubling_requirements")
         if required:
-            parts.append(f"<p>What 2x requires: at unchanged normalized cash flow, an equity cash-flow multiple of {required['equity_fcf_multiple_at_unchanged_normalized_fcf']:.1f}x, including generic assumed dilution. This is reverse arithmetic, not a forecast.</p>")
+            threshold = required.get("minimum_upside_pct", 100)
+            parts.append(f"<p>What +{threshold:g}% requires: at unchanged normalized cash flow, an equity cash-flow multiple of {required['equity_fcf_multiple_at_unchanged_normalized_fcf']:.1f}x, including generic assumed dilution. This is reverse arithmetic, not a forecast.</p>")
         if fit["status"] == "DOCUMENTED_12M_CASE":
             record = fit["research_record"]
             catalyst = record["catalyst"]

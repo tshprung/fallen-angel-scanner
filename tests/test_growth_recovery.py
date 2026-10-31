@@ -173,6 +173,6 @@ def test_email_summary_labels_shadow_separately_and_exposes_failures():
         "status": "COLLECTED", "counts": {"OBSERVE_REVIEW_REQUIRED": 2, "SOURCE_ERROR": 3}}})
     assert "2 observations require review" in summary
     assert "3 source errors" in summary
-    assert "no doubling forecast or selection" in summary
+    assert "no return forecast or selection" in summary
     failed = decision_summary_html([], {"growth_recovery_shadow": {"status": "FAILED"}})
     assert "collection: FAILED" in failed

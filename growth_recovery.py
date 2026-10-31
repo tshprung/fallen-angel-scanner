@@ -18,7 +18,7 @@ METHOD = {
     "description": "Exploratory thresholds, not calibrated return or survival probabilities",
 }
 METHOD_ID = sha256(json.dumps(METHOD, sort_keys=True).encode()).hexdigest()[:12]
-NOTICE = ("Shadow research only. No valuation, 2x prediction, financial clearance or investment selection. "
+NOTICE = ("Shadow research only. No valuation, return prediction, financial clearance or investment selection. "
           "Cash excludes investments; covenants, restricted cash, lease treatment, stock compensation, "
           "debt due in months 13-24, filings and catalysts require manual review. "
           "No historical performance or success rate has been established.")

@@ -17,7 +17,7 @@ from scanner_currency import finite
 from scanner_history import validate_price_bars
 
 LEDGER = "paper_tracking.json"
-PERFORMANCE_VERSION = 2
+PERFORMANCE_VERSION = 3
 
 
 def _write(path, data):
@@ -124,6 +124,8 @@ def _assess_selection(selection, history, now=None):
             "entry_adjusted_open": entry, "mark_adjusted_close": end,
             "return_local_pct": (end / entry - 1) * 100,
             "worst_close_return_pct": (float(observed.min()) / entry - 1) * 100,
+            "touched_50pct_at_close": bool((observed >= entry * 1.5).any()),
+            "ended_50pct": bool(end >= entry * 1.5) if status == "complete_12m" else None,
             "touched_2x_at_close": bool((observed >= entry * 2).any()),
             "ended_2x": bool(end >= entry * 2) if status == "complete_12m" else None,
             "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes"}
@@ -184,7 +186,7 @@ def cohort_summary(data):
         group = groups.setdefault(key, {"policy_id": key[0], "screen_cohort": key[1],
             "research_status": key[2], "observations": 0, "tickers": set(),
             "pending": 0, "tracking": 0, "complete_12m": 0, "unverified": 0,
-            "touched_2x": 0, "ended_2x": 0, "ended_loss": 0})
+            "touched_50pct": 0, "ended_50pct": 0, "touched_2x": 0, "ended_2x": 0, "ended_loss": 0})
         group["observations"] += 1
         group["tickers"].add(selection["ticker"])
         performance = selection["performance"]
@@ -193,6 +195,8 @@ def cohort_summary(data):
             group["pending"] += 1
         elif status == "complete_12m" and performance.get("method_version") == PERFORMANCE_VERSION:
             group["complete_12m"] += 1
+            group["touched_50pct"] += performance.get("touched_50pct_at_close") is True
+            group["ended_50pct"] += performance.get("ended_50pct") is True
             group["touched_2x"] += performance.get("touched_2x_at_close") is True
             group["ended_2x"] += performance.get("ended_2x") is True
             value = finite(performance.get("return_local_pct"))
@@ -224,12 +228,12 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
              "Unverified/stale names remain visible; their missing outcomes must not be interpreted as zero losses. No benchmark excess return or USD return is computed.", "",
              "Completion requires usable holding-window closes, no duplicate sessions, no observed gap over ten calendar days and consistent supplied OHLC bounds. This coarse guard cannot detect every missing exchange session or verify delisting proceeds. Older completed metrics require refresh under the current method.", "",
              "## Cohorts", "",
-             "Groups keep financial policy, price-screen cohort and research status as recorded at selection. Legacy/unknown values remain separate. Counts of doubled or losing outcomes use current-method completed observations only; unresolved outcomes remain in the total. These counts do not establish a success probability or a bankruptcy/delisting rate.", "",
-             "| Policy | Price screen | Research status | Observations | Unique tickers | Pending | Tracking | Unverified/stale/old method | Complete | Touched 2x | Ended 2x | Ended below entry |",
-             "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
+             "Groups keep financial policy, price-screen cohort and research status as recorded at selection. Legacy/unknown values remain separate. Counts of +50%, doubled or losing outcomes use current-method completed observations only; unresolved outcomes remain in the total. These counts do not establish a success probability or a bankruptcy/delisting rate.", "",
+             "| Policy | Price screen | Research status | Observations | Unique tickers | Pending | Tracking | Unverified/stale/old method | Complete | Touched +50% | Ended +50% | Touched 2x | Ended 2x | Ended below entry |",
+             "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for group in groups:
         values = [group[key] for key in ("policy_id", "screen_cohort", "research_status", "observations",
-            "unique_tickers", "pending", "tracking", "unverified", "complete_12m", "touched_2x", "ended_2x", "ended_loss")]
+            "unique_tickers", "pending", "tracking", "unverified", "complete_12m", "touched_50pct", "ended_50pct", "touched_2x", "ended_2x", "ended_loss")]
         lines.append("| " + " | ".join(_cell(value) for value in values) + " |")
     lines += ["", "## Most recent 20 selections", "",
              "| Selected | Ticker | Status | Local return | Entry session | Mark session |",

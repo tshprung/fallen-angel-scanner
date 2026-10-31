@@ -147,6 +147,16 @@ def test_deteriorating_current_cashflow_caps_normalized_earnings_power():
     assert valuation_scenarios(data, INFO, 10, 1e9, 1)["normalized_fcf_usd"] == 42e6
 
 
+def test_generic_upside_goal_uses_new_threshold_while_retaining_base_requirement():
+    result = valuation_scenarios(evidence(), INFO, 10, 1.08e9, 1)
+    assert 50 < result["cases"]["bull"]["return_pct"] < 100
+    assert result["bull_meets_upside_goal"] and not result["bull_2x"]
+    assert result["plausible_upside_screen"]
+    result = valuation_scenarios(evidence(), INFO, 10, 1.3e9, 1)
+    assert result["bull_meets_upside_goal"]
+    assert not result["plausible_upside_screen"]  # Base upside still below +20%.
+
+
 def test_an_unprofitable_year_prevents_false_normalization():
     data = evidence()
     data["annual_fcf"][1]["fcf"] = -1

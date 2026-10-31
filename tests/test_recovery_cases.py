@@ -48,10 +48,11 @@ def test_generic_bull_sensitivity_and_cheapness_do_not_establish_a_year_case():
     assert result["status"] == "RESEARCH_WATCH"
     assert result["cases"] == {}
     assert any("catalyst" in message for message in result["missing"])
-    requirement = result["doubling_requirements"]
-    assert requirement["target_price"] == 20
-    assert requirement["equity_fcf_multiple_at_unchanged_normalized_fcf"] == pytest.approx(2.1e9 / 92e6)
-    assert requirement["required_equity_fcf_usd_by_multiple"]["15"] == pytest.approx(140e6)
+    requirement = result["upside_requirements"]
+    assert requirement["minimum_upside_pct"] == 50
+    assert requirement["target_price"] == 15
+    assert requirement["equity_fcf_multiple_at_unchanged_normalized_fcf"] == pytest.approx(1.575e9 / 92e6)
+    assert requirement["required_equity_fcf_usd_by_multiple"]["15"] == pytest.approx(105e6)
 
 
 def test_sourced_company_case_is_conditional_and_accounts_for_dilution_without_double_subtracting_debt():
@@ -61,6 +62,34 @@ def test_sourced_company_case_is_conditional_and_accounts_for_dilution_without_d
     assert result["cases"]["recovery"]["price"] == pytest.approx(10 * 2.6 / 1.05)
     assert result["cases"]["recovery"]["return_pct"] > 100
     assert "no guarantee" in result["notice"]
+
+
+@pytest.mark.parametrize("upside,qualifies", [(49.9, False), (50, True), (75, True), (100, True)])
+def test_fifty_percent_goal_accepts_supported_cases_without_requiring_double(upside, qualifies):
+    record = reviewed_case()
+    record["valuation"]["cases"]["recovery"]["equity_fcf_usd"] = 1e9 * 1.05 * (1 + upside / 100) / 20
+    result = assess_recovery_case(stock(), record, now=NOW)
+    assert (result["status"] == "DOCUMENTED_12M_CASE") is qualifies
+    assert result["minimum_recovery_upside_pct"] == 50
+
+
+def test_goal_and_reverse_arithmetic_follow_policy_instead_of_hard_coded_double():
+    policy = load_policy()
+    policy["minimum_bull_upside_pct"] = 75
+    record = reviewed_case()
+    record["valuation"]["cases"]["recovery"]["equity_fcf_usd"] = 90e6
+    result = assess_recovery_case(stock(), record, policy=policy, now=NOW)
+    assert result["status"] == "RESEARCH_WATCH"
+    assert result["upside_requirements"]["target_price"] == 17.5
+    assert any("+75%" in reason for reason in result["missing"])
+
+
+def test_lower_return_goal_does_not_clear_a_filing_or_risk_hold():
+    record = reviewed_case()
+    record["valuation"]["cases"]["recovery"]["equity_fcf_usd"] = 80e6
+    data = stock()
+    data["official_filing_check"]["blocks_selection"] = True
+    assert assess_recovery_case(data, record, now=NOW)["status"] == "RESEARCH_WATCH"
 
 
 def test_case_review_cannot_claim_to_use_a_later_publication():
@@ -79,7 +108,7 @@ def test_quote_units_do_not_change_company_case_percentage_returns():
     assert pence["cases"]["recovery"]["price"] == pytest.approx(dollars["cases"]["recovery"]["price"] * 100)
 
 
-@pytest.mark.parametrize("change", ["stale", "future_catalyst", "expired_catalyst", "after_target", "old_filing", "old_period", "unsafe_source", "missing_invalidation", "listing_concern", "unsupported_multiple", "not_2x", "unordered"])
+@pytest.mark.parametrize("change", ["stale", "future_catalyst", "expired_catalyst", "after_target", "old_filing", "old_period", "unsafe_source", "missing_invalidation", "listing_concern", "unsupported_multiple", "below_goal", "unordered"])
 def test_missing_or_conflicting_evidence_cannot_become_a_documented_case(change):
     record = reviewed_case()
     if change == "stale": record["reviewed_at"] = "2026-09-01"
@@ -92,7 +121,7 @@ def test_missing_or_conflicting_evidence_cannot_become_a_documented_case(change)
     if change == "missing_invalidation": record["catalyst"].pop("invalidation")
     if change == "listing_concern": record["risk_reviews"]["listing_and_corporate_actions"]["status"] = "UNRESOLVED"
     if change == "unsupported_multiple": record["valuation"]["cases"]["recovery"]["sources"] = []
-    if change == "not_2x": record["valuation"]["cases"]["recovery"]["equity_fcf_usd"] = 90e6
+    if change == "below_goal": record["valuation"]["cases"]["recovery"]["equity_fcf_usd"] = 75e6
     if change == "unordered": record["valuation"]["cases"]["bear"]["equity_fcf_multiple"] = 100
     result = assess_recovery_case(stock(), record, now=NOW)
     assert result["status"] == "RESEARCH_WATCH" and result["missing"]

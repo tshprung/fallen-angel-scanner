@@ -355,6 +355,8 @@ def valuation_scenarios(evidence, info, current_price, cap_usd, financial_to_usd
                   normalization_periods=years, basis=cf["basis"],
                   description=assumptions["description"],
                   bull_2x=result["cases"]["bull"]["return_pct"] >= 100,
+                  minimum_bull_upside_pct=policy["minimum_bull_upside_pct"],
+                  bull_meets_upside_goal=result["cases"]["bull"]["return_pct"] >= policy["minimum_bull_upside_pct"],
                   plausible_upside_screen=(result["cases"]["base"]["return_pct"] >= policy["minimum_base_upside_pct"]
                                            and result["cases"]["bull"]["return_pct"] >= policy["minimum_bull_upside_pct"]))
     return result

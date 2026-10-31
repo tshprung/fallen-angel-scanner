@@ -53,8 +53,10 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
     policy = policy or load_policy()
     today = (now or datetime.now(timezone.utc)).date() if not isinstance(now, str) else day(now)
     missing = []
-    result = {"version": 1, "status": "RESEARCH_WATCH", "checked_at": today.isoformat(),
-              "missing": missing, "cases": {}, "notice": "Documented conditional research assumptions; no guarantee of doubling, survival or continued listing."}
+    minimum_upside = policy["minimum_bull_upside_pct"]
+    result = {"version": 2, "status": "RESEARCH_WATCH", "checked_at": today.isoformat(),
+              "minimum_recovery_upside_pct": minimum_upside,
+              "missing": missing, "cases": {}, "notice": "Documented conditional research assumptions; no guaranteed return, survival or continued listing."}
     signal = stock.get("price_dislocation") or {}
     age, fall = finite(signal.get("recent_peak_age_sessions")), finite(signal.get("drop_recent_peak_pct"))
     if age is None or not 0 < age <= policy["recent_drawdown_window_sessions"] or fall is None or fall > -20:
@@ -80,9 +82,11 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
     normalized = finite(valuation.get("normalized_fcf_usd"))
     dilution = finite(valuation.get("assumed_share_dilution"))
     if cap and cap > 0 and normalized and normalized > 0 and dilution is not None and dilution >= 0:
-        required_value = 2 * cap * (1 + dilution)
-        result["doubling_requirements"] = {
-            "target_price": 2 * price if price and price > 0 else None,
+        target_multiple = 1 + minimum_upside / 100
+        required_value = target_multiple * cap * (1 + dilution)
+        result["upside_requirements"] = {
+            "minimum_upside_pct": minimum_upside,
+            "target_price": target_multiple * price if price and price > 0 else None,
             "equity_fcf_multiple_at_unchanged_normalized_fcf": required_value / normalized,
             "required_equity_fcf_usd_by_multiple": {str(multiple): required_value / multiple for multiple in (10, 15, 20)},
             "basis": "Reverse sensitivity using current market cap and the generic model's dilution; not a recovery forecast"}
@@ -162,16 +166,18 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
     if len(result["cases"]) == 3:
         if result["cases"]["base"]["return_pct"] < policy["minimum_base_upside_pct"]:
             missing.append("Company-specific base case does not meet the minimum upside")
-        if result["cases"]["recovery"]["return_pct"] < 100:
-            missing.append("Company-specific recovery case does not support doubling")
+        if result["cases"]["recovery"]["return_pct"] < minimum_upside:
+            missing.append(f"Company-specific recovery case does not support at least +{minimum_upside:g}%")
     if not missing and len(result["cases"]) == 3:
         result["status"] = "DOCUMENTED_12M_CASE"
     return result
 
 
 def write_recovery_queue(audit, path):
+    from fundamental_analysis import load_policy
+    minimum_upside = load_policy()["minimum_bull_upside_pct"]
     lines = ["# Twelve-month recovery research queue", "",
-             "Goal: a recent meaningful price fall, financial resilience, and a sourced conditional doubling case within one year.", "",
+             f"Goal: a recent meaningful price fall, financial resilience, and a sourced conditional case for at least +{minimum_upside:g}% within one year.", "",
              "Generic valuation sensitivities and headline keywords do not establish a recovery case. This queue does not recommend purchases.", ""]
     queued = [item for item in audit if item.get("decision") == "selected" and item.get("goal_fit")]
     if not queued:
@@ -181,10 +187,11 @@ def write_recovery_queue(audit, path):
         lines += [f"## {item['ticker']}: {fit['status']}", ""]
         signal = item.get("price_dislocation") or {}
         lines += [f"Recent peak decline: {signal.get('drop_recent_peak_pct')}%; peak age: {signal.get('recent_peak_age_sessions')} trading sessions.", ""]
-        requirements = fit.get("doubling_requirements")
+        requirements = fit.get("upside_requirements") or fit.get("doubling_requirements")
         if requirements:
-            lines += [f"With unchanged normalized cash flow, doubling would require an equity cash-flow multiple of {requirements['equity_fcf_multiple_at_unchanged_normalized_fcf']:.1f}x, including the generic dilution assumption.", "",
-                      "Alternatively, these annual equity cash-flow proxies would support 2x at the specified multiples (USD, not revenue):", ""]
+            threshold = requirements.get("minimum_upside_pct", 100)
+            lines += [f"With unchanged normalized cash flow, +{threshold:g}% would require an equity cash-flow multiple of {requirements['equity_fcf_multiple_at_unchanged_normalized_fcf']:.1f}x, including the generic dilution assumption.", "",
+                      f"Alternatively, these annual equity cash-flow proxies would support +{threshold:g}% at the specified multiples (USD, not revenue):", ""]
             for multiple, amount in requirements["required_equity_fcf_usd_by_multiple"].items():
                 lines.append(f"- {multiple}x: ${amount:,.0f}")
             lines += ["", requirements["basis"], ""]

@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "recent_drawdown_window_sessions": 63,
   "recent_drawdown_max_calendar_days": 100,
   "allow_older_drawdowns": false,
@@ -13,7 +13,7 @@
   "minimum_burn_runway_months": 24,
   "max_annual_share_growth": 0.10,
   "minimum_base_upside_pct": 20,
-  "minimum_bull_upside_pct": 100,
+  "minimum_bull_upside_pct": 50,
   "sustained_drawdown_pct": -30,
   "sustained_max_recent_loss_pct": -15,
   "valuation": {

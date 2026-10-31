@@ -63,7 +63,21 @@ def test_touching_double_is_distinct_from_ending_double():
     assert result["mark_session"] == "2027-10-22"
     assert result["touched_2x_at_close"]
     assert not result["ended_2x"]
+    assert result["touched_50pct_at_close"] and result["ended_50pct"]
     assert result["return_local_pct"] == pytest.approx(50)
+
+
+def test_touching_fifty_percent_is_distinct_from_ending_there_and_from_double():
+    dates = pd.bdate_range("2026-10-22", "2027-10-25")
+    frame = pd.DataFrame({"Open": 100., "Close": 100.}, index=dates)
+    frame.loc["2027-03-01", "Close"] = 150
+    frame.loc["2027-10-22", "Close"] = 149.99
+    result = assess_selection(selection(), frame, now="2027-10-26T12:00Z")
+    assert result["touched_50pct_at_close"] and not result["ended_50pct"]
+    assert not result["touched_2x_at_close"] and not result["ended_2x"]
+    result.update(touched_2x_at_close=False)
+    groups = cohort_summary({"selections": [{"ticker": "AAA", "performance": result}]})
+    assert groups[0]["touched_50pct"] == 1 and groups[0]["ended_50pct"] == 0
 
 
 def test_daily_snapshots_are_idempotent_and_immutable(tmp_path):

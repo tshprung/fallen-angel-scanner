@@ -1,6 +1,6 @@
 # Documenting a conditional twelve-month recovery case
 
-The objective is a recent price decline, a business financially resilient enough to withstand it, and a defensible path to roughly 2x within one year. A low price or generic bull sensitivity alone does not meet this objective.
+The objective is a recent price decline, a business financially resilient enough to withstand it, and a defensible path to at least +50% within one year. Higher potential gains also qualify. A low price or generic bull sensitivity alone does not meet this objective.
 
 `recovery_cases.json` is a reviewed-research registry, initially empty. Do not create an issuer record until the relevant source contents have actually been examined. A URL is provenance, not proof that its contents support an assumption. The evaluator validates completeness, freshness, input alignment and arithmetic; it does not authenticate a researcher's conclusions or assign return/survival probabilities.
 
@@ -17,7 +17,7 @@ For each ticker, record:
 - `catalyst`: a source-backed explanation with `expected_by`, `metric` and `invalidation`. The milestone must be future-dated within 365 days. State why its resolution could change earnings/cash generation or the valuation.
 - `target_by`: a future date after/on the catalyst, no more than 365 days from the scan. This is the case's valuation horizon, not a promised result.
 - `risk_reviews`: the five source-backed topics below. Use `REVIEWED_NO_UNRESOLVED_CONCERN` only after actually checking the contents and documenting the analysis. Any other status keeps the candidate a watch.
-- `valuation`: source-backed company-specific assumptions using `basis: equity_fcf_usd_after_financing`, `expected_dilution_fraction` and `cases` for `bear`, `base` and `recovery`. Each case needs its own source-backed finding plus positive `equity_fcf_usd` and `equity_fcf_multiple`. Explain how cash flow includes financing costs and maintenance/capitalized development spending. Do not subtract net debt a second time from an equity cash-flow value. Translate currencies explicitly. Scenario values must be ordered; the base must meet policy's minimum upside and recovery must support at least +100% after dilution.
+- `valuation`: source-backed company-specific assumptions using `basis: equity_fcf_usd_after_financing`, `expected_dilution_fraction` and `cases` for `bear`, `base` and `recovery`. Each case needs its own source-backed finding plus positive `equity_fcf_usd` and `equity_fcf_multiple`. Explain how cash flow includes financing costs and maintenance/capitalized development spending. Do not subtract net debt a second time from an equity cash-flow value. Translate currencies explicitly. Scenario values must be ordered; the base must meet policy's minimum upside (+20%) and recovery must meet `minimum_bull_upside_pct` (currently +50%) after dilution. This changes the return goal, not the funding, filing or evidence requirements.
 
 Required risk-review topics:
 
