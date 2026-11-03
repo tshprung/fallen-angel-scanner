@@ -46,17 +46,19 @@ Search issuer name: Advanced Micro Devices, Inc.
 
 Scanner decision: filing_review.
 
-Decision reason: 8-K filed 2026-09-28: Current-report items: unregistered securities sale; 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation; 8-K filed 2026-05-15: Current-report items: material agreement, agreement termination, new financial obligation; 10-K/A filed 2026-02-04: Amended financial report requires reconciliation
+Decision reason: 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-09-28: Current-report items: unregistered securities sale; 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation; 8-K filed 2026-05-15: Current-report items: material agreement, agreement termination, new financial obligation; 10-K/A filed 2026-02-04: Amended financial report requires reconciliation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:34:27.347653+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:48:35.642601+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing
 - 8-K filed 2026-09-28: Current-report items: unregistered securities sale
 - 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation
 - 8-K filed 2026-05-15: Current-report items: material agreement, agreement termination, new financial obligation
 - 10-K/A filed 2026-02-04: Amended financial report requires reconciliation
 - [10-Q filed 2026-08-05 (0000002488-26-000123)](<https://www.sec.gov/Archives/edgar/data/2488/000000248826000123/amd-20260627.htm>)
+- [8-K filed 2026-11-03 (0000002488-26-000188)](<https://www.sec.gov/Archives/edgar/data/2488/000000248826000188/amd-20261103.htm>)
 - [8-K filed 2026-09-28 (0000002488-26-000182)](<https://www.sec.gov/Archives/edgar/data/2488/000000248826000182/amd-20260926.htm>)
 - [8-K filed 2026-08-17 (0001193125-26-354029)](<https://www.sec.gov/Archives/edgar/data/2488/000119312526354029/d142696d8k.htm>)
 - [8-K filed 2026-05-15 (0001193125-26-226746)](<https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm>)
@@ -160,7 +162,7 @@ Scanner decision: event_review.
 
 Decision reason: Mandatory preferred conversion expected March 1, 2027 can materially dilute common shares; quarterly cash conversion includes Talison dividend timing and non-recurring working-capital benefits. A generic 5% dilution or unchanged cash run rate is not sufficient underwriting.
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:41:30.142218+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:52:09.926333+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -209,7 +211,7 @@ Scanner decision: filing_review.
 
 Decision reason: 425 filed 2026-10-16: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-10-15: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-23: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-09-23: Current-report items: material agreement, new financial obligation; 425 filed 2026-09-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-09: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-09-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-16: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-02: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-07-02: Current-report items: material agreement; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:34:34.227514+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:48:40.331667+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -315,7 +317,7 @@ Scanner decision: filing_review.
 
 Decision reason: 6-K filed 2026-10-13: Foreign-issuer current report needs results/event review; 6-K filed 2026-10-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-30: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-29: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-21: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-17: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-14: Foreign-issuer current report needs results/event review; 6-K filed 2026-08-17: Foreign-issuer current report needs results/event review; 6-K filed 2026-08-12: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-24: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-20: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-17: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-14: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-29: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-16: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-10: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-04: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-28: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-12: Foreign-issuer current report needs results/event review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:34:38.794004+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:48:44.771570+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -462,7 +464,7 @@ Scanner decision: valuation_unverified.
 
 Decision reason: Positive current FCF and positive annual normalization history required
 
-Official filing check: METADATA_CHECKED (checked 2026-11-03T01:34:44.768821+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-03T23:48:49.023548+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -500,7 +502,7 @@ Scanner decision: filing_review.
 
 Decision reason: 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-24: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-13: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-08: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-08: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-08: Foreign-issuer current report needs results/event review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:34:47.864314+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:48:51.071325+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -598,6 +600,37 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## APO
+
+Search issuer name: Apollo Global Management, Inc.
+
+Scanner decision: specialist_review.
+
+Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
+
+Scanner questions:
+
+- Business-specific capital, funding, asset quality and regulatory requirements
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.apollo.com/institutional/homepage>) — quote-provider website; verify issuer identity
+- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## AMAT
 
 Search issuer name: Applied Materials, Inc.
@@ -606,7 +639,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-08-27: Results/outlook disclosure published after latest periodic financial filing
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:34:52.178314+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:48:53.427546+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -741,7 +774,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-06-08: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:02.693579+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:00.617762+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -873,6 +906,37 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## BX
+
+Search issuer name: Blackstone Inc.
+
+Scanner decision: specialist_review.
+
+Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
+
+Scanner questions:
+
+- Business-specific capital, funding, asset quality and regulatory requirements
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.blackstone.com>) — quote-provider website; verify issuer identity
+- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## BE
 
 Search issuer name: Bloom Energy Corporation
@@ -881,7 +945,7 @@ Scanner decision: filing_review.
 
 Decision reason: 10-Q/A filed 2026-07-29: Amended financial report requires reconciliation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:09.640510+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:04.941596+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -898,40 +962,6 @@ Scanner questions:
 Public starting points:
 
 - [Issuer website — find investor relations and annual/interim reports](<https://www.bloomenergy.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## BWA
-
-Search issuer name: BorgWarner Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days
-
-Scanner questions:
-
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
-- income: annual fallback; current TTM quarters unavailable
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.borgwarner.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:
@@ -988,7 +1018,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); cashflow evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); income evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); 8-K filed 2026-10-27: Current-report items: new financial obligation; S-4 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-06-09: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-06-09: Merger/transaction filing requires current-status and valuation review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:16.979390+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:11.041830+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1160,7 +1190,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-Q period 2026-08-01 (filed 2026-09-03); cashflow evidence predates SEC 10-Q period 2026-08-01 (filed 2026-09-03); income evidence predates SEC 10-Q period 2026-08-01 (filed 2026-09-03); 8-K filed 2026-06-11: Current-report items: material agreement, new financial obligation, unregistered securities sale
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:33.496904+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:22.071558+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1233,7 +1263,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-09-28: Results/outlook disclosure published after latest periodic financial filing; DEFM14A filed 2025-12-22: Merger/transaction filing requires current-status and valuation review; PREM14A filed 2025-12-03: Merger/transaction filing requires current-status and valuation review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:37.525870+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:24.455990+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1308,7 +1338,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-10-28: Results/outlook disclosure published after latest periodic financial filing
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:41.695206+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:26.952913+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1479,7 +1509,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-05-20: Current-report items: material agreement, agreement termination, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:51.842084+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:33.412697+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1516,14 +1546,17 @@ Search issuer name: DigitalOcean Holdings, Inc.
 
 Scanner decision: filing_review.
 
-Decision reason: 8-K filed 2026-09-10: Current-report items: material agreement, new financial obligation
+Decision reason: balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03); 8-K filed 2026-09-10: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:35:58.616679+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:37.412403+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03)
 - 8-K filed 2026-09-10: Current-report items: material agreement, new financial obligation
-- [10-Q filed 2026-08-04 (0001628280-26-052556)](<https://www.sec.gov/Archives/edgar/data/1582961/000162828026052556/docn-20260630.htm>)
+- [10-Q filed 2026-11-03 (0001628280-26-069141)](<https://www.sec.gov/Archives/edgar/data/1582961/000162828026069141/docn-20260930.htm>)
 - [8-K filed 2026-09-10 (0001104659-26-106704)](<https://www.sec.gov/Archives/edgar/data/1582961/000110465926106704/tm2625205d1_8k.htm>)
 
 Scanner questions:
@@ -1550,6 +1583,37 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## DASH
+
+Search issuer name: DoorDash, Inc.
+
+Scanner decision: unverified.
+
+Decision reason: Usable statement interest expense and EBIT for a company with debt
+
+Scanner questions:
+
+- Usable statement interest expense and EBIT for a company with debt
+- Debt due in months 13–24, covenants and committed facilities require filing review
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.doordash.com>) — quote-provider website; verify issuer identity
+- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## DY
 
 Search issuer name: Dycom Industries, Inc.
@@ -1558,7 +1622,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-27); cashflow evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-27); income evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-27)
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:36:02.890316+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:41.771294+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1590,37 +1654,6 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
-## EME
-
-Search issuer name: EMCOR Group, Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Usable statement interest expense and EBIT for a company with debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://emcorgroup.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
 ## P
 
 Search issuer name: Everpure, Inc.
@@ -1629,7 +1662,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-04); cashflow evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-04); income evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-04)
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:36:08.533663+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:44.327413+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1667,15 +1700,17 @@ Search issuer name: Everus Construction Group, Inc.
 
 Scanner decision: filing_review.
 
-Decision reason: 8-K filed 2026-09-08: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-02: Results/outlook disclosure published after latest periodic financial filing
+Decision reason: 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-09-08: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-02: Results/outlook disclosure published after latest periodic financial filing
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:36:10.201086+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:45.797458+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing
 - 8-K filed 2026-09-08: Current-report items: material agreement, new financial obligation
 - 8-K filed 2026-09-02: Results/outlook disclosure published after latest periodic financial filing
 - [10-Q filed 2026-08-05 (0002015845-26-000050)](<https://www.sec.gov/Archives/edgar/data/2015845/000201584526000050/ecg-20260630.htm>)
+- [8-K filed 2026-11-03 (0002015845-26-000059)](<https://www.sec.gov/Archives/edgar/data/2015845/000201584526000059/ecg-20261103.htm>)
 - [8-K filed 2026-09-08 (0002015845-26-000056)](<https://www.sec.gov/Archives/edgar/data/2015845/000201584526000056/ecg-20260901.htm>)
 - [8-K filed 2026-09-02 (0002015845-26-000053)](<https://www.sec.gov/Archives/edgar/data/2015845/000201584526000053/ecg-20260901.htm>)
 
@@ -1800,6 +1835,39 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## FNF
+
+Search issuer name: Fidelity National Financial, Inc.
+
+Scanner decision: specialist_review.
+
+Decision reason: Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity
+
+Scanner questions:
+
+- Jurisdiction-specific regulatory solvency/capital
+- Reserve adequacy and underwriting results
+- Asset/liability duration and liquidity
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.fnf.com>) — quote-provider website; verify issuer identity
+- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## FIG
 
 Search issuer name: Figma, Inc.
@@ -1871,7 +1939,7 @@ Scanner decision: valuation_unverified.
 
 Decision reason: Positive current FCF and positive annual normalization history required
 
-Official filing check: METADATA_CHECKED (checked 2026-11-03T01:36:18.770223+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-03T23:49:51.832558+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1906,14 +1974,14 @@ Search issuer name: Flex Ltd.
 
 Scanner decision: unverified.
 
-Decision reason: Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Statement current_debt
+Decision reason: Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Statement current_debt; Financial statement dates do not align within 120 days
 
 Scanner questions:
 
-- Fresh balance statement (maximum 200 days from period end)
 - Fresh cashflow statement (maximum 200 days from period end)
 - Fresh income statement (maximum 200 days from period end)
 - Statement current_debt
+- Financial statement dates do not align within 120 days
 - cashflow: annual fallback; current TTM quarters unavailable
 - income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
@@ -1978,14 +2046,11 @@ Search issuer name: Fortinet, Inc.
 
 Scanner decision: unverified.
 
-Decision reason: Fresh income statement (maximum 200 days from period end); Statement current_debt; Financial statement dates do not align within 120 days
+Decision reason: Statement current_debt
 
 Scanner questions:
 
-- Fresh income statement (maximum 200 days from period end)
 - Statement current_debt
-- Financial statement dates do not align within 120 days
-- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 
 Public starting points:
@@ -2071,39 +2136,6 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
-## GEV
-
-Search issuer name: GE Vernova Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Statement current_debt; Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Statement current_debt
-- Usable statement interest expense and EBIT for a company with debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current assets below current liabilities
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.gevernova.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
 ## GWRE
 
 Search issuer name: Guidewire Software, Inc.
@@ -2112,7 +2144,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-10-27: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:36:33.271469+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:49:59.689621+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -2438,14 +2470,11 @@ Search issuer name: Landstar System, Inc.
 
 Scanner decision: unverified.
 
-Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt
+Decision reason: Usable statement interest expense and EBIT for a company with debt
 
 Scanner questions:
 
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
 - Usable statement interest expense and EBIT for a company with debt
-- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 
 Public starting points:
@@ -2536,7 +2565,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-28); cashflow evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-28); income evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-28); 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-11-02: Current-report items: material agreement; 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-10-23: Current-report items: material agreement; 8-K filed 2026-08-19: Current-report items: material agreement, unregistered securities sale
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:37:22.258851+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:29.744489+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -2637,7 +2666,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-10-29: Current-report items: material agreement; 8-K filed 2026-10-21: Current-report items: material agreement
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:37:27.215187+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:32.429486+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -2678,7 +2707,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-K period 2026-09-03 (filed 2026-10-09); cashflow evidence predates SEC 10-K period 2026-09-03 (filed 2026-10-09); income evidence predates SEC 10-K period 2026-09-03 (filed 2026-10-09)
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:37:30.795388+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:34.862406+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -2710,54 +2739,19 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
-## MFP
-
-Search issuer name: Midera Food Processing, Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Fresh cashflow statement (maximum 200 days from period end)
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
-- Usable statement interest expense and EBIT for a company with debt
-- cashflow: annual fallback; current TTM quarters unavailable
-- income: annual fallback; current TTM quarters unavailable
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://midera.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
 ## MOD
 
 Search issuer name: Modine Manufacturing Company
 
 Scanner decision: filing_review.
 
-Decision reason: 8-K filed 2026-10-01: Current-report items: material agreement, acquisition/disposal; 425 filed 2026-09-17: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-09-17: Results/outlook disclosure published after latest periodic financial filing; 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-31: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-05-28: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review
+Decision reason: 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-10-01: Current-report items: material agreement, acquisition/disposal; 425 filed 2026-09-17: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-09-17: Results/outlook disclosure published after latest periodic financial filing; 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-31: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-05-28: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:37:39.333978+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:38.975286+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing
 - 8-K filed 2026-10-01: Current-report items: material agreement, acquisition/disposal
 - 425 filed 2026-09-17: Merger/transaction filing requires current-status and valuation review
 - 8-K filed 2026-09-17: Results/outlook disclosure published after latest periodic financial filing
@@ -2775,6 +2769,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review
 - 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review
 - [10-Q filed 2026-07-30 (0001104659-26-088569)](<https://www.sec.gov/Archives/edgar/data/67347/000110465926088569/mod-20260630x10q.htm>)
+- [8-K filed 2026-11-03 (0001104659-26-122032)](<https://www.sec.gov/Archives/edgar/data/67347/000110465926122032/mod-20261103x8k.htm>)
 - [8-K filed 2026-10-01 (0001104659-26-112870)](<https://www.sec.gov/Archives/edgar/data/67347/000110465926112870/tm2626618d1_8k.htm>)
 - [425 filed 2026-09-17 (0001104659-26-108615)](<https://www.sec.gov/Archives/edgar/data/67347/000110465926108615/tm2625565d2_425.htm>)
 - [8-K filed 2026-09-17 (0001104659-26-108614)](<https://www.sec.gov/Archives/edgar/data/67347/000110465926108614/tm2625565d1_8k.htm>)
@@ -2823,7 +2818,7 @@ Scanner decision: filing_review.
 
 Decision reason: 425 filed 2026-01-16: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-15: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-07: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-06: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-22: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-19: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-15: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-09: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:37:50.248760+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:45.812590+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -2894,6 +2889,45 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## NEM
+
+Search issuer name: Newmont Corporation
+
+Scanner decision: filing_review.
+
+Decision reason: 8-K filed 2026-08-13: Current-report items: material agreement
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:49.037798+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-08-13: Current-report items: material agreement
+- [10-Q filed 2026-10-22 (0001164727-26-000043)](<https://www.sec.gov/Archives/edgar/data/1164727/000116472726000043/nem-20260930.htm>)
+- [8-K filed 2026-08-13 (0001104659-26-095968)](<https://www.sec.gov/Archives/edgar/data/1164727/000110465926095968/tm2623048d1_8k.htm>)
+
+Scanner questions:
+
+- Debt due in months 13–24, covenants and committed facilities require filing review
+- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.newmont.com>) — quote-provider website; verify issuer identity
+- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## NU
 
 Search issuer name: Nu Holdings Ltd.
@@ -2933,15 +2967,12 @@ Search issuer name: nVent Electric plc
 
 Scanner decision: filing_review.
 
-Decision reason: balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-10-30); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-10-30); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-10-30); 8-K filed 2026-09-29: Current-report items: new financial obligation; 8-K filed 2026-09-17: Current-report items: new financial obligation
+Decision reason: 8-K filed 2026-09-29: Current-report items: new financial obligation; 8-K filed 2026-09-17: Current-report items: new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:37:57.257430+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:50:51.776160+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-10-30)
-- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-10-30)
-- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-10-30)
 - 8-K filed 2026-09-29: Current-report items: new financial obligation
 - 8-K filed 2026-09-17: Current-report items: new financial obligation
 - [10-Q filed 2026-10-30 (0001628280-26-068596)](<https://www.sec.gov/Archives/edgar/data/1720635/000162828026068596/nvt-20260930.htm>)
@@ -3043,14 +3074,11 @@ Search issuer name: PACCAR Inc
 
 Scanner decision: unverified.
 
-Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt
+Decision reason: Usable statement interest expense and EBIT for a company with debt
 
 Scanner questions:
 
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
 - Usable statement interest expense and EBIT for a company with debt
-- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 
 Public starting points:
@@ -3110,7 +3138,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-08-05: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:38:16.765695+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:02.489040+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3147,14 +3175,11 @@ Search issuer name: Reddit, Inc.
 
 Scanner decision: unverified.
 
-Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt
+Decision reason: Usable statement interest expense and EBIT for a company with debt
 
 Scanner questions:
 
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
 - Usable statement interest expense and EBIT for a company with debt
-- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 
 Public starting points:
@@ -3248,7 +3273,6 @@ Decision reason: Statement current_debt
 Scanner questions:
 
 - Statement current_debt
-- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 
 Public starting points:
@@ -3277,7 +3301,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-10-15: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-07-06: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:38:28.873175+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:10.479060+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3350,7 +3374,7 @@ Scanner decision: event_review.
 
 Decision reason: September 8 profit warning: Fresh Pork margin compression and lower hog prices undermine an unchanged historical cash-flow assumption.
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:41:33.206940+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:52:10.875721+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3392,70 +3416,25 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
-## MWH
+## SCCO
 
-Search issuer name: SOLV Energy, Inc.
+Search issuer name: Southern Copper Corporation
 
-Scanner decision: filing_review.
+Scanner decision: unverified.
 
-Decision reason: 10-K/A filed 2026-03-26: Amended financial report requires reconciliation
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:38:34.832485+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 10-K/A filed 2026-03-26: Amended financial report requires reconciliation
-- [10-Q filed 2026-08-14 (0001193125-26-352447)](<https://www.sec.gov/Archives/edgar/data/2065636/000119312526352447/d152940d10q.htm>)
-- [10-K/A filed 2026-03-26 (0001193125-26-124739)](<https://www.sec.gov/Archives/edgar/data/2065636/000119312526124739/d108001d10ka.htm>)
+Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days
 
 Scanner questions:
 
+- Fresh income statement (maximum 200 days from period end)
+- Financial statement dates do not align within 120 days
+- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 - Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
 
 Public starting points:
 
-- [Issuer website — find investor relations and annual/interim reports](<https://www.solvenergy.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## SPXC
-
-Search issuer name: SPX Technologies, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: balance evidence predates SEC 10-Q period 2026-09-26 (filed 2026-10-30); cashflow evidence predates SEC 10-Q period 2026-09-26 (filed 2026-10-30); income evidence predates SEC 10-Q period 2026-09-26 (filed 2026-10-30)
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:38:41.346659+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- balance evidence predates SEC 10-Q period 2026-09-26 (filed 2026-10-30)
-- cashflow evidence predates SEC 10-Q period 2026-09-26 (filed 2026-10-30)
-- income evidence predates SEC 10-Q period 2026-09-26 (filed 2026-10-30)
-- [10-Q filed 2026-10-30 (0000088205-26-000061)](<https://www.sec.gov/Archives/edgar/data/88205/000008820526000061/spxc-20260926.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.spx.com>) — quote-provider website; verify issuer identity
+- [Issuer website — find investor relations and annual/interim reports](<https://www.southerncoppercorp.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:
@@ -3512,7 +3491,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-07-08: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:38:43.212618+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:19.462523+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3616,7 +3595,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-09-30: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-24: Current-report items: material agreement, new financial obligation; 8-K filed 2026-08-17: Current-report items: material agreement; 8-K filed 2026-06-03: Current-report items: material agreement, agreement termination, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:38:52.773866+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:27.123260+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3675,37 +3654,6 @@ Scanner questions:
 Public starting points:
 
 - [Issuer website — find investor relations and annual/interim reports](<https://www.versantmedia.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## VRT
-
-Search issuer name: Vertiv Holdings Co
-
-Scanner decision: unverified.
-
-Decision reason: Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Usable statement interest expense and EBIT for a company with debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.vertiv.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:
@@ -3791,7 +3739,7 @@ Scanner decision: filing_review.
 
 Decision reason: balance evidence predates SEC 10-Q period 2026-10-02 (filed 2026-10-23); cashflow evidence predates SEC 10-Q period 2026-10-02 (filed 2026-10-23); income evidence predates SEC 10-Q period 2026-10-02 (filed 2026-10-23); 8-K/A filed 2026-08-27: Current-report items: unregistered securities sale; 8-K filed 2026-08-26: Current-report items: unregistered securities sale; 8-K/A filed 2026-06-08: Current-report items: unregistered securities sale; 8-K filed 2026-06-03: Current-report items: unregistered securities sale
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:39:04.729893+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:34.662334+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3816,6 +3764,39 @@ Scanner questions:
 Public starting points:
 
 - [Issuer website — find investor relations and annual/interim reports](<https://www.westerndigital.com>) — quote-provider website; verify issuer identity
+- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
+## WY
+
+Search issuer name: Weyerhaeuser Company
+
+Scanner decision: specialist_review.
+
+Decision reason: FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex
+
+Scanner questions:
+
+- FFO/AFFO with issuer reconciliation
+- Property/debt maturities, secured debt and occupancy
+- Distribution coverage and maintenance capex
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.weyerhaeuser.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:
@@ -3870,7 +3851,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-09-09: Current-report items: material agreement, agreement termination, new financial obligation; 8-K filed 2026-05-29: Current-report items: material agreement, new financial obligation
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:39:11.157949+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:38.474177+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -3934,6 +3915,43 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## RIO.L
+
+Search issuer name: Rio Tinto Group
+
+Scanner decision: unverified.
+
+Decision reason: Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days
+
+Scanner questions:
+
+- Fresh cashflow statement (maximum 200 days from period end)
+- Fresh income statement (maximum 200 days from period end)
+- Financial statement dates do not align within 120 days
+- cashflow: annual fallback; current TTM quarters unavailable
+- income: annual fallback; current TTM quarters unavailable
+- Debt due in months 13–24, covenants and committed facilities require filing review
+- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.riotinto.com>) — quote-provider website; verify issuer identity
+- [FCA National Storage Mechanism](<https://data.fca.org.uk/#/nsm/nationalstoragemechanism>) — UK regulated announcements and annual reports
+- [Companies House](<https://find-and-update.company-information.service.gov.uk/>) — UK registered-company accounts; confirm the listed parent
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## ANTO.L
 
 Search issuer name: Antofagasta plc
@@ -3972,6 +3990,107 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
+## HSBA.L
+
+Search issuer name: HSBC Holdings plc
+
+Scanner decision: specialist_review.
+
+Decision reason: Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality
+
+Scanner questions:
+
+- Regulatory capital/CET1 and jurisdictional requirements
+- Deposit/funding stability and liquidity
+- Credit losses and asset quality
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.hsbc.com>) — quote-provider website; verify issuer identity
+- [FCA National Storage Mechanism](<https://data.fca.org.uk/#/nsm/nationalstoragemechanism>) — UK regulated announcements and annual reports
+- [Companies House](<https://find-and-update.company-information.service.gov.uk/>) — UK registered-company accounts; confirm the listed parent
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
+## BARC.L
+
+Search issuer name: Barclays PLC
+
+Scanner decision: specialist_review.
+
+Decision reason: Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality
+
+Scanner questions:
+
+- Regulatory capital/CET1 and jurisdictional requirements
+- Deposit/funding stability and liquidity
+- Credit losses and asset quality
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://home.barclays>) — quote-provider website; verify issuer identity
+- [FCA National Storage Mechanism](<https://data.fca.org.uk/#/nsm/nationalstoragemechanism>) — UK regulated announcements and annual reports
+- [Companies House](<https://find-and-update.company-information.service.gov.uk/>) — UK registered-company accounts; confirm the listed parent
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
+## ALHE.TA
+
+Search issuer name: Alony-Hetz Properties &amp; Investments Ltd
+
+Scanner decision: specialist_review.
+
+Decision reason: FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex
+
+Scanner questions:
+
+- FFO/AFFO with issuer reconciliation
+- Property/debt maturities, secured debt and occupancy
+- Distribution coverage and maintenance capex
+- Ordinary-company solvency model does not apply
+
+Public starting points:
+
+- [Issuer website — find investor relations and annual/interim reports](<https://www.alony-hetz.com>) — quote-provider website; verify issuer identity
+- [TASE MAYA financial statements](<https://maya.tase.co.il/en/reports/financial-report>) — Israeli listing disclosures; confirm issuer and language
+
+Evidence checklist:
+
+- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
+- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
+- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
+- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
+- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
+- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
+- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
+
+For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
+Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
+
 ## ACLS
 
 Search issuer name: Axcelis Technologies, Inc.
@@ -3980,7 +4099,7 @@ Scanner decision: filing_review.
 
 Decision reason: 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-10-27: Results/outlook disclosure published after latest periodic financial filing; 425 filed 2026-04-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-12: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-06: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-28: Merger/transaction filing requires current-status and valuation review; S-4/A filed 2025-12-29: Merger/transaction filing requires current-status and valuation review; S-4 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:39:20.092280+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:48.198646+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -4037,7 +4156,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-10-28: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-05-12: Current-report items: material agreement
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:39:21.985795+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:49.874639+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -4080,7 +4199,7 @@ Scanner decision: filing_review.
 
 Decision reason: 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:39:24.503680+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:51.183584+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -4159,42 +4278,6 @@ Scanner questions:
 Public starting points:
 
 - [Issuer website — find investor relations and annual/interim reports](<https://www.aarcorp.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## ALG
-
-Search issuer name: Alamo Group Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end)
-
-Scanner questions:
-
-- Fresh balance statement (maximum 200 days from period end)
-- Fresh cashflow statement (maximum 200 days from period end)
-- Fresh income statement (maximum 200 days from period end)
-- cashflow: annual fallback; current TTM quarters unavailable
-- income: annual fallback; current TTM quarters unavailable
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.alamo-group.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:
@@ -4305,25 +4388,30 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
-## BHE
+## BOOT
 
-Search issuer name: Benchmark Electronics, Inc.
+Search issuer name: Boot Barn Holdings, Inc.
 
-Scanner decision: unverified.
+Scanner decision: filing_review.
 
-Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days
+Decision reason: 8-K filed 2026-07-29: Current-report items: material agreement, new financial obligation
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-03T23:51:59.687205+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-07-29: Current-report items: material agreement, new financial obligation
+- [10-Q filed 2026-10-28 (0001104659-26-119705)](<https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/boot-20260926x10q.htm>)
+- [8-K filed 2026-07-29 (0001104659-26-088137)](<https://www.sec.gov/Archives/edgar/data/1610250/000110465926088137/boot-20260728x8k.htm>)
 
 Scanner questions:
 
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
-- income: annual fallback; current TTM quarters unavailable
 - Debt due in months 13–24, covenants and committed facilities require filing review
 - Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
 
 Public starting points:
 
-- [Issuer website — find investor relations and annual/interim reports](<https://www.bench.com>) — quote-provider website; verify issuer identity
+- [Issuer website — find investor relations and annual/interim reports](<https://www.bootbarn.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:
@@ -4498,653 +4586,9 @@ Evidence checklist:
 For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
 Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
 
-## ENVA
+## CSW
 
-Search issuer name: Enova International, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
-
-Scanner questions:
-
-- Business-specific capital, funding, asset quality and regulatory requirements
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.enova.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## ESE
-
-Search issuer name: ESCO Technologies Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-10-02: Current-report items: material agreement, agreement termination, acquisition/disposal, new financial obligation; 8-K filed 2026-06-03: Current-report items: material agreement, agreement termination, new financial obligation
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:39:56.798442+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-10-02: Current-report items: material agreement, agreement termination, acquisition/disposal, new financial obligation
-- 8-K filed 2026-06-03: Current-report items: material agreement, agreement termination, new financial obligation
-- [10-Q filed 2026-08-10 (0001104659-26-093266)](<https://www.sec.gov/Archives/edgar/data/866706/000110465926093266/ese-20260630x10q.htm>)
-- [8-K filed 2026-10-02 (0001104659-26-113300)](<https://www.sec.gov/Archives/edgar/data/866706/000110465926113300/tm2626186d1_8k.htm>)
-- [8-K filed 2026-06-03 (0001104659-26-070116)](<https://www.sec.gov/Archives/edgar/data/866706/000110465926070116/tm2616691d1_8k.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.escotechnologies.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## FG
-
-Search issuer name: F&amp;G Annuities &amp; Life, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity
-
-Scanner questions:
-
-- Jurisdiction-specific regulatory solvency/capital
-- Reserve adequacy and underwriting results
-- Asset/liability duration and liquidity
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.fglife.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## GNL
-
-Search issuer name: Global Net Lease, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex
-
-Scanner questions:
-
-- FFO/AFFO with issuer reconciliation
-- Property/debt maturities, secured debt and occupancy
-- Distribution coverage and maintenance capex
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.globalnetlease.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## GSHD
-
-Search issuer name: Goosehead Insurance, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity
-
-Scanner questions:
-
-- Jurisdiction-specific regulatory solvency/capital
-- Reserve adequacy and underwriting results
-- Asset/liability duration and liquidity
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.goosehead.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## HUBG
-
-Search issuer name: Hub Group, Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Statement ocf; Statement fcf; Statement ebit; Statement revenue; Usable statement interest expense and EBIT for a company with debt; Positive statement EBITDA for net leverage assessment
-
-Scanner questions:
-
-- Fresh balance statement (maximum 200 days from period end)
-- Fresh cashflow statement (maximum 200 days from period end)
-- Fresh income statement (maximum 200 days from period end)
-- Statement ocf
-- Statement fcf
-- Statement ebit
-- Statement revenue
-- Usable statement interest expense and EBIT for a company with debt
-- Positive statement EBITDA for net leverage assessment
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.hubgroup.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## KALU
-
-Search issuer name: Kaiser Aluminum Corporation
-
-Scanner decision: valuation_unverified.
-
-Decision reason: Positive current FCF and positive annual normalization history required
-
-Official filing check: METADATA_CHECKED (checked 2026-11-03T01:40:09.114336+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- [10-Q filed 2026-10-22 (0001193125-26-429090)](<https://www.sec.gov/Archives/edgar/data/811596/000119312526429090/kalu-20260930.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.kaiseraluminum.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## KLIC
-
-Search issuer name: Kulicke and Soffa Industries, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: balance evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06); cashflow evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06); income evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06); 8-K filed 2026-08-17: Results/outlook disclosure published after latest periodic financial filing
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:40:13.733838+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- balance evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06)
-- cashflow evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06)
-- income evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06)
-- 8-K filed 2026-08-17: Results/outlook disclosure published after latest periodic financial filing
-- [10-Q filed 2026-08-06 (0000056978-26-000032)](<https://www.sec.gov/Archives/edgar/data/56978/000005697826000032/klic-20260704.htm>)
-- [8-K filed 2026-08-17 (0000056978-26-000034)](<https://www.sec.gov/Archives/edgar/data/56978/000005697826000034/klic-20260813.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.kns.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## LEU
-
-Search issuer name: Centrus Energy Corp.
-
-Scanner decision: unverified.
-
-Decision reason: Statement current_debt
-
-Scanner questions:
-
-- Statement current_debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Cash burn requires a funded turnaround thesis
-- Non-positive operating cash flow
-- Annual share-count growth exceeds policy; dilution needs review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.centrusenergy.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## LIF
-
-Search issuer name: Life360, Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Statement current_debt; Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Statement current_debt
-- Usable statement interest expense and EBIT for a company with debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://intl.life360.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## MARA
-
-Search issuer name: MARA Holdings, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
-
-Scanner questions:
-
-- Business-specific capital, funding, asset quality and regulatory requirements
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.mara.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## NPO
-
-Search issuer name: Enpro Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end)
-
-Scanner questions:
-
-- Fresh balance statement (maximum 200 days from period end)
-- Fresh cashflow statement (maximum 200 days from period end)
-- Fresh income statement (maximum 200 days from period end)
-- cashflow: annual fallback; current TTM quarters unavailable
-- income: annual fallback; current TTM quarters unavailable
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.enpro.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## NSSC
-
-Search issuer name: Napco Security Technologies, Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Statement current_debt; Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Statement current_debt
-- Usable statement interest expense and EBIT for a company with debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.napcosecurity.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## NXRT
-
-Search issuer name: NexPoint Residential Trust, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex
-
-Scanner questions:
-
-- FFO/AFFO with issuer reconciliation
-- Property/debt maturities, secured debt and occupancy
-- Distribution coverage and maintenance capex
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.nxrt.nexpoint.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## OII
-
-Search issuer name: Oceaneering International, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-07-07: Current-report items: material agreement, new financial obligation; 8-K filed 2026-06-26: Current-report items: material agreement
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:40:39.294978+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-07-07: Current-report items: material agreement, new financial obligation
-- 8-K filed 2026-06-26: Current-report items: material agreement
-- [10-Q filed 2026-10-22 (0000073756-26-000154)](<https://www.sec.gov/Archives/edgar/data/73756/000007375626000154/oii-20260930.htm>)
-- [8-K filed 2026-07-07 (0000073756-26-000127)](<https://www.sec.gov/Archives/edgar/data/73756/000007375626000127/oii-20260706.htm>)
-- [8-K filed 2026-06-26 (0000073756-26-000121)](<https://www.sec.gov/Archives/edgar/data/73756/000007375626000121/oii-20260624.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.oceaneering.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## PARR
-
-Search issuer name: Par Pacific Holdings, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-08-25: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-05-14: Current-report items: material agreement, new financial obligation
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:40:41.279817+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-08-25: Results/outlook disclosure published after latest periodic financial filing
-- 8-K filed 2026-05-14: Current-report items: material agreement, new financial obligation
-- [10-Q filed 2026-08-05 (0000821483-26-000014)](<https://www.sec.gov/Archives/edgar/data/821483/000082148326000014/parr-20260630.htm>)
-- [8-K filed 2026-08-25 (0001437749-26-028947)](<https://www.sec.gov/Archives/edgar/data/821483/000143774926028947/parr20260825_8k.htm>)
-- [8-K filed 2026-05-14 (0001193125-26-224142)](<https://www.sec.gov/Archives/edgar/data/821483/000119312526224142/d176382d8k.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.parpacific.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## PENG
-
-Search issuer name: Penguin Solutions, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-07-17: Current-report items: material agreement, new financial obligation, unregistered securities sale
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:40:45.626416+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-07-17: Current-report items: material agreement, new financial obligation, unregistered securities sale
-- [10-K filed 2026-10-20 (0001616533-26-000050)](<https://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm>)
-- [8-K filed 2026-07-17 (0001193125-26-307989)](<https://www.sec.gov/Archives/edgar/data/1616533/000119312526307989/d103073d8k.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-- Cash burn requires a funded turnaround thesis
-- Non-positive operating cash flow
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.penguinsolutions.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## PLXS
-
-Search issuer name: Plexus Corp.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh income statement (maximum 200 days from period end); Statement ebit; Statement revenue; Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Fresh income statement (maximum 200 days from period end)
-- Statement ebit
-- Statement revenue
-- Usable statement interest expense and EBIT for a company with debt
-- Debt due in months 13–24, covenants and committed facilities require filing review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.plexus.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## PRLB
-
-Search issuer name: Proto Labs, Inc.
+Search issuer name: CSW Industrials, Inc.
 
 Scanner decision: unverified.
 
@@ -5157,536 +4601,7 @@ Scanner questions:
 
 Public starting points:
 
-- [Issuer website — find investor relations and annual/interim reports](<https://www.protolabs.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## RSI
-
-Search issuer name: Rush Street Interactive, Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt
-
-Scanner questions:
-
-- Fresh income statement (maximum 200 days from period end)
-- Financial statement dates do not align within 120 days
-- Usable statement interest expense and EBIT for a company with debt
-- income: annual fallback; current TTM quarters unavailable
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Annual share-count growth exceeds policy; dilution needs review
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.rushstreetinteractive.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## SAFE
-
-Search issuer name: Safehold Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex
-
-Scanner questions:
-
-- FFO/AFFO with issuer reconciliation
-- Property/debt maturities, secured debt and occupancy
-- Distribution coverage and maintenance capex
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.safeholdinc.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## SEZL
-
-Search issuer name: Sezzle Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
-
-Scanner questions:
-
-- Business-specific capital, funding, asset quality and regulatory requirements
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.sezzle.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## SNEX
-
-Search issuer name: StoneX Group Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
-
-Scanner questions:
-
-- Business-specific capital, funding, asset quality and regulatory requirements
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.stonex.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## STC
-
-Search issuer name: Stewart Information Services Corporation
-
-Scanner decision: specialist_review.
-
-Decision reason: Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity
-
-Scanner questions:
-
-- Jurisdiction-specific regulatory solvency/capital
-- Reserve adequacy and underwriting results
-- Asset/liability duration and liquidity
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.stewart.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## SXI
-
-Search issuer name: Standex International Corporation
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-07-02: Current-report items: material agreement, agreement termination, acquisition/disposal; 10-K/A filed 2025-12-31: Amended financial report requires reconciliation; 10-K/A filed 2025-12-29: Amended financial report requires reconciliation
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:41:04.682485+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-07-02: Current-report items: material agreement, agreement termination, acquisition/disposal
-- 10-K/A filed 2025-12-31: Amended financial report requires reconciliation
-- 10-K/A filed 2025-12-29: Amended financial report requires reconciliation
-- [10-Q filed 2026-10-30 (0001437749-26-034212)](<https://www.sec.gov/Archives/edgar/data/310354/000143774926034212/sxi20260930_10q.htm>)
-- [8-K filed 2026-07-02 (0001437749-26-022576)](<https://www.sec.gov/Archives/edgar/data/310354/000143774926022576/sxi20260701_8k.htm>)
-- [10-K/A filed 2025-12-31 (0001437749-25-039046)](<https://www.sec.gov/Archives/edgar/data/310354/000143774925039046/sxi20251110c_10ka.htm>)
-- [10-K/A filed 2025-12-29 (0001437749-25-038746)](<https://www.sec.gov/Archives/edgar/data/310354/000143774925038746/sxi20251110_10ka.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.standex.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## TBBK
-
-Search issuer name: The Bancorp, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality
-
-Scanner questions:
-
-- Regulatory capital/CET1 and jurisdictional requirements
-- Deposit/funding stability and liquidity
-- Credit losses and asset quality
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.thebancorp.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## TDW
-
-Search issuer name: Tidewater Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-10-05: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-25: Current-report items: material agreement, new financial obligation; 8-K filed 2026-08-31: Current-report items: material agreement, acquisition/disposal, new financial obligation
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:41:06.445049+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-10-05: Current-report items: material agreement, new financial obligation
-- 8-K filed 2026-09-25: Current-report items: material agreement, new financial obligation
-- 8-K filed 2026-08-31: Current-report items: material agreement, acquisition/disposal, new financial obligation
-- [10-Q filed 2026-08-03 (0001437749-26-025450)](<https://www.sec.gov/Archives/edgar/data/98222/000143774926025450/tdw20260630_10q.htm>)
-- [8-K filed 2026-10-05 (0001104659-26-113492)](<https://www.sec.gov/Archives/edgar/data/98222/000110465926113492/tm2626952d1_8k.htm>)
-- [8-K filed 2026-09-25 (0001104659-26-111052)](<https://www.sec.gov/Archives/edgar/data/98222/000110465926111052/tm2626128d2_8k.htm>)
-- [8-K filed 2026-08-31 (0001104659-26-103962)](<https://www.sec.gov/Archives/edgar/data/98222/000110465926103962/tm2624097d1_8k.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.tdw.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## UNIT
-
-Search issuer name: Uniti Group Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex
-
-Scanner questions:
-
-- FFO/AFFO with issuer reconciliation
-- Property/debt maturities, secured debt and occupancy
-- Distribution coverage and maintenance capex
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.uniti.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## UTI
-
-Search issuer name: Universal Technical Institute, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: 8-K filed 2026-08-18: Current-report items: material agreement, new financial obligation
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:41:15.024970+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- 8-K filed 2026-08-18: Current-report items: material agreement, new financial obligation
-- [10-Q filed 2026-08-06 (0001261654-26-000018)](<https://www.sec.gov/Archives/edgar/data/1261654/000126165426000018/uti-20260630.htm>)
-- [8-K filed 2026-08-18 (0001193125-26-354799)](<https://www.sec.gov/Archives/edgar/data/1261654/000119312526354799/d404364d8k.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-- Cash burn requires a funded turnaround thesis
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.uti.edu>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## VECO
-
-Search issuer name: Veeco Instruments Inc.
-
-Scanner decision: unverified.
-
-Decision reason: Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end)
-
-Scanner questions:
-
-- Fresh balance statement (maximum 200 days from period end)
-- Fresh cashflow statement (maximum 200 days from period end)
-- Fresh income statement (maximum 200 days from period end)
-- cashflow: annual fallback; current TTM quarters unavailable
-- income: annual fallback; current TTM quarters unavailable
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.veeco.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## VRTS
-
-Search issuer name: Virtus Investment Partners, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
-
-Scanner questions:
-
-- Business-specific capital, funding, asset quality and regulatory requirements
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://corporate.virtus.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## VSH
-
-Search issuer name: Vishay Intertechnology, Inc.
-
-Scanner decision: filing_review.
-
-Decision reason: balance evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-05); cashflow evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-05); income evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-05); 8-K filed 2026-07-01: Current-report items: material agreement
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-03T01:41:21.740473+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- balance evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-05)
-- cashflow evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-05)
-- income evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-05)
-- 8-K filed 2026-07-01: Current-report items: material agreement
-- [10-Q filed 2026-08-05 (0000103730-26-000065)](<https://www.sec.gov/Archives/edgar/data/103730/000010373026000065/form10q.htm>)
-- [8-K filed 2026-07-01 (0001140361-26-027081)](<https://www.sec.gov/Archives/edgar/data/103730/000114036126027081/ny20076868x4_8k.htm>)
-
-Scanner questions:
-
-- Debt due in months 13–24, covenants and committed facilities require filing review
-- Current debt is a balance-sheet proxy, not a complete contractual maturity schedule
-- Cash burn requires a funded turnaround thesis
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.vishay.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## WAFD
-
-Search issuer name: WaFd, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality
-
-Scanner questions:
-
-- Regulatory capital/CET1 and jurisdictional requirements
-- Deposit/funding stability and liquidity
-- Credit losses and asset quality
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.wafdbank.com>) — quote-provider website; verify issuer identity
-- [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
-
-Evidence checklist:
-
-- [ ] Confirm the listed issuer, reporting jurisdiction and latest annual/interim filing, including amendments.
-- [ ] Find contractual debt/lease maturities through the next 24 months; record actual dates, amounts, currency and units.
-- [ ] Check covenant thresholds/headroom, breaches, waivers and clauses that can accelerate repayment.
-- [ ] Identify unrestricted cash, restricted cash and committed undrawn facilities; record expiry dates and draw conditions.
-- [ ] Read the auditor opinion and going-concern/liquidity disclosures, and subsequent events.
-- [ ] Reconcile gross interest, lease liabilities and cash-flow classification if the provider's interest evidence is missing.
-- [ ] Source the negative event and recovery thesis; identify a measurable resolution condition and what would invalidate it.
-
-For each finding record: filing URL, publication date, period, note/page, currency/units and unresolved questions.
-Do not enter zero for an undisclosed amount or treat ‘not found’ as ‘no risk’.
-
-## WD
-
-Search issuer name: Walker &amp; Dunlop, Inc.
-
-Scanner decision: specialist_review.
-
-Decision reason: Business-specific capital, funding, asset quality and regulatory requirements
-
-Scanner questions:
-
-- Business-specific capital, funding, asset quality and regulatory requirements
-- Ordinary-company solvency model does not apply
-
-Public starting points:
-
-- [Issuer website — find investor relations and annual/interim reports](<https://www.walkerdunlop.com>) — quote-provider website; verify issuer identity
+- [Issuer website — find investor relations and annual/interim reports](<https://www.csw.com>) — quote-provider website; verify issuer identity
 - [SEC EDGAR filing search](<https://www.sec.gov/search-filings>) — US filings where applicable; search issuer/ticker and confirm CIK
 
 Evidence checklist:

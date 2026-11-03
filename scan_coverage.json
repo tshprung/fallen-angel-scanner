@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-11-03T01:12:25.001956+00:00",
+  "started_at": "2026-11-03T23:37:26.117188+00:00",
   "completed": true,
   "requested_symbols": [
     "TTD",
@@ -1704,28 +1704,27 @@
   ],
   "requested_count": 1699,
   "processed_count": 1699,
-  "quote_successes": 1698,
-  "histories_checked": 1559,
+  "quote_successes": 1288,
+  "histories_checked": 1183,
   "outcomes": {
-    "candidate": 330,
-    "no_recent_decline_or_price_unverified": 1228,
-    "data_error": 4,
-    "insufficient_history": 5,
-    "biotechnology": 68,
-    "currency_unverified": 41,
-    "price_listing_filter": 4,
-    "below_market_cap": 18,
+    "candidate": 234,
+    "no_recent_decline_or_price_unverified": 948,
+    "insufficient_history": 4,
+    "biotechnology": 49,
+    "currency_unverified": 451,
+    "price_listing_filter": 3,
+    "below_market_cap": 9,
     "liquidity_filter_or_missing_volume": 1
   },
   "data_gaps": [
     {
-      "ticker": "ZS",
+      "ticker": "WBD",
       "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
+      "outcome": "insufficient_history",
+      "error_type": null
     },
     {
-      "ticker": "WBD",
+      "ticker": "KVUE",
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
@@ -1735,24 +1734,6 @@
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "RGLD",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
-    },
-    {
-      "ticker": "SNX",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
-    },
-    {
-      "ticker": "WMT",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
     },
     {
       "ticker": "WBS",
@@ -2007,19 +1988,2467 @@
       "error_type": "CurrencyUnavailable"
     },
     {
+      "ticker": "CWK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "CWST",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "CWT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "CXM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "CXW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DAN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DAVE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DBD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DCH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DCOM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DEA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DEI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DFH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DFIN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DGII",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DIOD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DLX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DMC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DNOW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DORM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DRH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DV",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DXC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "DXPE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EAT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EBC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ECPG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EFC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EFOR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EGBN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EIG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ENOV",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ENR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ENVA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EPAC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EPC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EPRT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ESE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EVTC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EXTR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EYE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "EZPW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FBK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FBNC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FBP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FBRT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FCF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FCPT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FELE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FFBC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FIBK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FIVN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FIZZ",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FLO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FMC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FOXF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FSS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FTDR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FTRE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FUL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FULT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "FUN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GBX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GEO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GFF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GIII",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GKOS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GNL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GNW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GOLF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GPI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GPOR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GRBK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GSHD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GTY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "GVA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HAFC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HASI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HCC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HCI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HCSG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HFWA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HIW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HLIT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
       "ticker": "HLX",
-      "stage": "price_history",
-      "outcome": "insufficient_history",
-      "error_type": null
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HMN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HNI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HOPE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HRMY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HSTM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HTH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HTLD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HTO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HUBG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HWKN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "HZO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "IART",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "IBP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ICHR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ICUI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "IIPR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "INDB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "INDV",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "INSP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "INSW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "INVA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "INVX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "IOSP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "IPAR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ITGR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ITRI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "IVT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JBGS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JBLU",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JBSS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JBTM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JJSF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JOE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "JXN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KAI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KALU",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KFY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KGS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KLIC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KMPR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KMT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KNTK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KOP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KSS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KTB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "KWR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LAUR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LBRT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LCII",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
     },
     {
       "ticker": "LEG",
-      "stage": "price_history",
-      "outcome": "insufficient_history",
-      "error_type": null
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LEU",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LFST",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LGIH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LIF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LGND",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LKFN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LMAT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LNN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LPG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LQDA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LQDT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LRN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LTC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LTH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LUMN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LXP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LZ",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "LZB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MAC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MAN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MARA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MATW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MATX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MBC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MBIN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MCRI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MCY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MGEE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MGY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MHO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MIR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MLKN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MMI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MMSI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MRCY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MRTN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MSEX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MTH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MTRN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MTUS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MTX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MWA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MXL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "MYRG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NABL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NATL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NAVI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NBHC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NBTB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NEO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NEOG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NGVT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NHC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NHI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NIC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NMIH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NOG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NPK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NPO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NSIT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NSP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NSSC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NTCT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NTST",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NWBI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NWL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NWN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "NXRT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OFG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OII",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OMCL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OPLN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OSIS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OSW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OTTR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "OUT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PAHC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PARR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PAYO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PATK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PBH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PBI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PCRX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PDFS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PEB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PECO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PENG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PENN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PFBC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PFS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PGNY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PHIN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PIPR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PJT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PLAB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PLMR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PLUS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PLXS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PMT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "POWI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRDO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRGO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRGS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRKS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRLB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRSU",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PRVA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PSMT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PTCT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PTEN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PTGX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PTON",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PZZA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "QDEL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "QNST",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "QTWO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RAMP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RCUS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RDN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RDNT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RELY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RES",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "REX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "REZI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RHP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RNST",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ROAD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ROCK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ROG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RRR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RSI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RUN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RUSHA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "RXO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SAFE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SABR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SAFT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SAH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SBCF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SBH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SBSI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SCHL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SCL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SCSC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SDGR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SEDG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SEI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SEZL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SFBS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SFNC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SHAK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SHEN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SHO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SHOO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SIG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SKT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SKY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SKYW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SLG",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SLVM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SMP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SMPL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SNEX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SONO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SPHR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SPNT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SPSC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SRPT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "STAA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "STBA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "STC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "STEP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "STRA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SUPN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SXI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "SXT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TALO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TBBK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TDC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TDS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TDW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TFIN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TGTX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "THRM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TILE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TMDX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TMP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TNC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TNDM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TPC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TRIP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TRMK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TRN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TRNO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TRST",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "TRUP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UAA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UCB",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UCTT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UE",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UFCS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UFPT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UNF",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UNFI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UNIT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UPBD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UPWK",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "URBN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "USLM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "USPH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UTI",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UTL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "UVV",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VAC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VCEL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VCTR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VCYT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VECO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VGNT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VIR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VRRM",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VRTS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VSAT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VSEC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VSH",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VSTS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VSXY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VTOL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VVX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "VYX",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WABC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WAFD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WAY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WDFC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WEN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WERN",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WGO",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WHD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WINA",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WKC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WLY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WOR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WRBY",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WRLD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WSBC",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WSFS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WT",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "WWW",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "XHR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "XNCR",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "XPEL",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "YELP",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "YOU",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ZD",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "ZWS",
+      "stage": "quote",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
     }
   ],
   "notice": "Configured/fallback universe only, not every listed company. Missing data and unverified prices do not establish that a stock failed the investment criteria.",
-  "updated_at": "2026-11-03T01:34:16.958796+00:00",
+  "updated_at": "2026-11-03T23:48:30.086170+00:00",
   "last_symbol": "ZWS"
 }

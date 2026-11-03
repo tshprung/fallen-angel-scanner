@@ -275,8 +275,8 @@
         "entry_session": "2026-10-22",
         "mark_session": "2026-11-02",
         "entry_adjusted_open": 83.0199966430664,
-        "mark_adjusted_close": 102.09,
-        "return_local_pct": 22.97037355821945,
+        "mark_adjusted_close": 102.08999633789062,
+        "return_local_pct": 22.97036914710222,
         "worst_close_return_pct": 2.228386145893846,
         "touched_50pct_at_close": false,
         "ended_50pct": null,
@@ -290,8 +290,8 @@
           "ticker": "SPY",
           "entry_session": "2026-10-22",
           "mark_session": "2026-11-02",
-          "return_pct": -1.7599847597275842,
-          "stock_minus_benchmark_pp": 24.730358317947033,
+          "return_pct": -1.862027430897517,
+          "stock_minus_benchmark_pp": 24.832396577999738,
           "return_basis": "USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes"
         }
       }
@@ -569,9 +569,9 @@
         "entry_session": "2026-10-22",
         "mark_session": "2026-11-02",
         "entry_adjusted_open": 78.23999786376953,
-        "mark_adjusted_close": 75.71,
-        "return_local_pct": -3.2336374397334944,
-        "worst_close_return_pct": -3.2336374397334944,
+        "mark_adjusted_close": 75.70999908447266,
+        "return_local_pct": -3.233638609886058,
+        "worst_close_return_pct": -3.233638609886058,
         "touched_50pct_at_close": false,
         "ended_50pct": null,
         "touched_2x_at_close": false,
@@ -584,8 +584,8 @@
           "ticker": "SPY",
           "entry_session": "2026-10-22",
           "mark_session": "2026-11-02",
-          "return_pct": -1.7599847597275842,
-          "stock_minus_benchmark_pp": -1.4736526800059102,
+          "return_pct": -1.862027430897517,
+          "stock_minus_benchmark_pp": -1.371611178988541,
           "return_basis": "USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes"
         }
       }
@@ -864,8 +864,8 @@
         "entry_session": "2026-10-22",
         "mark_session": "2026-11-02",
         "entry_adjusted_open": 18.43000030517578,
-        "mark_adjusted_close": 18.52,
-        "return_local_pct": 0.4883325737056188,
+        "mark_adjusted_close": 18.510000228881836,
+        "return_local_pct": 0.43407445676268974,
         "worst_close_return_pct": -0.6511168597197359,
         "touched_50pct_at_close": false,
         "ended_50pct": null,
@@ -879,12 +879,12 @@
           "ticker": "SPY",
           "entry_session": "2026-10-22",
           "mark_session": "2026-11-02",
-          "return_pct": -1.7599847597275842,
-          "stock_minus_benchmark_pp": 2.248317333433203,
+          "return_pct": -1.862027430897517,
+          "stock_minus_benchmark_pp": 2.296101887660207,
           "return_basis": "USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes"
         }
       }
     }
   ],
-  "last_refreshed_at": "2026-11-03T01:41:56.841675+00:00"
+  "last_refreshed_at": "2026-11-03T23:52:29.383500+00:00"
 }
