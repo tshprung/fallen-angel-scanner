@@ -48,18 +48,23 @@ class FxRates:
         if currency == "USD":
             return 1.0, self.now.isoformat()
         if currency not in self.cache:
-            try:
-                history = self.loader(f"{currency}USD=X")
-                close = pd.to_numeric(history["Close"], errors="coerce")
-                dates = pd.to_datetime(close.index, utc=True)
-                valid = close.map(lambda v: math.isfinite(v) and v > 0)
-                valid &= (dates <= self.now) & (dates >= self.now - pd.Timedelta(days=7))
-                close = close[valid].sort_index()
-                if close.empty:
-                    raise ValueError("No valid FX observation in the last seven days")
-                self.cache[currency] = (float(close.iloc[-1]), pd.Timestamp(close.index[-1]).isoformat())
-            except Exception as exc:
-                self.cache[currency] = CurrencyUnavailable(f"FX unavailable for {currency}: {exc}")
+            # One transient FX failure otherwise excludes every later stock in
+            # that currency. Retry once before caching a failure for this run.
+            for attempt in range(2):
+                try:
+                    history = self.loader(f"{currency}USD=X")
+                    close = pd.to_numeric(history["Close"], errors="coerce")
+                    dates = pd.to_datetime(close.index, utc=True)
+                    valid = close.map(lambda v: math.isfinite(v) and v > 0)
+                    valid &= (dates <= self.now) & (dates >= self.now - pd.Timedelta(days=7))
+                    close = close[valid].sort_index()
+                    if close.empty:
+                        raise ValueError("No valid FX observation in the last seven days")
+                    self.cache[currency] = (float(close.iloc[-1]), pd.Timestamp(close.index[-1]).isoformat())
+                    break
+                except Exception as exc:
+                    if attempt == 1:
+                        self.cache[currency] = CurrencyUnavailable(f"FX unavailable for {currency}: {exc}")
         result = self.cache[currency]
         if isinstance(result, Exception):
             raise result

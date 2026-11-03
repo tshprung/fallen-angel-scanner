@@ -44,6 +44,16 @@ def test_fx_caches_successes_and_failures():
     for _ in range(2):
         with pytest.raises(CurrencyUnavailable):
             fx.rate("JPY")
+    assert loader.call_count == 3  # one success, two bounded attempts for JPY
+
+
+@pytest.mark.parametrize("first", [TimeoutError("temporary source failure"), pd.DataFrame()])
+def test_transient_fx_failure_does_not_exclude_all_later_stocks(first):
+    history = pd.DataFrame({"Close": [1.1]}, index=pd.to_datetime(["2026-10-20"], utc=True))
+    loader = Mock(side_effect=[first, history])
+    fx = FxRates(loader, now="2026-10-21T12:00Z")
+    for ticker in ("SAP.DE", "SIE.DE"):
+        assert currency_context({"currency": "EUR"}, fx)["quote_to_usd"] == pytest.approx(1.1)
     assert loader.call_count == 2
 
 
