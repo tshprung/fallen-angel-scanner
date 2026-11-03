@@ -1,6 +1,7 @@
 {
-  "method_version": 2,
-  "last_refreshed_at": "2026-10-30T22:57:11.868689+00:00",
+  "method_version": 3,
+  "benchmark_method_version": 1,
+  "last_refreshed_at": "2026-11-03T01:41:56.841675+00:00",
   "notice": "Correlated forward observations, not a portfolio backtest or calibrated success rate. Unknown outcomes stay in cohort totals.",
   "cohorts": [
     {
@@ -17,9 +18,13 @@
       "tracking": 3,
       "complete_12m": 0,
       "unverified": 0,
+      "touched_50pct": 0,
+      "ended_50pct": 0,
       "touched_2x": 0,
       "ended_2x": 0,
       "ended_loss": 0,
+      "benchmark_verified_complete": 0,
+      "outperformed_benchmark": 0,
       "unique_tickers": 3
     }
   ]

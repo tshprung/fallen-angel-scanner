@@ -1,6 +1,6 @@
 # Twelve-month recovery research queue
 
-Goal: a recent meaningful price fall, financial resilience, and a sourced conditional doubling case within one year.
+Goal: a recent meaningful price fall, financial resilience, and a sourced conditional case for at least +50% within one year.
 
 Generic valuation sensitivities and headline keywords do not establish a recovery case. This queue does not recommend purchases.
 

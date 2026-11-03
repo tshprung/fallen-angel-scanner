@@ -273,15 +273,27 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-29",
+        "mark_session": "2026-11-02",
         "entry_adjusted_open": 83.0199966430664,
-        "mark_adjusted_close": 98.97000122070312,
-        "return_local_pct": 19.21224430568418,
+        "mark_adjusted_close": 102.09,
+        "return_local_pct": 22.97037355821945,
         "worst_close_return_pct": 2.228386145893846,
+        "touched_50pct_at_close": false,
+        "ended_50pct": null,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 2
+        "method_version": 3,
+        "benchmark": {
+          "method_version": 1,
+          "status": "MATCHED",
+          "ticker": "SPY",
+          "entry_session": "2026-10-22",
+          "mark_session": "2026-11-02",
+          "return_pct": -1.7599847597275842,
+          "stock_minus_benchmark_pp": 24.730358317947033,
+          "return_basis": "USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes"
+        }
       }
     },
     {
@@ -555,15 +567,27 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-29",
+        "mark_session": "2026-11-02",
         "entry_adjusted_open": 78.23999786376953,
-        "mark_adjusted_close": 80.69999694824219,
-        "return_local_pct": 3.144170694835613,
-        "worst_close_return_pct": 0.23006174602560048,
+        "mark_adjusted_close": 75.71,
+        "return_local_pct": -3.2336374397334944,
+        "worst_close_return_pct": -3.2336374397334944,
+        "touched_50pct_at_close": false,
+        "ended_50pct": null,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 2
+        "method_version": 3,
+        "benchmark": {
+          "method_version": 1,
+          "status": "MATCHED",
+          "ticker": "SPY",
+          "entry_session": "2026-10-22",
+          "mark_session": "2026-11-02",
+          "return_pct": -1.7599847597275842,
+          "stock_minus_benchmark_pp": -1.4736526800059102,
+          "return_basis": "USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes"
+        }
       }
     },
     {
@@ -838,17 +862,29 @@
       "performance": {
         "status": "tracking",
         "entry_session": "2026-10-22",
-        "mark_session": "2026-10-29",
+        "mark_session": "2026-11-02",
         "entry_adjusted_open": 18.43000030517578,
-        "mark_adjusted_close": 18.549999237060547,
-        "return_local_pct": 0.6511065105683445,
+        "mark_adjusted_close": 18.52,
+        "return_local_pct": 0.4883325737056188,
         "worst_close_return_pct": -0.6511168597197359,
+        "touched_50pct_at_close": false,
+        "ended_50pct": null,
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 2
+        "method_version": 3,
+        "benchmark": {
+          "method_version": 1,
+          "status": "MATCHED",
+          "ticker": "SPY",
+          "entry_session": "2026-10-22",
+          "mark_session": "2026-11-02",
+          "return_pct": -1.7599847597275842,
+          "stock_minus_benchmark_pp": 2.248317333433203,
+          "return_basis": "USD; dividend/split-adjusted SPY open-to-close; stock-matched sessions; before trading costs/taxes"
+        }
       }
     }
   ],
-  "last_refreshed_at": "2026-10-30T22:57:11.868689+00:00"
+  "last_refreshed_at": "2026-11-03T01:41:56.841675+00:00"
 }
