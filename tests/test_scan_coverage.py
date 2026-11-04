@@ -139,3 +139,77 @@ def test_source_health_does_not_label_price_outage_as_no_matches():
     assert provider_health(coverage)["systemic_failure"] is True
     assert provider_health(audit=[{"decision": "analysis_error"}, {"decision": "unverified"}])["status"] == "DEGRADED"
     assert not provider_health(audit=[{"decision": "analysis_error"}, {"decision": "unverified"}])["systemic_failure"]
+
+
+def test_clustered_quote_outage_is_detected_after_a_large_healthy_prefix():
+    from scan_coverage import provider_health
+    coverage = new_coverage([str(i) for i in range(1010)])
+    for i in range(1000):
+        record_outcome(coverage, str(i), "candidate", "price_history")
+    for i in range(10):
+        record_outcome(coverage, f"MISSING{i}", "currency_unverified", "quote", "CurrencyUnavailable")
+    health = provider_health(coverage)
+    assert health["systemic_failure"] and health["maximum_consecutive_quote_failures"] == 10
+    assert health["recorded_price_source_gaps"] == 10  # < 1% overall still signals a broken feed
+
+
+def test_fx_failures_do_not_masquerade_as_a_quote_authentication_outage():
+    from scan_coverage import provider_health
+    coverage = new_coverage([str(i) for i in range(100)])
+    for i in range(60):
+        record_outcome(coverage, str(i), "candidate", "price_history")
+    for i in range(39):
+        record_outcome(coverage, f"GERMAN{i}", "currency_unverified", "currency_and_security")
+    assert coverage["maximum_consecutive_quote_failures"] == 0
+    assert not provider_health(coverage)["systemic_failure"]
+
+
+def test_stage1_stops_and_saves_incomplete_coverage_on_sustained_quote_failure(monkeypatch, tmp_path):
+    import fallen_angel_scanner as scanner
+    from scanner_currency import CurrencyUnavailable
+    names = ["GOOD"] + [f"FAIL{i}" for i in range(15)]
+    monkeypatch.setattr(scanner, "get_all_tickers", lambda: names)
+    monkeypatch.setattr(scanner, "load_failed_tickers", lambda: {})
+    monkeypatch.setattr(scanner, "save_failed_tickers", lambda value: None)
+    monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path / "research_report"), raising=False)
+    def fetch(ticker):
+        if ticker == "GOOD":
+            return object(), {"quoteType": "ETF"}
+        raise CurrencyUnavailable("Yahoo quote lacks a verified currency")
+    fetcher = Mock(side_effect=fetch)
+    monkeypatch.setattr(scanner, "get_stock_with_retry", fetcher)
+    monkeypatch.setattr(scanner, "currency_context", lambda info: {})
+    monkeypatch.setattr(scanner, "market_cap_usd", lambda info, context: 1e9)
+    scanner.stage1_quick_filter()
+    saved = json.loads((tmp_path / "scan_coverage.json").read_text())
+    assert not saved["completed"] and saved["processed_count"] == 11
+    assert saved["requested_count"] == 16 and fetcher.call_count == 11
+    assert saved["maximum_consecutive_quote_failures"] == 10
+
+
+def test_clustered_outage_preserves_diagnostics_without_normal_mail_or_paper(monkeypatch, tmp_path):
+    import fallen_angel_scanner as scanner
+    coverage = new_coverage([str(i) for i in range(1020)])
+    for i in range(1000):
+        record_outcome(coverage, str(i), "candidate", "price_history")
+    for i in range(10):
+        record_outcome(coverage, f"FAIL{i}", "currency_unverified", "quote")
+    monkeypatch.setattr(scanner, "load_memory", lambda: {})
+    monkeypatch.setattr(scanner, "check_price_alerts", lambda memory: [])
+    def stage1():
+        monkeypatch.setattr(scanner, "_last_stage1_coverage", coverage)
+        return [{"ticker": "GOOD"}], []
+    monkeypatch.setattr(scanner, "stage1_quick_filter", stage1)
+    monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path / "research_report"), raising=False)
+    monkeypatch.setattr(scanner, "REPORT_SCOPE", {"type": "fixture"}, raising=False)
+    send, analyze = Mock(), Mock()
+    monkeypatch.setattr(scanner, "send_email", send)
+    monkeypatch.setattr(scanner, "stage2_deep_analysis", analyze)
+    with pytest.raises(RuntimeError, match="Systemic price-source failure"):
+        scanner.main()
+    saved = json.loads((tmp_path / "research_report.json").read_text())
+    assert not saved["scan_scope"]["stage1_coverage"]["completed"]
+    assert saved["scan_scope"]["provider_health"]["systemic_failure"]
+    send.assert_not_called()
+    analyze.assert_not_called()
+    assert not (tmp_path / "paper_tracking.json").exists()

@@ -57,6 +57,24 @@ def test_transient_fx_failure_does_not_exclude_all_later_stocks(first):
     assert loader.call_count == 2
 
 
+@pytest.mark.parametrize("latest_close", [1.12, 1.2])
+def test_latest_fx_request_preserves_production_candle_validation(monkeypatch, latest_close):
+    from types import SimpleNamespace
+    import scanner_currency
+    latest = pd.DataFrame({"Open": [1.11], "High": [1.13], "Low": [1.10],
+                           "Close": [latest_close]}, index=pd.to_datetime(["2026-10-20"], utc=True))
+    underlying = SimpleNamespace(ticker="EURUSD=X", history=Mock(return_value=latest))
+    wrapped = SimpleNamespace(history=lambda **kwargs: price_history(underlying, **kwargs))
+    monkeypatch.setattr(scanner.yf, "Ticker", lambda pair: wrapped)
+    fx = FxRates(scanner_currency.yahoo_fx_history, now="2026-10-21T12:00Z")
+    if latest_close == 1.12:
+        assert fx.rate("EUR")[0] == pytest.approx(1.12)
+    else:
+        with pytest.raises(CurrencyUnavailable, match="inconsistent OHLC"):
+            fx.rate("EUR")
+    assert all(call.kwargs["period"] == "1d" for call in underlying.history.call_args_list)
+
+
 @pytest.mark.parametrize("date,value", [("2026-09-01", 1.2), ("2026-10-22", 1.2), ("2026-10-20", float("nan")), ("2026-10-20", float("inf")), ("2026-10-20", -1)])
 def test_stale_future_and_invalid_fx_are_rejected(date, value):
     fx = FxRates(lambda _: pd.DataFrame({"Close": [value]}, index=pd.to_datetime([date], utc=True)), now="2026-10-21T12:00Z")

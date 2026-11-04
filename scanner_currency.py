@@ -32,7 +32,10 @@ def quote_unit(code):
 
 def yahoo_fx_history(pair):
     import yfinance as yf
-    return yf.Ticker(pair).history(period="1mo", auto_adjust=False)
+    # Screening needs the latest dated conversion, not a month of FX candles.
+    # The production adapter validates this candle's OHLC; rate() still rejects
+    # missing, nonpositive, future or older-than-seven-day observations.
+    return yf.Ticker(pair).history(period="1d", auto_adjust=False)
 
 
 class FxRates:

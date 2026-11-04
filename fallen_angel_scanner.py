@@ -32,7 +32,8 @@ from review_holds import load_review_holds
 from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
 from recovery_cases import load_recovery_cases, assess_recovery_case
 from filing_contents import enrich_research_audit
-from scan_coverage import new_coverage, record_outcome, checkpoint, provider_health
+from scan_coverage import (new_coverage, record_outcome, checkpoint, provider_health,
+                           MAX_CONSECUTIVE_QUOTE_FAILURES)
 from screening import drawdown_candidate
 from disclosure_watch import has_updates as has_disclosure_updates
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
@@ -700,6 +701,9 @@ def stage1_quick_filter():
     tickers_to_remove = []
     
     for i, ticker in enumerate(all_tickers):
+        if coverage.get("consecutive_quote_failures", 0) >= MAX_CONSECUTIVE_QUOTE_FAILURES:
+            print("  Source outage: stopping after 10 consecutive quote failures; coverage is incomplete")
+            break
         outcome, stage, error_type = "data_error", "quote", None
         if (i + 1) % 50 == 0:
             print(f"  Progress: {i+1}/{len(all_tickers)}")
@@ -786,10 +790,10 @@ def stage1_quick_filter():
     
     # Save failed ticker tracking
     save_failed_tickers(failed_tickers)
-    coverage["completed"] = True
+    coverage["completed"] = coverage["processed_count"] == len(all_tickers)
     checkpoint(coverage, prefix)
     
-    print(f"\n✅ Stage 1 complete: Found {len(candidates)} candidates")
+    print(f"\nStage 1 completed: {coverage['completed']}; found {len(candidates)} candidates")
     if tickers_to_remove:
         print(f"⚠️  {len(tickers_to_remove)} tickers flagged for removal: {', '.join(tickers_to_remove[:10])}")
         if len(tickers_to_remove) > 10:
