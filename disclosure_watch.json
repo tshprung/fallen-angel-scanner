@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-03T23:35:38.816887+00:00",
+  "checked_at": "2026-11-04T23:52:42.898593+00:00",
   "notice": "Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.",
   "watches": [
     {
@@ -8,7 +8,7 @@
       "expected_report_date": "2026-10-27",
       "expected_period_end": "2026-09-30",
       "question": "The acquisition-loan draw is documented in the October 27 filing. Reconcile post-close liquidity, 24-month payments and covenant headroom; test Pool recovery and recurring combined cash flow.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
           "id": "0000077360-26-000058",
@@ -29,7 +29,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-09-30",
       "issuer": "PENTAIR plc",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
       "status": "EXPECTED_REPORT_REQUIRES_REVIEW",
       "source_status": "AVAILABLE",
       "expected_report_listed": true,
@@ -41,7 +41,7 @@
       "expected_report_date": "2026-11-05",
       "expected_period_end": "2026-09-30",
       "question": "Verify profit and cash conversion, collections, factoring, committed funding and covenant headroom behind sales growth. Issuer links do not verify filing contents.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [],
       "new_documents": [],
       "actionable_change": false,
@@ -57,7 +57,7 @@
       "expected_report_date": null,
       "expected_period_end": null,
       "question": "Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
           "id": "0000057131-26-000035",
@@ -71,7 +71,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-07-25",
       "issuer": "LA-Z-BOY INC",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
       "status": "UNCHANGED",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
@@ -83,7 +83,7 @@
       "expected_report_date": "2026-11-09",
       "expected_period_end": "2026-10-03",
       "question": "Issuer announced the fiscal 2026 results call for November 9 at 5 PM ET. Review post-ZT cash conversion, receivable sales, the five-year debt schedule including the 2030 balloon, covenant headroom and acquisition integration. Confirm a comparable historical price and supported 50% recovery case.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
           "id": "0000897723-26-000037",
@@ -97,7 +97,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-06-27",
       "issuer": "SANMINA CORP",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
       "status": "AWAITING_EXPECTED_REPORT",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
@@ -109,7 +109,7 @@
       "expected_report_date": null,
       "expected_period_end": null,
       "question": "Verify November 16 convertible redemption/conversion settlement and dilution, January 2027 revolver repayment/refinancing, continuing-business cash conversion and cyclical valuation. November 16 is a transaction checkpoint, not an expected periodic-report date. Use post-Sandisk historical prices only.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
           "id": "0001628280-26-066933",
@@ -151,7 +151,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-10-02",
       "issuer": "WESTERN DIGITAL CORP",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
       "status": "UNCHANGED",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
@@ -163,7 +163,7 @@
       "expected_report_date": null,
       "expected_period_end": null,
       "question": "Review Armis integration, cash after acquisition addbacks and stock compensation, short-term commercial paper and five-year maturities through 2031. A higher historical price and 20% subscription growth do not by themselves establish 50% upside.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
           "id": "0001373715-26-000096",
@@ -184,7 +184,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-09-30",
       "issuer": "ServiceNow, Inc.",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
       "status": "UNCHANGED",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
@@ -196,7 +196,7 @@
       "expected_report_date": "2026-11-09",
       "expected_period_end": "2026-09-30",
       "question": "Issuer announced September-quarter results for November 9 after market close. Review growth stabilization, competitive pressure, cash conversion and stock compensation. Separate operating leases from funded borrowings; do not invent missing interest as zero. The higher historical price does not prove a temporary setback.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
           "id": "0001671933-26-000086",
@@ -217,7 +217,7 @@
       "actionable_change": false,
       "latest_financial_period": "2026-06-30",
       "issuer": "Trade Desk, Inc.",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
       "status": "AWAITING_EXPECTED_REPORT",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
@@ -229,14 +229,14 @@
       "expected_report_date": null,
       "expected_period_end": null,
       "question": "Reconcile March 2027 mandatory preferred conversion and common-share dilution, normalized Talison/JV distributions and working capital, lithium-price stress, five-year maturities and liquidity. The conversion date is not an expected periodic-report date; no next results date is assumed here.",
-      "checked_at": "2026-11-03T23:35:38.816887+00:00",
+      "checked_at": "2026-11-04T23:52:42.898593+00:00",
       "documents": [
         {
-          "id": "0000915913-26-000102",
-          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000102/alb-20260630.htm",
-          "label": "10-Q filed 2026-08-05",
-          "period": "2026-06-30",
-          "filed_at": "2026-08-05"
+          "id": "0000915913-26-000129",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000129/alb-20260930.htm",
+          "label": "10-Q filed 2026-11-04",
+          "period": "2026-09-30",
+          "filed_at": "2026-11-04"
         },
         {
           "id": "0000915913-26-000124",
@@ -246,13 +246,6 @@
           "filed_at": "2026-10-30"
         },
         {
-          "id": "0001140361-26-035623",
-          "url": "https://www.sec.gov/Archives/edgar/data/915913/000114036126035623/ef20081522_8k.htm",
-          "label": "8-K filed 2026-09-03",
-          "period": "2026-09-02",
-          "filed_at": "2026-09-03"
-        },
-        {
           "id": "0000915913-26-000060",
           "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000060/alb-20251231.htm",
           "label": "10-K/A filed 2026-03-31",
@@ -260,12 +253,20 @@
           "filed_at": "2026-03-31"
         }
       ],
-      "new_documents": [],
-      "actionable_change": false,
-      "latest_financial_period": "2026-06-30",
+      "new_documents": [
+        {
+          "id": "0000915913-26-000129",
+          "url": "https://www.sec.gov/Archives/edgar/data/915913/000091591326000129/alb-20260930.htm",
+          "label": "10-Q filed 2026-11-04",
+          "period": "2026-09-30",
+          "filed_at": "2026-11-04"
+        }
+      ],
+      "actionable_change": true,
+      "latest_financial_period": "2026-09-30",
       "issuer": "ALBEMARLE CORP",
-      "source_checked_at": "2026-11-03T23:35:38.816887+00:00",
-      "status": "UNCHANGED",
+      "source_checked_at": "2026-11-04T23:52:42.898593+00:00",
+      "status": "NEW_SOURCE_DOCUMENTS",
       "source_status": "AVAILABLE",
       "expected_report_listed": false,
       "omitted_document_count": 0

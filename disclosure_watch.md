@@ -2,7 +2,7 @@
 
 Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.
 
-Checked: 2026-11-03T23:35:38.816887+00:00
+Checked: 2026-11-04T23:52:42.898593+00:00
 
 ## PNR: EXPECTED_REPORT_REQUIRES_REVIEW
 
@@ -45,11 +45,10 @@ Issuer announced September-quarter results for November 9 after market close. Re
 
 - [10-Q filed 2026-08-06](<https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm>)
 - [8-K filed 2026-09-04](<https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm>)
-## ALB: UNCHANGED
+## ALB: NEW_SOURCE_DOCUMENTS
 
 Reconcile March 2027 mandatory preferred conversion and common-share dilution, normalized Talison/JV distributions and working capital, lithium-price stress, five-year maturities and liquidity. The conversion date is not an expected periodic-report date; no next results date is assumed here.
 
-- [10-Q filed 2026-08-05](<https://www.sec.gov/Archives/edgar/data/915913/000091591326000102/alb-20260630.htm>)
+- [10-Q filed 2026-11-04](<https://www.sec.gov/Archives/edgar/data/915913/000091591326000129/alb-20260930.htm>)
 - [8-K filed 2026-10-30](<https://www.sec.gov/Archives/edgar/data/915913/000091591326000124/alb-20261026.htm>)
-- [8-K filed 2026-09-03](<https://www.sec.gov/Archives/edgar/data/915913/000114036126035623/ef20081522_8k.htm>)
 - [10-K/A filed 2026-03-31](<https://www.sec.gov/Archives/edgar/data/915913/000091591326000060/alb-20251231.htm>)
