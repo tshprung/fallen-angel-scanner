@@ -39,14 +39,23 @@ def yahoo_fx_history(pair):
 
 
 class FxRates:
-    def __init__(self, loader=yahoo_fx_history, now=None):
+    def __init__(self, loader=yahoo_fx_history, now=None, clock=None):
         self.loader = loader
-        self.now = pd.Timestamp(now or datetime.now(timezone.utc))
+        self._clock = clock or (lambda: datetime.now(timezone.utc))
+        self._fixed_now = now is not None
+        self.now = pd.Timestamp(now if self._fixed_now else self._clock())
         if self.now.tzinfo is None:
             self.now = self.now.tz_localize("UTC")
         self.cache = {}
 
     def rate(self, currency):
+        # Live scans can cross midnight before the first foreign quote. A
+        # process-start timestamp would incorrectly reject the new day's FX bar.
+        # Explicit historical/test `now` values remain fixed.
+        if not self._fixed_now:
+            self.now = pd.Timestamp(self._clock())
+            if self.now.tzinfo is None:
+                self.now = self.now.tz_localize("UTC")
         currency, scale = quote_unit(currency)
         if currency == "USD":
             return 1.0, self.now.isoformat()
@@ -56,6 +65,11 @@ class FxRates:
             for attempt in range(2):
                 try:
                     history = self.loader(f"{currency}USD=X")
+                    # The request itself may also straddle midnight.
+                    if not self._fixed_now:
+                        self.now = pd.Timestamp(self._clock())
+                        if self.now.tzinfo is None:
+                            self.now = self.now.tz_localize("UTC")
                     close = pd.to_numeric(history["Close"], errors="coerce")
                     dates = pd.to_datetime(close.index, utc=True)
                     valid = close.map(lambda v: math.isfinite(v) and v > 0)

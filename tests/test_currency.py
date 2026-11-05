@@ -75,6 +75,33 @@ def test_latest_fx_request_preserves_production_candle_validation(monkeypatch, l
     assert all(call.kwargs["period"] == "1d" for call in underlying.history.call_args_list)
 
 
+@pytest.mark.parametrize("request_start", ["2026-11-05T00:03:00Z", "2026-11-04T23:59:59Z"])
+def test_live_fx_clock_crossing_midnight_accepts_the_new_days_observation(request_start):
+    times = iter(["2026-11-04T23:52:00Z", request_start, "2026-11-05T00:03:01Z"])
+    loader = Mock(return_value=pd.DataFrame({"Close": [1.12]},
+        index=pd.to_datetime(["2026-11-05T00:00:00Z"])))
+    fx = FxRates(loader, clock=lambda: next(times))
+    assert fx.rate("EUR") == (1.12, "2026-11-05T00:00:00+00:00")
+
+
+def test_fixed_asof_is_not_advanced_by_a_later_live_clock():
+    loader = Mock(return_value=pd.DataFrame({"Close": [1.12]},
+        index=pd.to_datetime(["2026-11-05T00:00:00Z"])))
+    clock = Mock(return_value="2026-11-05T00:03:00Z")
+    fx = FxRates(loader, now="2026-11-04T23:52:00Z", clock=clock)
+    with pytest.raises(CurrencyUnavailable, match="No valid FX observation"):
+        fx.rate("EUR")
+    clock.assert_not_called()
+
+
+@pytest.mark.parametrize("date", ["2026-11-06T00:00:00Z", "2026-10-28T00:00:00Z"])
+def test_live_fx_clock_still_rejects_future_and_stale_observations(date):
+    loader = Mock(return_value=pd.DataFrame({"Close": [1.12]}, index=pd.to_datetime([date])))
+    fx = FxRates(loader, clock=lambda: "2026-11-05T00:03:00Z")
+    with pytest.raises(CurrencyUnavailable, match="No valid FX observation"):
+        fx.rate("EUR")
+
+
 @pytest.mark.parametrize("date,value", [("2026-09-01", 1.2), ("2026-10-22", 1.2), ("2026-10-20", float("nan")), ("2026-10-20", float("inf")), ("2026-10-20", -1)])
 def test_stale_future_and_invalid_fx_are_rejected(date, value):
     fx = FxRates(lambda _: pd.DataFrame({"Close": [value]}, index=pd.to_datetime([date], utc=True)), now="2026-10-21T12:00Z")
