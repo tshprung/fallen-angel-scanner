@@ -3,7 +3,9 @@
 Hypothetical entries use the next session's opening price. Returns are in the listing currency, dividend/split adjusted, before costs and taxes.
 Daily selections can repeat the same stock. These are correlated observations, not independent trades or a portfolio backtest.
 
-Saved selections: 3. Completed twelve-month observations under method v3: 0.
+Saved selections: 3. Completed observations at their saved 6/12/24-month horizons under method v4: 0.
+
+Legacy selections retain a 365-day horizon. New documented cases use their saved valuation deadline within a 183/365/730-day band. A losing observation is never extended to improve its result. Annualized returns are arithmetic comparisons, not forecasts of repeatable returns.
 
 Stored status counts (older methods may need refresh): tracking: 3
 
@@ -21,8 +23,8 @@ Groups keep financial policy, price-screen cohort and research status as recorde
 
 ## Most recent 20 selections
 
-| Selected | Ticker | Status | Local return | Entry session | Mark session | SPY return | Stock minus SPY |
-|---|---|---|---:|---|---|---:|---:|
-| 2026-10-21 | SFD | tracking | +6.3% | 2026-10-22 | 2026-11-05 | -4.4% | +10.7 pp |
-| 2026-10-21 | LRN | tracking | -4.3% | 2026-10-22 | 2026-11-05 | -4.4% | +0.0 pp |
-| 2026-10-21 | LCII | tracking | +23.5% | 2026-10-22 | 2026-11-05 | -4.4% | +27.8 pp |
+| Selected | Ticker | Status | Horizon days | Elapsed days | Local return | Annualized return | Entry session | Mark session | SPY return | Stock minus SPY |
+|---|---|---|---:|---:|---:|---:|---|---|---:|---:|
+| 2026-10-21 | SFD | tracking | 365 | 14 | +6.3% | +397.6% | 2026-10-22 | 2026-11-05 | -4.4% | +10.7 pp |
+| 2026-10-21 | LRN | tracking | 365 | 14 | -4.3% | -68.3% | 2026-10-22 | 2026-11-05 | -4.4% | +0.0 pp |
+| 2026-10-21 | LCII | tracking | 365 | 14 | +23.5% | +24318.2% | 2026-10-22 | 2026-11-05 | -4.4% | +27.8 pp |

@@ -272,6 +272,10 @@
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
         "status": "tracking",
+        "horizon_days": 365,
+        "planned_exit_date": "2027-10-22",
+        "elapsed_days": 14,
+        "annualized_return_pct": 24318.191144882905,
         "entry_session": "2026-10-22",
         "mark_session": "2026-11-05",
         "entry_adjusted_open": 83.0199966430664,
@@ -283,7 +287,7 @@
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 3,
+        "method_version": 4,
         "benchmark": {
           "method_version": 1,
           "status": "MATCHED",
@@ -566,6 +570,10 @@
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
         "status": "tracking",
+        "horizon_days": 365,
+        "planned_exit_date": "2027-10-22",
+        "elapsed_days": 14,
+        "annualized_return_pct": -68.26863802950858,
         "entry_session": "2026-10-22",
         "mark_session": "2026-11-05",
         "entry_adjusted_open": 78.23999786376953,
@@ -577,7 +585,7 @@
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 3,
+        "method_version": 4,
         "benchmark": {
           "method_version": 1,
           "status": "MATCHED",
@@ -861,6 +869,10 @@
       "screen_cohort": "stabilizing_drawdown",
       "performance": {
         "status": "tracking",
+        "horizon_days": 365,
+        "planned_exit_date": "2027-10-22",
+        "elapsed_days": 14,
+        "annualized_return_pct": 397.63224184083236,
         "entry_session": "2026-10-22",
         "mark_session": "2026-11-05",
         "entry_adjusted_open": 18.43000030517578,
@@ -872,7 +884,7 @@
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 3,
+        "method_version": 4,
         "benchmark": {
           "method_version": 1,
           "status": "MATCHED",
@@ -886,5 +898,5 @@
       }
     }
   ],
-  "last_refreshed_at": "2026-11-06T00:12:09.440092+00:00"
+  "last_refreshed_at": "2026-11-06T23:49:00.339695+00:00"
 }
