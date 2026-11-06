@@ -17,8 +17,24 @@ from scanner_currency import finite
 from scanner_history import validate_price_bars
 
 LEDGER = "paper_tracking.json"
-PERFORMANCE_VERSION = 3
+PERFORMANCE_VERSION = 4
 BENCHMARK_VERSION = 1
+COMPLETE_STATUSES = {"complete_6m", "complete_12m", "complete_24m"}
+
+
+def selection_horizon(selection):
+    """Use immutable selection-time goals; never extend an old losing position."""
+    fit = selection.get("goal_fit") or {}
+    status = fit.get("status")
+    if status not in {"DOCUMENTED_6M_CASE", "DOCUMENTED_12M_CASE", "DOCUMENTED_24M_CASE"}:
+        return 365  # Unverified watches have no admitted time-specific forecast.
+    expected = {"DOCUMENTED_6M_CASE": 183, "DOCUMENTED_12M_CASE": 365, "DOCUMENTED_24M_CASE": 730}.get(status, 365)
+    declared = fit.get("horizon_days")
+    if status in {"DOCUMENTED_6M_CASE", "DOCUMENTED_24M_CASE"} and declared != expected:
+        raise ValueError("Documented horizon is missing or inconsistent")
+    if declared is not None and declared != expected:
+        raise ValueError("Saved research horizon contradicts its status")
+    return expected
 
 
 def benchmark_observation(selection, history):
@@ -27,7 +43,7 @@ def benchmark_observation(selection, history):
     if selection.get("quote_currency") != "USD":
         return dict(result, status="UNSUPPORTED_CURRENCY", reason="No non-USD benchmark or FX conversion configured")
     performance = selection["performance"]
-    if performance.get("status") not in {"tracking", "complete_12m"} or performance.get("method_version") != PERFORMANCE_VERSION:
+    if performance.get("status") not in COMPLETE_STATUSES | {"tracking"} or performance.get("method_version") != PERFORMANCE_VERSION:
         return dict(result, reason="Usable current-method stock outcome required")
     try:
         entry_day = pd.Timestamp(performance["entry_session"]).date()
@@ -127,13 +143,23 @@ def _assess_selection(selection, history, now=None):
     # A very delayed first quote can indicate a history gap or suspension.
     if (entry_day - selected_day).days > 10:
         return {"status": "unverified", "reason": "First next-session observation delayed over ten days"}
-    maturity = entry_day + pd.Timedelta(days=365)
+    horizon = selection_horizon(selection)
+    completion_status = {183: "complete_6m", 365: "complete_12m", 730: "complete_24m"}[horizon]
+    maturity = entry_day + pd.Timedelta(days=horizon)
+    fit = selection.get("goal_fit") or {}
+    if fit.get("version", 0) >= 4 and fit.get("status") in {"DOCUMENTED_6M_CASE", "DOCUMENTED_12M_CASE", "DOCUMENTED_24M_CASE"}:
+        # New documented cases have an actual valuation deadline. Do not give
+        # a 90-day thesis another 93 days merely because its band is six months.
+        target = (fit.get("research_record") or {}).get("target_by")
+        maturity = pd.Timestamp(target).date() if target else None
+        if maturity is None or not entry_day < maturity <= entry_day + pd.Timedelta(days=horizon):
+            return {"status": "unverified", "reason": "Missing/invalid saved valuation deadline"}
     mature = frame[frame.index >= maturity]
     if not mature.empty:
         end_day, row = mature.index[0], mature.iloc[0]
-        status = "complete_12m"
+        status = completion_status
         if (end_day - maturity).days > 10:
-            return {"status": "unverified", "reason": "No observation near the twelve-month exit"}
+            return {"status": "unverified", "reason": "No observation near the planned horizon exit"}
     else:
         end_day, row = frame.index[-1], frame.iloc[-1]
         status = "tracking"
@@ -159,14 +185,17 @@ def _assess_selection(selection, history, now=None):
     end = finite(row.get("Close"))
     if end is None or end <= 0:
         return {"status": "unverified", "reason": "Missing/invalid closing price"}
-    return {"status": status, "entry_session": str(entry_day), "mark_session": str(end_day),
+    elapsed = (end_day - entry_day).days
+    return {"status": status, "horizon_days": horizon, "planned_exit_date": str(maturity), "elapsed_days": elapsed,
+            "annualized_return_pct": finite(((end / entry) ** (365 / elapsed) - 1) * 100) if elapsed > 0 else None,
+            "entry_session": str(entry_day), "mark_session": str(end_day),
             "entry_adjusted_open": entry, "mark_adjusted_close": end,
             "return_local_pct": (end / entry - 1) * 100,
             "worst_close_return_pct": (float(observed.min()) / entry - 1) * 100,
             "touched_50pct_at_close": bool((observed >= entry * 1.5).any()),
-            "ended_50pct": bool(end >= entry * 1.5) if status == "complete_12m" else None,
+            "ended_50pct": bool(end >= entry * 1.5) if status in COMPLETE_STATUSES else None,
             "touched_2x_at_close": bool((observed >= entry * 2).any()),
-            "ended_2x": bool(end >= entry * 2) if status == "complete_12m" else None,
+            "ended_2x": bool(end >= entry * 2) if status in COMPLETE_STATUSES else None,
             "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes"}
 
 
@@ -180,7 +209,7 @@ def assess_selection(selection, history, now=None):
 
 def _needs_refresh(selection):
     performance = selection["performance"]
-    return (performance["status"] != "complete_12m"
+    return (performance["status"] not in COMPLETE_STATUSES
             or performance.get("method_version") != PERFORMANCE_VERSION)
 
 
@@ -214,12 +243,12 @@ def refresh(path=LEDGER, loader=None, now=None):
     for selection in data["selections"]:
         performance = selection["performance"]
         saved = performance.get("benchmark") or {}
-        if (performance.get("status") == "complete_12m" and saved.get("status") == "MATCHED"
+        if (performance.get("status") in COMPLETE_STATUSES and saved.get("status") == "MATCHED"
                 and saved.get("method_version") == BENCHMARK_VERSION
                 and saved.get("entry_session") == performance.get("entry_session")
                 and saved.get("mark_session") == performance.get("mark_session")):
             continue
-        if (selection.get("quote_currency") == "USD" and performance.get("status") in {"tracking", "complete_12m"}
+        if (selection.get("quote_currency") == "USD" and performance.get("status") in COMPLETE_STATUSES | {"tracking"}
                 and performance.get("entry_session") and performance.get("mark_session")
                 and performance.get("method_version") == PERFORMANCE_VERSION):
             benchmark_pending.append(selection)
@@ -250,7 +279,7 @@ def cohort_summary(data):
                (selection.get("goal_fit") or {}).get("status") or "legacy/unknown")
         group = groups.setdefault(key, {"policy_id": key[0], "screen_cohort": key[1],
             "research_status": key[2], "observations": 0, "tickers": set(),
-            "pending": 0, "tracking": 0, "complete_12m": 0, "unverified": 0,
+            "pending": 0, "tracking": 0, "complete_6m": 0, "complete_12m": 0, "complete_24m": 0, "complete_total": 0, "unverified": 0,
             "touched_50pct": 0, "ended_50pct": 0, "touched_2x": 0, "ended_2x": 0, "ended_loss": 0,
             "benchmark_verified_complete": 0, "outperformed_benchmark": 0})
         group["observations"] += 1
@@ -259,8 +288,9 @@ def cohort_summary(data):
         status = performance["status"]
         if status == "pending_next_session":
             group["pending"] += 1
-        elif status == "complete_12m" and performance.get("method_version") == PERFORMANCE_VERSION:
-            group["complete_12m"] += 1
+        elif status in COMPLETE_STATUSES and performance.get("method_version") == PERFORMANCE_VERSION:
+            group[status] += 1
+            group["complete_total"] += 1
             group["touched_50pct"] += performance.get("touched_50pct_at_close") is True
             group["ended_50pct"] += performance.get("ended_50pct") is True
             group["touched_2x"] += performance.get("touched_2x_at_close") is True
@@ -294,7 +324,8 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
     lines = ["# Forward paper tracking", "",
              "Hypothetical entries use the next session's opening price. Returns are in the listing currency, dividend/split adjusted, before costs and taxes.",
              "Daily selections can repeat the same stock. These are correlated observations, not independent trades or a portfolio backtest.", "",
-             f"Saved selections: {len(selections)}. Completed twelve-month observations under method v{PERFORMANCE_VERSION}: {sum(group['complete_12m'] for group in groups)}.", "",
+             f"Saved selections: {len(selections)}. Completed observations at their saved 6/12/24-month horizons under method v{PERFORMANCE_VERSION}: {sum(group['complete_total'] for group in groups)}.", "",
+             "Legacy selections retain a 365-day horizon. New documented cases use their saved valuation deadline within a 183/365/730-day band. A losing observation is never extended to improve its result. Annualized returns are arithmetic comparisons, not forecasts of repeatable returns.", "",
              "Stored status counts (older methods may need refresh): " + (", ".join(f"{key}: {value}" for key, value in sorted(counts.items())) or "No selections recorded yet."), "",
              "Unverified/stale names remain visible; their missing outcomes must not be interpreted as zero losses. USD observations compare against dividend/split-adjusted SPY at the same entry and mark sessions. Non-USD comparisons remain unsupported; no FX conversion is performed. Excess is a percentage-point difference, not risk-adjusted alpha.", "",
              "Completion requires usable holding-window closes, no duplicate sessions, no observed gap over ten calendar days and consistent supplied OHLC bounds. This coarse guard cannot detect every missing exchange session or verify delisting proceeds. Older completed metrics require refresh under the current method.", "",
@@ -304,16 +335,16 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
              "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for group in groups:
         values = [group[key] for key in ("policy_id", "screen_cohort", "research_status", "observations",
-            "unique_tickers", "pending", "tracking", "unverified", "complete_12m", "touched_50pct", "ended_50pct", "touched_2x", "ended_2x", "ended_loss")]
+            "unique_tickers", "pending", "tracking", "unverified", "complete_total", "touched_50pct", "ended_50pct", "touched_2x", "ended_2x", "ended_loss")]
         lines.append("| " + " | ".join(_cell(value) for value in values) + " |")
     lines += ["", "## Most recent 20 selections", "",
-             "| Selected | Ticker | Status | Local return | Entry session | Mark session | SPY return | Stock minus SPY |",
-             "|---|---|---|---:|---|---|---:|---:|"]
+             "| Selected | Ticker | Status | Horizon days | Elapsed days | Local return | Annualized return | Entry session | Mark session | SPY return | Stock minus SPY |",
+             "|---|---|---|---:|---:|---:|---:|---|---|---:|---:|"]
     for selection in reversed(selections[-20:]):
         performance = selection["performance"]
         value = performance.get("return_local_pct")
         status = performance["status"]
-        if status == "complete_12m" and performance.get("method_version") != PERFORMANCE_VERSION:
+        if status in COMPLETE_STATUSES and performance.get("method_version") != PERFORMANCE_VERSION:
             status, value = "unverified (old method)", None
         result = f"{value:+.1f}%" if value is not None else "unverified/pending"
         benchmark = performance.get("benchmark") or {}
@@ -321,7 +352,9 @@ def write_report(data, path="paper_tracking_report.md", summary_path=None):
                    and benchmark.get("method_version") == BENCHMARK_VERSION and benchmark.get("status") == "MATCHED")
         benchmark_return = f"{benchmark['return_pct']:+.1f}%" if matched else benchmark.get("status", "unverified/pending")
         excess = f"{benchmark['stock_minus_benchmark_pp']:+.1f} pp" if matched else "unverified/pending"
-        values = [selection['selected_at'][:10], selection['ticker'], status, result,
+        annualized = performance.get("annualized_return_pct") if performance.get("method_version") == PERFORMANCE_VERSION else None
+        values = [selection['selected_at'][:10], selection['ticker'], status, performance.get('horizon_days', 'legacy/unknown'),
+                  performance.get('elapsed_days', 'unverified'), result, f"{annualized:+.1f}%" if annualized is not None else "unverified/pending",
                   performance.get('entry_session', '—'), performance.get('mark_session', '—'), benchmark_return, excess]
         lines.append("| " + " | ".join(_cell(value) for value in values) + " |")
     Path(path).write_text("\n".join(lines) + "\n", encoding="utf-8")

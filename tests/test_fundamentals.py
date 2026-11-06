@@ -239,7 +239,8 @@ def test_statement_date_mismatch_is_visible():
 
 @pytest.mark.parametrize("filing_status,blocked,documented", [("METADATA_CHECKED", False, False), ("NOT_COVERED", False, False),
     ("UNVERIFIED", True, False), ("REVIEW_REQUIRED", True, False), ("METADATA_CHECKED", False, True), ("UNVERIFIED", True, True)])
-def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, filing_status, blocked, documented):
+@pytest.mark.parametrize("case_status", ["DOCUMENTED_6M_CASE", "DOCUMENTED_12M_CASE", "DOCUMENTED_24M_CASE"])
+def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, filing_status, blocked, documented, case_status):
     import fallen_angel_scanner as scanner
     stock = company()
     stock.history = lambda **kwargs: pd.DataFrame({"Close": np.repeat(10., 252)})
@@ -266,7 +267,7 @@ def test_stage2_uses_statements_and_fcf_instead_of_a_price_rebound(monkeypatch, 
             return result
         monkeypatch.setattr(scanner, "valuation_scenarios", low_generic_sensitivity)
         monkeypatch.setattr(scanner, "assess_recovery_case", lambda *args, **kwargs: {
-            "status": "DOCUMENTED_12M_CASE", "cases": {"bear": {"price": 5}, "base": {"price": 15, "return_pct": 50}, "recovery": {"price": 25}}})
+            "status": case_status, "cases": {"bear": {"price": 5}, "base": {"price": 15, "return_pct": 50}, "recovery": {"price": 25}}})
     def no_rebound_targets(*args, **kwargs):
         raise AssertionError("Historical price target must not determine value")
     monkeypatch.setattr(scanner, "estimate_recovery_target", no_rebound_targets)

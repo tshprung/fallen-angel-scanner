@@ -21,6 +21,12 @@ def load_policy(path=POLICY_PATH):
     policy = json.loads(Path(path).read_text(encoding="utf-8"))
     if type(policy.get("resilience_horizon_years")) is not int or policy["resilience_horizon_years"] != 5:
         raise ValueError("The investment mandate requires a five-year resilience review")
+    if type(policy.get("maximum_recovery_days")) is not int or policy["maximum_recovery_days"] != 730:
+        raise ValueError("Recovery cases must have a bounded two-year horizon (730 days)")
+    if finite(policy.get("minimum_24m_upside_pct")) is None or policy["minimum_24m_upside_pct"] < 100:
+        raise ValueError("Cases beyond one year must support at least +100%")
+    if type(policy.get("maximum_progress_review_days")) is not int or not 1 <= policy["maximum_progress_review_days"] <= 90:
+        raise ValueError("Progress must be reassessed within 90 days")
     for name in ("fresh_statement_days", "max_annual_statement_days", "minimum_interest_coverage",
                  "minimum_current_debt_coverage", "max_net_debt_ebitda", "max_debt_equity",
                  "minimum_burn_runway_months", "minimum_base_upside_pct", "minimum_bull_upside_pct"):

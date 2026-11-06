@@ -214,6 +214,6 @@ def test_all_held_run_still_sends_a_review_report_without_paper_selections(monke
     monkeypatch.setattr(scanner, "send_email", send)
     scanner.main()
     subject, html = send.call_args.args
-    assert "0 documented 12m cases" in subject and "0 research watches" in subject and "1 filing review holds" in subject
+    assert "0 documented recovery cases (up to 24m)" in subject and "0 research watches" in subject and "1 filing review holds" in subject
     assert "Held for filing review" in html and "LCII" in html
     assert not (tmp_path / "paper_tracking.json").exists()

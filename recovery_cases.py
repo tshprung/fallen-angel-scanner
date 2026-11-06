@@ -14,6 +14,13 @@ from scanner_currency import finite
 
 RISK_TOPICS = ("liquidity_and_maturities_24m", "covenants", "going_concern",
                "listing_and_corporate_actions", "dilution", "resilience_5y")
+BUSINESS_TOPICS = ("customer_need", "competitive_position", "technology_relevance",
+                   "pricing_power_and_unit_economics", "structural_decline")
+DOCUMENTED_STATUSES = {"DOCUMENTED_6M_CASE", "DOCUMENTED_12M_CASE", "DOCUMENTED_24M_CASE"}
+
+
+def is_documented_case(stock):
+    return (stock.get("goal_fit") or {}).get("status") in DOCUMENTED_STATUSES
 
 
 def load_recovery_cases(path=None):
@@ -54,8 +61,19 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
     today = (now or datetime.now(timezone.utc)).date() if not isinstance(now, str) else day(now)
     missing = []
     minimum_upside = policy["minimum_bull_upside_pct"]
-    result = {"version": 3, "status": "RESEARCH_WATCH", "checked_at": today.isoformat(),
+    target_days = None
+    if isinstance(record, dict):
+        try:
+            target_days = (day(record.get("target_by")) - today).days
+        except (ValueError, TypeError):
+            pass
+    if target_days is not None and target_days > 365:
+        minimum_upside = policy["minimum_24m_upside_pct"]
+    horizon = 183 if target_days is not None and 0 < target_days <= 183 else 365 if target_days is None or target_days <= 365 else 730
+    result = {"version": 4, "status": "RESEARCH_WATCH", "checked_at": today.isoformat(),
               "minimum_recovery_upside_pct": minimum_upside,
+              "horizon_days": horizon, "target_days_remaining": target_days,
+              "maximum_recovery_days": policy["maximum_recovery_days"],
               "resilience_horizon_years": policy["resilience_horizon_years"],
               "missing": missing, "cases": {}, "notice": "Documented conditional research assumptions; no guaranteed return, survival or continued listing."}
     signal = stock.get("price_dislocation") or {}
@@ -91,14 +109,21 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
             "equity_fcf_multiple_at_unchanged_normalized_fcf": required_value / normalized,
             "required_equity_fcf_usd_by_multiple": {str(multiple): required_value / multiple for multiple in (10, 15, 20)},
             "basis": "Reverse sensitivity using current market cap and the generic model's dilution; not a recovery forecast"}
+        result["horizon_sensitivities"] = {
+            str(days): {"minimum_upside_pct": upside,
+                "required_equity_fcf_usd_by_multiple": {str(multiple): (1 + upside / 100) * cap * (1 + dilution) / multiple for multiple in (10, 15, 20)},
+                "notice": "Valuation hurdle only; no evidence that it can be reached by this date"}
+            for days, upside in ((183, policy["minimum_bull_upside_pct"]), (365, policy["minimum_bull_upside_pct"]), (730, policy["minimum_24m_upside_pct"]))}
     if not record:
-        missing += ["A sourced cause of the recent decline", "A measurable recovery catalyst and invalidation condition within 12 months",
+        missing += ["A sourced cause of the recent decline", "A measurable recovery catalyst and invalidation condition within the case horizon (at most 24 months)",
+                    "Sourced customer need, competitive position, technology relevance, pricing power and structural-decline reviews",
+                    "A dated progress checkpoint within 90 days and an opportunity-cost reassessment rule",
                     "Current filing-content reviews of liquidity, debt, covenants, going concern, listing status, dilution and five-year resilience",
                     "A sourced higher historical price with split and business-comparability review",
                     "Company-specific bear/base/recovery cash-flow and valuation assumptions"]
         return result
     if (not isinstance(record, dict) or any(not isinstance(record.get(name, {}), dict)
-            for name in ("cause", "catalyst", "risk_reviews", "valuation", "historical_reference"))
+            for name in ("cause", "catalyst", "risk_reviews", "valuation", "historical_reference", "business_reviews", "monitoring", "opportunity_cost"))
             or not isinstance((record.get("valuation") or {}).get("cases", {}), dict)):
         missing.append("Malformed recovery research record")
         return result
@@ -111,10 +136,10 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
         if not 0 <= (today - reviewed_day).days <= policy["max_recovery_review_age_days"]:
             missing.append("Recovery review is stale or future-dated")
         expected = day(record.get("catalyst", {}).get("expected_by"))
-        if not 0 < (expected - today).days <= 365:
-            missing.append("Catalyst must still be ahead and within 365 days")
-        if not 0 < (day(record.get("target_by")) - today).days <= 365 or day(record["target_by"]) < expected:
-            missing.append("Recovery valuation must follow the catalyst and fall within 365 days")
+        if not 0 < (expected - today).days <= policy["maximum_recovery_days"]:
+            missing.append("Catalyst must still be ahead and within 730 days")
+        if not 0 < (day(record.get("target_by")) - today).days <= policy["maximum_recovery_days"] or day(record["target_by"]) < expected:
+            missing.append("Recovery valuation must follow the catalyst and fall within 730 days")
     except (ValueError, TypeError):
         missing.append("Valid review, catalyst and target dates")
     evidence = stock.get("financial_evidence") or {}
@@ -125,6 +150,27 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
         missing.append("Recovery case must reference the current statement periods and exact latest filing accession")
     if not sourced(record.get("cause"), source_cutoff):
         missing.append("Sourced explanation of the decline")
+    for topic in BUSINESS_TOPICS:
+        review = (record.get("business_reviews") or {}).get(topic)
+        if (not sourced(review, source_cutoff)
+                or review.get("status") != "SUPPORTED_WITH_IDENTIFIED_RISKS"
+                or not isinstance(review.get("risks"), str) or not review["risks"].strip()):
+            missing.append(f"Unresolved business-durability review: {topic}")
+    monitoring = record.get("monitoring") or {}
+    try:
+        checkpoint_days = (day(monitoring.get("next_review_by")) - today).days
+        checkpoint_valid = 0 < checkpoint_days <= policy["maximum_progress_review_days"] and target_days is not None and checkpoint_days <= target_days
+    except (ValueError, TypeError):
+        checkpoint_valid = False
+    if (not sourced(monitoring, source_cutoff) or not checkpoint_valid
+            or any(not isinstance(monitoring.get(key), str) or not monitoring[key].strip()
+                   for key in ("metric", "invalidation"))):
+        missing.append("Sourced, future progress checkpoint within 90 days and before target, with metric and invalidation")
+    opportunity = record.get("opportunity_cost") or {}
+    if (not sourced(opportunity, source_cutoff)
+            or any(not isinstance(opportunity.get(key), str) or not opportunity[key].strip()
+                   for key in ("benchmark", "reassessment_rule"))):
+        missing.append("Sourced opportunity-cost review with a benchmark and a reassessment rule")
     historical = record.get("historical_reference") or {}
     historical_price = finite(historical.get("price"))
     try:
@@ -177,7 +223,14 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
             if finite(target) is None or target <= 0:
                 missing.append(f"Finite positive target price: {name}")
                 continue
-            result["cases"][name] = dict(case, price=target, return_pct=(equity_ratio - 1) * 100)
+            annualized = None
+            if target_days is not None and 0 < target_days <= policy["maximum_recovery_days"]:
+                try:
+                    annualized = finite((equity_ratio ** (365 / target_days) - 1) * 100)
+                except OverflowError:
+                    pass
+            result["cases"][name] = dict(case, price=target, return_pct=(equity_ratio - 1) * 100,
+                                         annualized_return_pct=annualized)
     if cap is None or cap <= 0 or price is None or price <= 0:
         missing.append("Positive current price and USD market cap")
     if len(values) == 3 and values != sorted(values):
@@ -188,15 +241,15 @@ def assess_recovery_case(stock, record=None, policy=None, now=None):
         if result["cases"]["recovery"]["return_pct"] < minimum_upside:
             missing.append(f"Company-specific recovery case does not support at least +{minimum_upside:g}%")
     if not missing and len(result["cases"]) == 3:
-        result["status"] = "DOCUMENTED_12M_CASE"
+        result["status"] = {183: "DOCUMENTED_6M_CASE", 365: "DOCUMENTED_12M_CASE", 730: "DOCUMENTED_24M_CASE"}[horizon]
     return result
 
 
 def write_recovery_queue(audit, path):
     from fundamental_analysis import load_policy
     minimum_upside = load_policy()["minimum_bull_upside_pct"]
-    lines = ["# Twelve-month recovery research queue", "",
-             f"Goal: a recent meaningful price fall, financial resilience, and a sourced conditional case for at least +{minimum_upside:g}% within one year.", "",
+    lines = ["# Recovery research queue: up to two years", "",
+             f"Goal: a recent meaningful price fall, financial and competitive resilience, and a sourced conditional case for at least +{minimum_upside:g}% within one year or +100% within two years.", "",
              "Generic valuation sensitivities and headline keywords do not establish a recovery case. This queue does not recommend purchases.", ""]
     queued = [item for item in audit if item.get("decision") == "selected" and item.get("goal_fit")]
     if not queued:
@@ -214,6 +267,15 @@ def write_recovery_queue(audit, path):
             for multiple, amount in requirements["required_equity_fcf_usd_by_multiple"].items():
                 lines.append(f"- {multiple}x: ${amount:,.0f}")
             lines += ["", requirements["basis"], ""]
+        horizons = fit.get("horizon_sensitivities") or {}
+        if horizons:
+            lines += ["Time-specific valuation hurdles (not dated forecasts):", ""]
+            for days in ("183", "365", "730"):
+                hurdle = horizons.get(days)
+                if hurdle:
+                    amount = hurdle["required_equity_fcf_usd_by_multiple"]["20"]
+                    lines.append(f"- {days} days / +{hurdle['minimum_upside_pct']:g}%: ${amount:,.0f} annual equity cash at an illustrative 20x; timing remains unproven.")
+            lines += [""]
         lines += ["Evidence still required:", ""] + [f"- {message}" for message in fit["missing"]]
         if not fit["missing"]:
             lines += ["- No missing fields under this research schema; review assumptions and source contents before investing."]

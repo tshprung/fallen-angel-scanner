@@ -8,6 +8,7 @@ import pandas as pd
 import yfinance as yf
 
 import fallen_angel_scanner as scanner
+from recovery_cases import is_documented_case
 
 # Re-analyze every Stage 2 candidate on every run. The scanner normally keeps
 # sent-stock memory to prevent duplicate alerts, but this project is typically
@@ -267,7 +268,7 @@ _original_generate_email_html = scanner.generate_email_html
 
 
 def _catalyst_display(stock):
-    if (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE":
+    if is_documented_case(stock):
         return "DOCUMENTED CONDITIONAL CASE", "A sourced recovery research record is available; its outcome and continued listing are not guaranteed."
     headlines = [str(h).strip() for h in (stock.get("news_headlines") or []) if str(h).strip()]
     text = " ".join(headlines).lower()

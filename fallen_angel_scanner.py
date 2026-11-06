@@ -30,7 +30,7 @@ import time
 from filing_review import filing_review_plan
 from review_holds import load_review_holds
 from sec_filings import SecClient, check_sec_filings, load_filing_resolutions
-from recovery_cases import load_recovery_cases, assess_recovery_case
+from recovery_cases import load_recovery_cases, assess_recovery_case, is_documented_case
 from filing_contents import enrich_research_audit
 from scan_coverage import (new_coverage, record_outcome, checkpoint, provider_health,
                            MAX_CONSECUTIVE_QUOTE_FAILURES)
@@ -650,7 +650,7 @@ def classify_recovery_bucket(upside_pct, price_shape, at_bottom):
 def narrow_analyzed_results(analyzed, max_results=20):
     """Rank with fixed, visible criteria; never change economic cutoffs to fill a report."""
     return sorted(analyzed, key=lambda stock: (
-        (stock.get("goal_fit") or {}).get("status") != "DOCUMENTED_12M_CASE",
+        not is_documented_case(stock),
         stock.get("solvency_status") != "SCREEN_PASS",
         stock.get("risk_score_raw", stock["risk_score"]),
         -stock["recovery_potential"],
@@ -1520,7 +1520,7 @@ def stage2_deep_analysis(candidates, memory):
                 "financial_evidence": evidence, "valuation": valuation, "market_cap_usd": cap_usd,
                 "current_price": candidate["current_price"]}, recovery_cases.get(ticker), policy)
             audit["goal_fit"] = goal_fit
-            documented = goal_fit["status"] == "DOCUMENTED_12M_CASE"
+            documented = is_documented_case({"goal_fit": goal_fit})
             if not valuation["plausible_upside_screen"] and not documented:
                 audit.update(decision="insufficient_value_upside", reason="Base/bull sensitivity does not meet configured upside thresholds")
                 continue
@@ -2095,8 +2095,8 @@ def _run_main():
         
         html = generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
         
-        documented_count = sum((stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE" for stock in selected)
-        subject = f"🌍 Fallen Angels: {documented_count} documented 12m cases; {len(selected) - documented_count} research watches"
+        documented_count = sum(is_documented_case(stock) for stock in selected)
+        subject = f"🌍 Fallen Angels: {documented_count} documented recovery cases (up to 24m); {len(selected) - documented_count} research watches"
         if disclosure_updates:
             subject += " + disclosure updates to review"
         if filing_holds:

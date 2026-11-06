@@ -6,6 +6,7 @@ import scanner_enhanced  # noqa: F401 - installs enhanced scanner patches
 import scanner_safety  # noqa: F401 - installs final financial-risk guards
 from research_reporting import filing_review_summary_html, decision_summary_html
 from disclosure_watch import summary_html as disclosure_summary_html
+from recovery_cases import is_documented_case
 
 
 _original_generate_email_html = scanner.generate_email_html
@@ -23,12 +24,13 @@ def generate_email_html_consistent(analyzed_stocks, price_alerts, fresh_crash_st
     _apply_consistent_sentiment(analyzed_stocks)
     _apply_consistent_sentiment(fresh_crash_stocks)
     selected = list(analyzed_stocks or []) + list(fresh_crash_stocks or [])
-    documented = sum((stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE" for stock in selected)
+    documented = sum(is_documented_case(stock) for stock in selected)
     minimum_upside = scanner.load_policy()["minimum_bull_upside_pct"]
-    goal_summary = (f"<h2>Twelve-month recovery research</h2><p>{documented} documented conditional recovery cases; "
+    goal_summary = (f"<h2>Recovery research: up to two years</h2><p>{documented} documented conditional recovery cases; "
                     f"{len(selected) - documented} research watches. Goal: a recent meaningful decline, a financially resilient business, "
-                    f"and a sourced recovery case supporting at least +{minimum_upside:g}% within a year. "
-                    "Documented cases also require a five-year resilience review and a comparable higher historical price. "
+                    f"and a sourced recovery case supporting at least +{minimum_upside:g}% within a year or +100% within two years. "
+                    "Documented cases also require competitive and technology-durability reviews, a dated progress checkpoint, "
+                    "an opportunity-cost review, a five-year resilience review and a comparable higher historical price. "
                     "Neither return, five-year survival nor continued listing is guaranteed.</p>")
     html = _original_generate_email_html(analyzed_stocks, price_alerts, fresh_crash_stocks)
     followup = disclosure_summary_html(getattr(scanner, "_last_disclosure_watch", None))

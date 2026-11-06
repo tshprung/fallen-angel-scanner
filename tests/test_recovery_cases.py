@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 
 from fundamental_analysis import load_policy
-from recovery_cases import RISK_TOPICS, assess_recovery_case
+from recovery_cases import RISK_TOPICS, BUSINESS_TOPICS, assess_recovery_case
 from research_reporting import candidate_needs_review, financial_detail_html, write_research_report
 from screening import drawdown_candidate
 
@@ -37,6 +37,9 @@ def reviewed_case():
                 price_basis="split_adjusted_comparable_business", comparability="Fixture unchanged business and adjusted share basis"),
             "catalyst": source_block(expected_by="2027-03-01", metric="Fixture: restored operating margin", invalidation="Fixture: margin recovery does not occur"),
             "risk_reviews": {topic: source_block(status="REVIEWED_NO_UNRESOLVED_CONCERN") for topic in RISK_TOPICS},
+            "business_reviews": {topic: source_block(status="SUPPORTED_WITH_IDENTIFIED_RISKS", risks="Fixture competitive and demand risks") for topic in BUSINESS_TOPICS},
+            "monitoring": source_block(next_review_by="2026-12-01", metric="Fixture customer spending", invalidation="Fixture continued erosion"),
+            "opportunity_cost": source_block(benchmark="SPY", reassessment_rule="Fixture reassess at checkpoint if cash milestones fail; compare same-period benchmark"),
             "valuation": source_block(basis="equity_fcf_usd_after_financing", expected_dilution_fraction=.05,
                 cases={"bear": source_block(equity_fcf_usd=60e6, equity_fcf_multiple=10),
                        "base": source_block(equity_fcf_usd=100e6, equity_fcf_multiple=15),
@@ -55,6 +58,8 @@ def test_generic_bull_sensitivity_and_cheapness_do_not_establish_a_year_case():
     assert requirement["target_price"] == 15
     assert requirement["equity_fcf_multiple_at_unchanged_normalized_fcf"] == pytest.approx(1.575e9 / 92e6)
     assert requirement["required_equity_fcf_usd_by_multiple"]["15"] == pytest.approx(105e6)
+    assert result["horizon_sensitivities"]["730"]["minimum_upside_pct"] == 100
+    assert result["horizon_sensitivities"]["730"]["required_equity_fcf_usd_by_multiple"]["20"] == pytest.approx(105e6)
 
 
 def test_sourced_company_case_is_conditional_and_accounts_for_dilution_without_double_subtracting_debt():
@@ -92,6 +97,87 @@ def test_lower_return_goal_does_not_clear_a_filing_or_risk_hold():
     data = stock()
     data["official_filing_check"]["blocks_selection"] = True
     assert assess_recovery_case(data, record, now=NOW)["status"] == "RESEARCH_WATCH"
+
+
+@pytest.mark.parametrize("days,upside,status", [
+    (183, 50, "DOCUMENTED_6M_CASE"), (184, 50, "DOCUMENTED_12M_CASE"),
+    (365, 50, "DOCUMENTED_12M_CASE"), (366, 50, "RESEARCH_WATCH"),
+    (366, 100, "DOCUMENTED_24M_CASE"), (730, 100, "DOCUMENTED_24M_CASE"),
+    (730, 99.9, "RESEARCH_WATCH"), (731, 100, "RESEARCH_WATCH")])
+def test_return_goal_depends_on_supported_time_horizon(days, upside, status):
+    record = reviewed_case()
+    record["target_by"] = (pd.Timestamp(NOW) + pd.Timedelta(days=days)).date().isoformat()
+    record["catalyst"]["expected_by"] = "2027-01-01"
+    record["valuation"]["cases"]["recovery"]["equity_fcf_usd"] = 1e9 * 1.05 * (1 + upside / 100) / 20
+    result = assess_recovery_case(stock(), record, now=NOW)
+    assert result["status"] == status
+    assert result["minimum_recovery_upside_pct"] == (50 if days <= 365 else 100)
+    assert result["target_days_remaining"] == days
+    if days <= 730:
+        assert result["cases"]["recovery"]["annualized_return_pct"] == pytest.approx(((1 + upside / 100) ** (365 / days) - 1) * 100)
+
+
+@pytest.mark.parametrize("topic", BUSINESS_TOPICS)
+@pytest.mark.parametrize("problem", ["missing", "unsupported", "no_source", "no_risks"])
+def test_survival_and_old_highs_cannot_replace_competitive_durability(topic, problem):
+    record = reviewed_case()
+    if problem == "missing": del record["business_reviews"][topic]
+    if problem == "unsupported": record["business_reviews"][topic]["status"] = "UNRESOLVED"
+    if problem == "no_source": record["business_reviews"][topic]["sources"] = []
+    if problem == "no_risks": record["business_reviews"][topic]["risks"] = ""
+    result = assess_recovery_case(stock(), record, now=NOW)
+    assert result["status"] == "RESEARCH_WATCH"
+    assert any(topic in reason for reason in result["missing"])
+
+
+@pytest.mark.parametrize("problem", ["past", "too_late", "after_target", "no_metric", "no_invalidation", "no_benchmark", "no_rule", "no_source"])
+def test_waiting_requires_progress_and_opportunity_cost_checks(problem):
+    record = reviewed_case()
+    if problem == "past": record["monitoring"]["next_review_by"] = "2026-10-22"
+    if problem == "too_late": record["monitoring"]["next_review_by"] = "2027-03-01"
+    if problem == "after_target": record["target_by"] = "2026-11-15"
+    if problem == "no_metric": record["monitoring"].pop("metric")
+    if problem == "no_invalidation": record["monitoring"].pop("invalidation")
+    if problem == "no_benchmark": record["opportunity_cost"].pop("benchmark")
+    if problem == "no_rule": record["opportunity_cost"].pop("reassessment_rule")
+    if problem == "no_source": record["opportunity_cost"]["sources"] = []
+    assert assess_recovery_case(stock(), record, now=NOW)["status"] == "RESEARCH_WATCH"
+
+
+def test_two_year_case_is_reported_as_documented_not_as_a_generic_watch(tmp_path):
+    item, record = stock(), reviewed_case()
+    record["target_by"] = "2028-10-01"
+    item["goal_fit"] = assess_recovery_case(item, record, now=NOW)
+    data = write_research_report([dict(item, decision="selected")], [item], str(tmp_path / "report"))
+    assert data["documented_24m_tickers"] == ["TEST"]
+    assert data["documented_case_tickers"] == ["TEST"]
+    assert data["documented_12m_tickers"] == data["research_watch_tickers"] == []
+    item["solvency"].update(flags=[], missing=[], review=[], metrics={})
+    html = financial_detail_html(item)
+    assert "DOCUMENTED_24M_CASE" in html and "Next progress review" in html
+    assert "Annualized comparison" in html and "technology_relevance" in html and "Benchmark: SPY" in html
+
+
+def test_two_year_upside_still_cannot_override_unresolved_listing_or_solvency():
+    record = reviewed_case()
+    record["target_by"] = "2028-10-01"
+    data = stock()
+    data["solvency"]["status"] = "EXCLUDE"
+    record["risk_reviews"]["listing_and_corporate_actions"]["status"] = "UNRESOLVED"
+    assert assess_recovery_case(data, record, now=NOW)["status"] == "RESEARCH_WATCH"
+
+
+@pytest.mark.parametrize("field,value", [("maximum_recovery_days", 1000), ("maximum_recovery_days", 730.0),
+    ("minimum_24m_upside_pct", 50), ("minimum_24m_upside_pct", float("inf")),
+    ("maximum_progress_review_days", 180)])
+def test_policy_cannot_silently_weaken_time_and_progress_requirements(tmp_path, field, value):
+    import json
+    policy = load_policy()
+    policy[field] = value
+    path = tmp_path / "policy.json"
+    path.write_text(json.dumps(policy), encoding="utf-8")
+    with pytest.raises(ValueError):
+        load_policy(path)
 
 
 @pytest.mark.parametrize("problem", ["missing_five_year", "unresolved_five_year", "missing_reference",

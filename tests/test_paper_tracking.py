@@ -96,6 +96,50 @@ def test_daily_snapshots_are_idempotent_and_immutable(tmp_path):
     assert data["selections"][1]["goal_fit"]["status"] == "DOCUMENTED_12M_CASE"
 
 
+@pytest.mark.parametrize("status,horizon,complete,exit_day", [
+    ("DOCUMENTED_6M_CASE", 183, "complete_6m", "2027-04-23"),
+    ("DOCUMENTED_24M_CASE", 730, "complete_24m", "2028-10-23")])
+def test_paper_exit_and_outcome_counts_follow_the_saved_horizon(status, horizon, complete, exit_day):
+    item = dict(selection(), quote_currency="USD", goal_fit={"status": status, "horizon_days": horizon})
+    frame = pd.DataFrame({"Open": 100., "Close": 150.}, index=pd.bdate_range("2026-10-22", "2028-11-01"))
+    frame.loc[exit_day, "Close"] = 200
+    result = assess_selection(item, frame, now="2028-11-02T12:00Z")
+    assert result["status"] == complete and result["mark_session"] == exit_day
+    assert result["horizon_days"] == horizon and result["ended_2x"]
+    item["performance"] = result
+    group = cohort_summary({"selections": [item]})[0]
+    assert group[complete] == group["complete_total"] == group["ended_2x"] == 1
+    assert group["complete_12m"] == 0
+    if horizon == 730:
+        halfway = assess_selection(item, frame, now="2027-10-26T12:00Z")
+        assert halfway["status"] == "tracking" and halfway["ended_2x"] is None
+
+
+def test_losing_legacy_observation_keeps_its_original_one_year_exit():
+    frame = pd.DataFrame({"Open": 100., "Close": 50.}, index=pd.bdate_range("2026-10-22", "2028-11-01"))
+    frame.loc["2028-10-23", "Close"] = 250
+    result = assess_selection(selection(), frame, now="2028-11-02T12:00Z")
+    assert result["status"] == "complete_12m" and result["mark_session"] == "2027-10-22"
+    assert result["return_local_pct"] == -50 and not result["touched_2x_at_close"]
+
+
+def test_missing_or_conflicting_two_year_horizon_is_unverified():
+    item = dict(selection(), goal_fit={"status": "DOCUMENTED_24M_CASE", "horizon_days": 365})
+    frame = history(["2026-10-22", "2026-10-23"], [100, 100], [100, 100])
+    assert assess_selection(item, frame, now="2026-10-24T12:00Z")["status"] == "unverified"
+
+
+def test_actual_thesis_deadline_does_not_get_extended_to_the_horizon_band():
+    item = dict(selection(), goal_fit={"version": 4, "status": "DOCUMENTED_6M_CASE", "horizon_days": 183,
+                "research_record": {"target_by": "2027-01-22"}})
+    frame = pd.DataFrame({"Open": 100., "Close": 50.}, index=pd.bdate_range("2026-10-22", "2027-05-01"))
+    frame.loc["2027-04-23", "Close"] = 250
+    result = assess_selection(item, frame, now="2027-05-02T12:00Z")
+    assert result["status"] == "complete_6m" and result["mark_session"] == "2027-01-22"
+    assert result["planned_exit_date"] == "2027-01-22" and result["return_local_pct"] == -50
+    assert not result["touched_2x_at_close"]
+
+
 def test_refresh_retains_failed_histories_and_fetches_each_ticker_once(tmp_path):
     path = tmp_path / "ledger.json"
     record_selections([stock()], path, now="2026-10-21T18:30Z")

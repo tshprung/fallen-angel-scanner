@@ -19,6 +19,7 @@ import pandas as pd
 import requests
 
 import fallen_angel_scanner as scanner
+from recovery_cases import is_documented_case
 
 R2K_TOP_N = 750
 R2K_MIN_DOLLAR_VOLUME = 2_000_000
@@ -381,7 +382,7 @@ def _apply_catalyst_analysis(stocks):
             print(f"  ⏭️  {stock['ticker']} removed by catalyst gate: {cause['cause_detail']}")
             continue
 
-        documented = (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE"
+        documented = is_documented_case(stock)
         # A reviewed source record can provide evidence absent from a news feed.
         if documented:
             stock["catalyst_status"] = "PASS"

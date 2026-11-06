@@ -23,6 +23,15 @@ def test_benchmark_is_same_date_open_to_close_and_difference_is_percentage_point
     assert benchmark_observation(observed("GBP"), prices())["status"] == "UNSUPPORTED_CURRENCY"
 
 
+@pytest.mark.parametrize("status", ["complete_6m", "complete_24m"])
+def test_benchmark_accepts_new_completed_horizons_without_shifting_sessions(status):
+    item = observed()
+    item["performance"]["status"] = status
+    result = benchmark_observation(item, prices())
+    assert result["status"] == "MATCHED" and result["entry_session"] == "2026-10-22"
+    assert result["mark_session"] == "2026-10-23" and result["stock_minus_benchmark_pp"] == pytest.approx(40)
+
+
 @pytest.mark.parametrize("problem", ["missing_entry", "missing_exit", "duplicate", "bad_close", "bounds"])
 def test_bad_benchmark_data_does_not_shift_dates_or_claim_outperformance(problem):
     frame = prices()

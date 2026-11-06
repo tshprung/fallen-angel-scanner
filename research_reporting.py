@@ -9,7 +9,7 @@ from pathlib import Path
 
 from filing_review import write_filing_queue, filing_links_html, safe_website
 from sec_filings import filing_check_lines
-from recovery_cases import RISK_TOPICS, write_recovery_queue
+from recovery_cases import RISK_TOPICS, BUSINESS_TOPICS, is_documented_case, write_recovery_queue
 from filing_contents import write_content_report
 
 
@@ -97,7 +97,10 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
     data = clean({"generated_at": datetime.now(timezone.utc).isoformat(),
                   "selected_tickers": [stock["ticker"] for stock in selected],
                   "documented_12m_tickers": [stock["ticker"] for stock in selected if (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_12M_CASE"],
-                  "research_watch_tickers": [stock["ticker"] for stock in selected if (stock.get("goal_fit") or {}).get("status") != "DOCUMENTED_12M_CASE"],
+                  "documented_6m_tickers": [stock["ticker"] for stock in selected if (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_6M_CASE"],
+                  "documented_24m_tickers": [stock["ticker"] for stock in selected if (stock.get("goal_fit") or {}).get("status") == "DOCUMENTED_24M_CASE"],
+                  "documented_case_tickers": [stock["ticker"] for stock in selected if is_documented_case(stock)],
+                  "research_watch_tickers": [stock["ticker"] for stock in selected if not is_documented_case(stock)],
                   "scan_scope": scope or {"type": "unspecified"},
                   "candidates": audit, "decision_summary": decision_summary(audit),
                   "notice": "Research screens and illustrative sensitivities; no guaranteed return or survival probability"})
@@ -106,7 +109,7 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
              f"Generated: {data['generated_at']}", "",
              f"Scope: {data['scan_scope'].get('type')}; symbols: {', '.join(data['scan_scope'].get('symbols', [])) or 'configured universe / see run logs'}.", "",
              f"Selected for research: {', '.join(data['selected_tickers']) or 'none'}.", "",
-             f"Documented conditional 12-month cases: {', '.join(data['documented_12m_tickers']) or 'none'}. Other selections are research watches.", "",
+             f"Documented conditional cases (6/12/24-month horizons): {', '.join(data['documented_case_tickers']) or 'none'}. Other selections are research watches.", "",
              "| Ticker | Decision | Goal evidence | Solvency | Generic base sensitivity | Generic bull sensitivity | Main reason |",
              "|---|---|---|---|---:|---:|---|"]
     def text(value):
@@ -145,7 +148,7 @@ def write_research_report(audit, selected, prefix="research_report", scope=None)
 
 def candidate_needs_review(stock):
     return (stock.get("catalyst_status") == "WATCH"
-            or (bool(stock.get("goal_fit")) and stock["goal_fit"].get("status") != "DOCUMENTED_12M_CASE")
+            or (bool(stock.get("goal_fit")) and not is_documented_case(stock))
             or (stock.get("official_filing_check") or {}).get("status") == "NOT_COVERED"
             or stock.get("solvency_status") in ("REVIEW", "UNVERIFIED", "SPECIALIST_REVIEW")
             or stock.get("risk_score_raw", stock.get("risk_score", 10)) >= 4)
@@ -189,7 +192,7 @@ def financial_detail_html(stock):
     parts = ["<div><h4>Financial evidence and valuation sensitivities</h4>"]
     fit = stock.get("goal_fit")
     if fit:
-        parts.append(f"<h4>Twelve-month goal: {escape(fit['status'])}</h4>")
+        parts.append(f"<h4>Recovery goal: {escape(fit['status'])}</h4>")
         historical = fit.get("historical_reference")
         if historical:
             parts.append(f"<p>Reviewed historical reference: {historical['price']:.2f} {escape(historical['currency'])} "
@@ -200,18 +203,33 @@ def financial_detail_html(stock):
         if fall is not None and age is not None:
             parts.append(f"<p>Decline from recent peak: {fall:.1f}%; peak {age} trading sessions ago.</p>")
         if fit["missing"]:
-            parts.append("<p>Research watch; the one-year upside thesis is unverified.</p><ul>" + "".join(f"<li>{escape(message)}</li>" for message in fit["missing"]) + "</ul>")
+            parts.append("<p>Research watch; the time-bounded upside thesis is unverified.</p><ul>" + "".join(f"<li>{escape(message)}</li>" for message in fit["missing"]) + "</ul>")
         required = fit.get("upside_requirements") or fit.get("doubling_requirements")
         if required:
             threshold = required.get("minimum_upside_pct", 100)
             parts.append(f"<p>What +{threshold:g}% requires: at unchanged normalized cash flow, an equity cash-flow multiple of {required['equity_fcf_multiple_at_unchanged_normalized_fcf']:.1f}x, including generic assumed dilution. This is reverse arithmetic, not a forecast.</p>")
-        if fit["status"] == "DOCUMENTED_12M_CASE":
+        long_hurdle = (fit.get("horizon_sensitivities") or {}).get("730")
+        if long_hurdle:
+            amount = long_hurdle["required_equity_fcf_usd_by_multiple"]["20"]
+            parts.append(f"<p>Two-year comparison / +{long_hurdle['minimum_upside_pct']:g}%: ${amount:,.0f} annual equity cash would be required at an illustrative 20x multiple. Neither the multiple nor reaching this cash flow on time is established by this arithmetic.</p>")
+        if is_documented_case(stock):
             record = fit["research_record"]
             catalyst = record["catalyst"]
             parts.append(f"<p>Conditional catalyst: {escape(catalyst['finding'])}. Milestone: {escape(catalyst['metric'])} by {escape(catalyst['expected_by'])}. Thesis fails if: {escape(catalyst['invalidation'])}. Valuation date: {escape(record['target_by'])}.</p>")
-            parts.append("<table><tr><th>Company-specific case</th><th>Price</th><th>Return</th></tr>" + "".join(
-                f"<tr><td>{escape(name)}</td><td>{case['price']:.2f} {escape(stock['currency'])}</td><td>{case['return_pct']:+.1f}%</td></tr>" for name, case in fit["cases"].items()) + "</table>")
-            blocks = [record["cause"], catalyst, record["valuation"], record.get("historical_reference", {})] + [record["risk_reviews"].get(name, {}) for name in RISK_TOPICS] + [record["valuation"]["cases"][name] for name in ("bear", "base", "recovery")]
+            parts.append(f"<p>Target horizon: {fit.get('target_days_remaining', 'legacy/unknown')} days; minimum recovery upside +{fit.get('minimum_recovery_upside_pct', 50):g}%. Annualized figures are arithmetic comparisons, not repeatable-return forecasts.</p>")
+            monitoring = record.get("monitoring") or {}
+            opportunity = record.get("opportunity_cost") or {}
+            parts.append(f"<p>Next progress review: {escape(str(monitoring.get('next_review_by', 'unverified')))}. "
+                         f"Measure: {escape(str(monitoring.get('metric', 'unverified')))}. Reassess if: {escape(str(monitoring.get('invalidation', 'unverified')))}. "
+                         f"Benchmark: {escape(str(opportunity.get('benchmark', 'unverified')))}. {escape(str(opportunity.get('reassessment_rule', 'unverified')))}</p>")
+            for topic in BUSINESS_TOPICS:
+                review = (record.get("business_reviews") or {}).get(topic) or {}
+                parts.append(f"<p>Business review — {escape(topic)}: {escape(str(review.get('finding', 'unverified')))}. Risks: {escape(str(review.get('risks', 'unverified')))}</p>")
+            parts.append("<table><tr><th>Company-specific case</th><th>Price</th><th>Total return</th><th>Annualized comparison</th></tr>" + "".join(
+                f"<tr><td>{escape(name)}</td><td>{case['price']:.2f} {escape(stock['currency'])}</td><td>{case['return_pct']:+.1f}%</td><td>"
+                + (f"{case['annualized_return_pct']:+.1f}%" if case.get('annualized_return_pct') is not None else "unverified")
+                + "</td></tr>" for name, case in fit["cases"].items()) + "</table>")
+            blocks = [record["cause"], catalyst, record["valuation"], record.get("historical_reference", {}), monitoring, opportunity] + [record["risk_reviews"].get(name, {}) for name in RISK_TOPICS] + [(record.get("business_reviews") or {}).get(name, {}) for name in BUSINESS_TOPICS] + [record["valuation"]["cases"][name] for name in ("bear", "base", "recovery")]
             sources = {source["url"]: source["published_at"] for block in blocks for source in block.get("sources", [])}
             parts.append("<p>Research sources: " + "; ".join(f'<a href="{escape(url, quote=True)}">Disclosure {escape(date)}</a>' for url, date in sources.items()) + "</p>")
         parts.append(f"<p>{escape(fit['notice'])}</p>")
