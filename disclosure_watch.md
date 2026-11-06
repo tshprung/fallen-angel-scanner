@@ -2,7 +2,7 @@
 
 Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.
 
-Checked: 2026-11-04T23:52:42.898593+00:00
+Checked: 2026-11-05T23:47:50.105914+00:00
 
 ## PNR: EXPECTED_REPORT_REQUIRES_REVIEW
 
@@ -10,10 +10,14 @@ The acquisition-loan draw is documented in the October 27 filing. Reconcile post
 
 - [10-Q filed 2026-10-27](<https://www.sec.gov/Archives/edgar/data/77360/000007736026000058/pnr-20260930.htm>)
 - [8-K filed 2026-09-02](<https://www.sec.gov/Archives/edgar/data/77360/000110465926104725/tm2624576d1_8k.htm>)
-## ASB.WA: AWAITING_EXPECTED_REPORT
+## ASB.WA: EXPECTED_REPORT_LINKS_REQUIRE_REVIEW
 
-Verify profit and cash conversion, collections, factoring, committed funding and covenant headroom behind sales growth. Issuer links do not verify filing contents.
+September statements are published: Q3 operating cash outflow was $46.396m despite profit growth. Verify receivable/inventory conversion, pledged cash, factoring, committed funding and covenant headroom. The report's publication does not clear the investment case.
 
+- [Consolidated Interim Report for Q3 2026. Signed](<https://investor.asbis.com/download/ASBIS_EN_report_Q3_2026_signed.pdf>)
+- [Consolidated Interim financial statements for Q3 2026. Signed](<https://investor.asbis.com/download/ASBIS_FS_Q3__9M_2026_signed.pdf>)
+- [Skonsolidowany Raport Kwartalny za III kwartał 2026 roku](<https://investor.asbis.com/download/Raport_za_Q3_2026.pdf>)
+- [Skrócone skonsolidowane śródroczne sprawozdanie finansowe za III kwartał 2026](<https://investor.asbis.com/download/Sprawozdanie_finansowe_za_9M_2026.pdf>)
 ## LZB: UNCHANGED
 
 Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here.
@@ -45,7 +49,7 @@ Issuer announced September-quarter results for November 9 after market close. Re
 
 - [10-Q filed 2026-08-06](<https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm>)
 - [8-K filed 2026-09-04](<https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm>)
-## ALB: NEW_SOURCE_DOCUMENTS
+## ALB: UNCHANGED
 
 Reconcile March 2027 mandatory preferred conversion and common-share dilution, normalized Talison/JV distributions and working capital, lithium-price stress, five-year maturities and liquidity. The conversion date is not an expected periodic-report date; no next results date is assumed here.
 

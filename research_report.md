@@ -2,17 +2,17 @@
 
 Research screens and illustrative sensitivities; no guaranteed return or survival probability
 
-Generated: 2026-11-05T00:13:59.582151+00:00
+Generated: 2026-11-06T00:12:06.431664+00:00
 
 Scope: configured_universe; symbols: configured universe / see run logs.
 
-Provider health: DEGRADED; systemic failure: False; company analysis errors: 1/277.
+Provider health: DEGRADED; systemic failure: False; company analysis errors: 0/385.
 
 A source gap is not a failed investment criterion. At least 50% source failures in 10 or more observations, or 10 consecutive quote-source failures, abort normal mail/paper output. Other unverified evidence and combined price/liquidity outcomes remain in their individual decisions.
 
 Filing content collection: COLLECTION_FINISHED. Collection completion does not clear financial risks; inspect each document's status.
 
-Stage 1 completed: True; processed 1699/1699; quote responses 1698; histories checked 1474; recorded data gaps 141.
+Stage 1 completed: True; processed 1699/1699; quote responses 1697; histories checked 1578; recorded data gaps 22.
 
 Configured/fallback universe only, not every listed company. Missing data and unverified prices do not establish that a stock failed the investment criteria.
 
@@ -22,307 +22,445 @@ Documented conditional 12-month cases: none. Other selections are research watch
 
 | Ticker | Decision | Goal evidence | Solvency | Generic base sensitivity | Generic bull sensitivity | Main reason |
 |---|---|---|---|---:|---:|---|
-| TTD | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | GFS | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| ON | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-10-02 (filed 2026-11-02); cashflow evidence predates SEC 10-Q period 2026-10-02 (filed 2026-11-02); income evidence predates SEC 10-Q period 2026-10-02 (filed 2026-11-02); 8-K filed 2026-11-02: Current-report items: material agreement; 8-K filed 2026-10-01: Current-report items: material agreement; 425 filed 2026-09-16: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-08-21: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-08-13: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-08-12: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-25: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-25: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-06-25: Current-report items: material agreement; 8-K filed 2026-05-12: Current-report items: material agreement, new financial obligation, unregistered securities sale |
 | ENPH | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| ZS | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| RIVN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | LCID | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | INTC | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy |
 | AAON | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
-| AEIS | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end) |
-| AMD | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-26 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-26 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-26 (filed 2026-11-04); 8-K filed 2026-09-28: Current-report items: unregistered securities sale; 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation; 8-K filed 2026-05-15: Current-report items: material agreement, agreement termination, new financial obligation; 10-K/A filed 2026-02-04: Amended financial report requires reconciliation |
+| AEIS | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| AMD | unverified | not_evaluated | UNVERIFIED | -95.2% | -92.3% | Statement current_debt |
 | AVAV | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt; Positive statement EBITDA for net leverage assessment |
-| AKAM | exclude | not_evaluated | EXCLUDE | -31.0% | +10.3% | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
+| AGNC | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
+| AKAM | exclude | not_evaluated | EXCLUDE | -23.9% | +21.8% | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
 | ALK | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | ALB | event_review | not_evaluated | not_evaluated | unavailable | unavailable | Mandatory preferred conversion expected March 1, 2027 can materially dilute common shares; quarterly cash conversion includes Talison dividend timing and non-recurring working-capital benefits. A generic 5% dilution or unchanged cash run rate is not sufficient underwriting. |
 | AA | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 425 filed 2026-10-16: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-10-15: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-23: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-09-23: Current-report items: material agreement, new financial obligation; 425 filed 2026-09-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-09: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-09-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-16: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-02: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-07-02: Current-report items: material agreement; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-01: Merger/transaction filing requires current-status and valuation review |
-| ALGM | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -90.7% | -85.1% | Base/bull sensitivity does not meet configured upside thresholds |
-| ALM | analysis_error | not_evaluated | not_evaluated | unavailable | unavailable | CurrencyUnavailable: FX unavailable for CAD: No valid FX observation in the last seven days |
+| ALGM | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -89.1% | -82.6% | Base/bull sensitivity does not meet configured upside thresholds |
+| ALM | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 6-K filed 2026-10-13: Foreign-issuer current report needs results/event review; 6-K filed 2026-10-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-30: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-29: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-21: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-17: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-14: Foreign-issuer current report needs results/event review; 6-K filed 2026-08-17: Foreign-issuer current report needs results/event review; 6-K filed 2026-08-12: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-24: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-20: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-17: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-14: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-29: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-16: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-10: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-04: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-28: Foreign-issuer current report needs results/event review; 6-K filed 2026-05-12: Foreign-issuer current report needs results/event review |
+| GOOGL | unverified | not_evaluated | UNVERIFIED | -93.1% | -89.0% | Statement current_debt |
+| GOOG | unverified | not_evaluated | UNVERIFIED | -93.1% | -89.0% | Statement current_debt |
 | DOX | filing_unverified | not_evaluated | REVIEW | unavailable | unavailable | Invalid SEC document identity |
 | AMKR | valuation_unverified | not_evaluated | REVIEW | unavailable | unavailable | Positive current FCF and positive annual normalization history required |
-| AU | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-24: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-13: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review |
+| AU | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 6-K filed 2026-11-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-11-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-11-05: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K/A filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-31: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-24: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-13: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review; 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review |
 | NLY | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | APLD | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Usable statement interest expense and EBIT for a company with debt; Positive statement EBITDA for net leverage assessment |
+| AIT | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
 | AMAT | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-27: Results/outlook disclosure published after latest periodic financial filing |
 | AAOI | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Cash runway under policy minimum at the current FCF burn rate |
-| APP | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Statement current_debt; Financial statement dates do not align within 120 days |
+| ADM | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately |
+| ANET | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Statement debt; Statement current_debt; Financial statement dates do not align within 120 days |
+| ARW | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-05); 8-K filed 2026-09-04: Current-report items: material agreement, new financial obligation |
 | ALAB | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement debt; Statement current_debt |
 | ASTS | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Cash runway under policy minimum at the current FCF burn rate; Positive statement EBITDA for net leverage assessment |
 | ATI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-06-08: Current-report items: material agreement, new financial obligation |
 | AUGO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | AUR | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| AXON | exclude | not_evaluated | EXCLUDE | -99.4% | -99.0% | Net debt/EBITDA exceeds policy; Statement current_debt |
+| AVT | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
+| AXON | exclude | not_evaluated | EXCLUDE | -99.3% | -98.9% | Net debt/EBITDA exceeds policy; Statement current_debt |
 | BKR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-07-16: Current-report items: material agreement, agreement termination, acquisition/disposal, new financial obligation |
 | BAC | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality |
 | BMNR | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | BE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 10-Q/A filed 2026-07-29: Amended financial report requires reconciliation |
+| OWL | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | BA | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
-| BKNG | exclude | not_evaluated | EXCLUDE | -26.8% | +17.2% | Non-positive book equity with debt |
-| BWA | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -9.7% | +44.5% | Base/bull sensitivity does not meet configured upside thresholds |
+| BKNG | exclude | not_evaluated | EXCLUDE | -22.8% | +23.5% | Non-positive book equity with debt |
+| BWA | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -4.2% | +53.3% | Base/bull sensitivity does not meet configured upside thresholds |
 | BFAM | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | BHF | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity |
 | AVGO | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); cashflow evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); income evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); 8-K filed 2026-10-27: Current-report items: new financial obligation; S-4 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-06-09: Merger/transaction filing requires current-status and valuation review; S-4 filed 2026-06-09: Merger/transaction filing requires current-status and valuation review |
 | BLSH | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Positive statement EBITDA for net leverage assessment |
 | BG | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
 | BURL | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Net debt/EBITDA exceeds policy |
-| BWXT | unverified | not_evaluated | UNVERIFIED | -71.7% | -54.8% | Statement current_debt |
-| CRS | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -75.5% | -60.8% | Base/bull sensitivity does not meet configured upside thresholds |
+| BWXT | unverified | not_evaluated | UNVERIFIED | -70.1% | -52.2% | Statement current_debt |
+| CG | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
+| CRS | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -74.3% | -59.0% | Base/bull sensitivity does not meet configured upside thresholds |
 | CASY | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| CAT | exclude | not_evaluated | EXCLUDE | -56.3% | -30.1% | Cash plus stressed annual FCF does not cover current debt adequately; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| CAT | exclude | not_evaluated | EXCLUDE | -53.2% | -25.2% | Cash plus stressed annual FCF does not cover current debt adequately |
 | CHTR | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | CIEN | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-08-01 (filed 2026-09-03); cashflow evidence predates SEC 10-Q period 2026-08-01 (filed 2026-09-03); income evidence predates SEC 10-Q period 2026-08-01 (filed 2026-09-03); 8-K filed 2026-06-11: Current-report items: material agreement, new financial obligation, unregistered securities sale |
 | CRCL | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| NET | exclude | not_evaluated | EXCLUDE | -97.7% | -96.3% | Insufficient interest coverage; Net debt/EBITDA exceeds policy |
-| CDE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); DEFM14A filed 2025-12-22: Merger/transaction filing requires current-status and valuation review; PREM14A filed 2025-12-03: Merger/transaction filing requires current-status and valuation review |
+| CSCO | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-05-13: Current-report items: restructuring costs |
+| CLF | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| NET | exclude | not_evaluated | EXCLUDE | -97.4% | -95.9% | Insufficient interest coverage; Net debt/EBITDA exceeds policy |
+| CNH | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| CDE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | DEFM14A filed 2025-12-22: Merger/transaction filing requires current-status and valuation review; PREM14A filed 2025-12-03: Merger/transaction filing requires current-status and valuation review |
 | CGNX | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | COHR | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash runway under policy minimum at the current FCF burn rate |
 | COIN | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | FIX | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-28: Results/outlook disclosure published after latest periodic financial filing |
+| CEG | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
 | CRWV | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
-| GLW | unverified | not_evaluated | UNVERIFIED | -91.1% | -85.7% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| GLW | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -90.3% | -84.4% | Base/bull sensitivity does not meet configured upside thresholds |
 | CRDO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| CMI | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end) |
-| CW | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-05-20: Current-report items: material agreement, agreement termination, new financial obligation |
+| CRWD | risk_excluded | not_evaluated | REVIEW | -93.3% | -89.3% | Risk score 4/10 exceeds policy |
+| CMI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05) |
+| CW | unverified | not_evaluated | UNVERIFIED | -60.8% | -37.2% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | DAR | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | DDOG | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | DELL | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Non-positive book equity with debt; Usable statement interest expense and EBIT for a company with debt |
-| DKS | exclude | not_evaluated | EXCLUDE | -81.7% | -70.8% | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
+| DKS | exclude | not_evaluated | EXCLUDE | -80.9% | -69.4% | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
 | DOCN | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-03); 8-K filed 2026-09-10: Current-report items: material agreement, new financial obligation |
+| DASH | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| BROS | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05) |
 | DY | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-27); cashflow evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-27); income evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-27) |
 | DT | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| ETN | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end) |
+| ETN | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 425 filed 2026-11-03: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-31: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review |
+| ESTC | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| ESI | exclude | not_evaluated | EXCLUDE | -80.6% | -69.0% | Net debt/EBITDA exceeds policy |
 | EME | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| ENTG | exclude | not_evaluated | EXCLUDE | -90.5% | -84.9% | Net debt/EBITDA exceeds policy; Statement current_debt |
 | P | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-04); cashflow evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-04); income evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-04) |
 | ECG | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-03: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-09-08: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-02: Results/outlook disclosure published after latest periodic financial filing |
 | FFIV | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Statement ebit; Statement revenue; Usable statement interest expense and EBIT for a company with debt |
 | FN | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| FICO | exclude | not_evaluated | EXCLUDE | -60.3% | -36.4% | Non-positive book equity with debt; Net debt/EBITDA exceeds policy |
+| FICO | exclude | not_evaluated | EXCLUDE | -55.7% | -29.1% | Non-positive book equity with debt; Net debt/EBITDA exceeds policy; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | FIS | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | FIG | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | FIGR | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | FSLR | valuation_unverified | not_evaluated | REVIEW | unavailable | unavailable | Positive current FCF and positive annual normalization history required |
 | FLEX | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Statement current_debt; Financial statement dates do not align within 120 days |
-| FLUT | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | FPS | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash runway under policy minimum at the current FCF burn rate |
-| FORM | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end) |
-| FTNT | unverified | not_evaluated | UNVERIFIED | -72.0% | -55.2% | Statement current_debt |
-| FCX | unverified | not_evaluated | UNVERIFIED | -88.1% | -81.0% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| FORM | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| FTNT | unverified | not_evaluated | UNVERIFIED | -70.4% | -52.7% | Statement current_debt |
+| FCX | unverified | not_evaluated | UNVERIFIED | -87.2% | -79.5% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | FTAI | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Cash runway under policy minimum at the current FCF burn rate; Statement current_debt |
 | GLXY | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | GEV | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
-| HL | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end) |
+| GNRC | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| LOPE | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| HL | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-09-18: Current-report items: material agreement, agreement termination, new financial obligation |
 | HPE | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| HWM | risk_excluded | not_evaluated | REVIEW | -86.6% | -78.5% | Risk score 4/10 exceeds policy |
+| HXL | unverified | not_evaluated | UNVERIFIED | -74.3% | -58.9% | Statement current_debt |
+| DINO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| HWM | risk_excluded | not_evaluated | REVIEW | -85.7% | -77.2% | Risk score 4/10 exceeds policy |
 | HUBS | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| IESC | unverified | not_evaluated | UNVERIFIED | -62.9% | -40.6% | Statement current_debt |
+| IESC | unverified | not_evaluated | UNVERIFIED | -56.9% | -31.0% | Statement current_debt |
 | ILMN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | IBKR | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | IONQ | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | IPGP | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | IREN | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| JBL | risk_excluded | not_evaluated | REVIEW | -46.8% | -14.9% | Risk score 7/10 exceeds policy |
+| JBHT | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
+| JBL | risk_excluded | not_evaluated | REVIEW | -41.8% | -6.9% | Risk score 6/10 exceeds policy |
 | KRMN | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate |
-| KEYS | risk_excluded | not_evaluated | REVIEW | -67.6% | -48.2% | Risk score 4/10 exceeds policy |
-| KLAC | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -74.6% | -59.4% | Base/bull sensitivity does not meet configured upside thresholds |
+| KEYS | risk_excluded | not_evaluated | REVIEW | -64.5% | -43.2% | Risk score 4/10 exceeds policy |
+| KLAC | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -70.7% | -53.2% | Base/bull sensitivity does not meet configured upside thresholds |
 | KTOS | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| LRCX | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -75.6% | -60.9% | Base/bull sensitivity does not meet configured upside thresholds |
+| LRCX | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -70.8% | -53.3% | Base/bull sensitivity does not meet configured upside thresholds |
 | LSTR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| LSCC | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt |
+| LSCC | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Usable statement interest expense and EBIT for a company with debt |
+| LII | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately |
 | DRS | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| LFUS | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -45.2% | -12.3% | Base/bull sensitivity does not meet configured upside thresholds |
+| LKQ | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| LPLA | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | LITE | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Cash plus stressed annual FCF does not cover current debt adequately; Positive statement EBITDA for net leverage assessment |
-| MTSI | exclude | not_evaluated | EXCLUDE | -90.6% | -85.0% | Cash plus stressed annual FCF does not cover current debt adequately |
+| MTSI | exclude | not_evaluated | EXCLUDE | -88.5% | -81.6% | Cash plus stressed annual FCF does not cover current debt adequately |
+| MPC | risk_excluded | not_evaluated | REVIEW | -36.6% | +1.4% | Risk score 6/10 exceeds policy |
 | MRVL | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-28); cashflow evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-28); income evidence predates SEC 10-Q period 2026-08-01 (filed 2026-08-28); 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-11-02: Current-report items: material agreement; 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-10-23: Current-report items: material agreement; 8-K filed 2026-08-19: Current-report items: material agreement, unregistered securities sale |
-| MTZ | exclude | not_evaluated | EXCLUDE | -78.0% | -64.8% | Net debt/EBITDA exceeds policy |
+| MTZ | exclude | not_evaluated | EXCLUDE | -76.8% | -62.8% | Net debt/EBITDA exceeds policy |
 | MTDR | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
-| MPT | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
-| MGM | exclude | not_evaluated | EXCLUDE | +70.4% | +172.7% | Statement debt/equity exceeds policy; Net debt/EBITDA exceeds policy; Statement current_debt |
+| META | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-29: Current-report items: material agreement; 8-K filed 2026-10-21: Current-report items: material agreement |
+| MGM | exclude | not_evaluated | EXCLUDE | +71.9% | +175.0% | Statement debt/equity exceeds policy; Net debt/EBITDA exceeds policy; Statement current_debt |
+| MCHP | exclude | not_evaluated | EXCLUDE | -73.0% | -56.8% | Net debt/EBITDA exceeds policy |
 | MU | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-K period 2026-09-03 (filed 2026-10-09); cashflow evidence predates SEC 10-K period 2026-09-03 (filed 2026-10-09); income evidence predates SEC 10-K period 2026-09-03 (filed 2026-10-09) |
-| TIGO | exclude | not_evaluated | EXCLUDE | -92.3% | -87.6% | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
-| MKSI | exclude | not_evaluated | EXCLUDE | -76.5% | -62.4% | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
-| MOD | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-10-01: Current-report items: material agreement, acquisition/disposal; 425 filed 2026-09-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-31: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-05-28: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review |
+| MSTR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt; Positive statement EBITDA for net leverage assessment |
+| MFP | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt |
+| MKSI | exclude | not_evaluated | EXCLUDE | -78.4% | -65.4% | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| MOD | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-01: Current-report items: material agreement, acquisition/disposal; 425 filed 2026-09-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-07-31: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-05-28: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-30: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-29: Merger/transaction filing requires current-status and valuation review |
 | MDB | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| MPWR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
 | MP | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate; Statement current_debt |
-| MLI | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -26.6% | +17.5% | Base/bull sensitivity does not meet configured upside thresholds |
-| NTAP | risk_excluded | not_evaluated | REVIEW | -44.9% | -11.9% | Risk score 5/10 exceeds policy |
-| NEU | risk_excluded | not_evaluated | REVIEW | -25.5% | +19.3% | Risk score 4/10 exceeds policy |
+| MLI | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -22.7% | +23.7% | Base/bull sensitivity does not meet configured upside thresholds |
+| NTAP | risk_excluded | not_evaluated | REVIEW | -39.0% | -2.4% | Risk score 4/10 exceeds policy |
+| NFLX | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 425 filed 2026-01-16: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-15: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-07: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-06: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-22: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-19: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-15: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-09: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review |
+| NEU | risk_excluded | not_evaluated | REVIEW | -22.0% | +24.8% | Risk score 4/10 exceeds policy |
 | NRG | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
 | NU | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality |
+| NTNX | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-04: Current-report items: restructuring costs |
 | NVT | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-09-29: Current-report items: new financial obligation; 8-K filed 2026-09-17: Current-report items: new financial obligation |
+| NVDA | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation |
 | OKLO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| OKTA | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| ODFL | risk_excluded | not_evaluated | REVIEW | -64.3% | -42.8% | Risk score 4/10 exceeds policy |
 | ONTO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
 | ORCL | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate |
+| OC | exclude | not_evaluated | EXCLUDE | -5.6% | +51.0% | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
 | PCAR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| PLTR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
+| PANW | unverified | not_evaluated | UNVERIFIED | -80.8% | -69.2% | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
 | PCG | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
 | PL | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Positive statement EBITDA for net leverage assessment |
 | POWL | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| PRIM | exclude | not_evaluated | EXCLUDE | -72.9% | -56.6% | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
+| Q | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-07-01: Current-report items: material agreement, new financial obligation |
+| QCOM | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-09-08: Current-report items: unregistered securities sale; 8-K filed 2026-06-24: Current-report items: unregistered securities sale |
+| PWR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-06: Current-report items: material agreement, new financial obligation; 8-K filed 2026-08-04: Current-report items: material agreement |
 | QS | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | QXO | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | RMBS | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-05: Current-report items: material agreement, new financial obligation |
 | RDDT | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | HOOD | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | RKLB | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Statement current_debt |
-| SANM | not_selected | not_evaluated | REVIEW | -75.1% | -60.1% | Earnings within 5 days |
+| RBRK | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Non-positive book equity with debt; Insufficient interest coverage; Positive statement EBITDA for net leverage assessment |
+| SANM | not_selected | not_evaluated | REVIEW | -72.5% | -56.0% | Earnings within 5 days |
 | SLM | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | SNDK | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
+| SNDR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | SEB | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
 | SMTC | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-15: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-07-06: Current-report items: material agreement, new financial obligation |
 | NOW | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | SITM | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | SFD | event_review | not_evaluated | not_evaluated | unavailable | unavailable | September 8 profit warning: Fresh Pork margin compression and lower hog prices undermine an unchanged historical cash-flow assumption. |
 | SNOW | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| MWH | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 10-K/A filed 2026-03-26: Amended financial report requires reconciliation |
+| SCCO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Statement cash; Statement debt; Statement current_debt; Statement equity; Statement current_assets; Statement current_liabilities; Financial statement dates do not align within 120 days |
 | SPCX | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Cash runway under policy minimum at the current FCF burn rate |
-| SFM | risk_excluded | not_evaluated | REVIEW | -4.8% | +52.3% | Risk score 4/10 exceeds policy |
-| SPXC | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -64.7% | -43.5% | Base/bull sensitivity does not meet configured upside thresholds |
+| SFM | risk_excluded | not_evaluated | REVIEW | +0.4% | +60.6% | Risk score 4/10 exceeds policy |
+| SPXC | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -60.9% | -37.4% | Base/bull sensitivity does not meet configured upside thresholds |
 | STWD | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | STRL | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-07-08: Current-report items: material agreement, new financial obligation |
 | SMCI | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash runway under policy minimum at the current FCF burn rate |
-| TPR | exclude | not_evaluated | EXCLUDE | -37.3% | +0.3% | Statement debt/equity exceeds policy |
-| TER | unverified | not_evaluated | UNVERIFIED | -83.8% | -74.1% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| SNX | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
+| FTI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 10-K/A filed 2026-03-26: Amended financial report requires reconciliation; 10-K/A filed 2026-03-26: Amended financial report requires reconciliation |
+| TER | unverified | not_evaluated | UNVERIFIED | -80.9% | -69.5% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | WULF | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | TPL | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
-| TKR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-07-06: Current-report items: material agreement, new financial obligation |
+| TKR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-07-06: Current-report items: material agreement, new financial obligation |
 | TTMI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-09-30: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-24: Current-report items: material agreement, new financial obligation; 8-K filed 2026-08-17: Current-report items: material agreement; 8-K filed 2026-06-03: Current-report items: material agreement, agreement termination, new financial obligation |
 | TWLO | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| UHAL | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| UHAL-B | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate; Statement current_debt |
+| UI | not_selected | not_evaluated | REVIEW | -71.3% | -54.1% | Earnings within 5 days |
 | PATH | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | UNM | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity |
 | VLO | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-30: Results/outlook disclosure published after latest periodic financial filing |
+| VMI | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -49.7% | -19.6% | Base/bull sensitivity does not meet configured upside thresholds |
 | VRT | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| VIAV | exclude | not_evaluated | EXCLUDE | -92.2% | -87.6% | Insufficient interest coverage |
+| VIAV | exclude | not_evaluated | EXCLUDE | -91.3% | -86.1% | Insufficient interest coverage |
 | VICR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | VIRT | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| VST | exclude | not_evaluated | EXCLUDE | -54.4% | -27.0% | Statement debt/equity exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
+| VST | exclude | not_evaluated | EXCLUDE | -51.4% | -22.2% | Statement debt/equity exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
+| WCC | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy |
 | WDC | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-10-02 (filed 2026-10-23); cashflow evidence predates SEC 10-Q period 2026-10-02 (filed 2026-10-23); income evidence predates SEC 10-Q period 2026-10-02 (filed 2026-10-23); 8-K/A filed 2026-08-27: Current-report items: unregistered securities sale; 8-K filed 2026-08-26: Current-report items: unregistered securities sale; 8-K/A filed 2026-06-08: Current-report items: unregistered securities sale; 8-K filed 2026-06-03: Current-report items: unregistered securities sale |
 | WHR | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | WSC | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| WYNN | exclude | not_evaluated | EXCLUDE | -70.7% | -53.1% | Non-positive book equity with debt; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
+| WYNN | exclude | not_evaluated | EXCLUDE | -69.6% | -51.3% | Non-positive book equity with debt; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
 | XE | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | XP | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| ACLS | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-10-27: Results/outlook disclosure published after latest periodic financial filing; 425 filed 2026-04-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-12: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-06: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-28: Merger/transaction filing requires current-status and valuation review; S-4/A filed 2025-12-29: Merger/transaction filing requires current-status and valuation review; S-4 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review |
-| ACMR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-28: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-05-12: Current-report items: material agreement |
-| ADEA | unverified | not_evaluated | UNVERIFIED | -16.6% | +33.4% | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| GTM | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| KGH.WA | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
+| JSW.WA | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| CPS.WA | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| KRU.WA | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
+| ASB.WA | event_review | not_evaluated | not_evaluated | unavailable | unavailable | September-quarter growth consumed operating cash; funding depends on working-capital conversion and secured short-term facilities. Current contractual headroom and five-year resilience remain unresolved. |
+| ATT.WA | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| GLEN.L | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate; Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| ANTO.L | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| RR.L | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| ALHE.TA | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
+| FTAL.TA | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
+| ENLT.TA | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate; Fresh cashflow statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| IFX.DE | not_selected | not_evaluated | REVIEW | -84.2% | -74.7% | Did not complete eligibility checks |
+| RHM.DE | exclude | not_evaluated | EXCLUDE | -90.0% | -84.1% | Cash plus stressed annual FCF does not cover current debt adequately |
+| ACLS | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-04-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-12: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-06: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-28: Merger/transaction filing requires current-status and valuation review; S-4/A filed 2025-12-29: Merger/transaction filing requires current-status and valuation review; S-4 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review |
+| ACMR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-05: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-10-28: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-05-12: Current-report items: material agreement |
+| ADEA | insufficient_value_upside | RESEARCH_WATCH | REVIEW | +0.7% | +61.2% | Base/bull sensitivity does not meet configured upside thresholds |
 | ADIG | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Cash runway under policy minimum at the current FCF burn rate; Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Positive statement EBITDA for net leverage assessment |
-| AESI | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | AGX | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | AIR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
+| ALG | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | ALHC | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
 | AMR | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
-| ANDE | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately |
+| ANDE | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
+| AROC | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
 | ARR | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
-| BHE | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -50.0% | -20.1% | Base/bull sensitivity does not meet configured upside thresholds |
+| ASTE | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
+| ATEN | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| AZZ | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-26: Results/outlook disclosure published after latest periodic financial filing; 10-Q/A filed 2026-10-15: Amended financial report requires reconciliation |
+| BHE | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -45.1% | -12.1% | Base/bull sensitivity does not meet configured upside thresholds |
 | BTU | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
 | BXMT | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
+| CALM | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement debt; Statement current_debt |
+| CALX | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| CC | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | CCS | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | CENX | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
 | CLSK | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| CNR | exclude | not_evaluated | EXCLUDE | -23.0% | +23.2% | Insufficient interest coverage |
+| CNR | exclude | not_evaluated | EXCLUDE | -17.9% | +31.4% | Insufficient interest coverage |
 | COHU | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
+| CRC | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Statement current_debt; Statement ocf; Statement fcf; Financial statement dates do not align within 120 days |
 | CRGY | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
-| CVI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-03: Current-report items: material agreement, unregistered securities sale |
+| CSW | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
+| CVI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-05: Current-report items: material agreement; 8-K filed 2026-11-03: Current-report items: material agreement, unregistered securities sale |
+| CXW | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | DAN | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| DAVE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-11-04: Current-report items: material agreement |
 | DBD | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Statement current_debt |
 | DCH | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| DFH | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days; Usable statement interest expense and EBIT for a company with debt |
+| DGII | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-31: Current-report items: material agreement, agreement termination, new financial obligation |
 | DIOD | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| DXPE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-07-10: Current-report items: material agreement, new financial obligation |
+| DXPE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); 8-K filed 2026-07-10: Current-report items: material agreement, new financial obligation |
 | ENVA | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | ESE | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-02: Current-report items: material agreement, agreement termination, acquisition/disposal, new financial obligation; 8-K filed 2026-06-03: Current-report items: material agreement, agreement termination, new financial obligation |
 | EYE | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | FG | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity |
 | FMC | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| FUL | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Statement current_debt |
 | FUN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| GEO | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
 | GNL | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | GSHD | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity |
 | GT | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | HCC | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04) |
 | HE | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| HLIT | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-07-03 (filed 2026-08-17); cashflow evidence predates SEC 10-Q period 2026-07-03 (filed 2026-08-17); income evidence predates SEC 10-Q period 2026-07-03 (filed 2026-08-17); 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-06-17: Current-report items: acquisition/disposal |
+| HLIT | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | HP | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| HTLD | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | HUBG | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Statement ocf; Statement fcf; Statement ebit; Statement revenue; Usable statement interest expense and EBIT for a company with debt; Positive statement EBITDA for net leverage assessment |
+| IART | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | ICHR | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| INSW | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-03: Current-report items: unregistered securities sale; 8-K filed 2026-10-23: Current-report items: material agreement; 8-K filed 2026-10-21: Current-report items: unregistered securities sale; 8-K filed 2026-10-16: Current-report items: material agreement, unregistered securities sale; 8-K filed 2026-05-11: Current-report items: material agreement |
+| INSW | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); 8-K filed 2026-11-03: Current-report items: unregistered securities sale; 8-K filed 2026-10-23: Current-report items: material agreement; 8-K filed 2026-10-21: Current-report items: unregistered securities sale; 8-K filed 2026-10-16: Current-report items: material agreement, unregistered securities sale; 8-K filed 2026-05-11: Current-report items: material agreement |
+| INVX | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | IOSP | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | JBLU | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | KALU | valuation_unverified | not_evaluated | REVIEW | unavailable | unavailable | Positive current FCF and positive annual normalization history required |
 | KGS | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate |
 | KLIC | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06); cashflow evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06); income evidence predates SEC 10-Q period 2026-07-04 (filed 2026-08-06); 8-K filed 2026-08-17: Results/outlook disclosure published after latest periodic financial filing |
 | KMT | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash runway under policy minimum at the current FCF burn rate |
+| KN | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -61.6% | -38.5% | Base/bull sensitivity does not meet configured upside thresholds |
 | LBRT | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
-| LEU | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
+| LEU | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Statement current_debt; Financial statement dates do not align within 120 days |
+| LGIH | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | LIF | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
+| LPG | unverified | not_evaluated | UNVERIFIED | -11.5% | +41.6% | Fresh income statement (maximum 200 days from period end) |
 | LUMN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| LZB | risk_excluded | not_evaluated | REVIEW | +9.7% | +75.6% | Risk score 4/10 exceeds policy |
+| LZB | risk_excluded | not_evaluated | REVIEW | +11.2% | +77.9% | Risk score 4/10 exceeds policy |
 | MAN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | MARA | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| MRCY | exclude | not_evaluated | EXCLUDE | -87.4% | -79.9% | Insufficient interest coverage; Net debt/EBITDA exceeds policy |
-| MTRN | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash plus stressed annual FCF does not cover current debt adequately |
+| MBC | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy |
+| MRCY | exclude | not_evaluated | EXCLUDE | -86.2% | -77.9% | Insufficient interest coverage; Net debt/EBITDA exceeds policy |
+| MRTN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| MTRN | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | MXL | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | MYRG | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-04: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-09-10: Current-report items: material agreement, new financial obligation |
 | NOG | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate; Statement current_debt |
+| NPO | insufficient_value_upside | RESEARCH_WATCH | REVIEW | -69.2% | -50.7% | Base/bull sensitivity does not meet configured upside thresholds |
 | NSSC | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt; Usable statement interest expense and EBIT for a company with debt |
+| NTCT | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); 8-K filed 2026-06-03: Current-report items: auditor change |
 | NXRT | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | OI | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Cash runway under policy minimum at the current FCF burn rate; Positive statement EBITDA for net leverage assessment |
 | OII | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-07-07: Current-report items: material agreement, new financial obligation; 8-K filed 2026-06-26: Current-report items: material agreement |
 | PARR | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-05-14: Current-report items: material agreement, new financial obligation |
-| PDFS | not_selected | not_evaluated | REVIEW | unavailable | unavailable | Earnings within 5 days |
+| PDFS | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05) |
 | PENG | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-04: Results/outlook disclosure published after latest periodic financial filing; 8-K filed 2026-07-17: Current-report items: material agreement, new financial obligation, unregistered securities sale |
+| PLAB | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); cashflow evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10); income evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10) |
 | PLXS | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh income statement (maximum 200 days from period end); Statement ebit; Statement revenue; Usable statement interest expense and EBIT for a company with debt |
 | POWI | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
-| PRKS | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| PRDO | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); 8-K filed 2026-09-14: Current-report items: material agreement |
 | PRLB | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | PTEN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| RELY | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-10-30: Current-report items: material agreement, new financial obligation |
 | REZI | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate |
+| ROAD | exclude | not_evaluated | EXCLUDE | -95.9% | -93.5% | Net debt/EBITDA exceeds policy |
+| ROCK | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| ROG | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | RRR | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Net debt/EBITDA exceeds policy |
 | RSI | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| SAFE | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | SAH | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately; Cash runway under policy minimum at the current FCF burn rate |
+| SCSC | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05); 8-K filed 2026-09-02: Current-report items: new financial obligation; 8-K filed 2026-08-20: Current-report items: material agreement |
+| SEDG | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | SEI | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Statement debt/equity exceeds policy; Net debt/EBITDA exceeds policy; Cash runway under policy minimum at the current FCF burn rate |
-| SEZL | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
-| SKYW | exclude | not_evaluated | EXCLUDE | -4.0% | +53.7% | Cash plus stressed annual FCF does not cover current debt adequately; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
-| SM | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-09-04: Current-report items: agreement termination; 8-K filed 2026-06-01: Current-report items: agreement termination; 8-K filed 2026-05-12: Current-report items: agreement termination; 425 filed 2026-01-27: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-26: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-20: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-19: Merger/transaction filing requires current-status and valuation review; S-4/A filed 2025-12-17: Merger/transaction filing requires current-status and valuation review; S-4 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-12-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-11-21: Merger/transaction filing requires current-status and valuation review; 425 filed 2025-11-17: Merger/transaction filing requires current-status and valuation review |
+| SHOO | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-11-05: Results/outlook disclosure published after latest periodic financial filing |
+| SKYW | exclude | not_evaluated | EXCLUDE | -1.0% | +58.5% | Cash plus stressed annual FCF does not cover current debt adequately; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
+| SM | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Statement current_debt |
+| SNEX | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | SPHR | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
 | STC | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Jurisdiction-specific regulatory solvency/capital; Reserve adequacy and underwriting results; Asset/liability duration and liquidity |
+| STRA | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
 | SXI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-07-02: Current-report items: material agreement, agreement termination, acquisition/disposal; 10-K/A filed 2025-12-31: Amended financial report requires reconciliation; 10-K/A filed 2025-12-29: Amended financial report requires reconciliation |
+| TALO | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | TBBK | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality |
 | TDW | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-10-05: Current-report items: material agreement, new financial obligation; 8-K filed 2026-09-25: Current-report items: material agreement, new financial obligation; 8-K filed 2026-08-31: Current-report items: material agreement, acquisition/disposal, new financial obligation |
+| TFIN | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality |
 | THRM | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | TMDX | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy |
+| TNDM | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| TRIP | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | UCTT | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Cash runway under policy minimum at the current FCF burn rate |
 | UNIT | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | FFO/AFFO with issuer reconciliation; Property/debt maturities, secured debt and occupancy; Distribution coverage and maintenance capex |
 | UTI | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 8-K filed 2026-08-18: Current-report items: material agreement, new financial obligation |
-| UVV | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage; Net debt/EBITDA exceeds policy; Cash plus stressed annual FCF does not cover current debt adequately |
-| VECO | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Fresh balance statement (maximum 200 days from period end); Fresh cashflow statement (maximum 200 days from period end); Fresh income statement (maximum 200 days from period end) |
+| VCYT | unverified | not_evaluated | UNVERIFIED | -52.8% | -24.4% | Usable statement interest expense and EBIT for a company with debt |
+| VECO | filing_review | not_evaluated | REVIEW | unavailable | unavailable | 425 filed 2026-04-29: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-12: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-02-02: Merger/transaction filing requires current-status and valuation review; 425 filed 2026-01-28: Merger/transaction filing requires current-status and valuation review; DEFM14A filed 2025-12-31: Merger/transaction filing requires current-status and valuation review |
 | VRTS | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
 | VSAT | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Insufficient interest coverage |
-| VSEC | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Usable statement interest expense and EBIT for a company with debt |
+| VSEC | exclude | not_evaluated | EXCLUDE | unavailable | unavailable | Net debt/EBITDA exceeds policy; Fresh income statement (maximum 200 days from period end); Financial statement dates do not align within 120 days |
 | VSH | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-04); 8-K filed 2026-07-01: Current-report items: material agreement |
+| VTOL | filing_review | not_evaluated | REVIEW | unavailable | unavailable | balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04); 8-K filed 2026-06-26: Current-report items: material agreement |
 | WAFD | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Regulatory capital/CET1 and jurisdictional requirements; Deposit/funding stability and liquidity; Credit losses and asset quality |
 | WERN | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 | WHD | unverified | not_evaluated | UNVERIFIED | unavailable | unavailable | Usable statement interest expense and EBIT for a company with debt |
-| WINA | exclude | not_evaluated | EXCLUDE | -43.5% | -9.6% | Non-positive book equity with debt; Statement current_debt |
-| WRBY | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
+| WINA | exclude | not_evaluated | EXCLUDE | -41.6% | -6.6% | Non-positive book equity with debt; Statement current_debt |
 | WT | specialist_review | not_evaluated | SPECIALIST_REVIEW | unavailable | unavailable | Business-specific capital, funding, asset quality and regulatory requirements |
+| XPEL | not_selected | not_evaluated | not_evaluated | unavailable | unavailable | Persistent pre-drop decline rather than stable-business price history |
 
-## Official filing evidence: AMD
+## Official filing evidence: ON
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:08.263002+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:04:44.731403+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- balance evidence predates SEC 10-Q period 2026-09-26 (filed 2026-11-04)
-- cashflow evidence predates SEC 10-Q period 2026-09-26 (filed 2026-11-04)
-- income evidence predates SEC 10-Q period 2026-09-26 (filed 2026-11-04)
-- 8-K filed 2026-09-28: Current-report items: unregistered securities sale
-- 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation
-- 8-K filed 2026-05-15: Current-report items: material agreement, agreement termination, new financial obligation
-- 10-K/A filed 2026-02-04: Amended financial report requires reconciliation
-- [10-Q filed 2026-11-04 (0000002488-26-000191)](<https://www.sec.gov/Archives/edgar/data/2488/000000248826000191/amd-20260926.htm>)
-- [8-K filed 2026-09-28 (0000002488-26-000182)](<https://www.sec.gov/Archives/edgar/data/2488/000000248826000182/amd-20260926.htm>)
-- [8-K filed 2026-08-17 (0001193125-26-354029)](<https://www.sec.gov/Archives/edgar/data/2488/000119312526354029/d142696d8k.htm>)
-- [8-K filed 2026-05-15 (0001193125-26-226746)](<https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm>)
-- [10-K/A filed 2026-02-04 (0000002488-26-000021)](<https://www.sec.gov/Archives/edgar/data/2488/000000248826000021/amd-20251227.htm>)
+- balance evidence predates SEC 10-Q period 2026-10-02 (filed 2026-11-02)
+- cashflow evidence predates SEC 10-Q period 2026-10-02 (filed 2026-11-02)
+- income evidence predates SEC 10-Q period 2026-10-02 (filed 2026-11-02)
+- 8-K filed 2026-11-02: Current-report items: material agreement
+- 8-K filed 2026-10-01: Current-report items: material agreement
+- 425 filed 2026-09-16: Merger/transaction filing requires current-status and valuation review
+- S-4 filed 2026-08-21: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-08-13: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-08-12: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-30: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-26: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-25: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-25: Merger/transaction filing requires current-status and valuation review
+- 8-K filed 2026-06-25: Current-report items: material agreement
+- 8-K filed 2026-05-12: Current-report items: material agreement, new financial obligation, unregistered securities sale
+- [10-Q filed 2026-11-02 (0001097864-26-000021)](<https://www.sec.gov/Archives/edgar/data/1097864/000109786426000021/on-20261002.htm>)
+- [8-K filed 2026-11-02 (0001193125-26-443681)](<https://www.sec.gov/Archives/edgar/data/1097864/000119312526443681/d185557d8k.htm>)
+- [8-K filed 2026-10-01 (0001140361-26-038294)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126038294/ef20083030_8k.htm>)
+- [425 filed 2026-09-16 (0001140361-26-036771)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126036771/ef20081954_425.htm>)
+- [S-4 filed 2026-08-21 (0001140361-26-033970)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126033970/ny20076897x1_s4.htm>)
+- [425 filed 2026-08-13 (0001140361-26-032599)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126032599/ef20080111_425.htm>)
+- [425 filed 2026-08-12 (0001140361-26-032329)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126032329/ef20080032_425.htm>)
+- [425 filed 2026-06-30 (0001140361-26-026823)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026823/ef20077087_form425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026590)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026590/ef20076955_425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026589)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026589/ef20076893_form425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026586)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026586/ef20076896_form425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026582)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026582/ef20076900_form425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026579)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026579/ef20076892_form425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026576)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026576/ef20076895_425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026551)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026551/ef20076942_form425.htm>)
+- [425 filed 2026-06-26 (0001140361-26-026548)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026548/ef20076946_form425.htm>)
+- [425 filed 2026-06-25 (0001140361-26-026416)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026416/ef20076840_425.htm>)
+- [425 filed 2026-06-25 (0001140361-26-026398)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026398/ef20076747_425.htm>)
+- [8-K filed 2026-06-25 (0001140361-26-026395)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126026395/ef20076747_8k.htm>)
+- [8-K filed 2026-05-12 (0001140361-26-020642)](<https://www.sec.gov/Archives/edgar/data/1097864/000114036126020642/ef20072923_8k.htm>)
 
 
 ## Official filing evidence: ALB
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:45.618447+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:51.371002+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -338,7 +476,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: AA
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:13.691359+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:04:56.807209+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -383,16 +521,71 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: ALGM
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:09:15.161336+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:04:58.201360+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
 - [10-Q filed 2026-10-30 (0001193125-26-439990)](<https://www.sec.gov/Archives/edgar/data/866291/000119312526439990/algm-20260925.htm>)
 
 
+## Official filing evidence: ALM
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:02.184466+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 6-K filed 2026-10-13: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-10-05: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-09-30: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-09-29: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-09-21: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-09-17: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-09-14: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-08-17: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-08-12: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-07-24: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-07-20: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-07-17: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-07-14: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-29: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-16: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-10: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-05: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-04: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-06-01: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-05-28: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-05-12: Foreign-issuer current report needs results/event review
+- [40-F filed 2026-03-19 (0001493152-26-011503)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226011503/form40-f.htm>)
+- [6-K filed 2026-10-13 (0001493152-26-046757)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226046757/form6-k.htm>)
+- [6-K filed 2026-10-05 (0001493152-26-045665)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226045665/form6-k.htm>)
+- [6-K filed 2026-09-30 (0001493152-26-044963)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226044963/form6-k.htm>)
+- [6-K filed 2026-09-29 (0001493152-26-044777)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226044777/form6-k.htm>)
+- [6-K filed 2026-09-21 (0001493152-26-043476)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226043476/form6-k.htm>)
+- [6-K filed 2026-09-17 (0001493152-26-043044)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226043044/form6-k.htm>)
+- [6-K filed 2026-09-14 (0001493152-26-042480)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226042480/form6-k.htm>)
+- [6-K filed 2026-08-17 (0001493152-26-038655)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226038655/form6-k.htm>)
+- [6-K filed 2026-08-12 (0001493152-26-037264)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226037264/form6-k.htm>)
+- [6-K filed 2026-07-24 (0001493152-26-034449)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226034449/form6-k.htm>)
+- [6-K filed 2026-07-20 (0001493152-26-033811)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226033811/form6-k.htm>)
+- [6-K filed 2026-07-17 (0001493152-26-033617)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226033617/form6-k.htm>)
+- [6-K filed 2026-07-14 (0001493152-26-033123)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226033123/form6-k.htm>)
+- [6-K filed 2026-07-01 (0001493152-26-031435)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226031435/form6-k.htm>)
+- [6-K filed 2026-06-29 (0001493152-26-030426)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226030426/form6-k.htm>)
+- [6-K filed 2026-06-16 (0001493152-26-028905)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226028905/form6-k.htm>)
+- [6-K filed 2026-06-12 (0001493152-26-028532)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226028532/form6-k.htm>)
+- [6-K filed 2026-06-10 (0001493152-26-028002)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226028002/form6-k.htm>)
+- [6-K filed 2026-06-05 (0001493152-26-027390)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226027390/form6-k.htm>)
+- [6-K filed 2026-06-04 (0001493152-26-027313)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226027313/form6-k.htm>)
+- [6-K filed 2026-06-01 (0001493152-26-026528)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226026528/form6-k.htm>)
+- [6-K filed 2026-05-28 (0001493152-26-025564)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226025564/form6-k.htm>)
+- [6-K filed 2026-05-12 (0001493152-26-022338)](<https://www.sec.gov/Archives/edgar/data/1670061/000149315226022338/form6-k.htm>)
+
+
 ## Official filing evidence: DOX
 
-Official filing check: UNVERIFIED (checked 2026-11-05T00:09:17.250256+00:00).
+Official filing check: UNVERIFIED (checked 2026-11-06T00:05:06.049706+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -401,7 +594,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: AMKR
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:09:18.607095+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:05:07.384444+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -410,10 +603,13 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: AU
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:20.320597+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:09.262584+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- 6-K filed 2026-11-05: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-11-05: Foreign-issuer current report needs results/event review
+- 6-K filed 2026-11-05: Foreign-issuer current report needs results/event review
 - 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review
 - 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review
 - 6-K filed 2026-09-25: Foreign-issuer current report needs results/event review
@@ -430,6 +626,9 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - 6-K filed 2026-07-01: Foreign-issuer current report needs results/event review
 - 6-K filed 2026-06-12: Foreign-issuer current report needs results/event review
 - [20-F filed 2026-03-26 (0001973832-26-000066)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000066/au-20251231.htm>)
+- [6-K filed 2026-11-05 (0001973832-26-000175)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000175/agaq3sep2026erinvestorpres.htm>)
+- [6-K filed 2026-11-05 (0001973832-26-000173)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000173/agaq3sep2026operatingstati.htm>)
+- [6-K filed 2026-11-05 (0001973832-26-000171)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000171/agaq3sep2026earningsrelease.htm>)
 - [6-K filed 2026-09-25 (0001973832-26-000157)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000157/nevadasitevisitpresentation.htm>)
 - [6-K filed 2026-09-25 (0001973832-26-000146)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000146/nevadasitevisit.htm>)
 - [6-K filed 2026-09-25 (0001973832-26-000144)](<https://www.sec.gov/Archives/edgar/data/1973832/000197383226000144/appointmentofnon-executive.htm>)
@@ -449,7 +648,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: AMAT
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:23.119522+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:13.227862+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -458,9 +657,23 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-08-27 (0001628280-26-059257)](<https://www.sec.gov/Archives/edgar/data/6951/000162828026059257/amat-20260827.htm>)
 
 
+## Official filing evidence: ARW
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:18.651781+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-10-03 (filed 2026-11-05)
+- 8-K filed 2026-09-04: Current-report items: material agreement, new financial obligation
+- [10-Q filed 2026-11-05 (0001104659-26-123063)](<https://www.sec.gov/Archives/edgar/data/7536/000110465926123063/arw-20261003x10q.htm>)
+- [8-K filed 2026-09-04 (0001104659-26-105516)](<https://www.sec.gov/Archives/edgar/data/7536/000110465926105516/tm2624328d1_8k.htm>)
+
+
 ## Official filing evidence: ATI
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:29.040406+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:22.728385+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -471,7 +684,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: BKR
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:33.371413+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:27.787744+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -482,7 +695,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: BE
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:34.719675+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:29.182496+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -493,7 +706,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: BWA
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:09:38.823830+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:05:33.152580+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -502,7 +715,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: AVGO
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:41.153512+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:35.493857+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -522,7 +735,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: CRS
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:09:48.026794+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:05:42.760038+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -531,7 +744,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: CIEN
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:53.036734+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:48.560395+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -543,15 +756,23 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-06-11 (0001193125-26-267607)](<https://www.sec.gov/Archives/edgar/data/936395/000119312526267607/d118604d8k.htm>)
 
 
-## Official filing evidence: CDE
+## Official filing evidence: CSCO
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:55.397550+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:49.709645+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- 8-K filed 2026-05-13: Current-report items: restructuring costs
+- [10-K filed 2026-09-02 (0000858877-26-000132)](<https://www.sec.gov/Archives/edgar/data/858877/000085887726000132/csco-20260725.htm>)
+- [8-K filed 2026-05-13 (0000858877-26-000075)](<https://www.sec.gov/Archives/edgar/data/858877/000085887726000075/csco-20260513.htm>)
+
+
+## Official filing evidence: CDE
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:52.530981+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
 - DEFM14A filed 2025-12-22: Merger/transaction filing requires current-status and valuation review
 - PREM14A filed 2025-12-03: Merger/transaction filing requires current-status and valuation review
 - [10-Q filed 2026-11-04 (0000215466-26-000053)](<https://www.sec.gov/Archives/edgar/data/215466/000021546626000053/cde-20260930.htm>)
@@ -561,7 +782,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: FIX
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:09:58.097440+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:05:55.293381+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -570,20 +791,39 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-10-28 (0001104659-26-119613)](<https://www.sec.gov/Archives/edgar/data/1035983/000110465926119613/tm2628385d1_8k.htm>)
 
 
-## Official filing evidence: CW
+## Official filing evidence: GLW
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:10:05.391905+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:05:59.245251+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- 8-K filed 2026-05-20: Current-report items: material agreement, agreement termination, new financial obligation
-- [10-Q filed 2026-08-06 (0001628280-26-054196)](<https://www.sec.gov/Archives/edgar/data/26324/000162828026054196/cw-20260630.htm>)
-- [8-K filed 2026-05-20 (0001628280-26-036955)](<https://www.sec.gov/Archives/edgar/data/26324/000162828026036955/cw-20260519.htm>)
+- [10-Q filed 2026-10-29 (0000024741-26-000279)](<https://www.sec.gov/Archives/edgar/data/24741/000002474126000279/glw-20260930.htm>)
+
+
+## Official filing evidence: CRWD
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:06:02.899227+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-08-27 (0001535527-26-000031)](<https://www.sec.gov/Archives/edgar/data/1535527/000153552726000031/crwd-20260731.htm>)
+
+
+## Official filing evidence: CMI
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:05.391241+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- [10-Q filed 2026-11-05 (0000026172-26-000037)](<https://www.sec.gov/Archives/edgar/data/26172/000002617226000037/cmi-20260930.htm>)
 
 
 ## Official filing evidence: DOCN
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:10:10.110184+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:11.200618+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -595,9 +835,21 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-09-10 (0001104659-26-106704)](<https://www.sec.gov/Archives/edgar/data/1582961/000110465926106704/tm2625205d1_8k.htm>)
 
 
+## Official filing evidence: BROS
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:14.056704+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- [10-Q filed 2026-11-05 (0001866581-26-000180)](<https://www.sec.gov/Archives/edgar/data/1866581/000186658126000180/bros-20260930.htm>)
+
+
 ## Official filing evidence: DY
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:10:11.278198+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:15.217305+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -607,9 +859,32 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [10-Q filed 2026-08-27 (0000067215-26-000043)](<https://www.sec.gov/Archives/edgar/data/67215/000006721526000043/dy-20260801.htm>)
 
 
+## Official filing evidence: ETN
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:16.946324+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 425 filed 2026-11-03: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-07-31: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-06-11: Merger/transaction filing requires current-status and valuation review
+- [10-Q filed 2026-11-03 (0001551182-26-000040)](<https://www.sec.gov/Archives/edgar/data/1551182/000155118226000040/etn-20260930.htm>)
+- [425 filed 2026-11-03 (0000950142-26-002933)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226002933/eh260851075_425.htm>)
+- [425 filed 2026-07-31 (0000950142-26-002234)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226002234/eh260815207_425.htm>)
+- [425 filed 2026-06-11 (0000950142-26-001744)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226001744/eh260792896_425-efaqs.htm>)
+- [425 filed 2026-06-11 (0000950142-26-001743)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226001743/eh260792894_425-cfaqs.htm>)
+- [425 filed 2026-06-11 (0000950142-26-001736)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226001736/eh260792675_425.htm>)
+- [425 filed 2026-06-11 (0000950142-26-001735)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226001735/eh260792674_425.htm>)
+- [425 filed 2026-06-11 (0000950142-26-001734)](<https://www.sec.gov/Archives/edgar/data/1551182/000095014226001734/eh260792662_425.htm>)
+
+
 ## Official filing evidence: P
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:10:15.904328+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:23.285543+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -621,7 +896,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: ECG
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:10:17.343791+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:24.733506+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -636,16 +911,27 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: FSLR
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:10:24.082948+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:06:31.571991+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
 - [10-Q filed 2026-10-29 (0001274494-26-000212)](<https://www.sec.gov/Archives/edgar/data/1274494/000127449426000212/fslr-20260930.htm>)
 
 
+## Official filing evidence: HL
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:06:44.962658+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-09-18: Current-report items: material agreement, agreement termination, new financial obligation
+- [10-Q filed 2026-11-04 (0001193125-26-445748)](<https://www.sec.gov/Archives/edgar/data/719413/000119312526445748/hl-20260930.htm>)
+- [8-K filed 2026-09-18 (0001437749-26-030743)](<https://www.sec.gov/Archives/edgar/data/719413/000143774926030743/hl20260917_8k.htm>)
+
+
 ## Official filing evidence: HWM
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:10:38.549894+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:06:49.978511+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -654,7 +940,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: JBL
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:10:43.644899+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:06:56.277378+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -663,7 +949,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: KEYS
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:10:47.041388+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:06:59.403449+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -672,7 +958,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: KLAC
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:10:48.858333+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:01.140605+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -681,16 +967,34 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: LRCX
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:10:52.141388+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:04.598870+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
 - [10-Q filed 2026-10-22 (0000707549-26-000054)](<https://www.sec.gov/Archives/edgar/data/707549/000070754926000054/lrcx-20260927.htm>)
 
 
+## Official filing evidence: LFUS
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:12.321077+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-10-28 (0001628280-26-067807)](<https://www.sec.gov/Archives/edgar/data/889331/000162828026067807/lfus-20260926.htm>)
+
+
+## Official filing evidence: MPC
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:17.163968+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-11-03 (0001510295-26-000071)](<https://www.sec.gov/Archives/edgar/data/1510295/000151029526000071/mpc-20260930.htm>)
+
+
 ## Official filing evidence: MRVL
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:00.524967+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:19.249075+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -728,9 +1032,22 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-08-19 (0001193125-26-356217)](<https://www.sec.gov/Archives/edgar/data/1835632/000119312526356217/d412696d8k.htm>)
 
 
+## Official filing evidence: META
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:23.644191+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-10-29: Current-report items: material agreement
+- 8-K filed 2026-10-21: Current-report items: material agreement
+- [10-Q filed 2026-10-22 (0001628280-26-066773)](<https://www.sec.gov/Archives/edgar/data/1326801/000162828026066773/meta-20260930.htm>)
+- [8-K filed 2026-10-29 (0001193125-26-438017)](<https://www.sec.gov/Archives/edgar/data/1326801/000119312526438017/d183592d8k.htm>)
+- [8-K filed 2026-10-21 (0001628280-26-066700)](<https://www.sec.gov/Archives/edgar/data/1326801/000162828026066700/meta-20261019.htm>)
+
+
 ## Official filing evidence: MU
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:05.698552+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:27.748536+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -742,13 +1059,10 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: MOD
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:09.793625+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:33.603217+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
 - 8-K filed 2026-10-01: Current-report items: material agreement, acquisition/disposal
 - 425 filed 2026-09-17: Merger/transaction filing requires current-status and valuation review
 - 425 filed 2026-09-10: Merger/transaction filing requires current-status and valuation review
@@ -784,7 +1098,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: MLI
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:11:12.654578+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:38.266203+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -793,25 +1107,87 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: NTAP
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:11:14.793163+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:40.238969+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
 - [10-Q filed 2026-09-02 (0001193125-26-380207)](<https://www.sec.gov/Archives/edgar/data/1002047/000119312526380207/ntap-20260731.htm>)
 
 
+## Official filing evidence: NFLX
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:42.233183+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 425 filed 2026-01-16: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-01-15: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-01-07: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-01-06: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-22: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-19: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-17: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-15: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-09: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review
+- [10-Q filed 2026-10-21 (0001065280-26-000291)](<https://www.sec.gov/Archives/edgar/data/1065280/000106528026000291/nflx-20260930.htm>)
+- [425 filed 2026-01-16 (0001193125-26-015348)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312526015348/d63752d425.htm>)
+- [425 filed 2026-01-15 (0001193125-26-013283)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312526013283/d93808d425.htm>)
+- [425 filed 2026-01-07 (0001193125-26-005423)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312526005423/d76022d425.htm>)
+- [425 filed 2026-01-06 (0001193125-26-003019)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312526003019/d109556d425.htm>)
+- [425 filed 2025-12-22 (0001193125-25-327464)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525327464/d82688d425.htm>)
+- [425 filed 2025-12-19 (0001193125-25-325317)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525325317/d88472d425.htm>)
+- [425 filed 2025-12-17 (0001193125-25-322853)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525322853/d89616d425.htm>)
+- [425 filed 2025-12-17 (0001193125-25-321701)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525321701/d81909d425.htm>)
+- [425 filed 2025-12-17 (0001193125-25-321695)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525321695/d57859d425.htm>)
+- [425 filed 2025-12-17 (0001193125-25-321694)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525321694/d98746d425.htm>)
+- [425 filed 2025-12-15 (0001193125-25-318353)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525318353/d37360d425.htm>)
+- [425 filed 2025-12-09 (0001193125-25-311838)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525311838/d90569d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-311439)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525311439/d84037d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-310116)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525310116/d81407d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-310112)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525310112/d81407d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-310110)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525310110/d81407d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-310106)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525310106/d81407d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-310101)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525310101/d81407d425.htm>)
+- [425 filed 2025-12-08 (0001193125-25-310099)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525310099/d81407d425.htm>)
+- [425 filed 2025-12-05 (0001193125-25-309939)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525309939/d45027d425.htm>)
+- [425 filed 2025-12-05 (0001193125-25-308654)](<https://www.sec.gov/Archives/edgar/data/1065280/000119312525308654/d65144d425.htm>)
+
+
 ## Official filing evidence: NEU
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:11:16.753148+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:44.102681+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
 - [10-Q filed 2026-10-29 (0001282637-26-000020)](<https://www.sec.gov/Archives/edgar/data/1282637/000128263726000020/neu-20260930.htm>)
 
 
+## Official filing evidence: NTNX
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:47.546834+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-08-04: Current-report items: restructuring costs
+- [10-K filed 2026-09-18 (0001193125-26-394793)](<https://www.sec.gov/Archives/edgar/data/1618732/000119312526394793/ntnx-20260731.htm>)
+- [8-K filed 2026-08-04 (0001193125-26-331661)](<https://www.sec.gov/Archives/edgar/data/1618732/000119312526331661/ntnx-20260804.htm>)
+
+
 ## Official filing evidence: NVT
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:20.655339+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:48.996785+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -822,9 +1198,69 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-09-17 (0001104659-26-108580)](<https://www.sec.gov/Archives/edgar/data/1720635/000110465926108580/tm2625610d1_8k.htm>)
 
 
+## Official filing evidence: NVDA
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:07:50.471916+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-08-17: Current-report items: material agreement, new financial obligation
+- [10-Q filed 2026-08-26 (0001045810-26-000075)](<https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm>)
+- [8-K filed 2026-08-17 (0001045810-26-000069)](<https://www.sec.gov/Archives/edgar/data/1045810/000104581026000069/nvda-20260817.htm>)
+
+
+## Official filing evidence: ODFL
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:07:53.198810+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-11-04 (0000878927-26-000033)](<https://www.sec.gov/Archives/edgar/data/878927/000087892726000033/odfl-20260930.htm>)
+
+
+## Official filing evidence: Q
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:09.003042+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- 8-K filed 2026-07-01: Current-report items: material agreement, new financial obligation
+- [10-Q filed 2026-11-04 (0002058873-26-000043)](<https://www.sec.gov/Archives/edgar/data/2058873/000205887326000043/q-20260930.htm>)
+- [8-K filed 2026-07-01 (0002058873-26-000025)](<https://www.sec.gov/Archives/edgar/data/2058873/000205887326000025/q-20260701.htm>)
+
+
+## Official filing evidence: QCOM
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:10.330916+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-09-08: Current-report items: unregistered securities sale
+- 8-K filed 2026-06-24: Current-report items: unregistered securities sale
+- [10-K filed 2026-11-04 (0000804328-26-000128)](<https://www.sec.gov/Archives/edgar/data/804328/000080432826000128/qcom-20260927.htm>)
+- [8-K filed 2026-09-08 (0001104659-26-105718)](<https://www.sec.gov/Archives/edgar/data/804328/000110465926105718/tm2623289d1_8k.htm>)
+- [8-K filed 2026-06-24 (0001104659-26-077071)](<https://www.sec.gov/Archives/edgar/data/804328/000110465926077071/tm2618522d1_8k.htm>)
+
+
+## Official filing evidence: PWR
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:12.268461+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-08-06: Current-report items: material agreement, new financial obligation
+- 8-K filed 2026-08-04: Current-report items: material agreement
+- [10-Q filed 2026-10-29 (0001050915-26-000041)](<https://www.sec.gov/Archives/edgar/data/1050915/000105091526000041/pwr-20260930.htm>)
+- [8-K filed 2026-08-06 (0001193125-26-337945)](<https://www.sec.gov/Archives/edgar/data/1050915/000119312526337945/d164254d8k.htm>)
+- [8-K filed 2026-08-04 (0001193125-26-331400)](<https://www.sec.gov/Archives/edgar/data/1050915/000119312526331400/d114917d8k.htm>)
+
+
 ## Official filing evidence: RMBS
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:32.878245+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:15.181289+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -835,7 +1271,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: SANM
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:11:36.355256+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:08:20.218607+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -844,7 +1280,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: SMTC
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:40.054579+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:25.771727+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -857,7 +1293,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: SFD
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:47.657439+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:52.500945+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -869,9 +1305,20 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-10-16 (0000091388-26-000060)](<https://www.sec.gov/Archives/edgar/data/91388/000009138826000060/sfd-20261014.htm>)
 
 
+## Official filing evidence: MWH
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:28.682764+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 10-K/A filed 2026-03-26: Amended financial report requires reconciliation
+- [10-Q filed 2026-08-14 (0001193125-26-352447)](<https://www.sec.gov/Archives/edgar/data/2065636/000119312526352447/d152940d10q.htm>)
+- [10-K/A filed 2026-03-26 (0001193125-26-124739)](<https://www.sec.gov/Archives/edgar/data/2065636/000119312526124739/d108001d10ka.htm>)
+
+
 ## Official filing evidence: SFM
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:11:44.231527+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:08:32.728489+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -880,7 +1327,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: SPXC
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:11:46.589410+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:08:34.668016+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -889,7 +1336,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: STRL
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:48.876275+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:36.595233+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -898,15 +1345,25 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-07-08 (0000874238-26-000093)](<https://www.sec.gov/Archives/edgar/data/874238/000087423826000093/strl-20260702.htm>)
 
 
-## Official filing evidence: TKR
+## Official filing evidence: FTI
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:55.426156+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:40.598269+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- 10-K/A filed 2026-03-26: Amended financial report requires reconciliation
+- 10-K/A filed 2026-03-26: Amended financial report requires reconciliation
+- [10-Q filed 2026-10-29 (0001681459-26-000053)](<https://www.sec.gov/Archives/edgar/data/1681459/000168145926000053/fti-20260930.htm>)
+- [10-K/A filed 2026-03-26 (0001681459-26-000016)](<https://www.sec.gov/Archives/edgar/data/1681459/000168145926000016/fti-20251231.htm>)
+- [10-K/A filed 2026-03-26 (0001681459-26-000015)](<https://www.sec.gov/Archives/edgar/data/1681459/000168145926000015/fti-20241231.htm>)
+
+
+## Official filing evidence: TKR
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:45.101620+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
 - 8-K filed 2026-07-06: Current-report items: material agreement, new financial obligation
 - [10-Q filed 2026-11-04 (0000098362-26-000059)](<https://www.sec.gov/Archives/edgar/data/98362/000009836226000059/tkr-20260930.htm>)
 - [8-K filed 2026-07-06 (0001206774-26-000349)](<https://www.sec.gov/Archives/edgar/data/98362/000120677426000349/tkr4658521-8k.htm>)
@@ -914,7 +1371,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: TTMI
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:56.831057+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:46.393857+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -929,9 +1386,18 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-06-03 (0001193125-26-255711)](<https://www.sec.gov/Archives/edgar/data/1116942/000119312526255711/d220132d8k.htm>)
 
 
+## Official filing evidence: UI
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:08:49.478965+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-K filed 2026-08-21 (0001511737-26-000056)](<https://www.sec.gov/Archives/edgar/data/1511737/000151173726000056/ubnt-20260630.htm>)
+
+
 ## Official filing evidence: VLO
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:11:58.591082+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:08:51.427467+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -940,9 +1406,18 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-10-30 (0001628280-26-068387)](<https://www.sec.gov/Archives/edgar/data/1035002/000162828026068387/vlo-20261029.htm>)
 
 
+## Official filing evidence: VMI
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:08:52.852388+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-10-27 (0000102729-26-000050)](<https://www.sec.gov/Archives/edgar/data/102729/000010272926000050/vmi-20260926x10q.htm>)
+
+
 ## Official filing evidence: WDC
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:05.522344+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:09:01.791591+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -960,15 +1435,34 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-06-03 (0001193125-26-254621)](<https://www.sec.gov/Archives/edgar/data/106040/000119312526254621/d106828d8k.htm>)
 
 
-## Official filing evidence: ACLS
+## Official filing evidence: ASB.WA
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:10.132418+00:00).
+Official filing check: NOT_COVERED (checked 2026-11-06T00:11:54.648272+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- This listing needs its local regulator/issuer sources; the SEC checker does not cover it.
+
+
+## Official filing evidence: IFX.DE
+
+Official filing check: NOT_COVERED (checked 2026-11-06T00:09:20.788657+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- This listing needs its local regulator/issuer sources; the SEC checker does not cover it.
+
+
+## Official filing evidence: ACLS
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:09:24.062550+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
 - 425 filed 2026-11-02: Merger/transaction filing requires current-status and valuation review
-- 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing
-- 8-K filed 2026-10-27: Results/outlook disclosure published after latest periodic financial filing
 - 425 filed 2026-04-29: Merger/transaction filing requires current-status and valuation review
 - 425 filed 2026-02-12: Merger/transaction filing requires current-status and valuation review
 - 425 filed 2026-02-06: Merger/transaction filing requires current-status and valuation review
@@ -976,10 +1470,8 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - 425 filed 2026-01-28: Merger/transaction filing requires current-status and valuation review
 - S-4/A filed 2025-12-29: Merger/transaction filing requires current-status and valuation review
 - S-4 filed 2025-12-08: Merger/transaction filing requires current-status and valuation review
-- [10-Q filed 2026-08-06 (0001104659-26-091999)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926091999/acls-20260630x10q.htm>)
+- [10-Q filed 2026-11-05 (0001104659-26-123333)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926123333/acls-20260930x10q.htm>)
 - [425 filed 2026-11-02 (0001104659-26-120943)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926120943/tm2628711d1_8k.htm>)
-- [8-K filed 2026-11-02 (0001104659-26-120939)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926120939/tm2628711d1_8k.htm>)
-- [8-K filed 2026-10-27 (0001104659-26-118986)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926118986/tm2628310d1_8k.htm>)
 - [425 filed 2026-04-29 (0001104659-26-051516)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926051516/tm2612983d1_425.htm>)
 - [425 filed 2026-02-12 (0001104659-26-014427)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926014427/tm265450d4_425.htm>)
 - [425 filed 2026-02-06 (0001104659-26-011578)](<https://www.sec.gov/Archives/edgar/data/1113232/000110465926011578/tm265450d2_425.htm>)
@@ -991,20 +1483,44 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: ACMR
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:11.595918+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:09:25.339570+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- 8-K filed 2026-11-05: Results/outlook disclosure published after latest periodic financial filing
 - 8-K filed 2026-10-28: Results/outlook disclosure published after latest periodic financial filing
 - 8-K filed 2026-05-12: Current-report items: material agreement
 - [10-Q filed 2026-08-07 (0001628280-26-054832)](<https://www.sec.gov/Archives/edgar/data/1680062/000162828026054832/acmr-20260630.htm>)
+- [8-K filed 2026-11-05 (0001628280-26-070600)](<https://www.sec.gov/Archives/edgar/data/1680062/000162828026070600/acmr-20261105.htm>)
 - [8-K filed 2026-10-28 (0001628280-26-067734)](<https://www.sec.gov/Archives/edgar/data/1680062/000162828026067734/acmr-20261028.htm>)
 - [8-K filed 2026-05-12 (0001140361-26-020717)](<https://www.sec.gov/Archives/edgar/data/1680062/000114036126020717/ef20073127_8k.htm>)
 
 
+## Official filing evidence: ADEA
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:09:26.588818+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-11-04 (0001803696-26-000010)](<https://www.sec.gov/Archives/edgar/data/1803696/000180369626000010/adea-20260930.htm>)
+
+
+## Official filing evidence: AZZ
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:09:41.536344+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-10-26: Results/outlook disclosure published after latest periodic financial filing
+- 10-Q/A filed 2026-10-15: Amended financial report requires reconciliation
+- [10-Q filed 2026-10-13 (0000008947-26-000187)](<https://www.sec.gov/Archives/edgar/data/8947/000000894726000187/azz-20260831.htm>)
+- [8-K filed 2026-10-26 (0000008947-26-000200)](<https://www.sec.gov/Archives/edgar/data/8947/000000894726000200/azz-20261026.htm>)
+- [10-Q/A filed 2026-10-15 (0000008947-26-000198)](<https://www.sec.gov/Archives/edgar/data/8947/000000894726000198/azz-20260831.htm>)
+
+
 ## Official filing evidence: BHE
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:12:22.735747+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:09:43.267448+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1013,29 +1529,59 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: CVI
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:31.507875+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:09:55.904030+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- 8-K filed 2026-11-05: Current-report items: material agreement
 - 8-K filed 2026-11-03: Current-report items: material agreement, unregistered securities sale
 - [10-Q filed 2026-11-03 (0001376139-26-000043)](<https://www.sec.gov/Archives/edgar/data/1376139/000137613926000043/cvi-20260930.htm>)
+- [8-K filed 2026-11-05 (0001193125-26-450036)](<https://www.sec.gov/Archives/edgar/data/1376139/000119312526450036/d169461d8k.htm>)
 - [8-K filed 2026-11-03 (0001193125-26-444428)](<https://www.sec.gov/Archives/edgar/data/1376139/000119312526444428/d87305d8k.htm>)
+
+
+## Official filing evidence: DAVE
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:00.847887+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- 8-K filed 2026-11-04: Current-report items: material agreement
+- [10-Q filed 2026-11-04 (0001193125-26-447414)](<https://www.sec.gov/Archives/edgar/data/1841408/000119312526447414/dave-20260930.htm>)
+- [8-K filed 2026-11-04 (0001193125-26-447333)](<https://www.sec.gov/Archives/edgar/data/1841408/000119312526447333/dave-20261104.htm>)
+
+
+## Official filing evidence: DGII
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:05.080107+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-08-31: Current-report items: material agreement, agreement termination, new financial obligation
+- [10-Q filed 2026-08-05 (0000854775-26-000026)](<https://www.sec.gov/Archives/edgar/data/854775/000085477526000026/dgii-20260630.htm>)
+- [8-K filed 2026-08-31 (0001104659-26-103966)](<https://www.sec.gov/Archives/edgar/data/854775/000110465926103966/tm2624262d1_8k.htm>)
 
 
 ## Official filing evidence: DXPE
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:35.615779+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:09.993346+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
 - 8-K filed 2026-07-10: Current-report items: material agreement, new financial obligation
-- [10-Q filed 2026-08-06 (0001628280-26-054179)](<https://www.sec.gov/Archives/edgar/data/1020710/000162828026054179/dxpe-20260630.htm>)
+- [10-Q filed 2026-11-05 (0001628280-26-071141)](<https://www.sec.gov/Archives/edgar/data/1020710/000162828026071141/dxpe-20260930.htm>)
 - [8-K filed 2026-07-10 (0001628280-26-047831)](<https://www.sec.gov/Archives/edgar/data/1020710/000162828026047831/dxpe-20260702.htm>)
 
 
 ## Official filing evidence: ESE
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:36.907516+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:12.222068+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1048,7 +1594,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: HCC
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:39.159890+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:17.486158+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1058,34 +1604,21 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [10-Q filed 2026-11-04 (0001193125-26-447481)](<https://www.sec.gov/Archives/edgar/data/1691303/000119312526447481/hcc-20260930.htm>)
 
 
-## Official filing evidence: HLIT
-
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:40.782041+00:00).
-
-SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
-
-- balance evidence predates SEC 10-Q period 2026-07-03 (filed 2026-08-17)
-- cashflow evidence predates SEC 10-Q period 2026-07-03 (filed 2026-08-17)
-- income evidence predates SEC 10-Q period 2026-07-03 (filed 2026-08-17)
-- 8-K filed 2026-11-02: Results/outlook disclosure published after latest periodic financial filing
-- 8-K filed 2026-06-17: Current-report items: acquisition/disposal
-- [10-Q filed 2026-08-17 (0001193125-26-353891)](<https://www.sec.gov/Archives/edgar/data/851310/000119312526353891/hlit-20260703.htm>)
-- [8-K filed 2026-11-02 (0001193125-26-443647)](<https://www.sec.gov/Archives/edgar/data/851310/000119312526443647/hlit-20261102.htm>)
-- [8-K filed 2026-06-17 (0001193125-26-273457)](<https://www.sec.gov/Archives/edgar/data/851310/000119312526273457/hlit-20260616.htm>)
-
-
 ## Official filing evidence: INSW
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:45.047857+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:24.012142+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
 - 8-K filed 2026-11-03: Current-report items: unregistered securities sale
 - 8-K filed 2026-10-23: Current-report items: material agreement
 - 8-K filed 2026-10-21: Current-report items: unregistered securities sale
 - 8-K filed 2026-10-16: Current-report items: material agreement, unregistered securities sale
 - 8-K filed 2026-05-11: Current-report items: material agreement
-- [10-Q filed 2026-08-10 (0001104659-26-093061)](<https://www.sec.gov/Archives/edgar/data/1679049/000110465926093061/insw-20260630x10q.htm>)
+- [10-Q filed 2026-11-05 (0001104659-26-123078)](<https://www.sec.gov/Archives/edgar/data/1679049/000110465926123078/insw-20260930x10q.htm>)
 - [8-K filed 2026-11-03 (0001104659-26-121663)](<https://www.sec.gov/Archives/edgar/data/1679049/000110465926121663/tm2628788d1_8k.htm>)
 - [8-K filed 2026-10-23 (0001104659-26-118505)](<https://www.sec.gov/Archives/edgar/data/1679049/000110465926118505/tm2628139d1_8k.htm>)
 - [8-K filed 2026-10-21 (0001104659-26-117865)](<https://www.sec.gov/Archives/edgar/data/1679049/000110465926117865/tm2628048d1_8k.htm>)
@@ -1095,7 +1628,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: KALU
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:12:47.862536+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:10:29.136498+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1104,7 +1637,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: KLIC
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:12:50.968611+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:33.681085+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1116,9 +1649,18 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-08-17 (0000056978-26-000034)](<https://www.sec.gov/Archives/edgar/data/56978/000005697826000034/klic-20260813.htm>)
 
 
+## Official filing evidence: KN
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:10:36.985669+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-10-27 (0001587523-26-000035)](<https://www.sec.gov/Archives/edgar/data/1587523/000158752326000035/kn-20260930.htm>)
+
+
 ## Official filing evidence: LZB
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:12:58.025726+00:00).
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:10:44.728853+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1127,7 +1669,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: MYRG
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:03.603461+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:51.028676+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1138,9 +1680,32 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-09-10 (0000700923-26-000047)](<https://www.sec.gov/Archives/edgar/data/700923/000070092326000047/myrg-20260908.htm>)
 
 
+## Official filing evidence: NPO
+
+Official filing check: METADATA_CHECKED (checked 2026-11-06T00:10:53.722779+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- [10-Q filed 2026-11-03 (0001628280-26-069211)](<https://www.sec.gov/Archives/edgar/data/1164863/000162828026069211/npo-20260930.htm>)
+
+
+## Official filing evidence: NTCT
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:10:57.541836+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- 8-K filed 2026-06-03: Current-report items: auditor change
+- [10-Q filed 2026-11-05 (0001078075-26-000157)](<https://www.sec.gov/Archives/edgar/data/1078075/000107807526000157/ntct-20260930.htm>)
+- [8-K filed 2026-06-03 (0001193125-26-255421)](<https://www.sec.gov/Archives/edgar/data/1078075/000119312526255421/d116727d8k.htm>)
+
+
 ## Official filing evidence: OII
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:08.594493+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:00.299864+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1153,7 +1718,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: PARR
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:09.982778+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:01.329039+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1167,16 +1732,19 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: PDFS
 
-Official filing check: METADATA_CHECKED (checked 2026-11-05T00:13:11.428198+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:02.801321+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
-- [10-Q filed 2026-08-06 (0001437749-26-026294)](<https://www.sec.gov/Archives/edgar/data/1120914/000143774926026294/pdfs20260630_10q.htm>)
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- [10-Q filed 2026-11-05 (0001437749-26-035296)](<https://www.sec.gov/Archives/edgar/data/1120914/000143774926035296/pdfs20260930_10q.htm>)
 
 
 ## Official filing evidence: PENG
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:12.753104+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:04.297684+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1187,45 +1755,76 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-07-17 (0001193125-26-307989)](<https://www.sec.gov/Archives/edgar/data/1616533/000119312526307989/d103073d8k.htm>)
 
 
-## Official filing evidence: SM
+## Official filing evidence: PLAB
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:24.861154+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:05.718548+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10)
+- cashflow evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10)
+- income evidence predates SEC 10-Q period 2026-08-02 (filed 2026-09-10)
+- [10-Q filed 2026-09-10 (0001140361-26-036138)](<https://www.sec.gov/Archives/edgar/data/810136/000114036126036138/plab-20260802.htm>)
+
+
+## Official filing evidence: PRDO
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:08.623632+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- 8-K filed 2026-09-14: Current-report items: material agreement
+- [10-Q filed 2026-11-05 (0001193125-26-449730)](<https://www.sec.gov/Archives/edgar/data/1046568/000119312526449730/prdo-20260930.htm>)
+- [8-K filed 2026-09-14 (0001193125-26-389857)](<https://www.sec.gov/Archives/edgar/data/1046568/000119312526389857/d61984d8k.htm>)
+
+
+## Official filing evidence: RELY
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:11.449155+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
 - balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
 - cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
 - income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
-- 8-K filed 2026-09-04: Current-report items: agreement termination
-- 8-K filed 2026-06-01: Current-report items: agreement termination
-- 8-K filed 2026-05-12: Current-report items: agreement termination
-- 425 filed 2026-01-27: Merger/transaction filing requires current-status and valuation review
-- 425 filed 2026-01-26: Merger/transaction filing requires current-status and valuation review
-- 425 filed 2026-01-20: Merger/transaction filing requires current-status and valuation review
-- 425 filed 2025-12-19: Merger/transaction filing requires current-status and valuation review
-- S-4/A filed 2025-12-17: Merger/transaction filing requires current-status and valuation review
-- S-4 filed 2025-12-05: Merger/transaction filing requires current-status and valuation review
-- 425 filed 2025-12-02: Merger/transaction filing requires current-status and valuation review
-- 425 filed 2025-11-21: Merger/transaction filing requires current-status and valuation review
-- 425 filed 2025-11-17: Merger/transaction filing requires current-status and valuation review
-- [10-Q filed 2026-11-04 (0000893538-26-000147)](<https://www.sec.gov/Archives/edgar/data/893538/000089353826000147/sm-20260930.htm>)
-- [8-K filed 2026-09-04 (0000893538-26-000128)](<https://www.sec.gov/Archives/edgar/data/893538/000089353826000128/sm-20260904.htm>)
-- [8-K filed 2026-06-01 (0000893538-26-000071)](<https://www.sec.gov/Archives/edgar/data/893538/000089353826000071/sm-20260601.htm>)
-- [8-K filed 2026-05-12 (0000893538-26-000064)](<https://www.sec.gov/Archives/edgar/data/893538/000089353826000064/sm-20260511.htm>)
-- [425 filed 2026-01-27 (0001104659-26-007053)](<https://www.sec.gov/Archives/edgar/data/893538/000110465926007053/tm264131d2_425.htm>)
-- [425 filed 2026-01-26 (0001104659-26-006611)](<https://www.sec.gov/Archives/edgar/data/893538/000110465926006611/tm263440d4_425.htm>)
-- [425 filed 2026-01-20 (0001104659-26-004853)](<https://www.sec.gov/Archives/edgar/data/893538/000110465926004853/tm263440d2_425.htm>)
-- [425 filed 2025-12-19 (0000893538-25-000168)](<https://www.sec.gov/Archives/edgar/data/893538/000089353825000168/form8-k12192025.htm>)
-- [S-4/A filed 2025-12-17 (0001104659-25-122082)](<https://www.sec.gov/Archives/edgar/data/893538/000110465925122082/tm2530182-3_s4a.htm>)
-- [S-4 filed 2025-12-05 (0001104659-25-118705)](<https://www.sec.gov/Archives/edgar/data/893538/000110465925118705/tm2530182-1_s4.htm>)
-- [425 filed 2025-12-02 (0000893538-25-000162)](<https://www.sec.gov/Archives/edgar/data/893538/000089353825000162/bankofamericaleveragedfi.htm>)
-- [425 filed 2025-11-21 (0000893538-25-000160)](<https://www.sec.gov/Archives/edgar/data/893538/000089353825000160/stephensannualinvestorco.htm>)
-- [425 filed 2025-11-17 (0000893538-25-000157)](<https://www.sec.gov/Archives/edgar/data/893538/000089353825000157/a11172025smemployeecommuni.htm>)
+- 8-K filed 2026-10-30: Current-report items: material agreement, new financial obligation
+- [10-Q filed 2026-11-04 (0001628280-26-070142)](<https://www.sec.gov/Archives/edgar/data/1782170/000162828026070142/rely-20260930.htm>)
+- [8-K filed 2026-10-30 (0001782170-26-000084)](<https://www.sec.gov/Archives/edgar/data/1782170/000178217026000084/rely-20261026.htm>)
+
+
+## Official filing evidence: SCSC
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:19.751273+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-05)
+- 8-K filed 2026-09-02: Current-report items: new financial obligation
+- 8-K filed 2026-08-20: Current-report items: material agreement
+- [10-Q filed 2026-11-05 (0000918965-26-000053)](<https://www.sec.gov/Archives/edgar/data/918965/000091896526000053/scsc-20260930.htm>)
+- [8-K filed 2026-09-02 (0001193125-26-379371)](<https://www.sec.gov/Archives/edgar/data/918965/000119312526379371/d83281d8k.htm>)
+- [8-K filed 2026-08-20 (0000918965-26-000043)](<https://www.sec.gov/Archives/edgar/data/918965/000091896526000043/scsc-20260819.htm>)
+
+
+## Official filing evidence: SHOO
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:22.865749+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 8-K filed 2026-11-05: Results/outlook disclosure published after latest periodic financial filing
+- [10-Q filed 2026-07-31 (0001628280-26-051368)](<https://www.sec.gov/Archives/edgar/data/913241/000162828026051368/shoo-20260630.htm>)
+- [8-K filed 2026-11-05 (0001493152-26-050053)](<https://www.sec.gov/Archives/edgar/data/913241/000149315226050053/form8-k.htm>)
 
 
 ## Official filing evidence: SXI
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:28.846756+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:29.734377+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1240,7 +1839,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: TDW
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:30.504449+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:31.287422+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1255,7 +1854,7 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 
 ## Official filing evidence: UTI
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:34.563427+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:35.635336+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1264,9 +1863,28 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - [8-K filed 2026-08-18 (0001193125-26-354799)](<https://www.sec.gov/Archives/edgar/data/1261654/000119312526354799/d404364d8k.htm>)
 
 
+## Official filing evidence: VECO
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:38.536459+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- 425 filed 2026-04-29: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-02-12: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-02-02: Merger/transaction filing requires current-status and valuation review
+- 425 filed 2026-01-28: Merger/transaction filing requires current-status and valuation review
+- DEFM14A filed 2025-12-31: Merger/transaction filing requires current-status and valuation review
+- [10-Q filed 2026-11-04 (0001104659-26-122721)](<https://www.sec.gov/Archives/edgar/data/103145/000110465926122721/veco-20260930x10q.htm>)
+- [425 filed 2026-04-29 (0001104659-26-051516)](<https://www.sec.gov/Archives/edgar/data/103145/000110465926051516/tm2612983d1_425.htm>)
+- [425 filed 2026-02-12 (0001104659-26-014427)](<https://www.sec.gov/Archives/edgar/data/103145/000110465926014427/tm265450d4_425.htm>)
+- [425 filed 2026-02-02 (0001104659-26-008920)](<https://www.sec.gov/Archives/edgar/data/103145/000110465926008920/tm264548d3_425.htm>)
+- [425 filed 2026-01-28 (0001104659-26-007491)](<https://www.sec.gov/Archives/edgar/data/103145/000110465926007491/tm264365d3_425.htm>)
+- [DEFM14A filed 2025-12-31 (0001104659-25-125601)](<https://www.sec.gov/Archives/edgar/data/103145/000110465925125601/tm2534515-1_defm14a.htm>)
+
+
 ## Official filing evidence: VSH
 
-Official filing check: REVIEW_REQUIRED (checked 2026-11-05T00:13:41.005782+00:00).
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:42.921324+00:00).
 
 SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
 
@@ -1276,6 +1894,20 @@ SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalyst
 - 8-K filed 2026-07-01: Current-report items: material agreement
 - [10-Q filed 2026-11-04 (0000103730-26-000080)](<https://www.sec.gov/Archives/edgar/data/103730/000010373026000080/form10q.htm>)
 - [8-K filed 2026-07-01 (0001140361-26-027081)](<https://www.sec.gov/Archives/edgar/data/103730/000114036126027081/ny20076868x4_8k.htm>)
+
+
+## Official filing evidence: VTOL
+
+Official filing check: REVIEW_REQUIRED (checked 2026-11-06T00:11:44.171010+00:00).
+
+SEC metadata only; filing bodies, exhibits, covenant terms and recovery catalysts are not automatically verified. No flagged filing does not establish absence of risk. Event lookback: 365 days for merger forms, 180 days for current reports.
+
+- balance evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- cashflow evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- income evidence predates SEC 10-Q period 2026-09-30 (filed 2026-11-04)
+- 8-K filed 2026-06-26: Current-report items: material agreement
+- [10-Q filed 2026-11-04 (0001525221-26-000106)](<https://www.sec.gov/Archives/edgar/data/1525221/000152522126000106/vtol-20260930.htm>)
+- [8-K filed 2026-06-26 (0001525221-26-000091)](<https://www.sec.gov/Archives/edgar/data/1525221/000152522126000091/vtol-20260626.htm>)
 
 
 Full statement period ends, row labels, missing fields, assumptions and exclusions are in research_report.json.

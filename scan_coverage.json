@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-11-04T23:54:55.704423+00:00",
+  "started_at": "2026-11-05T23:49:45.282323+00:00",
   "completed": true,
   "requested_symbols": [
     "TTD",
@@ -1704,16 +1704,18 @@
   ],
   "requested_count": 1699,
   "processed_count": 1699,
-  "quote_successes": 1698,
-  "histories_checked": 1474,
+  "quote_successes": 1697,
+  "histories_checked": 1578,
   "outcomes": {
-    "candidate": 277,
-    "no_recent_decline_or_price_unverified": 1197,
-    "insufficient_history": 8,
-    "biotechnology": 65,
-    "price_listing_filter": 4,
-    "currency_unverified": 133,
-    "below_market_cap": 15
+    "no_recent_decline_or_price_unverified": 1192,
+    "candidate": 385,
+    "insufficient_history": 9,
+    "biotechnology": 70,
+    "price_listing_filter": 7,
+    "currency_unverified": 12,
+    "data_error": 1,
+    "below_market_cap": 22,
+    "liquidity_filter_or_missing_volume": 1
   },
   "data_gaps": [
     {
@@ -1721,6 +1723,12 @@
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
+    },
+    {
+      "ticker": "ITT",
+      "stage": "currency_and_security",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
     },
     {
       "ticker": "KVUE",
@@ -1735,469 +1743,31 @@
       "error_type": "CurrencyUnavailable"
     },
     {
+      "ticker": "MSM",
+      "stage": "currency_and_security",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "QRVO",
+      "stage": "price_history",
+      "outcome": "insufficient_history",
+      "error_type": null
+    },
+    {
+      "ticker": "TTWO",
+      "stage": "quote",
+      "outcome": "data_error",
+      "error_type": "Exception"
+    },
+    {
       "ticker": "WBS",
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
     },
     {
-      "ticker": "PKO.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PZU.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PKN.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "KGH.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PEO.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CDR.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ALE.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "DNP.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "LPP.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PGE.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "JSW.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CPS.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "OPL.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MBK.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "KRU.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BDX.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "KTY.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ASB.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MDV.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "11B.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ATT.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CIG.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "EUR.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ING.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "KER.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MIL.WA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SHEL.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BP.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "RIO.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "GLEN.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BHP.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ANTO.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "HSBA.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BARC.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "LLOY.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "NWG.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "STAN.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "LSEG.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PRU.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "LGEN.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "III.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "AZN.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ULVR.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "DGE.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BATS.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "REL.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "TSCO.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SBRY.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BRBY.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "NG.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SSE.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BA.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "RR.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "RKT.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "WPP.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "EXPN.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CNA.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "VOD.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BT-A.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "AAL.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "GSK.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "IMB.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MNG.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "STJ.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "INF.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PSN.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "AUTO.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SGE.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "AV.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ENT.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SPX.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "WTB.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "CRDA.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "TEVA.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "LUMI.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "POLI.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ESLT.TA",
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
@@ -2209,139 +1779,7 @@
       "error_type": "CurrencyUnavailable"
     },
     {
-      "ticker": "TATT.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "AZRG.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "NICE.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "FIBI.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MZTF.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "TASE.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "DLEKG.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MLSR.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BEZQ.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ALHE.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ELAL.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "FTAL.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BIGT.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ENLT.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SAP.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SIE.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "ALV.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "DTE.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BAS.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "VOW3.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BMW.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MBG.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ADS.DE",
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
@@ -2353,175 +1791,13 @@
       "error_type": "CurrencyUnavailable"
     },
     {
-      "ticker": "DBK.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CBK.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "DB1.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BAYN.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MRK.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "FME.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "FRE.DE",
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
     },
     {
-      "ticker": "IFX.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SY1.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "AIR.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MTX.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "RHM.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SRT.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "HEI.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BEI.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "EOAN.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "RWE.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "BNR.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "CON.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "DHL.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "HEN.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "HFG.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MUV2.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PAH3.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "QIA.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "SHL.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "VNA.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ZAL.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "HNR1.DE",
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
@@ -2557,6 +1833,18 @@
       "error_type": null
     },
     {
+      "ticker": "MCY",
+      "stage": "currency_and_security",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
+      "ticker": "PMT",
+      "stage": "currency_and_security",
+      "outcome": "currency_unverified",
+      "error_type": "CurrencyUnavailable"
+    },
+    {
       "ticker": "RAMP",
       "stage": "price_history",
       "outcome": "insufficient_history",
@@ -2564,7 +1852,7 @@
     }
   ],
   "notice": "Configured/fallback universe only, not every listed company. Missing data and unverified prices do not establish that a stock failed the investment criteria.",
-  "updated_at": "2026-11-05T00:09:02.115565+00:00",
+  "updated_at": "2026-11-06T00:04:43.191520+00:00",
   "last_symbol": "ZWS",
   "consecutive_quote_failures": 0,
   "maximum_consecutive_quote_failures": 1
