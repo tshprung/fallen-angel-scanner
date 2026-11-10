@@ -6,7 +6,7 @@
         "SANM",
         "BOOT"
       ],
-      "requests": 7,
+      "requests": 8,
       "resumed_tickers": [
         "TTD",
         "SANM",
@@ -60,9 +60,31 @@
             },
             "total_tokens": 17132
           }
+        },
+        {
+          "ticker": "TTD",
+          "development": true,
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 16767,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 4352
+            },
+            "output_tokens": 1616,
+            "output_tokens_details": {
+              "reasoning_tokens": 533
+            },
+            "total_tokens": 18383
+          }
         }
       ],
       "development_requests": [
+        {
+          "ticker": "TTD",
+          "authorized_date": "2026-11-10"
+        },
         {
           "ticker": "TTD",
           "authorized_date": "2026-11-10"
@@ -70,5 +92,101 @@
       ]
     }
   },
-  "cache": {}
+  "cache": {
+    "TTD": {
+      "brief": {
+        "ticker": "TTD",
+        "verdict": "FOLLOW_UP",
+        "thesis": "The latest quarter shows Trade Desk still growing, generating substantial operating cash flow, and carrying no outstanding funded debt at quarter-end, but revenue growth was only modest and management explicitly cites lower gross spend from existing clients, discounts tied to partnerships, and higher competition pressure. The September-quarter 8-K adds a workforce reduction and expected restructuring charge, which could improve efficiency, but the evidence is not enough to underwrite a recovery case yet.",
+        "decline_reason": "The filing points to softer gross spend from existing clients, lower utilization of certain data offerings, and increased discounts to drive future growth; that is operational pressure, not a clean temporary shock.",
+        "temporary_vs_structural": "Some items look temporary (restructuring charges, one-time strategic-partner revenue, working-capital timing), but the competitive and pricing pressures appear more structural because management describes them as ongoing responses to drive future growth.",
+        "financial_resilience": "As of 2026-09-30, cash and cash equivalents were $1.2 billion and short-term investments were $420 million; nine-month operating cash flow was $803.7 million. The company had no outstanding debt balance under its revolving facility and said it was in compliance with covenants. Operating lease liabilities were separate from funded borrowings and declined with rent payments.",
+        "competition_and_technology": "Management says it may face competition from both existing and new large companies, including ones not yet known. The filing also says the platform is being scaled for AI and machine learning capabilities, which is an investment need rather than evidence of a moat widening.",
+        "risks": [
+          "Revenue was down 0.5% YoY in the September quarter despite 4% nine-month growth.",
+          "Nine-month stock-based compensation was $313.7 million, which remains a large cash-to-diluted-equity burden.",
+          "The company disclosed an expected workforce reduction of about 15% and estimated restructuring charges of $39 million to $51 million.",
+          "Availability under the revolver is undrawn, but it is not cash and should not be treated as such.",
+          "Repurchases may offset dilution, but management explicitly says the program is discretionary and may not fully mitigate equity compensation."
+        ],
+        "unresolved": [
+          "Whether post-restructuring operating growth reaccelerates after the September-quarter realignment.",
+          "Whether pricing pressure from discounts and partnerships stabilizes.",
+          "Whether competitive pressure from larger ad-tech/platform players worsens.",
+          "How much future cash conversion is reduced by continued stock compensation and capitalized software spend."
+        ],
+        "catalyst": "The near-term catalyst is execution on the September 2026 realignment and the next quarterly filing showing whether gross spend, pricing, and revenue growth stabilize.",
+        "invalidation": "If the next quarter still shows weak gross spend from existing clients, continued discounting, and no clear improvement in revenue growth or cash conversion, the recovery thesis weakens materially.",
+        "next_review_by": "2027-01-31",
+        "checkpoint_metric": "Next quarterly filing should show year-over-year revenue growth improving from the September quarter and continued strong operating cash flow without a spike in cash restructuring costs or dilution.",
+        "opportunity_cost": "Capital may be better deployed elsewhere until there is evidence that growth stabilization and margin/FCF durability are real rather than management aspiration.",
+        "target_by": "2027-01-31",
+        "valuation_available": false,
+        "bear": {
+          "annual_equity_cash_usd": 0,
+          "multiple": 0,
+          "dilution_pct": 0,
+          "rationale": "Unsupported valuation: no primary-source basis here for a cash-flow multiple, annual equity cash estimate, or dilution forecast beyond observed SBC and repurchase authorizations.",
+          "source_ids": [
+            "S1",
+            "S2"
+          ]
+        },
+        "base": {
+          "annual_equity_cash_usd": 0,
+          "multiple": 0,
+          "dilution_pct": 0,
+          "rationale": "Unsupported valuation: the filing provides historical cash flow and SBC, but not a defensible forward valuation framework.",
+          "source_ids": [
+            "S1",
+            "S2"
+          ]
+        },
+        "recovery": {
+          "annual_equity_cash_usd": 0,
+          "multiple": 0,
+          "dilution_pct": 0,
+          "rationale": "Unsupported valuation: a recovery case would require a sourced forward cash-flow bridge and multiple, which is not available from the cited primary documents.",
+          "source_ids": [
+            "S1",
+            "S2"
+          ]
+        },
+        "sources": [
+          {
+            "id": "S1",
+            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm",
+            "published_at": "2026-11-09",
+            "finding": "10-Q for the quarter ended 2026-09-30: revenue of $2.14 billion for nine months, $803.7 million operating cash flow, $1.2 billion cash and cash equivalents, $420 million short-term investments, no outstanding debt balance under the revolver, $313.7 million stock-based compensation, and management commentary on lower existing-client spend, discounts, and competition."
+          },
+          {
+            "id": "S2",
+            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm",
+            "published_at": "2026-09-04",
+            "finding": "8-K dated 2026-09-03 event: company announced an organizational realignment reducing workforce by approximately 15% and estimated cash restructuring charges of $39 million to $51 million, partly offset by a small SBC reversal."
+          }
+        ]
+      },
+      "retrieved_urls": [
+        "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm"
+      ],
+      "usage": [
+        {
+          "input_tokens": 16767,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 4352
+          },
+          "output_tokens": 1616,
+          "output_tokens_details": {
+            "reasoning_tokens": 533
+          },
+          "total_tokens": 18383
+        }
+      ],
+      "reviewed_at": "2026-11-10T09:46:18.882280+00:00",
+      "fingerprint": "f54b1dd6b49cd57f8dfd6a1ba7ff3dc2ec74aec96a0d9adf47434322da5d9470"
+    }
+  }
 }

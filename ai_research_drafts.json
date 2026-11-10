@@ -18,13 +18,6 @@
             }
           },
           {
-            "id": "rs_0cd81db38a215275016af2e702116487d18398e93155fc3024",
-            "type": "reasoning",
-            "content": [],
-            "encrypted_content": "gAAAAABq8ucQ8khgCt9OyW-JOE4AMMejWqBEnrX4yIzccBXkmD4yUpuHDa-qTBDN6-mOKWpKC-WuKtLMkpsJEKygtwdYUfsJ7poPQUYzGJD0Sa8-ertTaQtZ5hRYOkM76WjGh4fC0Hbs8eEx3PeDYKbs55Bud1zoUvQZk-K-0LeRkGxkkCtI7nYk1UTGxo9VtWVZH1mzj8jXbu1OCoEoS7DAX_a42_GH3lVJRt2OUdfZYwKKDWYFX2PSVfMnWHyChnw_wQzTJWdq2DXQFFN4ftAmQBXczISWhbnyaBZ3TuqaHeTWMzXEhzvSxCJq40VhVmyWjZXTNxS7kUYYdW-CfETmtMEvEvwyvCkEBP-JuME1wVPGV30PR1hGVJfb6oX7rPdefLLWmHivAWTx0oD6zCaZpe_i-ef7QUXLbw5CUZwJazTfEsVYQRK6Gd8wNweJMmyP553vUadKeoVzhaBJv5anHnwb57DJok-Ia7JX4SemXYyvceifyhv_g56SF6ejXz5UWUu3zhz0usvMc11DteYDapkeXUR3KXV4bvq21Lz66iKzSGMqX8U5qTxgjI8aoFyd1MTCJUY-4U8nfJ7jHUDyp4VYy1X4lTyp_J6AL-ljpFjvkHsXECOye85Ie8ASnqJ9jl95ujsU7C08fkNCgSsli9ZsGmr34YVJXaiB2g_BuwCLKnOZppLlg1JNXDbG3PqRhJPnGQyTtItsht-FjlJfntsdB7L-OMOBK4PiB0_d9HvgS8eZcN0FdkIWk4Cfo61EAAKgD6XeYt-_K0CVclqL3OnE1QIEcRU9STUlSfu1yMd8m3hPm07bYTcTIexWL1lC9dO60Ysq0CmKbiAySwLeUj0zz0rUR0U4AmCkaAaaNgDDP4HhoEtRE2YLTmKW3rn2sSDhqSzqwYhTNKLQu18cwHjSv1bve6r0Tpgl0TDNNxD4NVIBG9E1U-QzF-ZcRk29RvH1XsZ2_8YlR5TydYu4LW_NgrPgh0XqdZkgcEBzOk5injHuKy1xayr_h4ZtndI7HZHsft5Mt-5ImZ5GpP3U5Y24NJFRr9Jlgm-mMdYi7GYXK0VR8SAmTRPJkLdozG7AISm6twlZ5hXffhrRxrMflnkolI_AeNfMR7v11WYjAAqHYPuVUDUjnfnFu9mt4BVdY-q8ybVw-nFnkk4cba5jgbD4tYhHLEPva1Mpr0AdQygkInYpgHMlNAtdhP6j0npC5JKKpPdvnUuZvpMjbJ8uOloz8CGPyWHv9d3V-O5_vZJAo5p9KCMh8k4eYlECJqYEJLNTF-mCeQXj7YRRRWvWR3hnMSbLf-OzoCUW2KKz7N5E3LCq3HG50o-Be7hAOuEBYAo9KN2vvbF5WASLPgTF9ZFzUUovB-Rql2xe1TyObTHF3SS8ztePh9mu2_64pR6xoOlGGyNWozGHFzsIStELqDMrVdgjD7Nmyijzmc8bjsexz6xsBbBChbA7yCnwf6S9lvrJKMJneRNtPS4LIfKXDdsO5qpO5aUyiX2g5FXwqvZ9FOfs1YbG0YE-ul_mHDAnoa44GpsDNtpQ97OjaBc_gTcd6dLSVh_8a21ONC-8prqQx7goqom0r8t679161_W1mtowK_YvHvTSSTZJDT_s8_X8uK-Xg5SchGCMMUdEd_BiytQxdzNR7UFsAQ-dwZSpvoxhRdZ3E_4jmM5P0GepHF16rpPqJMsl9P_igqVnP9vF-uA1sDtO58D017eUUzyv4RK9_3UMJV2RhRapbGr4AFTtri55ytW8AMYhH1KKRHUCXftGE_1-Mq3Nv-TBVOkYFGOBo-V-W7ImsYfXGyCkn9IoYotVg5GhtM76rEMsuA8GB8Zczk4mdUf4PnTdZgbJ6KS_XDkV8R26XR-jqwIRwv8U3S0Pyp3DxcBJEcXacypR7VTq3FE=",
-            "summary": []
-          },
-          {
             "id": "ws_0cd81db38a215275016af2e7023a1887d1890f7ff6934a66af",
             "type": "web_search_call",
             "status": "completed",
@@ -35,13 +28,6 @@
             }
           },
           {
-            "id": "rs_0cd81db38a215275016af2e703ba8c87d1a422dfefceb52e9b",
-            "type": "reasoning",
-            "content": [],
-            "encrypted_content": "gAAAAABq8ucQh0TnRpm6OK6axL3JOOe-yiy2DLOud0wGQEy9dsiXU_OAmo8jkZAONKAS48vyFpdx8XL9Pt3aunB9KJ4GB6okWBjSw8ttuKqEfypVwTToj2tnmYjqK0LpOHmR_g5AAGvrjdslkND0MJPSO5Xdfk3DmIUUuIGIcXzd5EJY81lVzF1eVGSuY3TEFY9yaM3m15UVIoByhcVquQdgL0wyqW6qVziOTvH6Ydz1SVU6viaOSftryUDEXqjz-FBwq6I21HGl-AcVhJ-kDkMx8jzN6QDqN3Uhs7DN1iFtjFnJMwR7ERFmKa1bWVzCHlN6QgrjuOMbut_TRDw_OGmPnEC3-esBi0cC-SFl4aQgMCfxbkS-v4PpjrA8eHWvYJlKUJuD6Q7j-r51F8t0KlFhEK5aB_YDXHV_nNWo8T216ao1KwRM57F54ooJKU-beE6pyTbwb-W5fa2bq6yPco34sGLFN4c2pGD9F7bvUiYbVKYoKvGblc25De3wOsyBA3BA4jfogLHmWDTIt3pFm1XEdhP3s2EeYd4dmjyUX6E-EV-zMlXkFiSMAoXYKxRf18ep6WmsmZqvTINVljwQb1O5nQF3OvkYFjKmS-s2H0NAMtZbgA4um2rtgLuE7TmnFRjUdM8aAnVbV6oEmrH3clypu5y_Me0awUxpYzg_gEP7b9pcWWPZ5SM_RwzIQ9BalYpE-Ks0VVw_bQDmVi8FBaXSl103v-xjH_JIXLf3h246z8j6iMjfDanvB7CQBtBaAl8qxJ3hufqket6HIwi58YzFMg7Lsa8HmhPArZlAO-Ti7VwigqZ-GMSX0l9LNCXgJtfxxJMqZha0Y4T4MHmMBWT7YVUX-800giKVjjM_K8V9Sqby0zVdnY-sT1Khj_hOR34eMALENCb1IOR8XhdIM1YZlYL4NpLNSQTax18tYU3YTAoEUBGM3iV_3hhmXFXRbctOEo6CQGXQH7vOQ6Rpp9f1jHkc9h02ciA_jB545cmaDjJ81q2ogj5VEZI1bAaXGzaHiTxs_C3GO5G-93p3PrYsjahnB89gDVLU5IYgyctcX_RHCu2QGdeN4wwtm5Nb_CMpFd99suqfjEr0gL2IwW4LDHQmVqu3-JwSHi_jZdurTinWzAEwiRPL53XQewmlUR4JCjQsrfY25fpOnqvt_o_K9USMOabSyq3tS1QbBo11-GrZ9bHCdkE1Y9t9VcmH_epr8jrhH58AtZQoPm7uZp3k0R9ik7Aux7BakNpGCJKmOat48kbwZRMQftHJ6k-ajzpbsiWjxC-RnaZGAxen_fn4YXjTYClesMq_ULEmcDlI0HE8_tpftruVfPTLbfmDcUfyNWgBZ0AjCGmB9iuPeQE_Rtnafc_V8ByDsK7mvdct3yyEpLd2URX2FhfGh-2zYE8N6S_ainPtnHcwMdSOzxHd6_FU3DndaSw04loH1CWtDKkz2EeYX0gmFVbTzuY4ug1Gj1uSMAacb4hrdTvCgVeY_wtHk1T2FSj1irJRbv3SOrITTif-OGf_5I-W7gS1zmI8H8-NPAUPGLHI9PAIzYYiAMR7Xbs3nLpTOiTGVwRZg-0fzEMJFv7-eOHG-VuLaYNH06pTFjFfPdnpjODxH9aD-PlJ2MJY0MUWgEqoC7B6dZxFo7WYcFiJNN4Cisd2Nd1I5bLHmPMib5Ius7BnETvlFYSo-lGxc4tQlEsuY7P1JmZ1Wq2pcZOisBheRvDlHyW5MSKaIhVXRxwixcQ-BBLMDloJZDrTnf0_iNJpl53W047t2TO39BtCWhvBgdSgpGd_CHv3CfholCqHfiu43ccBHaQ6R8R5-0AqDV8sVqhPGKnkhA5CYjhnAIxnJDNxNOeJllvcAzrq",
-            "summary": []
-          },
-          {
             "id": "ws_0cd81db38a215275016af2e703d85487d1878ed3f9f4e9a9fd",
             "type": "web_search_call",
             "status": "completed",
@@ -49,13 +35,6 @@
               "type": "open_page",
               "url": "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm"
             }
-          },
-          {
-            "id": "rs_0cd81db38a215275016af2e704b77487d190a074832f91e018",
-            "type": "reasoning",
-            "content": [],
-            "encrypted_content": "gAAAAABq8ucQzmJWZDOLC2DKnbvNX2FyUjdH854H3Wz7z_QflaqjDgjg5dtXCHUbUcoHbXYQB7WN_z6OPJvuJ07P0NjCFVmTHLyQGtXmTEu03nv481Xz8EVCuuZe168-9Qd2IcV_FBmhgQzxcAVxAUzYv2wNR7DjbNuBatgadCh33-qz88gXTvkpdYA6H9QusnPD1zFpz0Qiwq0TFvUyQIieHI2uYAtFj4GTX9y-6hMOzQ-a7rP1TEI0pC9a0sibYyNiHOWj7sly53buMRSAahF7muwTy-I6hQ2XLiSPpa18vGvKTXXectUH3wI97_K7769hKuvi3yGYxyGvbo5j5A314zsNqMQhTNDnmFQn1OoFvS_1di7E8S4jWJz5GvjFboZKItOt8usijNcf81Rt8nHCjYS0US0TQ5J3M1wtbaoO0hxqlLA-NgQzPVgrrrJm-uP6cn0xhZlEazbuuaP3nxWcts-FTTkILYouZuWYIyWzU3-cH5zrGji65EmT2EKY6x5-L6j9arb0OjYrMKIcKIVDEnSjxzIlmcmAy96bxTwRcz4SIqxFyu50rPiyJJzebQ0Q3Mv9FlVW1MCLsQVTm0s_bfvesUe7gNqzW3_D-7qqC8_aCOonHIwK4DPVaz8SDdlGDFv0H4nd70-RFPYR-431ZkCE6DM809NZFbjuxoJfsz4cM7f2d4J6bsMBdL2GZRDvaxmHloLkq1Mn8ZSIqndbc4STRMdoxL-cvKGxAjUh8AtBGVAV9b0apQIatnd2ez0S-Ig9WdBkVXSrrlK2W91TGrfY-4u5SA0DngSJF17OrNDheh11b308lvcSjYCB5ZxAUxjCf3JZ8yFYJgPdomDaiqjVDIyZjR02UcotzP2KMRX2QQqJSZsQF6zHCdFdLab_flAnDzWAeqkdPKzod7tV3qnx8DyrcTrXWUsSmPJjFez-lzHszRqyNER1dIzHcXVE7Qh4pM6kMCcDCl3vXqbIPf0PZhS9WiEi_kvF6I8A976z2WziSKjPxYaZDt7VEmyxiyLK6Md7T5iZa3pmiVQ0cf-0yqSBo9xN2SP6kJaHyy9LdBHV2EKdl2YZ5BsOMmNUVIarocUIQ5m6lBMY9P4otYhNX5DZPr7MlARIv-obcnCTlL2wAppLIohp8Krghbag7nuaCPiZWT25nlItqPvWZiFGvpfbmcXPpLYX0ELld5hSDfjfazXg7Wr5KQ_0k819CQNiFISb0Q9ZWxQoOniWQrGY4iO5ymRjUvoPaDu9fvAupxF9XO06NRkG_PAe7e3h0MfdZGXEuRCwKmpiNXgekA8zmcQ-ZZn1hE3SXJe4Ttvnm7Rhv-YGWDfhMENy32ba-Aj3A4GANLtM14k4RWUYVV-PmsglPBnzXI2_Uqmz_iUj6EltXWSmckQyoFgv3a7vaKLP0BvJJRIg_lNRPqcaXChSL34oRSN4H9J4cmG0seXN1JsqXBdjGw3tINRg4Q7zfwYZsN5Zgc1o7mqNDiIVwRT297gsbW9vvFXTCfeq43eJPPLpHsKC7QqyijAN5sw_c1ykSkyOPV7Ut2EwNEOf-AvzW7ZPSJmC3irYgp7uQGu36C7vnOp8p6ayP3NnSvJh5TtuPEgKFyZZdrB5oGUF3_GQq3iTh7yeQCnZVHdee5lLEK93vMbLbX5ZWKNbmMKUvg5uOkjkryYc_D09flU4T1WONKkWgL3TkvGXHGscn9VvO626jAEY94IBXc6i-pyQ4IwTHvvIQmOmlEES4NlVF-2QHO-7bdgx9cBqqKIgTdzpkrv2oWNbEwCkjZt4o7ed5Tw-t_vGL1eYiGhyq93qymCs4rZXpNmZYSF3kHyj6nkl4lwjqvhfAKuQdckW3CAyiC-dvQiuU1avEZDsJwB4oLFpOXDwXT7A2tKcY-IZHbbi6XsDB7DwnXDJyHVwzeOSXR9Z0ZiD6AMQH-YC16Bnb0MPAlE7MHU8RUxjbIcZRB8Oktxs0ju25EJHWSr4klo-ynLCS2OyofpV4fv9lHu8GHXcGRBezTk0Z0OFfVP_um3OvzrWHrpOLCtGH-5cC5G158vf3Xk7DvD0Zjp8ukRhfOF8TJEOUIofa0aDyzYnFtlN_tYrj0Q=",
-            "summary": []
           },
           {
             "id": "ws_0cd81db38a215275016af2e704faf087d18d243b91461e3e84",
@@ -68,13 +47,6 @@
             }
           },
           {
-            "id": "rs_0cd81db38a215275016af2e70602c487d1a61315e978d7da7a",
-            "type": "reasoning",
-            "content": [],
-            "encrypted_content": "gAAAAABq8ucQae_RT0lc9Ohdnl2KUXv8SjB0i5p6pU3lDLSm3I-2TVV1io4UMWmv8qkGvWuKdss_ITUQ96I8P7t0SzJQAEITRTby2XCxQs7PBKDMxbs6lG6r0J9-kaMQl2qnTXFigPKquZR6gxpfzo-uIeinatldU-aF6hcXn3NCTng-v0q6NTflFh7OGr5qC_b_ypmL9UC_mjzicAr5Q7aAYnCFU6rASTP4eKP06Zt3PTi4n8pzgJikml63Q9VESZrN8eUV2OGOimVrMsTXnkE5uyfSQDxXtRIXGf_PWOGO5XEWs6_lNNeC1pIfz1jPPyIww0ACTOgkxiYWiSdU0vsMreKv2-xBFc3uWw1xuZj3c026ZFChY9tZkrJPXxbyHjBAxTBRdOWOdVmUFS32Z0jBnk4_ZDnr5qW7UBHKsNKLW6A9icaFhy0o7rJkhASCyvGBNYGHNcIB3v2PGoD-MPkdwZDhsInCFZXvxqfHXolatfaZJe58hz4BYZJCFdMMk9Y6ohQC6VPCDn_nouiKtOX61fRD5lh3q9hKqRz2c3DlTBOpNLYrqiRtGqpgqlL6vuL_q9A3skopjOERjf6E8ywJdFgnmCpoySUxpNH2SFJnhpMK4LjVfTzJR-HRK5NU8YjmgbS6k9gabBKA_6oMhBHi25DLZl68WQvXU6Tswk8Z1MXfGlhMwnm2_dYmNd7mWDKbtla8ZFRyxgkd28v15FzFuvdXxNOl9ZT32Xn2lhtTpbB9nYB_dhtFROF8xbngM79-Fgzrzt9H1UDvmSSLziP7-rUCw3oHfbWQMBtjOqjsBt9Hg7N7Ado6do-r6P4TSH-xC6ivzxb5nYRVbwIRqS9GAbfHI5zIBwk5BhT0OF_r-8FJcXR53gQHCgIvCWHZ6bVr6ZEroF32MVzUBQzui9XvC-UUHdgztfnAaif-tGcnMuh_KxfELQ4zdd1s7xnAI3p3lM5vd04RyQWhZb7HG0myuR_L4x2nL5SvCnV0LU9jGzvSfNgnVv8xM4ZUSOnyRhpwPa06qnfdB6OT6UCWpziVnIUbTsBw0Q5kPJnubLSd8nLWGct9QgdRn9Rmpk0ct2fKlazvZii51gslpd627Y_DpD0WTAHVF3Ahkz3C7U_w5-_nRkolYKkvuTcONz4_6ITC-Dvp2-Tx4azv84klnTWIClJTQi5lp6BGT8eu1Pk00xIsSHsp0bTon7Hg4uakd5eP77YCCGeyA4VZaKUFyvXtnhGnHt9njsSR09FAk5CsD_Li0ZbgM14ShNY1c4oxIWWlYXuu2S2M-HbGg_EsZ8nS3c25Qfi7DxnKXnu6KORJetA66vh20KEQrOpp7iUjqoy5Wl-5ChPyEuqcOumOaYZw5eJp2Im1M-R3-V_nZfzVdbG6wWZ71dEo3aQrYZQFAYMw8wAys9ot9SVcmyyjSybZTHX829nuUivCNlOkDwYAFTLrc-GhCfkTj2VLALgaWdgdg5rnMkLleuFTkfFFUF9XHtZHkDrQQJJf96v1KoOKQe6Kosppm7CY5Z8PirGNsWA2pjTXOofvIxgnIvjz5aY_b9eTreAokAOdNRpQDry7QNUBQRhbj1twXFvDnWndRjVdKiH5JC_xRY0vc7VZ3IpQMegx10VWZMmv1YRG5Uls_MqDj72FNhkA0aub9l1mJlP24G5P2IOnv39tX4aVBJLJIcf5fCpPtBZUxDVKMqrQyFciwYpCvcsNl_cM9oq3moKALwpAyvkA_cSFqaad_MtQRbN1bj7qqh40O5EH3gcdZhWyCJI0HOAMYMBSfkmqxPyhPMf1oT0XYppoZiPjqPm_TG1ur-Lw6uKFT0_c73CfQPFkciBsSHMuhoSG2XAtKStUOV2HiHYM8lRTgq6v9vCBdXe93KY7mQtwfy3y6TjRDuZ2ZmkFJ2X1LV28PTBTcI7mDWoeTExM0_8jtb4t4lmx8HjUl-ogvUSd7hvBk2K97a87jDSvcJe0byllkDMalGsgaLugsaxzmNcZpeMVhIh3Dvmy0eT9YW1G7clIaUFAPSvWa4xPrzHHHw41UwfGijDqBWMMWMeArDodb2T_cb9S-mfrHk4KO5Bn9KUUj9mp_JPl1KxTD5LBIW6hFda628jARMlDPRgT7HZtxgeq614DYohWPS0ksTkpJzXD4fRFG1dfACuZcP2C83C1lpOFanU-eeGSfBzXNgjKMynRtUlq6LIJ0Ky1yNpCLEsCzfHuh_CmfJqL0dykJ5fcuRjHjfg8Ip632EqVEaEc9flHLf_6rgm1bDUbpvOcOGSLi3x9Dq9CEWq3-Q4m4y2Bqi9jzdNQf1AxQ7oV5P0JObx9MXX6Beibc64a93Hri5PdML5EVc5qI-TA64QDVxO5K3wFavEjBRsxo79cmtM2AYhyvIh43rO239ZXb77WrZZArisReNVJ_3ZNH6NLUygXo_VAtueExsMoBjnQusG28rdNe_na8YCbUIv2413PZ_rdVbLajFTnXp-9HTzg_RgB2vOLps8TOMl3tukMRif6jkQKiHFQrwXot9NTN9nZ8HZMCO39f35ArYvhXeMNEtTNV_4b75htRBIjQEb8EcY0syo8U9_v1ZHiW8EwIAVIoHPyg8roJaOoh8O2WawaqSu6VZQLtzneE_MdFFGr",
-            "summary": []
-          },
-          {
             "id": "ws_0cd81db38a215275016af2e706813487d1932f7835170aad98",
             "type": "web_search_call",
             "status": "searching",
@@ -83,13 +55,6 @@
               "pattern": "10-Q",
               "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm"
             }
-          },
-          {
-            "id": "rs_0cd81db38a215275016af2e7075ccc87d198eb22f7b8d4ded8",
-            "type": "reasoning",
-            "content": [],
-            "encrypted_content": "gAAAAABq8ucQclZWYjCt1MAMXUw-48-gxKzsB-yjpVR40ab6MLw8xhgKLzuO0NX7ZonWToIFFjrZ1BBsQHhP_z_8bwjUgDd3Od-Az_qzS-RRrD14rlBWZe1sW85_bsdyj1x6sFtYFASHzvKMjry8h7Zye7wIVnkIdNZtLJxjCv5mg8iuvHi_aV5gWIfkOywwMS8Me-wJwMzMdOGVgJjvThQDtm1HuhZfxuQ_UMZPEqIW9VERRZw9Cb6Nj5PS7kqvcUFdy7RLjQnXKTfxsAmf5R36ITwf_JJjOsmNC5alNbw8q__HyZrsYUjLqdgKI4aShhMXPg6SzAdf-uY10dFv5Rj8R6JnJnjNP9SDZYmFtPD6T_x_YtPVF67a4Iz3BNFwjzBkw1cB1UlEj6BLStFrLkpuLLTAWGAhflBpiiWe-LpzfmUog9G2kb2x9gGPY3986E7y1jPKH9kE7tHGEmcHOeHPr3NtjhjIHFdtdRa__mvrsXi0ukvkVFpTuc0Zh83ReMQkb8J9YH7cKcqBZdgOFTrFaP_hMQgs4swgNpV_1O-mxflef5zR_vaHUORKEf9E-4oY7bEbK99g2g3BFEmyaw-oIZgzux6zJ9xz1WGnWyWlXNrbL2LWHjPDg9WEvJ-3t7NBGHN4Z3zuY25KVAK2ZO3DiKc6xFKvtCJwYLp8hLLfmhVzHphOAEQBAgAVXHVgzwqnD0R618mTkC7yWzI5-MAs-yoB75nWX8CJHfT3nIRu8R_-jxuEPKao6gpqcppD8n_n6lRSOZ_Krg1GVKtqWzQuIpNgLYgmfOW-_2dIoC_GRXRpev5hdR3FFV5DCCdmdgHiDb4E-k4h2EWwJ3uawDxAAX-HYZCFXkKx20qegriFBeWxf1GJfxyXVjOZxH89ALP_brgt6Jp5XabYgiYLfl-ypOzPspZb06JAMIxKR-77KNwKjbHXt1eCDYQtXdoyxlkWkeFuAF6F0-ku3rlyfukrgQRkMocy-LjT3nVWk97IdYz3HPAvMsk_DSupnuYNxqqfuiUV36_IVCESbJU4H_tTXssa4eg1eo5uLxpKeeX42f8xS32KM8gDirM07Xv8mTwxVD_WTJGOtV1_MQw-TtjyaJq8F7_f8ukokNRsLG3hoOxYA5um02RQlamkfTmv9w_WuL6iM725JHJDmSnq_8LDRv9HS5Xdn45o9BZQXb5VITPHqHYoE_iMsjFXB5kP6xvAeqH0rdtH5DoeZMMliRH8Tcvb0Zjz4FVmJ6JjpufIjZAQZ-2Smge4eh5tEfT2D0u8NLV4ZdV8FYAxxgYdMwH6WVkrDyuPGZhUt2G3hd8OnWjFpLQg2C8m_E57hglLFWnp29YDe0teZJGsnVG6Pz0ia0uocmv9GYhIb-IemPFpzI-Orj5OPKehTxk_keqa7G8Oij9GoNlC-ME6RONqw-ekjjGANmtCMyIwsO7hht8AtsT7c7Hl9WlyXQQB61qDU6IBecjNsWFX3BYYVnxykSNCDqSpCvKeJxRedO7YPPnujFMNt-Pwm644H9mXFy0gJ3SvsVR6jQjtdaUcf4Alo3YlhFSTqxg08FR-gnm9F36u2KKixN5SDVEcwKNbFN4dX8yc0VhE116ra4FHAXtO2HYXcYCEyrub5ppymN6v_OBjnqlCdDznvELst8Y7Dj6qEPQBZvY5K8SYAOBFxOAZxdJJsYOOwUm60Apq1ZnEZXUwWhoW9cunUajNubOvKQ-a_P2gRcuEz3TMNCtsfjFsseJr0nUiDUjNnEPvaCqbpZ3JKdak6SU1D5-vCqbJqnM6f1PphwvfGPbMjfSfQs8o9zTVufis7IbHFjF36Jnii6uQxBaqQMPmvd9TDIxFR--jfL6jXlUNy9LSqlfaOWB5RieuMMMxgs1wg5FjQeu_J-zFPW1aufsj-Ss-ePpj9Lw7U1ERYrROEIWVgBVRrBEm7YuXkOKZw21oZNnSFEzqxMNi1f7C-ygW7fpPAlUiGuAQkmkU90RamwOfvWnldbRK4JCWfEsXtuy9-VTox34dkROl25-LIKUbby_xloZqpA8Rgs4sJDfms8uPejaD9xqjKakfr2BkoJKvj1oKKVS0Nvn7-Zgyvg2y7obU0EB8Zl72Or4fI8oypwFQPuv2c6F0RHow2cosmAYR7rxL1INSiBf_j7ci2XsLIqT5dcX-HEVDY9W88Rmn2Df4H7JOEz-hjHG_120u8YTRfNIj2GRaxkAybtn8nAYpssxLxXlWfQswBgZERXo3xI12FR_2jfkF40FGL3AGIX0n-vPTTHj1fz0Gafl-n5WIu4nen1_rXoiX2aZMoNju8JVjcCTOakVW6Sc4uwn17NjVUZl5rIK7eGYtK5-p1vCI2aaPvIia6P-z8b2H7w_5dTZqYq_NbtMXm9-bL3r6fNhNbmgz9MZKKDii0GIJ1BEtrQRe1tp1csTuuRr2T6hOhejVnKJ3xDhbR2U6J9ThSitemrrGGBYxWNeoEsDKNjG5FKxUVkB0jImWnlBBUUA1GxDwPh21mX-msdFS6sJlH0vxqVPBlaSz0p6csuDdPy_sZp7TlRvWRcw_a6pST1QlSelxgIvevxOgHf2qLyCnnoV9_sduEmE9iAE0DHAV9N3IqEjctTKrTMQLSQdEu-CbSXAy128B5VU-F2yZVRuBrP_ePB6IprA9mm-u0O_wo-tvFqiPpn2WGzzjqUZbdcxsFBq77zXJfEqdPGW4bJ-Rjs_V5IcxYsTWjr9XK-tp7T6ShJUNThWWfmq06j5arly4GMh5A7q7kAAt-tlcbak1G1JNSlve25-yrtHVdjQ83awetsMYMdb6cIO8K7P0mBJpkSzpSQaK0xtXnOnGTaoNkta3t4Md7RVK6bFTkcMDdiRaWOyfAeC8QFyVHmMeL_zEvey0JEqi6vTSRGcYBA9Y6XcNx2kUDl5YhMwVgMCGLbFxy1WT7e6Zc-34axD-itMNzSpfuefNmLqhaC2QPLgpWSrV3bRNDChbeB3CmNU0zcxvIuScD5EqNYGgdlaxaSbGMoyEtFKAl93iuCUh4MYS7NG3vGYyD6-XLhsYBj_jToQsOU8ZzeYav8vPpM5NNCxhyqMiuQmJQHtqFQ1J9Bzl6pwtkreZ_xgEKhzf8Uy7MD19KwJZdP3xfSdOVq1Wgmw7rVquDhQesqfpL167Q5dz1FWJXtD8WnUyCyDL8CgbTK28bZhKs9hg1dHs84_fl_mrtBvPsRMu0T53NIe5AwO2WbQzK7Oo0S4AjuEyaKBLcjIM3ZlKEZ89Y1srZhz4bV3kBHBkOFSL2z0Lp_gyU9dvzp1injqRUvFGmIZUcIfrXJhKWnSj-paxBreFMbs4akKBkpLkR7_381Y6Xh9gw4aV8btPHMzRj2rzWmGsyUwnvTAfAIE=",
-            "summary": []
           },
           {
             "id": "msg_0cd81db38a215275016af2e7084b5887d196b5f1d1a0f6cd8b",
@@ -147,6 +112,90 @@
             "reasoning_tokens": 673
           },
           "total_tokens": 17132
+        }
+      }
+    },
+    {
+      "ticker": "TTD",
+      "received_at": "2026-11-10T09:46:18.882280+00:00",
+      "response": {
+        "status": "completed",
+        "incomplete_details": null,
+        "output": [
+          {
+            "id": "ws_0a2cb54d2f5b8140016af2e7ec111887d091ec5f68c0e892ea",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm"
+            }
+          },
+          {
+            "id": "ws_0a2cb54d2f5b8140016af2e7ed69ec87d0be4ed4ab0e7b67ac",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "cash and cash equivalents",
+              "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm"
+            }
+          },
+          {
+            "id": "ws_0a2cb54d2f5b8140016af2e7efbe0c87d0a80b1db00ab59a7e",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm"
+            }
+          },
+          {
+            "id": "ws_0a2cb54d2f5b8140016af2e7f0ccc887d0bb6f86ea938f2032",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "Net cash provided by operating activities",
+              "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm"
+            }
+          },
+          {
+            "id": "ws_0a2cb54d2f5b8140016af2e7f2862087d0918eb65040c2e6d8",
+            "type": "web_search_call",
+            "status": "searching",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "Revolving Facility"
+            }
+          },
+          {
+            "id": "msg_0a2cb54d2f5b8140016af2e7f3fb1487d0b1b6c75bfd2138fc",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"ticker\":\"TTD\",\"verdict\":\"FOLLOW_UP\",\"thesis\":\"The latest quarter shows Trade Desk still growing, generating substantial operating cash flow, and carrying no outstanding funded debt at quarter-end, but revenue growth was only modest and management explicitly cites lower gross spend from existing clients, discounts tied to partnerships, and higher competition pressure. The September-quarter 8-K adds a workforce reduction and expected restructuring charge, which could improve efficiency, but the evidence is not enough to underwrite a recovery case yet.\",\"decline_reason\":\"The filing points to softer gross spend from existing clients, lower utilization of certain data offerings, and increased discounts to drive future growth; that is operational pressure, not a clean temporary shock.\",\"temporary_vs_structural\":\"Some items look temporary (restructuring charges, one-time strategic-partner revenue, working-capital timing), but the competitive and pricing pressures appear more structural because management describes them as ongoing responses to drive future growth.\",\"financial_resilience\":\"As of 2026-09-30, cash and cash equivalents were $1.2 billion and short-term investments were $420 million; nine-month operating cash flow was $803.7 million. The company had no outstanding debt balance under its revolving facility and said it was in compliance with covenants. Operating lease liabilities were separate from funded borrowings and declined with rent payments.\",\"competition_and_technology\":\"Management says it may face competition from both existing and new large companies, including ones not yet known. The filing also says the platform is being scaled for AI and machine learning capabilities, which is an investment need rather than evidence of a moat widening.\",\"risks\":[\"Revenue was down 0.5% YoY in the September quarter despite 4% nine-month growth.\",\"Nine-month stock-based compensation was $313.7 million, which remains a large cash-to-diluted-equity burden.\",\"The company disclosed an expected workforce reduction of about 15% and estimated restructuring charges of $39 million to $51 million.\",\"Availability under the revolver is undrawn, but it is not cash and should not be treated as such.\",\"Repurchases may offset dilution, but management explicitly says the program is discretionary and may not fully mitigate equity compensation.\"],\"unresolved\":[\"Whether post-restructuring operating growth reaccelerates after the September-quarter realignment.\",\"Whether pricing pressure from discounts and partnerships stabilizes.\",\"Whether competitive pressure from larger ad-tech/platform players worsens.\",\"How much future cash conversion is reduced by continued stock compensation and capitalized software spend.\"],\"catalyst\":\"The near-term catalyst is execution on the September 2026 realignment and the next quarterly filing showing whether gross spend, pricing, and revenue growth stabilize.\",\"invalidation\":\"If the next quarter still shows weak gross spend from existing clients, continued discounting, and no clear improvement in revenue growth or cash conversion, the recovery thesis weakens materially.\",\"next_review_by\":\"2027-01-31\",\"checkpoint_metric\":\"Next quarterly filing should show year-over-year revenue growth improving from the September quarter and continued strong operating cash flow without a spike in cash restructuring costs or dilution.\",\"opportunity_cost\":\"Capital may be better deployed elsewhere until there is evidence that growth stabilization and margin/FCF durability are real rather than management aspiration.\",\"target_by\":\"2027-01-31\",\"valuation_available\":false,\"bear\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Unsupported valuation: no primary-source basis here for a cash-flow multiple, annual equity cash estimate, or dilution forecast beyond observed SBC and repurchase authorizations.\",\"source_ids\":[\"S1\",\"S2\"]},\"base\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Unsupported valuation: the filing provides historical cash flow and SBC, but not a defensible forward valuation framework.\",\"source_ids\":[\"S1\",\"S2\"]},\"recovery\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Unsupported valuation: a recovery case would require a sourced forward cash-flow bridge and multiple, which is not available from the cited primary documents.\",\"source_ids\":[\"S1\",\"S2\"]},\"sources\":[{\"id\":\"S1\",\"url\":\"https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm\",\"published_at\":\"2026-11-09\",\"finding\":\"10-Q for the quarter ended 2026-09-30: revenue of $2.14 billion for nine months, $803.7 million operating cash flow, $1.2 billion cash and cash equivalents, $420 million short-term investments, no outstanding debt balance under the revolver, $313.7 million stock-based compensation, and management commentary on lower existing-client spend, discounts, and competition.\"},{\"id\":\"S2\",\"url\":\"https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm\",\"published_at\":\"2026-09-04\",\"finding\":\"8-K dated 2026-09-03 event: company announced an organizational realignment reducing workforce by approximately 15% and estimated cash restructuring charges of $39 million to $51 million, partly offset by a small SBC reversal.\"}]}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ],
+        "usage": {
+          "input_tokens": 16767,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 4352
+          },
+          "output_tokens": 1616,
+          "output_tokens_details": {
+            "reasoning_tokens": 533
+          },
+          "total_tokens": 18383
         }
       }
     }

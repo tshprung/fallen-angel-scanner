@@ -1,5 +1,4 @@
 {
-  "status": "REJECTED",
-  "ticker": "TTD",
-  "reason": "Invalid research horizon"
+  "status": "VALIDATED",
+  "ticker": "TTD"
 }
