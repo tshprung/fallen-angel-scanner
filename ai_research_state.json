@@ -6,7 +6,7 @@
         "SANM",
         "BOOT"
       ],
-      "requests": 14,
+      "requests": 16,
       "resumed_tickers": [
         "TTD",
         "SANM",
@@ -186,6 +186,44 @@
             },
             "total_tokens": 32638
           }
+        },
+        {
+          "ticker": "SANM",
+          "development": true,
+          "model": "gpt-5.4-mini-2026-03-17",
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 19717,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 1797,
+            "output_tokens_details": {
+              "reasoning_tokens": 930
+            },
+            "total_tokens": 21514
+          }
+        },
+        {
+          "ticker": "SANM",
+          "development": true,
+          "model": "gpt-5.4-2026-03-05",
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 27761,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 3619,
+            "output_tokens_details": {
+              "reasoning_tokens": 1683
+            },
+            "total_tokens": 31380
+          }
         }
       ],
       "development_requests": [
@@ -219,6 +257,14 @@
         },
         {
           "ticker": "BOOT",
+          "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "SANM",
+          "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "SANM",
           "authorized_date": "2026-11-10"
         }
       ]
