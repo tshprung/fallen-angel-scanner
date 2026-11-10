@@ -289,6 +289,41 @@ def test_development_authorization_expires_without_spending(tmp_path):
     assert not (tmp_path/"ai_research_state.json").exists()
 
 
+def test_development_probe_is_one_call_and_preserves_public_diagnostics(tmp_path):
+    _, audit = inputs()
+    (tmp_path/"research_report.json").write_text(json.dumps({"generated_at": NOW.isoformat(),
+        "candidates": audit, "selected_tickers": [], "scan_scope": {}}))
+    (tmp_path/"growth_recovery_shadow.json").write_text(json.dumps({"generated_at": NOW.isoformat(),
+        "records": [{"ticker": "ABC", "observed_price": 10, "market_cap_usd": 150}]}))
+    research, extraction = responses()
+    research["output"][0]["encrypted_content"] = "unnecessary opaque reasoning"
+    research["output"][-1]["content"][0]["text"] = extraction["output"][0]["content"][0]["text"]
+    calls = []
+    def transport(payload):
+        calls.append(payload)
+        return research
+    result = ai.development_probe(tmp_path, "ABC", "2026-11-10", now=NOW, key="secret-not-to-store", transport=transport)
+    assert result["status"] == "VALIDATED" and len(calls) == 1
+    state = json.loads((tmp_path/"ai_research_state.json").read_text())
+    assert state["days"]["2026-11-10"]["requests"] == 1 and state["cache"]["ABC"]
+    saved = (tmp_path/"ai_research_drafts.json").read_text()
+    assert "encrypted_content" not in saved and "secret-not-to-store" not in saved
+
+
+def test_prompt_contains_known_filing_dates_and_an_explicit_deadline():
+    candidates, audit = inputs()
+    audit[0]["official_filing_check"]["latest_financial_report"]["filingDate"] = "2026-11-09"
+    c = ai.contexts(candidates, audit, None, None, NOW)[0]
+    assert c["source_metadata"][URLS[0]]["published_at"] == "2026-11-09"
+    payloads = []
+    def transport(payload):
+        payloads.append(payload)
+        return responses()[len(payloads)-1]
+    ai.research_one(c, NOW, transport)
+    assert "2027-02-08" in payloads[0]["instructions"]
+    assert "one source record per distinct URL" in payloads[0]["instructions"]
+
+
 def test_hidden_core_selections_are_not_marked_as_emailed(monkeypatch, tmp_path):
     from unittest.mock import Mock
     import scanner_entry

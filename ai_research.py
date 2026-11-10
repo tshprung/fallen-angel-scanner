@@ -85,7 +85,7 @@ def domains(context):
     hosts = {"sec.gov", "nasdaq.com"}
     for url in context.get("source_urls", []):
         if safe_url(url):
-            hosts.add(urlsplit(url).hostname)
+            hosts.add(urlsplit(url).hostname.removeprefix("www."))
     return sorted(hosts)
 
 
@@ -157,6 +157,7 @@ def contexts(candidates, audit, disclosure, shadow, now):
                    "financial_evidence": item.get("financial_evidence"),
                    "solvency": item.get("solvency"), "review_hold": item.get("review_hold"),
                    "price_dislocation": item.get("price_dislocation")}
+        context["source_urls"].sort(key=lambda url: context["source_metadata"].get(url, {}).get("published_at") or "", reverse=True)
         # Periods and document identities invalidate research; daily check timestamps do not.
         evidence = item.get("financial_evidence") or {}
         identity = {"version": VERSION, "model": MODEL, "ticker": ticker,
@@ -344,6 +345,10 @@ def research_one(context, now, request, single_pass=False):
               "Use one source record per distinct URL, with unique IDs S1, S2, etc. Reference these IDs in scenarios. "
               "Use source_metadata.published_at for known SEC filing publication dates, not the financial period "
               "or earliest event date. Do not output 'unknown' for a publication date already supplied in metadata. "
+              "Read the most recent results first, including earnings exhibits attached to an 8-K. "
+              "Explicitly distinguish quarter, year-to-date and trailing-year metrics; do not call a declining "
+              "quarter 'still growing' because year-to-date revenue grew. Prefer actual reported restructuring "
+              "charges to superseded initial estimates. Do not infer that lease balances fell from rent payments alone. "
               "Unverified expected earnings dates must not be asserted as confirmed. Paraphrase rather than copy source passages."}
     payload = {**common, "tools": [{"type": "web_search", "search_context_size": "medium",
                         "filters": {"allowed_domains": domains(context)}}],
