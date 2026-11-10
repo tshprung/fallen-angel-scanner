@@ -1,4 +1,5 @@
 {
-  "status": "VALIDATED",
-  "ticker": "BOOT"
+  "status": "REJECTED",
+  "ticker": "BOOT",
+  "reason": "Unsupported source provenance"
 }

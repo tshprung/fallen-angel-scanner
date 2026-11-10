@@ -6,7 +6,7 @@
         "SANM",
         "BOOT"
       ],
-      "requests": 11,
+      "requests": 14,
       "resumed_tickers": [
         "TTD",
         "SANM",
@@ -132,6 +132,60 @@
             },
             "total_tokens": 25666
           }
+        },
+        {
+          "ticker": "TTD",
+          "development": true,
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 31689,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 3254,
+            "output_tokens_details": {
+              "reasoning_tokens": 1513
+            },
+            "total_tokens": 34943
+          }
+        },
+        {
+          "ticker": "SANM",
+          "development": true,
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 29939,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 4608
+            },
+            "output_tokens": 3474,
+            "output_tokens_details": {
+              "reasoning_tokens": 1605
+            },
+            "total_tokens": 33413
+          }
+        },
+        {
+          "ticker": "BOOT",
+          "development": true,
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 29511,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 4608
+            },
+            "output_tokens": 3127,
+            "output_tokens_details": {
+              "reasoning_tokens": 1672
+            },
+            "total_tokens": 32638
+          }
         }
       ],
       "development_requests": [
@@ -154,6 +208,18 @@
         {
           "ticker": "BOOT",
           "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "TTD",
+          "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "SANM",
+          "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "BOOT",
+          "authorized_date": "2026-11-10"
         }
       ]
     }
@@ -163,59 +229,64 @@
       "brief": {
         "ticker": "TTD",
         "verdict": "FOLLOW_UP",
-        "thesis": "The latest quarter shows Trade Desk still growing, generating substantial operating cash flow, and carrying no outstanding funded debt at quarter-end, but revenue growth was only modest and management explicitly cites lower gross spend from existing clients, discounts tied to partnerships, and higher competition pressure. The September-quarter 8-K adds a workforce reduction and expected restructuring charge, which could improve efficiency, but the evidence is not enough to underwrite a recovery case yet.",
-        "decline_reason": "The filing points to softer gross spend from existing clients, lower utilization of certain data offerings, and increased discounts to drive future growth; that is operational pressure, not a clean temporary shock.",
-        "temporary_vs_structural": "Some items look temporary (restructuring charges, one-time strategic-partner revenue, working-capital timing), but the competitive and pricing pressures appear more structural because management describes them as ongoing responses to drive future growth.",
-        "financial_resilience": "As of 2026-09-30, cash and cash equivalents were $1.2 billion and short-term investments were $420 million; nine-month operating cash flow was $803.7 million. The company had no outstanding debt balance under its revolving facility and said it was in compliance with covenants. Operating lease liabilities were separate from funded borrowings and declined with rent payments.",
-        "competition_and_technology": "Management says it may face competition from both existing and new large companies, including ones not yet known. The filing also says the platform is being scaled for AI and machine learning capabilities, which is an investment need rather than evidence of a moat widening.",
+        "thesis": "Latest primary documents show a real slowdown rather than a clean reacceleration: Q3 2026 revenue fell 0.5% year over year to $736.0 million, GAAP net income fell to $38.1 million from $115.5 million, and adjusted EBITDA fell to $265.8 million from $317.5 million. Cash generation remained strong on a nine-month basis, but it was helped materially by working-capital inflows and stock compensation add-backs. Balance-sheet risk appears low because funded debt outstanding was zero at 2026-09-30, but lease obligations are meaningful and should not be treated as debt repayment progress. Recovery is plausible, but evidence is not yet strong enough to call the setback temporary.",
+        "decline_reason": "Primary sources do not state the stock-price decline reason. Operating evidence likely contributed: Q3 2026 revenue declined year over year, GAAP margin compressed to 5% from 16%, and the company undertook a 15% workforce reduction with restructuring charges.",
+        "temporary_vs_structural": "Mixed. Temporary supports: no funded debt outstanding, large liquidity, buyback authorization increase, and Q4 guidance above Q3 revenue. Structural concerns: management states competition is intense, CTV/OpenPath adoption still requires investment, and the latest reported quarter did not show stabilized year-over-year growth.",
+        "financial_resilience": "As of 2026-09-30, cash and cash equivalents were $1.229 billion and short-term investments were $420.4 million. The company reported no outstanding debt balance under its revolving facility, with $745 million availability net of $5 million letters of credit. However, operating lease liabilities were $87.4 million current plus $493.9 million non-current, and the company recognized a new roughly $148 million lease liability in Q3 tied to office expansion. Nine-month operating cash flow was $803.7 million, but this included $313.7 million of stock-based compensation add-backs and a $674.8 million accounts-receivable working-capital inflow; after capitalized software of $11.6 million and property/equipment purchases of $226.7 million, internally generated cash remains positive but less robust than raw OCF suggests.",
+        "competition_and_technology": "The 10-Q explicitly says the market is intensely competitive and could intensify, with new technologies and buying methods competing for ad spend. The filing also says TTD is investing heavily in programmatic TV/CTV and OpenPath, but warns those offerings may fail to gain sufficient client or publisher adoption. That makes any recovery thesis dependent on execution and demand, not just cost cuts.",
         "risks": [
-          "Revenue was down 0.5% YoY in the September quarter despite 4% nine-month growth.",
-          "Nine-month stock-based compensation was $313.7 million, which remains a large cash-to-diluted-equity burden.",
-          "The company disclosed an expected workforce reduction of about 15% and estimated restructuring charges of $39 million to $51 million.",
-          "Availability under the revolver is undrawn, but it is not cash and should not be treated as such.",
-          "Repurchases may offset dilution, but management explicitly says the program is discretionary and may not fully mitigate equity compensation."
+          "Growth has not yet stabilized: Q3 2026 revenue was down 0.5% year over year.",
+          "GAAP earnings quality is pressured by high stock-based compensation: $95.1 million in Q3 and $313.7 million year-to-date.",
+          "Restructuring may flatter future comparisons but also signals weaker near-term demand/efficiency than previously expected.",
+          "Working-capital timing materially affects cash conversion; nine-month OCF benefited from a $674.8 million decrease in accounts receivable.",
+          "Operating leases are sizable at $581.3 million total liabilities and include a large new office-related lease recognized in Q3.",
+          "Management's Q4 outlook is only for revenue and adjusted EBITDA; no GAAP net income outlook was provided due partly to SBC variability.",
+          "Competitive pressure in ad tech and CTV/OpenPath adoption risk remain explicit in the 10-Q."
         ],
         "unresolved": [
-          "Whether post-restructuring operating growth reaccelerates after the September-quarter realignment.",
-          "Whether pricing pressure from discounts and partnerships stabilizes.",
-          "Whether competitive pressure from larger ad-tech/platform players worsens.",
-          "How much future cash conversion is reduced by continued stock compensation and capitalized software spend."
+          "Whether Q4 2026 revenue of at least $755 million represents true reacceleration or only an easier compare is not supported by additional primary evidence here.",
+          "Whether the September-quarter weakness was mainly cyclical, share-loss related, or mix related is not established in the retrieved filings.",
+          "Any valuation-based upside case is unsupported because no sourced valuation framework or market price was provided.",
+          "Interest expense should not be assumed to be zero; the company had no debt drawn, but the revolver still carries undrawn commitment fees and customary letter-of-credit fees when applicable."
         ],
-        "catalyst": "The near-term catalyst is execution on the September 2026 realignment and the next quarterly filing showing whether gross spend, pricing, and revenue growth stabilize.",
-        "invalidation": "If the next quarter still shows weak gross spend from existing clients, continued discounting, and no clear improvement in revenue growth or cash conversion, the recovery thesis weakens materially.",
-        "next_review_by": "2027-01-31",
-        "checkpoint_metric": "Next quarterly filing should show year-over-year revenue growth improving from the September quarter and continued strong operating cash flow without a spike in cash restructuring costs or dilution.",
-        "opportunity_cost": "Capital may be better deployed elsewhere until there is evidence that growth stabilization and margin/FCF durability are real rather than management aspiration.",
-        "target_by": "2027-01-31",
+        "catalyst": "Near-term proof point is delivery against the company's Q4 2026 outlook of at least $755 million revenue and at least $280 million adjusted EBITDA, plus evidence that restructuring does not merely offset underlying demand weakness.",
+        "invalidation": "A weak Q4 relative to the company's own outlook, continued year-over-year revenue decline, or further reliance on restructuring/share repurchases to offset dilution rather than restore growth would weaken the recovery case.",
+        "next_review_by": "2027-02-08",
+        "checkpoint_metric": "Q4 2026 reported revenue >= 755000000 USD, adjusted EBITDA >= 280000000 USD, and evidence that GAAP profitability and diluted share count improve without larger SBC burden.",
+        "opportunity_cost": "High. TTD remains liquid and not balance-sheet stressed, but investors would be paying with time while waiting for proof that growth headwinds are temporary rather than competitive.",
+        "target_by": "2027-11-10",
         "valuation_available": false,
         "bear": {
           "annual_equity_cash_usd": 0,
           "multiple": 0,
           "dilution_pct": 0,
-          "rationale": "Unsupported valuation: no primary-source basis here for a cash-flow multiple, annual equity cash estimate, or dilution forecast beyond observed SBC and repurchase authorizations.",
+          "rationale": "Unsupported assumption without a primary-source valuation framework and current market price.",
           "source_ids": [
             "S1",
-            "S2"
+            "S2",
+            "S3"
           ]
         },
         "base": {
           "annual_equity_cash_usd": 0,
           "multiple": 0,
           "dilution_pct": 0,
-          "rationale": "Unsupported valuation: the filing provides historical cash flow and SBC, but not a defensible forward valuation framework.",
+          "rationale": "Unsupported assumption without a primary-source valuation framework and current market price.",
           "source_ids": [
             "S1",
-            "S2"
+            "S2",
+            "S3"
           ]
         },
         "recovery": {
           "annual_equity_cash_usd": 0,
           "multiple": 0,
           "dilution_pct": 0,
-          "rationale": "Unsupported valuation: a recovery case would require a sourced forward cash-flow bridge and multiple, which is not available from the cited primary documents.",
+          "rationale": "Unsupported assumption without a primary-source valuation framework and current market price.",
           "source_ids": [
             "S1",
-            "S2"
+            "S2",
+            "S3"
           ]
         },
         "sources": [
@@ -223,36 +294,64 @@
             "id": "S1",
             "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm",
             "published_at": "2026-11-09",
-            "finding": "10-Q for the quarter ended 2026-09-30: revenue of $2.14 billion for nine months, $803.7 million operating cash flow, $1.2 billion cash and cash equivalents, $420 million short-term investments, no outstanding debt balance under the revolver, $313.7 million stock-based compensation, and management commentary on lower existing-client spend, discounts, and competition."
+            "finding": "Form 10-Q for quarter ended 2026-09-30. Reported cash and cash equivalents of $1.229 billion, short-term investments of $420.4 million, zero outstanding revolver debt, $745 million revolver availability net of letters of credit, operating lease liabilities of $581.3 million total, nine-month operating cash flow of $803.7 million, capex of $226.7 million, capitalized software of $11.6 million, stock-based compensation expense of $313.7 million YTD and $95.1 million in Q3, unrecognized restricted-stock compensation of about $863 million, and explicit competition/CTV/OpenPath risk disclosures."
           },
           {
             "id": "S2",
+            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/ttd-20261109.htm",
+            "published_at": "2026-11-09",
+            "finding": "Form 8-K dated 2026-11-09 furnishing Q3 2026 results and announcing an additional $731 million repurchase authorization, bringing total remaining authorization to $1.0 billion."
+          },
+          {
+            "id": "S3",
+            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/ttd-20261109x8kexx991.htm",
+            "published_at": "2026-11-09",
+            "finding": "Exhibit 99.1 earnings release. Reported Q3 2026 revenue of $736.0 million (-0.5% y/y), GAAP net income of $38.1 million, adjusted EBITDA of $265.8 million, Q4 2026 outlook of at least $755 million revenue and at least $280 million adjusted EBITDA, and showed restructuring charges of $44.3 million excluded from non-GAAP results."
+          },
+          {
+            "id": "S4",
             "url": "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm",
             "published_at": "2026-09-04",
-            "finding": "8-K dated 2026-09-03 event: company announced an organizational realignment reducing workforce by approximately 15% and estimated cash restructuring charges of $39 million to $51 million, partly offset by a small SBC reversal."
+            "finding": "Form 8-K announcing a 2026 restructuring plan with approximately 15% workforce reduction and estimated cash restructuring and related charges of about $39 million to $51 million, partially offset by an estimated $4 million to $5 million stock-compensation reversal."
           }
         ]
       },
       "retrieved_urls": [
         "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm",
-        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm"
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000099/0001671933-26-000099-index.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000099/ttd-20260914.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000108/0001671933-26-000108-index-headers.html",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000108/0001671933-26-000108-index.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000108/ttd-20261019.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/R1.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/ttd-20261109.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/ttd-20261109x8kexx991.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/q3202610-qex321.htm",
+        "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm",
+        "https://www.sec.gov/Archives/edgar/data/1969928/999999999726001635/filename1.pdf",
+        "https://www.sec.gov/Archives/edgar/vprr/2600/26000278.pdf",
+        "https://www.sec.gov/edgar/browse/?CIK=1671933&owner=include",
+        "https://www.sec.gov/files/investment/13flist2026q1.pdf",
+        "https://www.sec.gov/files/litigation/complaints/2026/comp26522.pdf",
+        "https://www.sec.gov/files/litigation/litreleases/2026/comp26614.pdf",
+        "https://www.sec.gov/files/rules/sro/cboeedga/2026/34-106321.pdf"
       ],
       "usage": [
         {
-          "input_tokens": 16767,
+          "input_tokens": 31689,
           "input_tokens_details": {
             "cache_write_tokens": 0,
-            "cached_tokens": 4352
+            "cached_tokens": 0
           },
-          "output_tokens": 1616,
+          "output_tokens": 3254,
           "output_tokens_details": {
-            "reasoning_tokens": 533
+            "reasoning_tokens": 1513
           },
-          "total_tokens": 18383
+          "total_tokens": 34943
         }
       ],
-      "reviewed_at": "2026-11-10T09:46:18.882280+00:00",
-      "fingerprint": "f54b1dd6b49cd57f8dfd6a1ba7ff3dc2ec74aec96a0d9adf47434322da5d9470"
+      "reviewed_at": "2026-11-10T09:59:50.667480+00:00",
+      "fingerprint": "664787a1339373e941cbc66b9cb6e1d9e389d3f1a68cac004f7f2c4656ee8f61"
     },
     "SANM": {
       "brief": {
