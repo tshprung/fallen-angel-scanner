@@ -280,3 +280,33 @@ def test_global_auth_failure_stops_other_company_requests(tmp_path):
     result = ai.run_research(*inputs(("ONE", "TWO", "THREE")), None, None, tmp_path,
                              now=NOW, key="test", transport=transport)
     assert len(calls) == 1 and result["requests_today"] == 1
+
+
+def test_development_authorization_expires_without_spending(tmp_path):
+    with pytest.raises(ValueError, match="authorization expired"):
+        ai.development_probe(tmp_path, "ABC", "2026-11-09", now=NOW, key="test",
+                             transport=lambda _: pytest.fail("Expired development authorization"))
+    assert not (tmp_path/"ai_research_state.json").exists()
+
+
+def test_hidden_core_selections_are_not_marked_as_emailed(monkeypatch, tmp_path):
+    from unittest.mock import Mock
+    import scanner_entry
+    scanner = scanner_entry.scanner
+    monkeypatch.setattr(scanner, "AI_RESEARCH_ENABLED", True, raising=False)
+    monkeypatch.setattr(scanner, "PAPER_TRACKING_ENABLED", False, raising=False)
+    monkeypatch.setattr(scanner, "_last_disclosure_watch", None, raising=False)
+    monkeypatch.setattr(scanner, "REPORT_SCOPE", {}, raising=False)
+    monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path/"research_report"), raising=False)
+    memory = {"sent_stocks": {}, "tracked_prices": {}}
+    monkeypatch.setattr(scanner, "load_memory", lambda: memory)
+    monkeypatch.setattr(scanner, "save_memory", Mock())
+    monkeypatch.setattr(scanner, "check_price_alerts", lambda _: [])
+    monkeypatch.setattr(scanner, "stage1_quick_filter", lambda: ([{"ticker": "ABC"}], []))
+    stocks = [{"ticker": f"CO{i}", "current_price": 10, "currency": "USD"} for i in range(15)]
+    monkeypatch.setattr(scanner, "stage2_deep_analysis", lambda *a: (stocks, []))
+    monkeypatch.setattr(scanner, "enrich_research_audit", Mock())
+    monkeypatch.setattr(scanner, "send_email", Mock(return_value=True))
+    monkeypatch.setattr(ai, "run_research", Mock(return_value={"status": "COMPLETED", "shortlist": []}))
+    scanner.main()
+    assert len(memory["sent_stocks"]) == 10 and len(memory["tracked_prices"]) == 10

@@ -74,6 +74,10 @@ def preserve_response(directory, ticker, data, now):
     drafts["records"].append({"ticker": ticker, "received_at": now.isoformat(),
         "response": {key: data.get(key) for key in ("status", "incomplete_details", "output", "usage")}})
     drafts["records"] = drafts["records"][-20:]
+    for record in drafts["records"]:
+        # Encrypted reasoning and opaque API internals are unnecessary for source validation.
+        record["response"]["output"] = [item for item in record["response"].get("output") or []
+                                         if item.get("type") in {"message", "web_search_call"}]
     atomic_json(path, drafts)
 
 
@@ -102,6 +106,16 @@ def source_urls(item):
         if row and safe_url(row.get("url")):
             urls.append(row["url"])
     return list(dict.fromkeys(urls))[:25]
+
+
+def source_metadata(item):
+    check = item.get("official_filing_check") or {}
+    rows = [check.get("latest_financial_report"), check.get("latest_annual_report"),
+            *check.get("event_filings", []), *item.get("documents", [])]
+    return {row["url"]: {"published_at": row.get("filingDate") or row.get("filed_at"),
+                         "period": row.get("reportDate") or row.get("period")}
+            for row in rows if row and safe_url(row.get("url"))
+            and (row.get("filingDate") or row.get("filed_at"))}
 
 
 def contexts(candidates, audit, disclosure, shadow, now):
@@ -139,6 +153,7 @@ def contexts(candidates, audit, disclosure, shadow, now):
                    "quote_observed_at": item.get("quote_observed_at"),
                    "market_cap_usd": candidate.get("market_cap_usd"),
                    "source_urls": source_urls(item),
+                   "source_metadata": source_metadata(item),
                    "financial_evidence": item.get("financial_evidence"),
                    "solvency": item.get("solvency"), "review_hold": item.get("review_hold"),
                    "price_dislocation": item.get("price_dislocation")}
@@ -146,6 +161,7 @@ def contexts(candidates, audit, disclosure, shadow, now):
         evidence = item.get("financial_evidence") or {}
         identity = {"version": VERSION, "model": MODEL, "ticker": ticker,
                     "decision": item.get("decision"), "sources": context["source_urls"],
+                    "source_metadata": context["source_metadata"],
                     "question": context["watch_question"], "policy": evidence.get("policy_id"),
                     "statements": {name: evidence.get(name) for name in ("balance", "cashflow", "income")},
                     "hold": item.get("review_hold")}
@@ -322,7 +338,13 @@ def research_one(context, now, request, single_pass=False):
     if len(serialized) > 35_000:
         raise ValueError("Company context too large")
     common = {"model": MODEL, "store": False, "max_output_tokens": MAX_OUTPUT_TOKENS,
-              "reasoning": {"effort": "low"}, "instructions": INSTRUCTIONS}
+              "reasoning": {"effort": "low"}, "instructions": INSTRUCTIONS +
+              f"\nFor EVERY verdict, next_review_by must be after {now.date()} and on or before "
+              f"{now.date()+timedelta(days=90)} (an administrative research deadline, not an invented earnings date). "
+              "Use one source record per distinct URL, with unique IDs S1, S2, etc. Reference these IDs in scenarios. "
+              "Use source_metadata.published_at for known SEC filing publication dates, not the financial period "
+              "or earliest event date. Do not output 'unknown' for a publication date already supplied in metadata. "
+              "Unverified expected earnings dates must not be asserted as confirmed. Paraphrase rather than copy source passages."}
     payload = {**common, "tools": [{"type": "web_search", "search_context_size": "medium",
                         "filters": {"allowed_domains": domains(context)}}],
                         "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "required",
