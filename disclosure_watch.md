@@ -2,7 +2,7 @@
 
 Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.
 
-Checked: 2026-11-06T23:25:38.705463+00:00
+Checked: 2026-11-10T01:43:49.619056+00:00
 
 ## PNR: EXPECTED_REPORT_REQUIRES_REVIEW
 
@@ -23,11 +23,12 @@ September statements are published: Q3 operating cash outflow was $46.396m despi
 Verify profitable order conversion, wholesale margins, cash after investment, lease obligations and current covenant evidence. No next earnings date has been confirmed here.
 
 - [10-Q filed 2026-08-18](<https://www.sec.gov/Archives/edgar/data/57131/000005713126000035/lzb-20260725.htm>)
-## SANM: AWAITING_EXPECTED_REPORT
+## SANM: NEW_SOURCE_DOCUMENTS
 
 Issuer announced the fiscal 2026 results call for November 9 at 5 PM ET. Review post-ZT cash conversion, receivable sales, the five-year debt schedule including the 2030 balloon, covenant headroom and acquisition integration. Confirm a comparable historical price and supported 50% recovery case.
 
 - [10-Q filed 2026-07-27](<https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm>)
+- [8-K filed 2026-11-09](<https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm>)
 ## WDC: UNCHANGED
 
 Verify November 16 convertible redemption/conversion settlement and dilution, January 2027 revolver repayment/refinancing, continuing-business cash conversion and cyclical valuation. November 16 is a transaction checkpoint, not an expected periodic-report date. Use post-Sandisk historical prices only.
@@ -43,11 +44,11 @@ Review Armis integration, cash after acquisition addbacks and stock compensation
 
 - [10-Q filed 2026-10-28](<https://www.sec.gov/Archives/edgar/data/1373715/000137371526000096/now-20260930.htm>)
 - [8-K filed 2026-05-15](<https://www.sec.gov/Archives/edgar/data/1373715/000119312526226644/d60522d8k.htm>)
-## TTD: AWAITING_EXPECTED_REPORT
+## TTD: EXPECTED_REPORT_REQUIRES_REVIEW
 
 Issuer announced September-quarter results for November 9 after market close. Review growth stabilization, competitive pressure, cash conversion and stock compensation. Separate operating leases from funded borrowings; do not invent missing interest as zero. The higher historical price does not prove a temporary setback.
 
-- [10-Q filed 2026-08-06](<https://www.sec.gov/Archives/edgar/data/1671933/000167193326000086/ttd-20260630.htm>)
+- [10-Q filed 2026-11-09](<https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm>)
 - [8-K filed 2026-09-04](<https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm>)
 ## ALB: UNCHANGED
 
