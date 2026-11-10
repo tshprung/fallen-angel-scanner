@@ -6,7 +6,7 @@
         "SANM",
         "BOOT"
       ],
-      "requests": 6,
+      "requests": 7,
       "resumed_tickers": [
         "TTD",
         "SANM",
@@ -42,6 +42,30 @@
             "output_tokens": 2243,
             "total_tokens": 18961
           }
+        },
+        {
+          "ticker": "TTD",
+          "development": true,
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 15086,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 5376
+            },
+            "output_tokens": 2046,
+            "output_tokens_details": {
+              "reasoning_tokens": 673
+            },
+            "total_tokens": 17132
+          }
+        }
+      ],
+      "development_requests": [
+        {
+          "ticker": "TTD",
+          "authorized_date": "2026-11-10"
         }
       ]
     }
