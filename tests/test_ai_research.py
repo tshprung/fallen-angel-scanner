@@ -354,6 +354,12 @@ def test_completed_find_retrieves_document_but_incomplete_find_does_not():
     assert ai.retrieved_urls(data) == {URLS[0]}
 
 
+def test_output_schema_constrains_dates_before_model_generation():
+    for field in ("target_by", "next_review_by"):
+        assert ai.SCHEMA["properties"][field]["format"] == "date"
+    assert ai.SOURCE["properties"]["published_at"]["format"] == "date"
+
+
 def test_hidden_core_selections_are_not_marked_as_emailed(monkeypatch, tmp_path):
     from unittest.mock import Mock
     import scanner_entry

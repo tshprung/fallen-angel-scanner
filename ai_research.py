@@ -180,8 +180,9 @@ def object_schema(properties):
 
 
 TEXT = {"type": "string"}
+ISO_DATE = {"type": "string", "format": "date"}
 TEXTS = {"type": "array", "items": TEXT}
-SOURCE = object_schema({"id": TEXT, "url": TEXT, "published_at": TEXT, "finding": TEXT})
+SOURCE = object_schema({"id": TEXT, "url": TEXT, "published_at": ISO_DATE, "finding": TEXT})
 SCENARIO = object_schema({"annual_equity_cash_usd": {"type": "number"},
                           "multiple": {"type": "number"}, "dilution_pct": {"type": "number"},
                           "rationale": TEXT, "source_ids": TEXTS})
@@ -190,8 +191,8 @@ SCHEMA = object_schema({"ticker": TEXT,
     "thesis": TEXT, "decline_reason": TEXT, "temporary_vs_structural": TEXT,
     "financial_resilience": TEXT, "competition_and_technology": TEXT,
     "risks": TEXTS, "unresolved": TEXTS, "catalyst": TEXT, "invalidation": TEXT,
-    "next_review_by": TEXT, "checkpoint_metric": TEXT, "opportunity_cost": TEXT,
-    "target_by": TEXT, "valuation_available": {"type": "boolean"},
+    "next_review_by": ISO_DATE, "checkpoint_metric": TEXT, "opportunity_cost": TEXT,
+    "target_by": ISO_DATE, "valuation_available": {"type": "boolean"},
     "bear": SCENARIO, "base": SCENARIO, "recovery": SCENARIO,
     "sources": {"type": "array", "items": SOURCE}})
 
@@ -355,6 +356,8 @@ def research_one(context, now, request, single_pass=False):
               "Your sources array must contain ONLY exact URLs returned by your own completed web tool calls. "
               "If the tool budget runs out, omit unread references and claims depending on them; list the missing "
               "verification in unresolved. Two well-read current documents are preferable to many unread references. "
+              "target_by is an assessment horizon date even when valuation_available=false; explain missing "
+              "valuation in unresolved, never in date fields. No valuation means no supported return forecast. "
               "Explicitly distinguish quarter, year-to-date and trailing-year metrics; do not call a declining "
               "quarter 'still growing' because year-to-date revenue grew. Prefer actual reported restructuring "
               "charges to superseded initial estimates. Do not infer that lease balances fell from rent payments alone. "

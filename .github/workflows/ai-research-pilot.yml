@@ -40,7 +40,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PYTHONUNBUFFERED: '1'
-        # Explicit user authorization for today's development; exercise the normal two-model pipeline.
+        # Explicit user authorization for today's development; verify date-constrained two-model output.
         run: |
           python -u ai_research.py --development-probe SANM --two-stage-probe --authorized-date 2026-11-10
       - name: Preserve AI reservations even on failure
