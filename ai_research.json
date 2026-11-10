@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "generated_at": "2026-11-10T09:26:16.895202+00:00",
+  "status": "PARTIAL",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "notice": "AI research pilot, not qualified investment cases. Source links and schema checks do not verify every claim. AI cannot clear financial exclusions or research holds. No guaranteed return, five-year survival or continued listing.",
+  "shortlist": [],
+  "failures": [
+    {
+      "ticker": "TTD",
+      "error": "INCOMPLETE_OR_REFUSED"
+    },
+    {
+      "ticker": "SANM",
+      "error": "INCOMPLETE_OR_REFUSED"
+    },
+    {
+      "ticker": "BOOT",
+      "error": "INCOMPLETE_OR_REFUSED"
+    }
+  ],
+  "requests_today": 3,
+  "companies_attempted_today": [
+    "TTD",
+    "SANM",
+    "BOOT"
+  ],
+  "deferred_count": 75
+}

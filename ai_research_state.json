@@ -1,0 +1,13 @@
+{
+  "days": {
+    "2026-11-10": {
+      "tickers": [
+        "TTD",
+        "SANM",
+        "BOOT"
+      ],
+      "requests": 3
+    }
+  },
+  "cache": {}
+}
