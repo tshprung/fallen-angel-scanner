@@ -316,12 +316,23 @@ def test_prompt_contains_known_filing_dates_and_an_explicit_deadline():
     c = ai.contexts(candidates, audit, None, None, NOW)[0]
     assert c["source_metadata"][URLS[0]]["published_at"] == "2026-11-09"
     payloads = []
+    first, second = responses()
+    extracted = json.loads(second["output"][0]["content"][0]["text"])
+    extracted["sources"][0]["published_at"] = "2026-11-09"
+    second["output"][0]["content"][0]["text"] = json.dumps(extracted)
     def transport(payload):
         payloads.append(payload)
-        return responses()[len(payloads)-1]
+        return (first, second)[len(payloads)-1]
     ai.research_one(c, NOW, transport)
     assert "2027-02-08" in payloads[0]["instructions"]
     assert "one source record per distinct URL" in payloads[0]["instructions"]
+
+
+def test_publication_date_must_match_known_filing_metadata():
+    c = context()
+    c["source_metadata"] = {URLS[0]: {"published_at": "2026-11-09"}}
+    with pytest.raises(ValueError, match="contradicts filing metadata"):
+        ai.validate_brief(brief(), c, set(URLS), NOW)
 
 
 def test_hidden_core_selections_are_not_marked_as_emailed(monkeypatch, tmp_path):
