@@ -281,6 +281,359 @@
           "total_tokens": 17692
         }
       }
+    },
+    {
+      "ticker": "SANM",
+      "received_at": "2026-11-10T09:55:00.228663+00:00",
+      "response": {
+        "status": "completed",
+        "incomplete_details": null,
+        "output": [
+          {
+            "id": "ws_0c2876ad5a6956c8016af2e9f5e38487d1bb5655ebbd03c292",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "search",
+              "queries": [
+                "site:sec.gov Sanmina 8-K November 9 2026 results outlook 2026-10-27",
+                "site:sec.gov Sanmina 10-K 2026-09-27 sec",
+                "site:sec.gov Sanmina 10-Q 2026-06-27 sec"
+              ],
+              "query": "site:sec.gov Sanmina 8-K November 9 2026 results outlook 2026-10-27",
+              "sources": [
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/0000897723-26-000037-index.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/FilingSummary.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/R1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/FilingSummary.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanmina_exx991xjune272026.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/0000897723-26-000037-index-headers.html"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627_htm.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanm-20260727.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanmina_ex311x20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000130817926000017/sanm_courtesy-pdf.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/files/investment/13flist2025q3.pdf"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ws_0c2876ad5a6956c8016af2e9f7f68887d1b0c99b813760e0c5",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+            }
+          },
+          {
+            "id": "ws_0c2876ad5a6956c8016af2e9f8e92887d1ab2dce19804f1016",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "maturity",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+            }
+          },
+          {
+            "id": "ws_0c2876ad5a6956c8016af2e9fa821087d1b6827147b46a0663",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "accounts receivable",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+            }
+          },
+          {
+            "id": "msg_0c2876ad5a6956c8016af2e9fdea4887d1886ffdebb5527fb1",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [
+                  {
+                    "type": "url_citation",
+                    "end_index": 557,
+                    "start_index": 447,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 1036,
+                    "start_index": 926,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 1432,
+                    "start_index": 1322,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 2037,
+                    "start_index": 1927,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 2460,
+                    "start_index": 2350,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 2814,
+                    "start_index": 2718,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 3090,
+                    "start_index": 2994,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 3301,
+                    "start_index": 3205,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 3501,
+                    "start_index": 3391,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 4369,
+                    "start_index": 4259,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 4648,
+                    "start_index": 4552,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  }
+                ],
+                "logprobs": [],
+                "text": "{\"ticker\":\"SANM\",\"verdict\":\"FOLLOW_UP\",\"thesis\":\"Sanmina’s latest quarter shows strong post-ZT cash generation, but the recovery case is not yet valuation-supported: the business is producing substantial cash, leverage is manageable on a reported basis, and covenant headroom appears adequate, yet the 2030 term-loan maturity, uncommitted receivables facilities, and ZT integration remain the key proof points before any 50%+ recovery conclusion. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\",\"decline_reason\":\"The share-price weakness in the snapshot is not matched by filing evidence of an operational collapse; instead, the main issue is that the recovery thesis would require unsupported assumptions about sustained ZT synergies, refinancing conditions, and multiple expansion. Missing valuation support is the binding gap, not an obvious solvency stress. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\",\"temporary_vs_structural\":\"Evidence points more to a temporary integration/financing transition than a structural demand break: Q4/FY26 revenue and cash flow were strong, but the company itself flags ZT benefits, cloud/AI demand, tariffs, and customer concentration as ongoing risks. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\",\"financial_resilience\":\"FY26 CFO was $944 million and free cash flow was $541 million, with $1.68 billion cash at quarter-end. On the June 27, 2026 10-Q, interest coverage covenant floor was 3.0x and total net leverage cap was 4.0x, and management said it was in compliance. The 10-Q also shows $702 million of operating cash flow for the nine months ended June 27, 2026, plus $486.7 million of receivables sold in the same period and $1.1 billion maximum outstanding under the RPA framework. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\",\"competition_and_technology\":\"Sanmina describes itself as serving cloud/AI infrastructure, communications, industrial, medical, defense and automotive end markets; the filings do not provide enough evidence to conclude durable pricing power or insulation from technology substitution, so that remains unproven. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\",\"risks\":[\"$2.2 billion of loans were outstanding as of June 27, 2026, including a $1.5 billion revolver and $600 million Term Loan A availability; the main unsecured-looking cushion is still dependent on continued access to facilities and cash generation. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\",\"The term-loan maturity schedule shows a 2030 concentration of $444 million plus remaining balances extending to 2032, which is manageable but still needs refinancing execution. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\",\"Receivables sales are helpful but not guaranteed; the RPA is uncommitted and subject to bank/customer approval. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\",\"ZT integration is explicitly called out as a major forward-looking risk by management. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\"],\"unresolved\":[\"No filing-based valuation framework supports a 50% recovery case from the observed price; multiple and terminal cash-flow assumptions would be speculative.\",\"No sourced evidence yet that the post-ZT cash conversion rate is durable beyond FY26.\",\"No primary-source evidence here establishes a comparable historical price anchor as fair value rather than merely a past trading point.\",\"No filing excerpt here quantifies covenant headroom under a stress case or demonstrates refinancing terms for the 2030 maturity.\"],\"catalyst\":\"Near-term catalyst is execution on FY27 guidance and continued cash conversion after ZT integration, with the company already guiding FY27 revenue of $17.5 billion-$19.5 billion and non-GAAP EPS of $15.50-$17.50. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\",\"invalidation\":\"The thesis weakens if cash conversion falls materially, receivables funding tightens, or leverage/covenant headroom compresses before refinancing the 2030 maturity. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\",\"next_review_by\":\"2027-01-15\",\"checkpoint_metric\":\"FY27 Q1/FY27 guidance execution versus FY26: revenue, CFO, and net leverage under the 3.0x / 4.0x covenant framework.\",\"opportunity_cost\":\"A speculative recovery bet here competes with situations where valuation support is explicit; here, upside is business-quality driven but not yet valuation-validated.\",\"target_by\":\"2027-02-08\",\"valuation_available\":false,\"bear\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"No credible sourced valuation. The bear case would require unsupported assumptions about refinancing stress, receivables availability, and terminal multiple compression.\",\"source_ids\":[]},\"base\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"No credible sourced valuation. Base case cannot be parameterized from primary sources alone without inventing a cash-flow multiple or dilution assumption.\",\"source_ids\":[]},\"recovery\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"No credible sourced valuation. A 50%+ recovery scenario would require unsupported assumptions about sustained ZT synergies and market multiple expansion.\",\"source_ids\":[]},\"sources\":[{\"id\":\"S1\",\"url\":\"https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm\",\"published_at\":\"2026-11-09\",\"finding\":\"FY26 results: revenue $14.53 billion, CFO $944 million, FCF $541 million, quarter-end cash $1.68 billion, and FY27 outlook disclosed.\"},{\"id\":\"S2\",\"url\":\"https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm\",\"published_at\":\"2026-07-27\",\"finding\":\"June 27, 2026 10-Q: cash about $1.8 billion, $2.2 billion debt outstanding, covenant requirements (3.0x interest coverage / 4.0x net leverage), receivables sale program, and term-loan maturity schedule through 2032.\"}]}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ],
+        "usage": {
+          "input_tokens": 24305,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 4480
+          },
+          "output_tokens": 2357,
+          "output_tokens_details": {
+            "reasoning_tokens": 904
+          },
+          "total_tokens": 26662
+        }
+      }
+    },
+    {
+      "ticker": "BOOT",
+      "received_at": "2026-11-10T09:55:18.108899+00:00",
+      "response": {
+        "status": "completed",
+        "incomplete_details": null,
+        "output": [
+          {
+            "id": "ws_0918c5cc8b0fa478016af2ea07b60c87d1a124581d82970ffe",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "search",
+              "queries": [
+                "site:sec.gov Boot Barn 2026 8-K earnings exhibit 2026-10-28 10-Q",
+                "site:sec.gov Boot Barn Holdings 10-Q 2026 9/26/2026 sec",
+                "site:sec.gov Boot Barn Holdings 8-K 2026-07-29 sec earnings release"
+              ],
+              "query": "site:sec.gov Boot Barn 2026 8-K earnings exhibit 2026-10-28 10-Q",
+              "sources": [
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119615/0001104659-26-119615-index.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119615/boot-ex99d1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/0001104659-26-119705-index.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/boot-20260926x10q.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926088137/0001104659-26-088137-index.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119615/boot-20261028x8k.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/R1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926088137/boot-20260728xex99d1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926088137/0001104659-26-088137-index-headers.html"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119615/boot-20261028x8k_htm.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/boot-ex32d1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926107497/boot-20260914x8k.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926084074/boot-20260328xars.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/files/investment/13flist2026q3.pdf"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ws_0918c5cc8b0fa478016af2ea09a86087d1b6ae4eb3753460d2",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/boot-20260926x10q.htm"
+            }
+          },
+          {
+            "id": "ws_0918c5cc8b0fa478016af2ea0ac44c87d1beeae5de811368b0",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926088137/0001104659-26-088137-index.htm"
+            }
+          },
+          {
+            "id": "ws_0918c5cc8b0fa478016af2ea0c020c87d1b5d0cfa361421ce3",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "restricted cash",
+              "url": "https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/boot-20260926x10q.htm"
+            }
+          },
+          {
+            "id": "msg_0918c5cc8b0fa478016af2ea0e796487d1b4f1902c6431280e",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"ticker\":\"BOOT\",\"verdict\":\"FOLLOW_UP\",\"thesis\":\"Latest primary filings show the business is still growing and generating strong cash flow, with low net debt/EBITDA and covenant compliance, but valuation support is not sourced here and the refinancing/maturity picture still needs fuller contract-level review before any recovery call.\",\"decline_reason\":\"Shares have pulled back from the recent peak, but the filings do not show a clear fundamental deterioration; the main issue is that the current price context is not enough to support a durable recovery thesis without a sourced valuation and full debt-term review.\",\"temporary_vs_structural\":\"The evidence looks more cyclical than structural: Q2 FY2027 revenue, same-store sales, margins, and earnings all improved, while the July 2026 amendment extended the revolver maturity to 2031. However, the source set does not prove that tariff-related margin help or store-opening momentum is durable.\",\"financial_resilience\":\"As of 2026-09-26, cash was USD 97.4M, total debt USD 858.3M, current debt USD 99.2M, current ratio 2.44x, net debt/EBITDA 1.79x, and the company reported covenant compliance. The revolver had zero borrowings and USD 4.0M of letters of credit outstanding, with a USD 500M facility maturing 2031.\",\"competition_and_technology\":\"The filings support continued e-commerce growth and expanding store count, but they do not provide enough evidence here on competition, pricing power, or technology substitution risk to underwrite a multi-year recovery thesis.\",\"risks\":[\"Margin support from tariff refunds may not repeat.\",\"Store growth and new-store productivity could slow.\",\"Revolver economics depend on excess availability and covenant-trigger conditions.\",\"Debt is secured and maturity details beyond the revolver still need contract-level confirmation.\",\"Cash flow is after capital spending, but the filings do not fully isolate lease, software, and working-capital effects for a valuation case.\"],\"unresolved\":[\"No sourced valuation multiple or equity cash model from primary documents.\",\"No complete contractual maturity schedule for all debt and lease obligations in the retrieved docs.\",\"No evidence here on restricted cash or any off-balance-sheet constraints beyond the revolver language.\",\"No basis in the retrieved filings to support a 12-24 month upside target.\"],\"catalyst\":\"Next catalyst in the primary docs is continued execution on store openings, same-store sales, and margin retention through the next earnings release; the company also disclosed a larger buyback authorization on 2026-10-21.\",\"invalidation\":\"If same-store sales, gross margin, or operating income reverts materially lower, or if the revolver/covenant picture worsens, the recovery case weakens.\",\"next_review_by\":\"2027-01-15\",\"checkpoint_metric\":\"Quarterly same-store sales and operating margin versus the 2026-09-26 quarter, plus any filing-level change in revolver availability/covenants or debt maturity terms.\",\"opportunity_cost\":\"Without a sourced valuation and complete maturity schedule, capital may be better reserved for names with both durable cash generation and clearer upside evidence.\",\"target_by\":\"2027-01-15\",\"valuation_available\":false,\"bear\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Unsupported: the retrieved primary documents do not provide a complete equity cash-flow valuation framework or enough debt/lease detail to justify a bear case numerically.\",\"source_ids\":[\"S1\",\"S2\",\"S3\"]},\"base\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Unsupported: no primary-source-backed valuation inputs were retrieved that would let me anchor a base-case equity cash model.\",\"source_ids\":[\"S1\",\"S2\",\"S3\"]},\"recovery\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Unsupported: despite strong reported results, the upside case still needs a sourced valuation, not just operational momentum.\",\"source_ids\":[\"S1\",\"S2\",\"S3\"]},\"sources\":[{\"id\":\"S1\",\"url\":\"https://www.sec.gov/Archives/edgar/data/1610250/000110465926119705/boot-20260926x10q.htm\",\"published_at\":\"2026-10-28\",\"finding\":\"Q2 FY2027 10-Q: cash USD 97.4M, total debt USD 858.3M, current debt USD 99.2M, revolver maturity 2031, zero revolver borrowings, covenant compliance, and management liquidity statement.\"},{\"id\":\"S2\",\"url\":\"https://www.sec.gov/Archives/edgar/data/1610250/000110465926119615/boot-ex99d1.htm\",\"published_at\":\"2026-10-28\",\"finding\":\"Q2 FY2027 earnings release: revenue +15.1% to USD 581.8M, same-store sales +1.4%, operating income +24.4%, net income +24.4%, EPS USD 1.73, and new store count 584.\"},{\"id\":\"S3\",\"url\":\"https://www.sec.gov/Archives/edgar/data/1610250/000110465926088137/0001104659-26-088137-index.htm\",\"published_at\":\"2026-07-29\",\"finding\":\"8-K: material definitive agreement / direct financial obligation tied to the July 28, 2026 credit agreement amendment; filing index confirms the event and includes the related exhibits.\"}]}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ],
+        "usage": {
+          "input_tokens": 23883,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 4480
+          },
+          "output_tokens": 1783,
+          "output_tokens_details": {
+            "reasoning_tokens": 615
+          },
+          "total_tokens": 25666
+        }
+      }
     }
   ]
 }

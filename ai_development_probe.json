@@ -1,5 +1,4 @@
 {
-  "status": "REJECTED",
-  "ticker": "SANM",
-  "reason": "Unsupported source provenance"
+  "status": "VALIDATED",
+  "ticker": "BOOT"
 }
