@@ -67,6 +67,16 @@ def atomic_json(path, value):
     temporary.replace(path)
 
 
+def preserve_response(directory, ticker, data, now):
+    """Public company output only, never request payloads/headers or credentials."""
+    path = directory/"ai_research_drafts.json"
+    drafts = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"notice": "UNVERIFIED MODEL OUTPUT; not recommendations", "records": []}
+    drafts["records"].append({"ticker": ticker, "received_at": now.isoformat(),
+        "response": {key: data.get(key) for key in ("status", "incomplete_details", "output", "usage")}})
+    drafts["records"] = drafts["records"][-20:]
+    atomic_json(path, drafts)
+
+
 def domains(context):
     hosts = {"sec.gov", "nasdaq.com"}
     for url in context.get("source_urls", []):
@@ -427,6 +437,7 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
         daily["requests"] += 1
         atomic_json(state_path, state)  # Failed/timeout calls also consume their reservation.
         data = request_transport(payload)
+        preserve_response(directory, ticker, data, now)
         usage = data.get("usage") or {}
         record = {"ticker": ticker, "status": str(data.get("status", "unknown"))[:30],
                   "incomplete_reason": str((data.get("incomplete_details") or {}).get("reason", ""))[:60],
@@ -634,12 +645,67 @@ def run_saved_report(directory=".", *, now=None, key=None, transport=None, resum
     return report
 
 
+def development_probe(directory, ticker, authorized_date, *, now=None, key=None, transport=None):
+    """Explicitly authorized, date-limited development; exactly one API call per invocation."""
+    directory = Path(directory)
+    now = stamp(now) if now else utc_now()
+    if authorized_date != now.date().isoformat():
+        raise ValueError("Development authorization expired; no API call made")
+    key = key if key is not None else os.environ.get("OPENAI_API_KEY", "")
+    if not key:
+        raise ValueError("API key missing")
+    saved = json.loads((directory/"research_report.json").read_text(encoding="utf-8"))
+    if not 0 <= (now-stamp(saved["generated_at"])).total_seconds() <= 3*86400:
+        raise ValueError("Saved input is stale")
+    shadow = json.loads((directory/"growth_recovery_shadow.json").read_text(encoding="utf-8"))
+    candidates = [{"ticker": row["ticker"], "market_cap_usd": row.get("market_cap_usd"),
+                   "current_price": row.get("observed_price")} for row in shadow.get("records", [])]
+    scope = saved.get("scan_scope") or {}
+    context = next(row for row in contexts(candidates, saved["candidates"], scope.get("disclosure_watch"),
+                   scope.get("growth_recovery_shadow"), now) if row["ticker"] == ticker)
+    state_path = directory/"ai_research_state.json"
+    state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"days": {}, "cache": {}}
+    daily = state["days"].setdefault(now.date().isoformat(), {"tickers": [], "requests": 0})
+    calls = 0
+    def request(payload):
+        nonlocal calls
+        if calls:
+            raise ValueError("Development probe limited to one call")
+        calls += 1
+        daily["requests"] += 1
+        daily.setdefault("development_requests", []).append({"ticker": ticker, "authorized_date": authorized_date})
+        atomic_json(state_path, state)
+        data = (transport or (lambda p: post_response(p, key)))(payload)
+        preserve_response(directory, ticker, data, now)
+        daily.setdefault("responses", []).append({"ticker": ticker, "development": True,
+            "status": data.get("status"), "incomplete_details": data.get("incomplete_details"), "usage": data.get("usage")})
+        atomic_json(state_path, state)
+        return data
+    try:
+        result = research_one(context, now, request, single_pass=True)
+        state["cache"][ticker] = {**result, "reviewed_at": now.isoformat(), "fingerprint": context["fingerprint"]}
+        atomic_json(state_path, state)
+        status = {"status": "VALIDATED", "ticker": ticker}
+    except Exception as exc:
+        # Source prompts contain only public company material, but never log provider exceptions.
+        status = {"status": "REJECTED", "ticker": ticker,
+                  "reason": str(exc) if isinstance(exc, (ValueError, APIError)) else type(exc).__name__}
+    atomic_json(directory/"ai_development_probe.json", status)
+    print(json.dumps(status), flush=True)
+    return status
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Research fresh saved scan data without sending mail or recording trades")
     parser.add_argument("--saved-report-dir", default=".")
     parser.add_argument("--resume-incomplete", action="store_true", help="One repair call per incomplete company within the existing daily limit")
+    parser.add_argument("--development-probe", help="One company, one paid diagnostic call; needs same-day explicit authorization")
+    parser.add_argument("--authorized-date", help="UTC date of explicit development authorization; expires after this date")
     args = parser.parse_args()
+    if args.development_probe:
+        result = development_probe(args.saved_report_dir, args.development_probe, args.authorized_date)
+        raise SystemExit(0 if result["status"] == "VALIDATED" else 1)
     result = run_saved_report(args.saved_report_dir, resume_incomplete=args.resume_incomplete)
     print(json.dumps({key: result.get(key) for key in
           ("status", "requests_today", "companies_attempted_today", "failures")}, indent=2))

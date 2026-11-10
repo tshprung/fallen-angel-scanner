@@ -99,6 +99,7 @@ jobs:
             ai_research.json
             ai_research.md
             ai_research_state.json
+            ai_research_drafts.json
 
       - name: Commit scanner state
         run: |
@@ -115,6 +116,7 @@ jobs:
           git add disclosure_watch.json disclosure_watch.md disclosure_watch_state.json 2>/dev/null || true
           git add growth_recovery_shadow.json growth_recovery_shadow.md growth_recovery_shadow_history.json 2>/dev/null || true
           git add ai_research.json ai_research.md ai_research_state.json 2>/dev/null || true
+          git add ai_research_drafts.json 2>/dev/null || true
           if [ -d logs ]; then
             git add logs/*.txt 2>/dev/null || true
           fi

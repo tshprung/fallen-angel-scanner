@@ -40,7 +40,8 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PYTHONUNBUFFERED: '1'
-        run: python -u ai_research.py --resume-incomplete
+        # Explicit user authorization for development checks today; expires automatically.
+        run: python -u ai_research.py --development-probe TTD --authorized-date 2026-11-10
       - name: Preserve AI reservations even on failure
         if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
         uses: actions/cache/save@v4
@@ -57,12 +58,14 @@ jobs:
             ai_research.md
             ai_research_state.json
             ai_email_preview.html
+            ai_research_drafts.json
+            ai_development_probe.json
       - name: Save research and budget without touching selections or paper state
         if: always() && steps.ai-state.outcome == 'success'
         run: |
           git config user.name "fallen-angel-bot"
           git config user.email "bot@fallen-angel"
-          for path in ai_research.json ai_research.md ai_research_state.json; do
+          for path in ai_research.json ai_research.md ai_research_state.json ai_research_drafts.json ai_development_probe.json; do
             if [ -f "$path" ]; then git add "$path"; fi
           done
           if ! git diff --cached --quiet; then
