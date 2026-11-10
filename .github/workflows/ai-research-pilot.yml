@@ -40,7 +40,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PYTHONUNBUFFERED: '1'
-        run: python -u ai_research.py
+        run: python -u ai_research.py --resume-incomplete
       - name: Preserve AI reservations even on failure
         if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
         uses: actions/cache/save@v4

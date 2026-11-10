@@ -247,3 +247,36 @@ def test_main_integrates_pilot_without_turning_briefs_into_selections(monkeypatc
     saved = json.loads((tmp_path/"research_report.json").read_text())
     assert saved["selected_tickers"] == [] and saved["scan_scope"]["ai_research"]["status"] == "DISABLED_NO_KEY"
     assert not (tmp_path/"paper_tracking.json").exists()
+
+
+def test_incomplete_output_records_usage_and_explicit_repair_cannot_exceed_allowance(tmp_path):
+    incomplete = {"status": "incomplete", "incomplete_details": {"reason": "max_output_tokens"},
+                  "usage": {"input_tokens": 200, "output_tokens": 5000}, "output": []}
+    report = ai.run_research(*inputs(), None, None, tmp_path, now=NOW, key="test", transport=lambda _: incomplete)
+    assert report["failures"][0]["error"] == "INCOMPLETE_MAX_OUTPUT_TOKENS"
+    state = json.loads((tmp_path/"ai_research_state.json").read_text())
+    assert state["days"]["2026-11-10"]["responses"][0]["usage"]["output_tokens"] == 5000
+    research, extraction = responses()
+    combined = deepcopy(research)
+    combined["output"][-1]["content"][0]["text"] = extraction["output"][0]["content"][0]["text"]
+    payloads = []
+    def transport(payload):
+        payloads.append(payload)
+        return combined
+    result = ai.run_research(*inputs(), None, None, tmp_path, now=NOW, key="test",
+                             transport=transport, resume_incomplete=True)
+    assert result["requests_today"] == 2 and len(payloads) == 1
+    assert payloads[0]["text"]["format"]["strict"] and payloads[0]["tools"]
+    assert result["shortlist"]
+    ai.run_research(*inputs(), None, None, tmp_path, now=NOW, key="test", resume_incomplete=True,
+                    transport=lambda _: pytest.fail("No repeated repair or extra requests"))
+
+
+def test_global_auth_failure_stops_other_company_requests(tmp_path):
+    calls = []
+    def transport(payload):
+        calls.append(payload)
+        raise ai.APIError("HTTP_401")
+    result = ai.run_research(*inputs(("ONE", "TWO", "THREE")), None, None, tmp_path,
+                             now=NOW, key="test", transport=transport)
+    assert len(calls) == 1 and result["requests_today"] == 1

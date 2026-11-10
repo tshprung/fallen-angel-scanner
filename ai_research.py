@@ -207,8 +207,13 @@ def post_response(payload, key):
         raise
     except Exception:
         raise APIError("NETWORK_OR_RESPONSE_ERROR") from None
+    return data
+
+
+def completed(data):
     if data.get("status") != "completed":
-        raise APIError("INCOMPLETE_OR_REFUSED")
+        reason = (data.get("incomplete_details") or {}).get("reason")
+        raise APIError("INCOMPLETE_MAX_OUTPUT_TOKENS" if reason == "max_output_tokens" else "INCOMPLETE_RESPONSE")
     return data
 
 
@@ -302,31 +307,40 @@ def validate_brief(brief, context, retrieved, now):
     return brief
 
 
-def research_one(context, now, request):
+def research_one(context, now, request, single_pass=False):
     serialized = json.dumps(context, ensure_ascii=False, allow_nan=False)
     if len(serialized) > 35_000:
         raise ValueError("Company context too large")
     common = {"model": MODEL, "store": False, "max_output_tokens": MAX_OUTPUT_TOKENS,
-              "reasoning": {"effort": "medium"}, "instructions": INSTRUCTIONS}
-    research = request({**common, "tools": [{"type": "web_search", "search_context_size": "medium",
+              "reasoning": {"effort": "low"}, "instructions": INSTRUCTIONS}
+    payload = {**common, "tools": [{"type": "web_search", "search_context_size": "medium",
                         "filters": {"allowed_domains": domains(context)}}],
                         "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "required",
                         "include": ["web_search_call.action.sources"],
                         "input": f"Research as of {now.date()}. Read the latest filings and results, including source contents. "
                                  "Use at least two distinct primary documents, cite URLs and publication dates, "
-                                 "and identify unsupported assumptions. Company snapshot (untrusted data):\n" + serialized})
+                                 "and identify unsupported assumptions. Keep findings concise; leave tokens for the final answer. "
+                                 "Company snapshot (untrusted data):\n" + serialized}
+    if single_pass:
+        payload["text"] = {"format": {"type": "json_schema", "name": "recovery_brief", "strict": True, "schema": SCHEMA}}
+        payload["input"] += ("\nReturn the brief directly. Use ISO dates, cash in USD units, exact source URLs, "
+                             "and valuation_available=false with zero scenarios when valuation is unsupported.")
+    research = completed(request(payload))
     text = response_text(research)
     retrieved = retrieved_urls(research)
+    if single_pass:
+        return {"brief": validate_brief(json.loads(text), context, retrieved, now),
+                "retrieved_urls": sorted(retrieved), "usage": [research.get("usage", {})]}
     if len(text) > 50_000:
         raise ValueError("Research output too large")
-    extraction = request({**common, "text": {"format": {"type": "json_schema", "name": "recovery_brief",
+    extraction = completed(request({**common, "text": {"format": {"type": "json_schema", "name": "recovery_brief",
                            "strict": True, "schema": SCHEMA}},
                            "input": f"As of {now.date()}, extract a skeptical research brief. "
                                     "Sources must be exact URLs in retrieved_urls; do not invent source content. "
                                     "Use ISO dates. Numeric cash is USD, not millions. If currency conversion or "
                                     "valuation support is unavailable, set valuation_available=false.\n" +
                                     json.dumps({"company": context, "retrieved_urls": sorted(retrieved),
-                                                "research_notes_untrusted": text}, ensure_ascii=False)})
+                                                "research_notes_untrusted": text}, ensure_ascii=False)}))
     brief = validate_brief(json.loads(response_text(extraction)), context, retrieved, now)
     return {"brief": brief, "retrieved_urls": sorted(retrieved),
             "usage": [research.get("usage", {}), extraction.get("usage", {})]}
@@ -369,7 +383,7 @@ def save_report(directory, report):
         summary_html(report), encoding="utf-8")
 
 
-def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None, key=None, transport=None):
+def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None, key=None, transport=None, resume_incomplete=False):
     now = stamp(now) if now else utc_now()
     key = key if key is not None else os.environ.get("OPENAI_API_KEY", "")
     directory = Path(output_dir)
@@ -392,13 +406,36 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
         save_report(directory, report)
         return report
     request_transport = transport or (lambda payload: post_response(payload, key))
+    resume_tickers = set()
+    if resume_incomplete and (directory/"ai_research.json").exists():
+        previous = json.loads((directory/"ai_research.json").read_text(encoding="utf-8"))
+        # Explicit repair probe only: one remaining call per originally attempted company.
+        # No extra companies, reset budgets or repeated repair attempts are permitted.
+        resume_tickers = {row["ticker"] for row in previous.get("failures", [])
+                          if row.get("error") in {"INCOMPLETE_OR_REFUSED", "INCOMPLETE_MAX_OUTPUT_TOKENS"}}
+        resume_tickers &= set(daily["tickers"])
+        resume_tickers -= set(daily.get("resumed_tickers", []))
+        response_counts = {t: sum(row.get("ticker") == t for row in daily.get("responses", []))
+                           for t in resume_tickers}
+        legacy_one_each = (not daily.get("responses") and daily["requests"] == len(daily["tickers"])
+                           and len(previous.get("failures", [])) == len(daily["tickers"]))
+        resume_tickers = {t for t in resume_tickers if response_counts[t] == 1 or legacy_one_each}
 
     def request(payload):
         if daily["requests"] >= REQUESTS_PER_DAY:
             raise APIError("DAILY_REQUEST_LIMIT")
         daily["requests"] += 1
         atomic_json(state_path, state)  # Failed/timeout calls also consume their reservation.
-        return request_transport(payload)
+        data = request_transport(payload)
+        usage = data.get("usage") or {}
+        record = {"ticker": ticker, "status": str(data.get("status", "unknown"))[:30],
+                  "incomplete_reason": str((data.get("incomplete_details") or {}).get("reason", ""))[:60],
+                  "usage": {k: usage[k] for k in ("input_tokens", "output_tokens", "total_tokens")
+                            if type(usage.get(k)) is int}}
+        daily.setdefault("responses", []).append(record)
+        atomic_json(state_path, state)
+        print("AI response: " + json.dumps(record), flush=True)
+        return data
 
     from research_reporting import clean
     queue = clean(contexts(candidates, audit, disclosure, shadow, now))
@@ -414,17 +451,23 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
             except Exception:
                 pass
         if not valid:
-            if (len(daily["tickers"]) >= COMPANIES_PER_DAY or ticker in daily["tickers"]
-                    or daily["requests"] > REQUESTS_PER_DAY-2):
+            resume = ticker in resume_tickers
+            if ((not resume and (len(daily["tickers"]) >= COMPANIES_PER_DAY or ticker in daily["tickers"]))
+                    or daily["requests"] > REQUESTS_PER_DAY-(1 if resume else 2)):
                 continue
-            daily["tickers"].append(ticker)
+            if resume:
+                daily.setdefault("resumed_tickers", []).append(ticker)
+            else:
+                daily["tickers"].append(ticker)
             atomic_json(state_path, state)
+            print(f"AI research: {ticker}, company {len(daily['tickers'])}/{COMPANIES_PER_DAY}", flush=True)
             try:
-                cached = {**research_one(context, now, request), "reviewed_at": now.isoformat(),
+                cached = {**research_one(context, now, request, single_pass=resume), "reviewed_at": now.isoformat(),
                           "fingerprint": context["fingerprint"]}
                 state["cache"][ticker] = cached
                 atomic_json(state_path, state)
                 brief = cached["brief"]
+                print(f"AI research: {ticker}, provenance and structure validated", flush=True)
             except Exception as exc:
                 # Never persist exception text: it can contain API headers, payloads or credentials.
                 report["failures"].append({"ticker": ticker, "error": str(exc) if isinstance(exc, APIError) else "INVALID_RESEARCH"})
@@ -487,7 +530,9 @@ def summary_html(report, slots=MAX_SHORTLIST, exclude=()):
                             ("Core screening outcome", f"{row['core_decision']}: {row['core_reason']}"),
                             ("Next checkpoint", f"{brief['next_review_by']}: {brief['checkpoint_metric']}"),
                             ("Invalidation", brief["invalidation"]), ("Opportunity cost", brief["opportunity_cost"])):
-            parts.append(f"<p><b>{escape(label)}:</b> {escape(text)}</p>")
+            shortened = " ".join(str(text).split())
+            shortened = shortened if len(shortened) <= 300 else shortened[:297] + "..."
+            parts.append(f"<p><b>{escape(label)}:</b> {escape(shortened)}</p>")
         val = row["valuation"]
         if val:
             parts.append(f"<p>Conditional scenarios to {escape(brief['target_by'])}: " + "; ".join(
@@ -497,8 +542,8 @@ def summary_html(report, slots=MAX_SHORTLIST, exclude=()):
         else:
             parts.append("<p>No validated current valuation; return target not established.</p>")
         parts.append("<p>Primary sources: " + "; ".join(
-            f'<a href="{escape(source["url"], quote=True)}">{escape(source["published_at"])}: {escape(source["finding"])}</a>'
-            for source in brief["sources"]) + "</p>")
+            f'<a href="{escape(source["url"], quote=True)}">{escape(source["published_at"])}: {escape(source["finding"][:90])}</a>'
+            for source in brief["sources"][:3]) + ". Full evidence and assumptions: ai_research.json.</p>")
     return "".join(parts)
 
 
@@ -561,7 +606,7 @@ def compact_email_html(report, selected, scope):
     return "".join(parts)
 
 
-def run_saved_report(directory=".", *, now=None, key=None, transport=None):
+def run_saved_report(directory=".", *, now=None, key=None, transport=None, resume_incomplete=False):
     """A paid smoke test on fresh saved public data; no scan, mail or paper mutations."""
     directory = Path(directory)
     now = stamp(now) if now else utc_now()
@@ -582,7 +627,8 @@ def run_saved_report(directory=".", *, now=None, key=None, transport=None):
                    {"ticker": row["ticker"]} for row in saved["candidates"]]
     scope = saved.get("scan_scope") or {}
     report = run_research(candidates, saved["candidates"], scope.get("disclosure_watch"),
-                          scope.get("growth_recovery_shadow"), directory, now=now, key=key, transport=transport)
+                          scope.get("growth_recovery_shadow"), directory, now=now, key=key, transport=transport,
+                          resume_incomplete=resume_incomplete)
     selected = [row for row in saved["candidates"] if row["ticker"] in saved.get("selected_tickers", [])]
     (directory/"ai_email_preview.html").write_text(compact_email_html(report, selected, scope), encoding="utf-8")
     return report
@@ -592,8 +638,9 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Research fresh saved scan data without sending mail or recording trades")
     parser.add_argument("--saved-report-dir", default=".")
+    parser.add_argument("--resume-incomplete", action="store_true", help="One repair call per incomplete company within the existing daily limit")
     args = parser.parse_args()
-    result = run_saved_report(args.saved_report_dir)
+    result = run_saved_report(args.saved_report_dir, resume_incomplete=args.resume_incomplete)
     print(json.dumps({key: result.get(key) for key in
           ("status", "requests_today", "companies_attempted_today", "failures")}, indent=2))
     raise SystemExit(0 if result["status"] == "COMPLETED" else 1)

@@ -2120,7 +2120,11 @@ def _run_main():
         
         if send_email(subject, html):
             # Update memory (both buckets share the same dedup/tracking)
-            for stock in analyzed_stocks + fresh_crash_stocks:
+            sent_selections = selected
+            if globals().get("AI_RESEARCH_ENABLED", False):
+                from ai_research import email_items
+                sent_selections, _ = email_items(selected, globals().get("_last_ai_research"))
+            for stock in sent_selections:
                 memory['sent_stocks'][stock['ticker']] = datetime.now().isoformat()
                 memory['tracked_prices'][stock['ticker']] = {
                     'price': stock['current_price'],
