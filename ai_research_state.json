@@ -6,7 +6,44 @@
         "SANM",
         "BOOT"
       ],
-      "requests": 3
+      "requests": 6,
+      "resumed_tickers": [
+        "TTD",
+        "SANM",
+        "BOOT"
+      ],
+      "responses": [
+        {
+          "ticker": "TTD",
+          "status": "completed",
+          "incomplete_reason": "",
+          "usage": {
+            "input_tokens": 16531,
+            "output_tokens": 2015,
+            "total_tokens": 18546
+          }
+        },
+        {
+          "ticker": "SANM",
+          "status": "completed",
+          "incomplete_reason": "",
+          "usage": {
+            "input_tokens": 21941,
+            "output_tokens": 2741,
+            "total_tokens": 24682
+          }
+        },
+        {
+          "ticker": "BOOT",
+          "status": "completed",
+          "incomplete_reason": "",
+          "usage": {
+            "input_tokens": 16718,
+            "output_tokens": 2243,
+            "total_tokens": 18961
+          }
+        }
+      ]
     }
   },
   "cache": {}
