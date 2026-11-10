@@ -6,7 +6,7 @@
         "SANM",
         "BOOT"
       ],
-      "requests": 16,
+      "requests": 18,
       "resumed_tickers": [
         "TTD",
         "SANM",
@@ -224,6 +224,44 @@
             },
             "total_tokens": 31380
           }
+        },
+        {
+          "ticker": "SANM",
+          "development": true,
+          "model": "gpt-5.4-mini-2026-03-17",
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 32140,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens": 2317,
+            "output_tokens_details": {
+              "reasoning_tokens": 1436
+            },
+            "total_tokens": 34457
+          }
+        },
+        {
+          "ticker": "SANM",
+          "development": true,
+          "model": "gpt-5.4-2026-03-05",
+          "status": "completed",
+          "incomplete_details": null,
+          "usage": {
+            "input_tokens": 31891,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 4608
+            },
+            "output_tokens": 4279,
+            "output_tokens_details": {
+              "reasoning_tokens": 2096
+            },
+            "total_tokens": 36170
+          }
         }
       ],
       "development_requests": [
@@ -257,6 +295,14 @@
         },
         {
           "ticker": "BOOT",
+          "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "SANM",
+          "authorized_date": "2026-11-10"
+        },
+        {
+          "ticker": "SANM",
           "authorized_date": "2026-11-10"
         },
         {
@@ -402,99 +448,152 @@
     "SANM": {
       "brief": {
         "ticker": "SANM",
-        "verdict": "FOLLOW_UP",
-        "thesis": "Sanmina’s latest quarter shows strong post-ZT cash generation, but the recovery case is not yet valuation-supported: the business is producing substantial cash, leverage is manageable on a reported basis, and covenant headroom appears adequate, yet the 2030 term-loan maturity, uncommitted receivables facilities, and ZT integration remain the key proof points before any 50%+ recovery conclusion. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))",
-        "decline_reason": "The share-price weakness in the snapshot is not matched by filing evidence of an operational collapse; instead, the main issue is that the recovery thesis would require unsupported assumptions about sustained ZT synergies, refinancing conditions, and multiple expansion. Missing valuation support is the binding gap, not an obvious solvency stress. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))",
-        "temporary_vs_structural": "Evidence points more to a temporary integration/financing transition than a structural demand break: Q4/FY26 revenue and cash flow were strong, but the company itself flags ZT benefits, cloud/AI demand, tariffs, and customer concentration as ongoing risks. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))",
-        "financial_resilience": "FY26 CFO was $944 million and free cash flow was $541 million, with $1.68 billion cash at quarter-end. On the June 27, 2026 10-Q, interest coverage covenant floor was 3.0x and total net leverage cap was 4.0x, and management said it was in compliance. The 10-Q also shows $702 million of operating cash flow for the nine months ended June 27, 2026, plus $486.7 million of receivables sold in the same period and $1.1 billion maximum outstanding under the RPA framework. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))",
-        "competition_and_technology": "Sanmina describes itself as serving cloud/AI infrastructure, communications, industrial, medical, defense and automotive end markets; the filings do not provide enough evidence to conclude durable pricing power or insulation from technology substitution, so that remains unproven. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "thesis": "Fact-checking the current primary filings supports that Sanmina is operating from a position of material scale and positive cash generation, but the preliminary notes overstate what is actually verified for a supported recovery case. The key correction is debt timing: Amendment No. 5, disclosed in the 2026-11-09 8-K, extends the revolver, term A and delayed-draw term A to 2031-10-28 and resets term-A amortization from 2027-03, so the older 2026-06-27 maturity table is stale for those facilities. However, the same current 8-K does not provide a post-amendment covenant calculation, does not restate full debt composition including exact term-B maturity in the amended structure, and does not provide enough detail on receivables-sale usage, working-capital normalization, or acquisition integration to underwrite a source-supported 50% equity recovery case.",
+        "decline_reason": "The recent share decline may reflect concern that post-acquisition growth, cash conversion and margin durability are not yet fully proven after ZT integration, while debt remains elevated versus the pre-deal structure and the latest filed package does not quantify covenant headroom under the amended facilities.",
+        "temporary_vs_structural": "Evidence supports a temporary financing extension rather than an immediate maturity wall: the 2026-11-09 8-K says Amendment No. 5 extended the $1.5 billion revolver, term A and delayed-draw term A to 2031-10-28 and funded an additional $70 million term A tranche, with term-A amortization restarting at low annual rates before stepping up later. But structural risks remain because the business now carries acquisition-related debt, contingent consideration from the ZT deal, elevated inventory and customer-advance balances, and significant acquisition/integration charges in FY2026. I cannot verify from current primary filings that these are cleanly temporary rather than partly structural.",
+        "financial_resilience": "Primary filings support resilience, but not a full five-year proof set. The 2025 10-K shows cash from operations of USD 621000000 in FY2025, USD 340000000 in FY2024 and USD 235000000 in FY2023, with capital expenditures of USD 147000000 in FY2025, USD 111000000 in FY2024 and USD 191000000 in FY2023. The 2026-11-09 earnings exhibit reports FY2026 operating cash flow of USD 944000000 and free cash flow of USD 541000000. That is strong recent cash generation. Still, working capital is a major driver: the 2025 10-K explicitly says quarterly cash flow is affected by receivables factoring, supplier terms and customer advances; the 2026-06-27 10-Q says the receivables purchase agreement is uncommitted and that up to USD 1100000000 of sold receivables could be outstanding at one time as of 2026-06-27. So recent cash conversion is real, but not fully normalized.",
+        "competition_and_technology": "The current earnings exhibit frames Sanmina as exposed to cloud and AI infrastructure demand and notes the strategic effect of integrating ZT Systems. That supports a possible demand tailwind, but the same filing also warns that benefits from the ZT acquisition may not be realized on time, that tariffs and trade policy may raise costs or hurt demand, and that customer concentration remains material. Based on the documents retrieved, I cannot independently validate durable pricing power versus competition or the permanence of AI-related demand strength.",
         "risks": [
-          "$2.2 billion of loans were outstanding as of June 27, 2026, including a $1.5 billion revolver and $600 million Term Loan A availability; the main unsecured-looking cushion is still dependent on continued access to facilities and cash generation. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))",
-          "The term-loan maturity schedule shows a 2030 concentration of $444 million plus remaining balances extending to 2032, which is manageable but still needs refinancing execution. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))",
-          "Receivables sales are helpful but not guaranteed; the RPA is uncommitted and subject to bank/customer approval. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))",
-          "ZT integration is explicitly called out as a major forward-looking risk by management. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))"
+          "Post-amendment covenant headroom is not quantified in the current 2026-11-09 filing.",
+          "Receivables-sale capacity is uncommitted and therefore not equivalent to cash on hand.",
+          "Working-capital support from deferred revenue/customer advances and supplier terms may not repeat at the same level.",
+          "Acquisition, integration and other charges were USD 221176000 in FY2026, indicating integration is still material.",
+          "ZT acquisition includes up to USD 450000000 of contingent cash consideration over three years, which could consume future equity cash.",
+          "The 2026-11-09 filing resets term-A amortization and adds USD 70000000 of term-A borrowings, so deleveraging is not purely organic.",
+          "Restricted cash existed at 2026-06-27, so gross liquidity should not be read as fully fungible cash.",
+          "Lease expense exists, and leases should not be conflated with funded debt when assessing leverage or maturity risk."
         ],
         "unresolved": [
-          "No filing-based valuation framework supports a 50% recovery case from the observed price; multiple and terminal cash-flow assumptions would be speculative.",
-          "No sourced evidence yet that the post-ZT cash conversion rate is durable beyond FY26.",
-          "No primary-source evidence here establishes a comparable historical price anchor as fair value rather than merely a past trading point.",
-          "No filing excerpt here quantifies covenant headroom under a stress case or demonstrates refinancing terms for the 2030 maturity."
+          "No primary-source post-Amendment No. 5 leverage-ratio or interest-coverage calculation was retrieved.",
+          "No current filing retrieved gives a full post-amendment contractual maturity table for all funded debt, especially exact term-B timing under the amended stack.",
+          "I did not retrieve a primary-source comparable historical price series sufficient to support a post-split/post-spin comparison from current price to a prior verified level.",
+          "No retrieved filing quantified receivables sold outstanding at 2026-10-03, only the 2026-06-27 maximum capacity under the program.",
+          "No retrieved filing gave enough detail to normalize equity cash after all integration costs, possible acquisition-related working-capital swings and future contingent consideration.",
+          "No retrieved filing disclosed capitalized software detail relevant to cash-quality adjustment.",
+          "Five-year resilience is not fully evidenced from the documents retrieved; I verified four fiscal years of cash-flow context, not a complete five-year operating history."
         ],
-        "catalyst": "Near-term catalyst is execution on FY27 guidance and continued cash conversion after ZT integration, with the company already guiding FY27 revenue of $17.5 billion-$19.5 billion and non-GAAP EPS of $15.50-$17.50. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))",
-        "invalidation": "The thesis weakens if cash conversion falls materially, receivables funding tightens, or leverage/covenant headroom compresses before refinancing the 2030 maturity. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))",
-        "next_review_by": "2027-01-15",
-        "checkpoint_metric": "FY27 Q1/FY27 guidance execution versus FY26: revenue, CFO, and net leverage under the 3.0x / 4.0x covenant framework.",
-        "opportunity_cost": "A speculative recovery bet here competes with situations where valuation support is explicit; here, upside is business-quality driven but not yet valuation-validated.",
-        "target_by": "2027-02-08",
+        "catalyst": "Near-term catalyst exists only as a follow-up checkpoint, not a supported re-rating case: the next periodic filing for the quarter ending 2027-01-02 should disclose the full Amendment No. 5 exhibit, updated debt maturities, any covenant math, and whether FY2027 guidance is converting into cash without unusually large receivables sales or working-capital support.",
+        "invalidation": "A skeptical recovery thesis would be undermined if the next periodic filing shows weaker cash conversion, materially higher receivables-sale reliance, tighter covenant headroom than implied, further debt increases, or integration costs staying elevated without corresponding margin improvement.",
+        "next_review_by": "2027-02-08",
+        "checkpoint_metric": "By the next periodic filing, verify: funded debt by tranche versus leases; exact post-amendment maturity schedule; covenant definitions and actual ratio headroom; receivables sold outstanding at 2027-01-02; quarterly operating cash flow versus capex; and whether acquisition/integration charges are declining from FY2026 levels.",
+        "opportunity_cost": "Without a sourced valuation framework or verified covenant headroom, capital committed here would compete against better-documented opportunities where debt, cash quality and recovery mechanics are easier to underwrite from primary filings.",
+        "target_by": "2027-11-10",
         "valuation_available": false,
         "bear": {
           "annual_equity_cash_usd": 0,
           "multiple": 0,
           "dilution_pct": 0,
-          "rationale": "No credible sourced valuation. The bear case would require unsupported assumptions about refinancing stress, receivables availability, and terminal multiple compression.",
-          "source_ids": []
+          "rationale": "No credible primary-source valuation support was retrieved. Current filings provide operating and financing facts, but not enough verified inputs to defend a bear equity-cash valuation scenario without inventing assumptions.",
+          "source_ids": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ]
         },
         "base": {
           "annual_equity_cash_usd": 0,
           "multiple": 0,
           "dilution_pct": 0,
-          "rationale": "No credible sourced valuation. Base case cannot be parameterized from primary sources alone without inventing a cash-flow multiple or dilution assumption.",
-          "source_ids": []
+          "rationale": "No credible primary-source valuation support was retrieved. A 50% recovery case would require supported assumptions for normalized cash conversion, covenant headroom, debt service and integration outcomes that are not fully disclosed in the documents reviewed.",
+          "source_ids": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ]
         },
         "recovery": {
           "annual_equity_cash_usd": 0,
           "multiple": 0,
           "dilution_pct": 0,
-          "rationale": "No credible sourced valuation. A 50%+ recovery scenario would require unsupported assumptions about sustained ZT synergies and market multiple expansion.",
-          "source_ids": []
+          "rationale": "Management guidance alone is not enough. The retrieved filings do not provide a source-supported path from current fundamentals to a defensible recovery valuation, so scenario numerics are intentionally set to zero.",
+          "source_ids": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ]
         },
         "sources": [
           {
             "id": "S1",
-            "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm",
             "published_at": "2026-11-09",
-            "finding": "FY26 results: revenue $14.53 billion, CFO $944 million, FCF $541 million, quarter-end cash $1.68 billion, and FY27 outlook disclosed."
+            "finding": "Current 8-K discloses Amendment No. 5 dated 2026-10-27: USD 70000000 incremental term A funded; revolver, term A and delayed-draw term A extended to 2031-10-28; delayed-draw availability extended to 2027-04-27; pricing moved to ratings-based grid; term-A amortization reset."
           },
           {
             "id": "S2",
+            "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm",
+            "published_at": "2026-11-09",
+            "finding": "Earnings exhibit reports Q4 FY2026 revenue USD 3860000000, FY2026 revenue USD 14530000000, FY2026 operating cash flow USD 944000000, FY2026 free cash flow USD 541000000, Q4 ending cash and cash equivalents USD 1675641000, short-term debt USD 172000000 and long-term debt USD 1915528000; FY2026 acquisition, integration and other charges were USD 221176000."
+          },
+          {
+            "id": "S3",
             "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm",
             "published_at": "2026-07-27",
-            "finding": "June 27, 2026 10-Q: cash about $1.8 billion, $2.2 billion debt outstanding, covenant requirements (3.0x interest coverage / 4.0x net leverage), receivables sale program, and term-loan maturity schedule through 2032."
+            "finding": "10-Q for 2026-06-27 shows pre-Amendment-No.-5 debt schedule and liquidity detail: cash and cash equivalents USD 1844942000, restricted cash and restricted cash equivalents USD 42277000, total debt USD 2200000000, current debt USD 215000000, receivables purchase agreement is uncommitted, up to USD 1100000000 of sold receivables could be outstanding, and credit facilities contain leverage and interest coverage covenants."
+          },
+          {
+            "id": "S4",
+            "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/sanm-20250927.htm",
+            "published_at": "2025-11-13",
+            "finding": "FY2025 10-K provides historical resilience and financing context: operating cash flow was USD 621000000 in FY2025, USD 340000000 in FY2024 and USD 235000000 in FY2023; capital expenditures were USD 147000000 in FY2025 and USD 111000000 in FY2024; the filing also states cash flow is affected by receivables factoring, supplier terms and customer advances, and describes the ZT acquisition financing including up to USD 450000000 of contingent cash consideration."
           }
         ]
       },
       "retrieved_urls": [
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanm-20260727.htm",
+        "https://www.sec.gov/Archives/edgar/data/1043337/000104333726000040/sri-20251231x10kxars.pdf",
+        "https://www.sec.gov/Archives/edgar/data/1418121/000119312526335151/R13.htm",
+        "https://www.sec.gov/Archives/edgar/data/1474735/000143774926034665/R20.htm",
+        "https://www.sec.gov/Archives/edgar/data/1649744/000119312526165278/d122165dars.pdf",
+        "https://www.sec.gov/Archives/edgar/data/1655050/000119312526342491/R25.htm",
+        "https://www.sec.gov/Archives/edgar/data/1968487/000119312526352313/d163827dars.pdf",
+        "https://www.sec.gov/Archives/edgar/data/20212/000002021226000084/R13.htm",
+        "https://www.sec.gov/Archives/edgar/data/67347/000110465926075698/mod-20260331xars.pdf",
+        "https://www.sec.gov/Archives/edgar/data/863436/000119312526161736/2025_ars.pdf",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/0000897723-25-000042-index-headers.html",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/sanm-20250927.htm",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000004/ex_992xunauditedproforma.htm",
         "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanmina_exx991xjune272026.htm",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/0000897723-26-000037-index-headers.html",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/0000897723-26-000037-index.htm",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/FilingSummary.xml",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/R1.htm",
         "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627_htm.xml",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanmina_ex311x20260627.htm",
-        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/FilingSummary.xml",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanmina_ex1027x20260627.htm",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000041/0000897723-26-000041-index.html",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000041/R1.htm",
         "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm",
+        "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027_htm.xml",
         "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm",
-        "https://www.sec.gov/Archives/edgar/data/897723/000130817926000017/sanm_courtesy-pdf.pdf",
-        "https://www.sec.gov/files/investment/13flist2025q3.pdf"
+        "https://www.sec.gov/Archives/edgar/data/897723/000130817926000017/sanm_courtesy-pdf.pdf"
       ],
       "usage": [
         {
-          "input_tokens": 24305,
+          "input_tokens": 32140,
           "input_tokens_details": {
             "cache_write_tokens": 0,
-            "cached_tokens": 4480
+            "cached_tokens": 0
           },
-          "output_tokens": 2357,
+          "output_tokens": 2317,
           "output_tokens_details": {
-            "reasoning_tokens": 904
+            "reasoning_tokens": 1436
           },
-          "total_tokens": 26662
+          "total_tokens": 34457
+        },
+        {
+          "input_tokens": 31891,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 4608
+          },
+          "output_tokens": 4279,
+          "output_tokens_details": {
+            "reasoning_tokens": 2096
+          },
+          "total_tokens": 36170
         }
       ],
-      "reviewed_at": "2026-11-10T09:55:00.228663+00:00",
-      "fingerprint": "532002885fc633b27415e489de3556d88bbd5fbe7d35bc97ca16422727c2419d"
+      "reviewed_at": "2026-11-10T12:20:22.919236+00:00",
+      "fingerprint": "5ac619cb7c27f325fedb5a6d4d1fb19523b636ca7ec894060b3eb8c01c4fe175"
     },
     "BOOT": {
       "brief": {

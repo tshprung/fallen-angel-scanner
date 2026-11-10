@@ -1346,6 +1346,514 @@
           "total_tokens": 31380
         }
       }
+    },
+    {
+      "ticker": "SANM",
+      "received_at": "2026-11-10T12:20:22.919236+00:00",
+      "response": {
+        "status": "completed",
+        "incomplete_details": null,
+        "output": [
+          {
+            "id": "ws_0587d798410ef9bf016af30c090e4087d1bf27a668b4557883",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "search",
+              "queries": [
+                "site:sec.gov Sanmina 8-K November 2026 results outlook 2026 10-Q 2026 8-K",
+                "site:sec.gov Sanmina 10-Q 2026 06 27 sec",
+                "site:sec.gov Sanmina 8-K 2026 11 09 earnings release exhibit"
+              ],
+              "query": "site:sec.gov Sanmina 8-K November 2026 results outlook 2026 10-Q 2026 8-K",
+              "sources": [
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/0000897723-26-000037-index.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/FilingSummary.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/R1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanmina_exx991xjune272026.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/0000897723-26-000037-index-headers.html"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanm-20260727.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627_htm.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanmina_ex311x20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000041/0000897723-26-000041-index.html"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000130817926000017/sanm_courtesy-pdf.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/files/investment/13flist2026q1.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/63908/000006390826000067/form8k06302026.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/40704/000162828026063201/gmi-20260923x10q.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/files/investment/13flist2025q3.pdf"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ws_0587d798410ef9bf016af30c0b3bd487d1a84c15fe4305f417",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm"
+            }
+          },
+          {
+            "id": "ws_0587d798410ef9bf016af30c0c6ddc87d18012c0b001d0e9b3",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "2030",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+            }
+          },
+          {
+            "id": "ws_0587d798410ef9bf016af30c0df2b087d1a0098934c4e7b754",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "search",
+              "queries": [
+                "site:nasdaq.com SANM historical price 5 year high",
+                "site:nasdaq.com SANM stock price history 2021 2026"
+              ],
+              "query": "site:nasdaq.com SANM historical price 5 year high",
+              "sources": [
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/market-activity/stocks/sanm/historical"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/market-activity/stocks/sanm/advanced-charting"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/market-activity/quotes/historical"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/de/market-activity/stocks/sanm/historical"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/zh/market-activity/stocks/sanm/historical"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/es/market-activity/stocks/sanm/historical"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/market-activity/stocks/sanm/dividend-history"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/fr/market-activity/stocks/sanm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://dorseywright.nasdaq.com/reports/database/menu/stocktype/1/date/2026-10-19/new_all/1/rpt/90/allprice/0/all_scales/1/sourcerpt/"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/market-activity/stocks/sanm/pre-market?page=1"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/press-release/marvell-technology-and-flex-set-join-sp-500-others-join-sp-midcap-400-and-sp-smallcap"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.nasdaq.com/press-release/sanmina-reports-fourth-quarter-and-fiscal-2025-financial-results-2025-11-03"
+                },
+                {
+                  "type": "url",
+                  "url": "https://listingcenter.nasdaq.com/ViewPDF.aspx?Material_Search.aspx%3Fmcd=LQ&Print=N&cid=71&exactsearchddvalue=2&materials=272&popularfl=&searchkeywords=272&sub_cid=&years=2018%2C2017%2C2016%2C2018%2C2017%2C2016%2C2015%2C2014%2C2013%2C2012%2C2011%2C2010%2C2009%2C2008%2C2007%2C2006%2C2005%2C2004%2C2003%2C2002"
+                },
+                {
+                  "type": "url",
+                  "url": "https://listingcenter.nasdaq.com/assets/rulebook/nasdaq/filings/SR-NASDAQ-2016-175.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://attachment.news.eu.nasdaq.com/aaa55ec8fea6d2657add6ca14b7523ffd"
+                },
+                {
+                  "type": "url",
+                  "url": "https://indexes.nasdaq.com/docs/QGRD%20Presentation_2025-03.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://attachment.news.eu.nasdaq.com/a8ea6b47788b81e1d09d94be2769107fe"
+                },
+                {
+                  "type": "url",
+                  "url": "https://attachment.news.eu.nasdaq.com/ab2d7c1cf5f65c6c8258e291560f224ea"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ws_0587d798410ef9bf016af30c10cdac87d19df87ad09d8d2720",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://dorseywright.nasdaq.com/reports/database/menu/stocktype/1/date/2026-10-19/new_all/1/rpt/90/allprice/0/all_scales/1/sourcerpt/"
+            }
+          },
+          {
+            "id": "ws_0587d798410ef9bf016af30c14042887d1a7effc82378a809e",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "covenant",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+            }
+          },
+          {
+            "id": "msg_0587d798410ef9bf016af30c1874ec87d1abd46a61bd33bf28",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [
+                  {
+                    "type": "url_citation",
+                    "end_index": 520,
+                    "start_index": 410,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 968,
+                    "start_index": 872,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 1449,
+                    "start_index": 1353,
+                    "title": "sanm-20261027",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 1868,
+                    "start_index": 1772,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 2151,
+                    "start_index": 2055,
+                    "title": "sanm-20260627",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 2587,
+                    "start_index": 2425,
+                    "title": "Nasdaq Dorsey Wright",
+                    "url": "https://dorseywright.nasdaq.com/reports/database/menu/stocktype/1/date/2026-10-19/new_all/1/rpt/90/allprice/0/all_scales/1/sourcerpt/"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 3179,
+                    "start_index": 3069,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  },
+                  {
+                    "type": "url_citation",
+                    "end_index": 3631,
+                    "start_index": 3521,
+                    "title": "www.sec.gov",
+                    "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                  }
+                ],
+                "logprobs": [],
+                "text": "**Verdict: INSUFFICIENT_EVIDENCE**\n\nLatest primary filings reviewed:\n- **8-K / Exhibit 99.1, published 2026-11-09**: Sanmina reported **Q4 FY26 revenue of $3.86B**, **FY26 revenue of $14.53B**, **FY26 operating cash flow of $944M**, **FY26 free cash flow of $541M**, and **Q4 ending cash and cash equivalents of $1.68B**. It also guided **FY27 revenue to $17.5B–$19.5B** and **non-GAAP EPS to $15.50–$17.50**. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\n- **10-Q for quarter ended 2026-06-27, published 2026-07-27**: Sanmina said it had **$1.845B cash and equivalents**, **$2.2B debt outstanding**, **$600M available under Term Loan A**, **$1.5B available under the revolver**, and **$71M of foreign short-term borrowing capacity**; it also said it was **in compliance** with covenants as of quarter-end. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\n\nDebt / liquidity / covenant takeaways:\n- The post-ZT financing schedule is **not** a short-dated balance-sheet crunch: the amended credit agreement extends the revolver and Term Loan A maturity to **2031**, while **Term Loan B matures in 2032**; the term-loan amortization schedule includes a **2030 “balloon-like” step-down**, but the contractual maturity wall is still years away. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm))\n- Covenant headroom is **not fully quantified** in the filings I reviewed, but the company disclosed a **maximum total net leverage ratio of 4.0x** and **minimum cash interest coverage of 3.0x** covenant, and said it was compliant as of June 27, 2026. I did **not** find a filed post-amendment leverage ratio calculation. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\n- Receivables sales are a real liquidity source, but they are **not cash on hand**; sold receivables are removed from the balance sheet and cash is reported through operating cash flow. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm))\n\nComparable historical price:\n- The only comparable historical price I could verify from a primary market source was **$176.48 on 2026-10-19** on Nasdaq Dorsey Wright. I could not verify a full current quote history table from Nasdaq because the page data was unavailable. ([dorseywright.nasdaq.com](https://dorseywright.nasdaq.com/reports/database/menu/stocktype/1/date/2026-10-19/new_all/1/rpt/90/allprice/0/all_scales/1/sourcerpt/))\n\nUnsupported assumptions in a 50% recovery case:\n- Assuming the **FY27 outlook midpoint** is achieved without integration slippage from ZT.\n- Assuming receivables sales and working-capital conversion remain as strong as recent periods.\n- Assuming the amended facility’s covenant headroom remains adequate under stress without a filed calculation.\n- Assuming no material dilution, refinancing cost, or customer-demand setback. Those are **not** supported by the filings I reviewed. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\n\nBottom line:\n- I see **evidence of operating strength and liquidity**, but I do **not** have enough primary-source support to underwrite a **supported 50% recovery** case from here. The main missing verification is a post-amendment covenant headroom calculation and more detail on ZT integration / cash conversion after the latest quarter. ([sec.gov](https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm))\n\n**next_review_by:** 2027-02-08"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ],
+        "usage": {
+          "input_tokens": 32140,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 2317,
+          "output_tokens_details": {
+            "reasoning_tokens": 1436
+          },
+          "total_tokens": 34457
+        }
+      }
+    },
+    {
+      "ticker": "SANM",
+      "received_at": "2026-11-10T12:20:22.919236+00:00",
+      "response": {
+        "status": "completed",
+        "incomplete_details": null,
+        "output": [
+          {
+            "id": "ws_02496073be3764af016af30c1eecd887d1b95b5425445d4880",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "search",
+              "queries": [
+                "site:sec.gov Sanmina 2026 8-K November 9 2026 results financing amendment 897723",
+                "site:sec.gov Sanmina 897723 credit agreement amendment 2026 8-K term loan 2030 2031 2032",
+                "site:sec.gov Sanmina 897723 10-K 2026 filed November 2026",
+                "site:nasdaq.com SANM historical price November 2026"
+              ],
+              "query": "site:sec.gov Sanmina 2026 8-K November 9 2026 results financing amendment 897723",
+              "sources": [
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanmina_ex1027x20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027_htm.xml"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000041/0000897723-26-000041-index.html"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000041/R1.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1655050/000119312526342491/R25.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000004/ex_992xunauditedproforma.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1418121/000119312526335151/R13.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1474735/000143774926034665/R20.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/20212/000002021226000084/R13.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/863436/000119312526161736/2025_ars.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000130817926000017/sanm_courtesy-pdf.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/67347/000110465926075698/mod-20260331xars.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1649744/000119312526165278/d122165dars.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1043337/000104333726000040/sri-20251231x10kxars.pdf"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/1968487/000119312526352313/d163827dars.pdf"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ws_02496073be3764af016af30c22a2e487d18b20d1a8e2ad9390",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm"
+            }
+          },
+          {
+            "id": "ws_02496073be3764af016af30c259dfc87d1890b9a25836fa40f",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "search",
+              "queries": [
+                "site:sec.gov 897723 2025 10-K sanm-20250927.htm",
+                "site:sec.gov 897723 receivables sale 10-Q June 2026 Sanmina",
+                "site:nasdaq.com Sanmina historical stock price 2025 2026 SANM historical"
+              ],
+              "query": "site:sec.gov 897723 2025 10-K sanm-20250927.htm",
+              "sources": [
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/sanm-20250927.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanmina_exx991xjune272026.htm"
+                },
+                {
+                  "type": "url",
+                  "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/0000897723-25-000042-index-headers.html"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ws_02496073be3764af016af30c27f89087d1af5679d9b7e52350",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "open_page",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/sanm-20250927.htm"
+            }
+          },
+          {
+            "id": "ws_02496073be3764af016af30c29809c87d197b8174a93b5b330",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "Receivables Purchase Agreement",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm"
+            }
+          },
+          {
+            "id": "ws_02496073be3764af016af30c2cd8ec87d1aab66ca6f0287ede",
+            "type": "web_search_call",
+            "status": "completed",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "Cash and cash equivalents",
+              "url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm"
+            }
+          },
+          {
+            "id": "ws_02496073be3764af016af30c303cb887d19690e2e251590831",
+            "type": "web_search_call",
+            "status": "searching",
+            "action": {
+              "type": "find_in_page",
+              "pattern": "Operating lease liabilities"
+            }
+          },
+          {
+            "id": "msg_02496073be3764af016af30c47e26887d1a03501b094bce920",
+            "type": "message",
+            "status": "completed",
+            "content": [
+              {
+                "type": "output_text",
+                "annotations": [],
+                "logprobs": [],
+                "text": "{\"ticker\":\"SANM\",\"verdict\":\"INSUFFICIENT_EVIDENCE\",\"thesis\":\"Fact-checking the current primary filings supports that Sanmina is operating from a position of material scale and positive cash generation, but the preliminary notes overstate what is actually verified for a supported recovery case. The key correction is debt timing: Amendment No. 5, disclosed in the 2026-11-09 8-K, extends the revolver, term A and delayed-draw term A to 2031-10-28 and resets term-A amortization from 2027-03, so the older 2026-06-27 maturity table is stale for those facilities. However, the same current 8-K does not provide a post-amendment covenant calculation, does not restate full debt composition including exact term-B maturity in the amended structure, and does not provide enough detail on receivables-sale usage, working-capital normalization, or acquisition integration to underwrite a source-supported 50% equity recovery case.\",\"decline_reason\":\"The recent share decline may reflect concern that post-acquisition growth, cash conversion and margin durability are not yet fully proven after ZT integration, while debt remains elevated versus the pre-deal structure and the latest filed package does not quantify covenant headroom under the amended facilities.\",\"temporary_vs_structural\":\"Evidence supports a temporary financing extension rather than an immediate maturity wall: the 2026-11-09 8-K says Amendment No. 5 extended the $1.5 billion revolver, term A and delayed-draw term A to 2031-10-28 and funded an additional $70 million term A tranche, with term-A amortization restarting at low annual rates before stepping up later. But structural risks remain because the business now carries acquisition-related debt, contingent consideration from the ZT deal, elevated inventory and customer-advance balances, and significant acquisition/integration charges in FY2026. I cannot verify from current primary filings that these are cleanly temporary rather than partly structural.\",\"financial_resilience\":\"Primary filings support resilience, but not a full five-year proof set. The 2025 10-K shows cash from operations of USD 621000000 in FY2025, USD 340000000 in FY2024 and USD 235000000 in FY2023, with capital expenditures of USD 147000000 in FY2025, USD 111000000 in FY2024 and USD 191000000 in FY2023. The 2026-11-09 earnings exhibit reports FY2026 operating cash flow of USD 944000000 and free cash flow of USD 541000000. That is strong recent cash generation. Still, working capital is a major driver: the 2025 10-K explicitly says quarterly cash flow is affected by receivables factoring, supplier terms and customer advances; the 2026-06-27 10-Q says the receivables purchase agreement is uncommitted and that up to USD 1100000000 of sold receivables could be outstanding at one time as of 2026-06-27. So recent cash conversion is real, but not fully normalized.\",\"competition_and_technology\":\"The current earnings exhibit frames Sanmina as exposed to cloud and AI infrastructure demand and notes the strategic effect of integrating ZT Systems. That supports a possible demand tailwind, but the same filing also warns that benefits from the ZT acquisition may not be realized on time, that tariffs and trade policy may raise costs or hurt demand, and that customer concentration remains material. Based on the documents retrieved, I cannot independently validate durable pricing power versus competition or the permanence of AI-related demand strength.\",\"risks\":[\"Post-amendment covenant headroom is not quantified in the current 2026-11-09 filing.\",\"Receivables-sale capacity is uncommitted and therefore not equivalent to cash on hand.\",\"Working-capital support from deferred revenue/customer advances and supplier terms may not repeat at the same level.\",\"Acquisition, integration and other charges were USD 221176000 in FY2026, indicating integration is still material.\",\"ZT acquisition includes up to USD 450000000 of contingent cash consideration over three years, which could consume future equity cash.\",\"The 2026-11-09 filing resets term-A amortization and adds USD 70000000 of term-A borrowings, so deleveraging is not purely organic.\",\"Restricted cash existed at 2026-06-27, so gross liquidity should not be read as fully fungible cash.\",\"Lease expense exists, and leases should not be conflated with funded debt when assessing leverage or maturity risk.\"],\"unresolved\":[\"No primary-source post-Amendment No. 5 leverage-ratio or interest-coverage calculation was retrieved.\",\"No current filing retrieved gives a full post-amendment contractual maturity table for all funded debt, especially exact term-B timing under the amended stack.\",\"I did not retrieve a primary-source comparable historical price series sufficient to support a post-split/post-spin comparison from current price to a prior verified level.\",\"No retrieved filing quantified receivables sold outstanding at 2026-10-03, only the 2026-06-27 maximum capacity under the program.\",\"No retrieved filing gave enough detail to normalize equity cash after all integration costs, possible acquisition-related working-capital swings and future contingent consideration.\",\"No retrieved filing disclosed capitalized software detail relevant to cash-quality adjustment.\",\"Five-year resilience is not fully evidenced from the documents retrieved; I verified four fiscal years of cash-flow context, not a complete five-year operating history.\"],\"catalyst\":\"Near-term catalyst exists only as a follow-up checkpoint, not a supported re-rating case: the next periodic filing for the quarter ending 2027-01-02 should disclose the full Amendment No. 5 exhibit, updated debt maturities, any covenant math, and whether FY2027 guidance is converting into cash without unusually large receivables sales or working-capital support.\",\"invalidation\":\"A skeptical recovery thesis would be undermined if the next periodic filing shows weaker cash conversion, materially higher receivables-sale reliance, tighter covenant headroom than implied, further debt increases, or integration costs staying elevated without corresponding margin improvement.\",\"next_review_by\":\"2027-02-08\",\"checkpoint_metric\":\"By the next periodic filing, verify: funded debt by tranche versus leases; exact post-amendment maturity schedule; covenant definitions and actual ratio headroom; receivables sold outstanding at 2027-01-02; quarterly operating cash flow versus capex; and whether acquisition/integration charges are declining from FY2026 levels.\",\"opportunity_cost\":\"Without a sourced valuation framework or verified covenant headroom, capital committed here would compete against better-documented opportunities where debt, cash quality and recovery mechanics are easier to underwrite from primary filings.\",\"target_by\":\"2027-11-10\",\"valuation_available\":false,\"bear\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"No credible primary-source valuation support was retrieved. Current filings provide operating and financing facts, but not enough verified inputs to defend a bear equity-cash valuation scenario without inventing assumptions.\",\"source_ids\":[\"S1\",\"S2\",\"S3\",\"S4\"]},\"base\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"No credible primary-source valuation support was retrieved. A 50% recovery case would require supported assumptions for normalized cash conversion, covenant headroom, debt service and integration outcomes that are not fully disclosed in the documents reviewed.\",\"source_ids\":[\"S1\",\"S2\",\"S3\",\"S4\"]},\"recovery\":{\"annual_equity_cash_usd\":0,\"multiple\":0,\"dilution_pct\":0,\"rationale\":\"Management guidance alone is not enough. The retrieved filings do not provide a source-supported path from current fundamentals to a defensible recovery valuation, so scenario numerics are intentionally set to zero.\",\"source_ids\":[\"S1\",\"S2\",\"S3\",\"S4\"]},\"sources\":[{\"id\":\"S1\",\"url\":\"https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanm-20261027.htm\",\"published_at\":\"2026-11-09\",\"finding\":\"Current 8-K discloses Amendment No. 5 dated 2026-10-27: USD 70000000 incremental term A funded; revolver, term A and delayed-draw term A extended to 2031-10-28; delayed-draw availability extended to 2027-04-27; pricing moved to ratings-based grid; term-A amortization reset.\"},{\"id\":\"S2\",\"url\":\"https://www.sec.gov/Archives/edgar/data/897723/000089772326000044/sanmina_exx991xoctober32026.htm\",\"published_at\":\"2026-11-09\",\"finding\":\"Earnings exhibit reports Q4 FY2026 revenue USD 3860000000, FY2026 revenue USD 14530000000, FY2026 operating cash flow USD 944000000, FY2026 free cash flow USD 541000000, Q4 ending cash and cash equivalents USD 1675641000, short-term debt USD 172000000 and long-term debt USD 1915528000; FY2026 acquisition, integration and other charges were USD 221176000.\"},{\"id\":\"S3\",\"url\":\"https://www.sec.gov/Archives/edgar/data/897723/000089772326000037/sanm-20260627.htm\",\"published_at\":\"2026-07-27\",\"finding\":\"10-Q for 2026-06-27 shows pre-Amendment-No.-5 debt schedule and liquidity detail: cash and cash equivalents USD 1844942000, restricted cash and restricted cash equivalents USD 42277000, total debt USD 2200000000, current debt USD 215000000, receivables purchase agreement is uncommitted, up to USD 1100000000 of sold receivables could be outstanding, and credit facilities contain leverage and interest coverage covenants.\"},{\"id\":\"S4\",\"url\":\"https://www.sec.gov/Archives/edgar/data/897723/000089772325000042/sanm-20250927.htm\",\"published_at\":\"2025-11-13\",\"finding\":\"FY2025 10-K provides historical resilience and financing context: operating cash flow was USD 621000000 in FY2025, USD 340000000 in FY2024 and USD 235000000 in FY2023; capital expenditures were USD 147000000 in FY2025 and USD 111000000 in FY2024; the filing also states cash flow is affected by receivables factoring, supplier terms and customer advances, and describes the ZT acquisition financing including up to USD 450000000 of contingent cash consideration.\"}]}"
+              }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+          }
+        ],
+        "usage": {
+          "input_tokens": 31891,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 4608
+          },
+          "output_tokens": 4279,
+          "output_tokens_details": {
+            "reasoning_tokens": 2096
+          },
+          "total_tokens": 36170
+        }
+      }
     }
   ]
 }

@@ -1,5 +1,4 @@
 {
-  "status": "REJECTED",
-  "ticker": "SANM",
-  "reason": "Invalid isoformat string: 'No primary-source-supported +50% equity target by 2027-11-10 was established from the retrieved documents.'"
+  "status": "VALIDATED",
+  "ticker": "SANM"
 }
