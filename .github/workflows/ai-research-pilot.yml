@@ -40,9 +40,10 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PYTHONUNBUFFERED: '1'
-        # Explicit user authorization for today's development; source dates are independently checked.
+        # Explicit user authorization for today's development; independent full-model source review.
         run: |
           probe_status=0
+          python -u ai_research.py --development-probe TTD --authorized-date 2026-11-10 || probe_status=1
           python -u ai_research.py --development-probe SANM --authorized-date 2026-11-10 || probe_status=1
           python -u ai_research.py --development-probe BOOT --authorized-date 2026-11-10 || probe_status=1
           exit "$probe_status"

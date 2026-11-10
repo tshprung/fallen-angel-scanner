@@ -39,7 +39,8 @@ def responses(ticker="ABC"):
         {"type": "web_search_call", "status": "completed", "action": {"type": "search", "sources": [{"url": url} for url in URLS]}},
         {"type": "message", "content": [{"type": "output_text", "text": "Primary research", "annotations": []}]}]}
     extraction = {"status": "completed", "output": [{"type": "message", "content": [
-        {"type": "output_text", "text": json.dumps(brief(ticker))}]}]}
+        {"type": "output_text", "text": json.dumps(brief(ticker))}]},
+        {"type": "web_search_call", "status": "completed", "action": {"type": "search", "sources": [{"url": url} for url in URLS]}}]}
     return research, extraction
 
 
@@ -65,7 +66,7 @@ def test_request_contract_sources_cache_and_no_automatic_admission(tmp_path):
     assert result["status"] == "COMPLETED" and len(result["shortlist"]) == 1
     assert len(payloads) == 2
     assert payloads[0]["tool_choice"] == "auto" and payloads[0]["max_tool_calls"] == 6
-    assert payloads[1]["text"]["format"]["strict"]
+    assert payloads[1]["text"]["format"]["strict"] and payloads[1]["model"] == ai.REVIEW_MODEL
     assert all(not p["store"] and p["max_output_tokens"] == 5000 for p in payloads)
     assert not list(tmp_path.glob("recovery_cases*")) and not list(tmp_path.glob("paper*"))
     assert before == inputs()

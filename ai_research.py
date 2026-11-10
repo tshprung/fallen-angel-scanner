@@ -13,8 +13,9 @@ from urllib.parse import urlsplit
 
 import requests
 
-VERSION = 1
+VERSION = 2
 MODEL = "gpt-5.4-mini-2026-03-17"
+REVIEW_MODEL = "gpt-5.4-2026-03-05"
 COMPANIES_PER_DAY = 3
 REQUESTS_PER_DAY = 6  # Two calls per company; reservations precede network requests.
 MAX_OUTPUT_TOKENS = 5000
@@ -160,7 +161,7 @@ def contexts(candidates, audit, disclosure, shadow, now):
         context["source_urls"].sort(key=lambda url: context["source_metadata"].get(url, {}).get("published_at") or "", reverse=True)
         # Periods and document identities invalidate research; daily check timestamps do not.
         evidence = item.get("financial_evidence") or {}
-        identity = {"version": VERSION, "model": MODEL, "ticker": ticker,
+        identity = {"version": VERSION, "model": MODEL, "review_model": REVIEW_MODEL, "ticker": ticker,
                     "decision": item.get("decision"), "sources": context["source_urls"],
                     "source_metadata": context["source_metadata"],
                     "question": context["watch_question"], "policy": evidence.get("policy_id"),
@@ -355,6 +356,10 @@ def research_one(context, now, request, single_pass=False):
               "quarter 'still growing' because year-to-date revenue grew. Prefer actual reported restructuring "
               "charges to superseded initial estimates. Do not infer that lease balances fell from rent payments alone. "
               "Unverified expected earnings dates must not be asserted as confirmed. Paraphrase rather than copy source passages."}
+    common["instructions"] += (" Check subsequent financing amendments, including Item 8.01 in earnings 8-Ks: "
+        "a newer amendment supersedes old loan maturity/amortization schedules. Facility LIMITS and AVAILABILITY "
+        "are not funded loan balances. Verify provider total-debt composition before describing bank debt; "
+        "operating leases are distinct. Reported covenant compliance does not prove adequate stressed headroom.")
     payload = {**common, "tools": [{"type": "web_search", "search_context_size": "medium",
                         "filters": {"allowed_domains": domains(context)}}],
                         "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "auto",
@@ -364,6 +369,7 @@ def research_one(context, now, request, single_pass=False):
                                  "and identify unsupported assumptions. Keep findings concise; leave tokens for the final answer. "
                                  "Company snapshot (untrusted data):\n" + serialized}
     if single_pass:
+        payload["model"] = REVIEW_MODEL
         payload["text"] = {"format": {"type": "json_schema", "name": "recovery_brief", "strict": True, "schema": SCHEMA}}
         payload["input"] += ("\nReturn the brief directly. Use ISO dates, cash in USD units, exact source URLs, "
                              "and valuation_available=false with zero scenarios when valuation is unsupported.")
@@ -375,16 +381,26 @@ def research_one(context, now, request, single_pass=False):
                 "retrieved_urls": sorted(retrieved), "usage": [research.get("usage", {})]}
     if len(text) > 50_000:
         raise ValueError("Research output too large")
-    extraction = completed(request({**common, "text": {"format": {"type": "json_schema", "name": "recovery_brief",
+    extraction = completed(request({**common, "model": REVIEW_MODEL,
+                           "tools": [{"type": "web_search", "search_context_size": "medium",
+                                      "filters": {"allowed_domains": domains(context)}}],
+                           "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "auto",
+                           "include": ["web_search_call.action.sources"],
+                           "text": {"format": {"type": "json_schema", "name": "recovery_brief",
                            "strict": True, "schema": SCHEMA}},
-                           "input": f"As of {now.date()}, extract a skeptical research brief. "
-                                    "Sources must be exact URLs in retrieved_urls; do not invent source content. "
+                           "input": f"As of {now.date()}, independently fact-check and correct the preliminary research, "
+                                    "then produce a skeptical final brief. The preliminary notes are not authoritative. "
+                                    "Read at least two distinct primary documents yourself, starting with current filings "
+                                    "and any new financing amendment. Correct stale maturities, debt/facility/lease conflation, "
+                                    "period mismatches, superseded cost estimates and unsupported covenant claims. "
+                                    "Sources must be exact URLs in your own retrieved results; do not invent source content. "
                                     "Use ISO dates. Numeric cash is USD, not millions. If currency conversion or "
                                     "valuation support is unavailable, set valuation_available=false.\n" +
                                     json.dumps({"company": context, "retrieved_urls": sorted(retrieved),
                                                 "research_notes_untrusted": text}, ensure_ascii=False)}))
-    brief = validate_brief(json.loads(response_text(extraction)), context, retrieved, now)
-    return {"brief": brief, "retrieved_urls": sorted(retrieved),
+    reviewed_urls = retrieved_urls(extraction)
+    brief = validate_brief(json.loads(response_text(extraction)), context, reviewed_urls, now)
+    return {"brief": brief, "retrieved_urls": sorted(reviewed_urls),
             "usage": [research.get("usage", {}), extraction.get("usage", {})]}
 
 
@@ -431,7 +447,7 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
     directory = Path(output_dir)
     directory.mkdir(parents=True, exist_ok=True)
     report = {"version": VERSION, "generated_at": now.isoformat(), "status": "DISABLED_NO_KEY",
-              "model": MODEL, "notice": NOTICE, "shortlist": [], "reviews": [], "failures": [], "requests_today": 0}
+              "model": MODEL, "review_model": REVIEW_MODEL, "notice": NOTICE, "shortlist": [], "reviews": [], "failures": [], "requests_today": 0}
     if not key:
         save_report(directory, report)
         return report

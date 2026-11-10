@@ -18,17 +18,19 @@ are made. Existing deterministic screening continues. No server is required.
 
 The initial approved company budget is **three per UTC calendar day**, with
 **at most two API requests per company**, six requests total. Each request
-has an output/reasoning ceiling of 5,000 tokens. The research request permits
-at most six web-tool calls; the extraction request has no tools. There are
+has an output/reasoning ceiling of 5,000 tokens. Each request permits
+at most six web-tool calls, 36 total per normal daily allowance. There are
 no automatic retries. An explicit `--resume-incomplete` pilot probe can use
 one remaining request for a company whose first response exhausted output
 tokens, without exceeding two requests per company or six per day. Its repair
 request combines web research and structured output; at most 36 web-tool calls
 are possible across three companies if all three need this explicit repair.
-The default model is pinned to
-`gpt-5.4-mini-2026-03-17`; changing it requires code review, not an arbitrary
-environment endpoint. Model access and live compatibility still need a first
-real API run after the key is configured.
+Preliminary research uses pinned `gpt-5.4-mini-2026-03-17`; an independent
+final source review uses `gpt-5.4-2026-03-05`. The final reviewer must retrieve
+at least two primary documents itself and correct stale amendments, facility
+limits confused with borrowings, leases, reporting periods and unsupported
+covenant claims. Changing models requires code review, not an arbitrary
+environment endpoint. Both model IDs and token usage are recorded.
 
 This is a usage cap, **not a hard dollar cap**. Inputs, outputs and web tools
 are billed. Record actual token usage in `ai_research_state.json`, review
@@ -52,7 +54,8 @@ spending guarantee. Do not run parallel paid probes with independent state.
 2. Search/read primary issuer, SEC and exchange sources through Responses
    web search, using a bounded public-company snapshot. No account email,
    private portfolio, API key, SMTP secret or trading credential enters prompts.
-3. Extract a strict JSON brief. Code checks issuer, source URL provenance,
+3. Independently review the draft against primary sources and return a strict
+   JSON brief. Code checks issuer, source URL provenance,
    dates, counterevidence, review horizon and scenario arithmetic. At least
    two distinct primary-source URLs must occur in the research tool output.
    Unknown data must remain unknown. Schema/citation validation is not an
@@ -99,6 +102,9 @@ to restore the original email format and avoid all OpenAI usage.
 - `ai_research_state.json`: dated request reservations, research cache, source
   provenance and API token usage. Public company research only; these are
   committed to this public repository and preserved in Actions artifacts.
+- `ai_research_drafts.json`: last twenty unverified public-company responses,
+  retained for debugging and offline replay. Reasoning/opaque API internals
+  and all request headers/credentials are excluded. These are not recommendations.
 - Existing `research_report`, `filing_review`, `disclosure_watch` and shadow
   artifacts remain available, with admissions and holds unchanged.
 
@@ -114,9 +120,16 @@ quotes and changes no selections or paper observations. Its artifact includes
 while preserving research and budget state. A probe consumes the same daily
 allowance; it does not grant an extra three companies.
 
+Explicit development probes may exceed normal request limits only on the
+UTC date supplied with `--authorized-date`. Each invocation makes at most one
+request and records its development authorization and usage separately. The
+user authorized additional development calls on November 10, 2026; this does
+not change the normal three-company/six-request scheduled allowance.
+
 ## References
 
 - [OpenAI API keys and service accounts](https://developers.openai.com/api/docs/guides/api-keys)
 - [Web search](https://developers.openai.com/api/docs/guides/tools-web-search)
 - [Structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - [Pinned model capabilities](https://developers.openai.com/api/docs/models/gpt-5.4-mini)
+- [Final review model](https://developers.openai.com/api/docs/models/gpt-5.4)
