@@ -1,0 +1,72 @@
+name: OpenAI research pilot (no email or paper)
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/ai-research-pilot.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Share the daily scan lock and budget. Never run independent paid probes concurrently.
+concurrency:
+  group: fallen-angel-scan-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt pytest
+      - name: Offline regression tests
+        run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
+      - name: AI budget date (UTC)
+        id: ai-date
+        run: echo "day=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+      - name: Restore AI reservations
+        id: ai-state
+        uses: actions/cache/restore@v4
+        with:
+          path: ai_research_state.json
+          key: ai-research-${{ github.ref_name }}-${{ steps.ai-date.outputs.day }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: ai-research-${{ github.ref_name }}-
+      - name: Research up to three companies using fresh saved scan data
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PYTHONUNBUFFERED: '1'
+        run: python -u ai_research.py
+      - name: Preserve AI reservations even on failure
+        if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: ai_research_state.json
+          key: ${{ steps.ai-state.outputs.cache-primary-key }}
+      - name: Preserve research and email preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-research-pilot-${{ github.run_id }}
+          path: |
+            ai_research.json
+            ai_research.md
+            ai_research_state.json
+            ai_email_preview.html
+      - name: Save research and budget without touching selections or paper state
+        if: always() && steps.ai-state.outcome == 'success'
+        run: |
+          git config user.name "fallen-angel-bot"
+          git config user.email "bot@fallen-angel"
+          for path in ai_research.json ai_research.md ai_research_state.json; do
+            if [ -f "$path" ]; then git add "$path"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m "Save bounded OpenAI research pilot"
+            git pull --rebase
+            git push
+          fi

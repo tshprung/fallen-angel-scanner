@@ -26,6 +26,7 @@ from email.mime.multipart import MIMEMultipart
 import os
 import json
 import time
+from pathlib import Path
 
 from filing_review import filing_review_plan
 from review_holds import load_review_holds
@@ -2017,6 +2018,7 @@ def _run_main():
     global _last_research_audit
     _last_research_audit = []
     globals()["_last_stage1_coverage"] = None
+    globals()["_last_ai_research"] = None
     # Load memory
     memory = load_memory()
     
@@ -2042,7 +2044,7 @@ def _run_main():
         raise RuntimeError("Systemic price-source failure; reports preserve the gaps; mail and paper output aborted")
     
     disclosure_updates = has_disclosure_updates(globals().get("_last_disclosure_watch"))
-    if not candidates and not price_alerts and not disclosure_updates:
+    if not candidates and not price_alerts and not disclosure_updates and not globals().get("AI_RESEARCH_ENABLED", False):
         print("✅ No candidates met this run's filters.\n")
         _collect_growth_shadow([])
         write_research_report([], [], globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
@@ -2081,6 +2083,13 @@ def _run_main():
     _collect_growth_shadow(candidates)
     enrich_research_audit(_last_research_audit, selected, sec_client=globals().get("_last_sec_client"))
     scope["filing_content_collection"] = "COLLECTION_FINISHED"
+    if globals().get("AI_RESEARCH_ENABLED", False):
+        from ai_research import run_research
+        directory = Path(globals().get("REPORT_PREFIX", "research_report")).parent
+        globals()["_last_ai_research"] = run_research(
+            candidates, _last_research_audit, globals().get("_last_disclosure_watch"),
+            (globals().get("REPORT_SCOPE") or {}).get("growth_recovery_shadow"), directory)
+        globals()["REPORT_SCOPE"]["ai_research"] = globals()["_last_ai_research"]
     write_research_report(_last_research_audit, selected, globals().get("REPORT_PREFIX", "research_report"), globals().get("REPORT_SCOPE"))
     if selected and globals().get("PAPER_TRACKING_ENABLED", True):
         from paper_tracking import record_selections
@@ -2088,7 +2097,7 @@ def _run_main():
 
     # Generate and send email
     filing_holds = [item for item in _last_research_audit if item.get("decision") in {"event_review", "filing_review", "filing_unverified"}]
-    if analyzed_stocks or fresh_crash_stocks or price_alerts or filing_holds or disclosure_updates:
+    if analyzed_stocks or fresh_crash_stocks or price_alerts or filing_holds or disclosure_updates or globals().get("AI_RESEARCH_ENABLED", False):
         print("\n" + "="*80)
         print("GENERATING EMAIL REPORT")
         print("="*80)
@@ -2105,6 +2114,9 @@ def _run_main():
             subject += f" + {len(fresh_crash_stocks)} fresh crash watch"
         if price_alerts:
             subject += f" + {len(price_alerts)} price watch alerts"
+        if globals().get("AI_RESEARCH_ENABLED", False):
+            from ai_research import email_subject
+            subject = email_subject(globals().get("_last_ai_research"), selected)
         
         if send_email(subject, html):
             # Update memory (both buckets share the same dedup/tracking)

@@ -24,6 +24,10 @@ def generate_email_html_consistent(analyzed_stocks, price_alerts, fresh_crash_st
     _apply_consistent_sentiment(analyzed_stocks)
     _apply_consistent_sentiment(fresh_crash_stocks)
     selected = list(analyzed_stocks or []) + list(fresh_crash_stocks or [])
+    if getattr(scanner, "AI_RESEARCH_ENABLED", False):
+        from ai_research import compact_email_html
+        return compact_email_html(getattr(scanner, "_last_ai_research", None), selected,
+                                  getattr(scanner, "REPORT_SCOPE", {}))
     documented = sum(is_documented_case(stock) for stock in selected)
     minimum_upside = scanner.load_policy()["minimum_bull_upside_pct"]
     goal_summary = (f"<h2>Recovery research: up to two years</h2><p>{documented} documented conditional recovery cases; "
@@ -61,10 +65,14 @@ def run_cli():
                         help="Check configured research disclosures independently of stock selection")
     parser.add_argument("--growth-shadow", action="store_true",
                         help="Collect bounded growth-recovery research without changing selections")
+    parser.add_argument("--ai-research", action="store_true",
+                        help="OpenAI research pilot and compact email (3 companies/day, at most 10 shown)")
     args = parser.parse_args()
     scanner.REPORT_SCOPE = {"type": "configured_universe", "email_disabled": args.no_email,
                             "paper_disabled": args.no_paper}
     scanner.GROWTH_SHADOW_ENABLED = args.growth_shadow
+    scanner.AI_RESEARCH_ENABLED = args.ai_research
+    scanner._last_ai_research = None
     if args.no_email:
         scanner.send_email = lambda *unused: False
         scanner.check_price_alerts = lambda memory: []

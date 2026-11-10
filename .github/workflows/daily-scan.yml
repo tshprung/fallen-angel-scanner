@@ -31,7 +31,7 @@ jobs:
         run: pip install -r requirements.txt pytest --break-system-packages
 
       - name: Syntax check
-        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py filing_contents.py disclosure_watch.py growth_recovery.py
+        run: python -m py_compile scanner_entry.py scanner_enhanced.py scanner_bugfixes.py scanner_policy.py scanner_safety.py fallen_angel_scanner.py scanner_currency.py paper_tracking.py fundamental_analysis.py research_reporting.py screening.py filing_review.py sec_filings.py review_holds.py recovery_cases.py filing_contents.py disclosure_watch.py growth_recovery.py ai_research.py
 
       - name: Offline regression tests
         run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
@@ -43,14 +43,34 @@ jobs:
           key: sec-filings-${{ runner.os }}-${{ github.run_id }}
           restore-keys: sec-filings-${{ runner.os }}-
 
+      - name: AI budget date (UTC)
+        id: ai-date
+        run: echo "day=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore AI reservations after interrupted runs
+        id: ai-state
+        uses: actions/cache/restore@v4
+        with:
+          path: ai_research_state.json
+          key: ai-research-${{ github.ref_name }}-${{ steps.ai-date.outputs.day }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: ai-research-${{ github.ref_name }}-
+
       - name: Run fallen angel scanner
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PYTHONUNBUFFERED: 1
-        run: python -u scanner_entry.py --watch-disclosures --growth-shadow
+        run: python -u scanner_entry.py --watch-disclosures --growth-shadow --ai-research
+
+      - name: Preserve AI budget even if a later scan step failed
+        if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: ai_research_state.json
+          key: ${{ steps.ai-state.outputs.cache-primary-key }}
 
       - name: Refresh paper observations
         run: python paper_tracking.py
@@ -76,6 +96,9 @@ jobs:
             growth_recovery_shadow.json
             growth_recovery_shadow.md
             growth_recovery_shadow_history.json
+            ai_research.json
+            ai_research.md
+            ai_research_state.json
 
       - name: Commit scanner state
         run: |
@@ -91,6 +114,7 @@ jobs:
           git add research_report.json research_report.md filing_review.md recovery_review.md filing_contents.md scan_coverage.json 2>/dev/null || true
           git add disclosure_watch.json disclosure_watch.md disclosure_watch_state.json 2>/dev/null || true
           git add growth_recovery_shadow.json growth_recovery_shadow.md growth_recovery_shadow_history.json 2>/dev/null || true
+          git add ai_research.json ai_research.md ai_research_state.json 2>/dev/null || true
           if [ -d logs ]; then
             git add logs/*.txt 2>/dev/null || true
           fi
