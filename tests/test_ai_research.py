@@ -336,6 +336,24 @@ def test_publication_date_must_match_known_filing_metadata():
         ai.validate_brief(brief(), c, set(URLS), NOW)
 
 
+def test_final_reviewer_must_retrieve_sources_independently():
+    first, second = responses()
+    second["output"] = second["output"][:1]
+    replies = iter((first, second))
+    with pytest.raises(ai.APIError, match="NO_COMPLETED_WEB_RESEARCH"):
+        ai.research_one(context(), NOW, lambda _: next(replies))
+
+
+def test_completed_find_retrieves_document_but_incomplete_find_does_not():
+    data = {"output": [
+        {"type": "web_search_call", "status": "completed",
+         "action": {"type": "find_in_page", "url": URLS[0]}},
+        {"type": "web_search_call", "status": "in_progress",
+         "action": {"type": "find_in_page", "url": URLS[1]}}
+    ]}
+    assert ai.retrieved_urls(data) == {URLS[0]}
+
+
 def test_hidden_core_selections_are_not_marked_as_emailed(monkeypatch, tmp_path):
     from unittest.mock import Mock
     import scanner_entry

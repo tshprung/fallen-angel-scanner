@@ -122,9 +122,13 @@ allowance; it does not grant an extra three companies.
 
 Explicit development probes may exceed normal request limits only on the
 UTC date supplied with `--authorized-date`. Each invocation makes at most one
-request and records its development authorization and usage separately. The
+request, or at most two with the explicit `--two-stage-probe` flag, and records
+its development authorization and usage separately. The
 user authorized additional development calls on November 10, 2026; this does
 not change the normal three-company/six-request scheduled allowance.
+
+Working research cache entries are pruned after 30 days; only entries under
+three days old with current input identities and future checkpoints are reused.
 
 ## References
 

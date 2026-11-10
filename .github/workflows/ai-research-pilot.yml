@@ -40,13 +40,9 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PYTHONUNBUFFERED: '1'
-        # Explicit user authorization for today's development; independent full-model source review.
+        # Explicit user authorization for today's development; exercise the normal two-model pipeline.
         run: |
-          probe_status=0
-          python -u ai_research.py --development-probe TTD --authorized-date 2026-11-10 || probe_status=1
-          python -u ai_research.py --development-probe SANM --authorized-date 2026-11-10 || probe_status=1
-          python -u ai_research.py --development-probe BOOT --authorized-date 2026-11-10 || probe_status=1
-          exit "$probe_status"
+          python -u ai_research.py --development-probe SANM --two-stage-probe --authorized-date 2026-11-10
       - name: Preserve AI reservations even on failure
         if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
         uses: actions/cache/save@v4

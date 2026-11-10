@@ -268,7 +268,7 @@ def retrieved_urls(data):
             for source in action.get("sources") or []:
                 if safe_url(source.get("url")):
                     urls.add(source["url"])
-            if action.get("type") == "open_page" and safe_url(action.get("url")):
+            if action.get("type") in {"open_page", "find_in_page"} and safe_url(action.get("url")):
                 urls.add(action["url"])
         for content in item.get("content") or []:
             for citation in content.get("annotations") or []:
@@ -352,6 +352,9 @@ def research_one(context, now, request, single_pass=False):
               "Read the most recent results first, including earnings exhibits attached to an 8-K. "
               "Before using find-in-page, open at least TWO DISTINCT primary documents; avoid repeatedly reopening "
               "the same cover page. Cite only documents actually retrieved, not URLs merely present in the snapshot. "
+              "Your sources array must contain ONLY exact URLs returned by your own completed web tool calls. "
+              "If the tool budget runs out, omit unread references and claims depending on them; list the missing "
+              "verification in unresolved. Two well-read current documents are preferable to many unread references. "
               "Explicitly distinguish quarter, year-to-date and trailing-year metrics; do not call a declining "
               "quarter 'still growing' because year-to-date revenue grew. Prefer actual reported restructuring "
               "charges to superseded initial estimates. Do not infer that lease balances fell from rent payments alone. "
@@ -459,6 +462,9 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
         daily = state["days"].setdefault(now.date().isoformat(), {"tickers": [], "requests": 0})
         if (type(daily["requests"]) is not int or daily["requests"] < 0 or not isinstance(daily["tickers"], list)):
             raise ValueError("Invalid daily budget")
+        # This is a working cache, not an immutable investment ledger.
+        state["cache"] = {ticker: row for ticker, row in state["cache"].items()
+                          if 0 <= (now-stamp(row["reviewed_at"])).total_seconds() <= 30*86400}
     except Exception:
         report["status"] = "STATE_INVALID_NO_SPEND"
         save_report(directory, report)
@@ -487,7 +493,7 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
         data = request_transport(payload)
         preserve_response(directory, ticker, data, now)
         usage = data.get("usage") or {}
-        record = {"ticker": ticker, "status": str(data.get("status", "unknown"))[:30],
+        record = {"ticker": ticker, "model": payload["model"], "status": str(data.get("status", "unknown"))[:30],
                   "incomplete_reason": str((data.get("incomplete_details") or {}).get("reason", ""))[:60],
                   "usage": {k: usage[k] for k in ("input_tokens", "output_tokens", "total_tokens")
                             if type(usage.get(k)) is int}}
@@ -704,8 +710,8 @@ def run_saved_report(directory=".", *, now=None, key=None, transport=None, resum
     return report
 
 
-def development_probe(directory, ticker, authorized_date, *, now=None, key=None, transport=None):
-    """Explicitly authorized, date-limited development; exactly one API call per invocation."""
+def development_probe(directory, ticker, authorized_date, *, now=None, key=None, transport=None, two_stage=False):
+    """Date-limited development; one call, or an explicit full two-call pipeline probe."""
     directory = Path(directory)
     now = stamp(now) if now else utc_now()
     if authorized_date != now.date().isoformat():
@@ -728,20 +734,20 @@ def development_probe(directory, ticker, authorized_date, *, now=None, key=None,
     calls = 0
     def request(payload):
         nonlocal calls
-        if calls:
-            raise ValueError("Development probe limited to one call")
+        if calls >= (2 if two_stage else 1):
+            raise ValueError("Development probe request limit")
         calls += 1
         daily["requests"] += 1
         daily.setdefault("development_requests", []).append({"ticker": ticker, "authorized_date": authorized_date})
         atomic_json(state_path, state)
         data = (transport or (lambda p: post_response(p, key)))(payload)
         preserve_response(directory, ticker, data, now)
-        daily.setdefault("responses", []).append({"ticker": ticker, "development": True,
+        daily.setdefault("responses", []).append({"ticker": ticker, "development": True, "model": payload["model"],
             "status": data.get("status"), "incomplete_details": data.get("incomplete_details"), "usage": data.get("usage")})
         atomic_json(state_path, state)
         return data
     try:
-        result = research_one(context, now, request, single_pass=True)
+        result = research_one(context, now, request, single_pass=not two_stage)
         state["cache"][ticker] = {**result, "reviewed_at": now.isoformat(), "fingerprint": context["fingerprint"]}
         atomic_json(state_path, state)
         status = {"status": "VALIDATED", "ticker": ticker}
@@ -761,9 +767,11 @@ if __name__ == "__main__":
     parser.add_argument("--resume-incomplete", action="store_true", help="One repair call per incomplete company within the existing daily limit")
     parser.add_argument("--development-probe", help="One company, one paid diagnostic call; needs same-day explicit authorization")
     parser.add_argument("--authorized-date", help="UTC date of explicit development authorization; expires after this date")
+    parser.add_argument("--two-stage-probe", action="store_true", help="Use both normal research and independent-review calls in the authorized development probe")
     args = parser.parse_args()
     if args.development_probe:
-        result = development_probe(args.saved_report_dir, args.development_probe, args.authorized_date)
+        result = development_probe(args.saved_report_dir, args.development_probe, args.authorized_date,
+                                   two_stage=args.two_stage_probe)
         raise SystemExit(0 if result["status"] == "VALIDATED" else 1)
     result = run_saved_report(args.saved_report_dir, resume_incomplete=args.resume_incomplete)
     print(json.dumps({key: result.get(key) for key in
