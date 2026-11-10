@@ -18,7 +18,7 @@ MODEL = "gpt-5.4-mini-2026-03-17"
 COMPANIES_PER_DAY = 3
 REQUESTS_PER_DAY = 6  # Two calls per company; reservations precede network requests.
 MAX_OUTPUT_TOKENS = 5000
-MAX_TOOL_CALLS = 4
+MAX_TOOL_CALLS = 6
 MAX_SHORTLIST = 10
 TTL_DAYS = 3
 NOTICE = ("AI research pilot, not qualified investment cases. Source links and schema checks "
@@ -308,6 +308,9 @@ def validate_brief(brief, context, retrieved, now):
                 or source["url"] not in retrieved or not allowed_source(source["url"], context)
                 or not now.date()-timedelta(days=5*366) <= date.fromisoformat(source["published_at"]) <= now.date()):
             raise ValueError("Unsupported source provenance")
+        known_date = (context.get("source_metadata", {}).get(source["url"]) or {}).get("published_at")
+        if known_date and source["published_at"] != known_date:
+            raise ValueError("Source publication date contradicts filing metadata")
         ids.add(source["id"])
     if len({source["url"] for source in sources}) < 2:
         raise ValueError("Two distinct primary sources required")
@@ -346,13 +349,15 @@ def research_one(context, now, request, single_pass=False):
               "Use source_metadata.published_at for known SEC filing publication dates, not the financial period "
               "or earliest event date. Do not output 'unknown' for a publication date already supplied in metadata. "
               "Read the most recent results first, including earnings exhibits attached to an 8-K. "
+              "Before using find-in-page, open at least TWO DISTINCT primary documents; avoid repeatedly reopening "
+              "the same cover page. Cite only documents actually retrieved, not URLs merely present in the snapshot. "
               "Explicitly distinguish quarter, year-to-date and trailing-year metrics; do not call a declining "
               "quarter 'still growing' because year-to-date revenue grew. Prefer actual reported restructuring "
               "charges to superseded initial estimates. Do not infer that lease balances fell from rent payments alone. "
               "Unverified expected earnings dates must not be asserted as confirmed. Paraphrase rather than copy source passages."}
     payload = {**common, "tools": [{"type": "web_search", "search_context_size": "medium",
                         "filters": {"allowed_domains": domains(context)}}],
-                        "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "required",
+                        "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "auto",
                         "include": ["web_search_call.action.sources"],
                         "input": f"Research as of {now.date()}. Read the latest filings and results, including source contents. "
                                  "Use at least two distinct primary documents, cite URLs and publication dates, "
@@ -426,7 +431,7 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
     directory = Path(output_dir)
     directory.mkdir(parents=True, exist_ok=True)
     report = {"version": VERSION, "generated_at": now.isoformat(), "status": "DISABLED_NO_KEY",
-              "model": MODEL, "notice": NOTICE, "shortlist": [], "failures": [], "requests_today": 0}
+              "model": MODEL, "notice": NOTICE, "shortlist": [], "reviews": [], "failures": [], "requests_today": 0}
     if not key:
         save_report(directory, report)
         return report
@@ -512,12 +517,15 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
                 if isinstance(exc, APIError) and str(exc) in {"HTTP_400", "HTTP_401", "HTTP_403", "HTTP_404", "HTTP_429"}:
                     break  # Authentication, configuration and quota failures are not company-specific.
                 continue
+        report["reviews"].append({"ticker": ticker, "verdict": brief["verdict"],
+                                  "reviewed_at": cached["reviewed_at"], "unresolved": brief["unresolved"]})
         if brief["verdict"] in {"PROMISING", "FOLLOW_UP"}:
             calculated = valuation(brief, context, now)
             report["shortlist"].append({"ticker": ticker, "brief": brief,
                 "reviewed_at": cached["reviewed_at"], "reused": valid, "valuation": calculated,
                 "in_current_price_candidates": context["in_current_price_candidates"],
                 "core_decision": context["core_decision"], "core_reason": context["core_reason"],
+                "source_review_corrections": cached.get("source_review_corrections", []),
                 "market_cap_usd": context["market_cap_usd"], "observed_price": context["observed_price"],
                 "quote_currency": context["quote_currency"], "quote_observed_at": context["quote_observed_at"],
                 "rank_key": (0 if brief["verdict"] == "PROMISING" and calculated and calculated["meets_arithmetic_target"] else 1,
@@ -526,6 +534,8 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
     report["shortlist"] = report["shortlist"][:MAX_SHORTLIST]
     report["status"] = "PARTIAL" if report["failures"] else "COMPLETED"
     report["requests_today"] = daily["requests"]
+    report["development_requests_today"] = len(daily.get("development_requests", []))
+    report["reviewed_count"] = len(report["reviews"])
     report["companies_attempted_today"] = list(daily["tickers"])
     report["deferred_count"] = sum(row["ticker"] not in state["cache"] for row in queue)
     save_report(directory, report)
@@ -550,7 +560,9 @@ def summary_html(report, slots=MAX_SHORTLIST, exclude=()):
     parts = ["<h2>AI research shortlist</h2>", f"<p>{escape(NOTICE)}</p>",
              f"<p>Status: {escape(report['status'])}. Companies attempted today: "
              f"{len(report.get('companies_attempted_today', []))}/{COMPANIES_PER_DAY}; "
-             f"API requests: {report.get('requests_today', 0)}/{REQUESTS_PER_DAY}.</p>"]
+             f"Regular API requests: {report.get('requests_today', 0)-report.get('development_requests_today', 0)}/{REQUESTS_PER_DAY}; "
+             f"authorized development requests: {report.get('development_requests_today', 0)}. "
+             f"Current validated briefs: {report.get('reviewed_count', 0)}.</p>"]
     rows = [row for row in report.get("shortlist", []) if row["ticker"] not in exclude][:max(0, min(slots, MAX_SHORTLIST))]
     if not rows:
         parts.append("<p>No validated AI research leads to display. This is not evidence that no opportunities exist.</p>")
@@ -559,6 +571,8 @@ def summary_html(report, slots=MAX_SHORTLIST, exclude=()):
         parts += [f"<h3>{escape(row['ticker'])} — AI research lead; not qualified</h3>",
                   f"<p>Reviewed {escape(row['reviewed_at'])}; {'reused recent research' if row['reused'] else 'new analysis'}. "
                   f"Current price-screen candidate: {row['in_current_price_candidates']}.</p>"]
+        if row.get("source_review_corrections"):
+            parts.append("<p>Additional assistant source review corrected period/cost wording; see the saved research notes.</p>")
         for label, text in (("Thesis", brief["thesis"]), ("Why it fell", brief["decline_reason"]),
                             ("Temporary or structural?", brief["temporary_vs_structural"]),
                             ("Financial resilience", brief["financial_resilience"]),
@@ -600,6 +614,8 @@ def email_subject(report, selected):
     documented = sum(is_documented_case(stock) for stock in stocks)
     subject = (f"Fallen Angels: {len(stocks)+len(leads)} companies to review "
                f"({documented} documented cases, {len(leads)} AI leads)")
+    if not stocks and not leads and (report or {}).get("reviewed_count"):
+        subject = f"Fallen Angels: {report['reviewed_count']} companies researched; no qualifying shortlist today"
     if not report or report.get("status") != "COMPLETED":
         subject += f"; AI {(report or {}).get('status', 'NOT_RUN')}"
     return subject

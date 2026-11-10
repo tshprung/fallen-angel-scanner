@@ -19,11 +19,11 @@ are made. Existing deterministic screening continues. No server is required.
 The initial approved company budget is **three per UTC calendar day**, with
 **at most two API requests per company**, six requests total. Each request
 has an output/reasoning ceiling of 5,000 tokens. The research request permits
-at most four web-tool calls; the extraction request has no tools. There are
+at most six web-tool calls; the extraction request has no tools. There are
 no automatic retries. An explicit `--resume-incomplete` pilot probe can use
 one remaining request for a company whose first response exhausted output
 tokens, without exceeding two requests per company or six per day. Its repair
-request combines web research and structured output; at most 24 web-tool calls
+request combines web research and structured output; at most 36 web-tool calls
 are possible across three companies if all three need this explicit repair.
 The default model is pinned to
 `gpt-5.4-mini-2026-03-17`; changing it requires code review, not an arbitrary

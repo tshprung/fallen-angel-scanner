@@ -64,7 +64,7 @@ def test_request_contract_sources_cache_and_no_automatic_admission(tmp_path):
     result = ai.run_research(*before, None, None, tmp_path, now=NOW, key="test", transport=transport)
     assert result["status"] == "COMPLETED" and len(result["shortlist"]) == 1
     assert len(payloads) == 2
-    assert payloads[0]["tool_choice"] == "required" and payloads[0]["max_tool_calls"] == 4
+    assert payloads[0]["tool_choice"] == "auto" and payloads[0]["max_tool_calls"] == 6
     assert payloads[1]["text"]["format"]["strict"]
     assert all(not p["store"] and p["max_output_tokens"] == 5000 for p in payloads)
     assert not list(tmp_path.glob("recovery_cases*")) and not list(tmp_path.glob("paper*"))

@@ -42,8 +42,10 @@ jobs:
           PYTHONUNBUFFERED: '1'
         # Explicit user authorization for today's development; source metadata and deadlines are now supplied.
         run: |
-          python -u ai_research.py --development-probe SANM --authorized-date 2026-11-10
-          python -u ai_research.py --development-probe BOOT --authorized-date 2026-11-10
+          probe_status=0
+          python -u ai_research.py --development-probe SANM --authorized-date 2026-11-10 || probe_status=1
+          python -u ai_research.py --development-probe BOOT --authorized-date 2026-11-10 || probe_status=1
+          exit "$probe_status"
       - name: Preserve AI reservations even on failure
         if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
         uses: actions/cache/save@v4
