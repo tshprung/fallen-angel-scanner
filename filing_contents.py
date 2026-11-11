@@ -194,10 +194,16 @@ def extract_content(body, document, cik, include_text=False):
         for index, (element, text) in sorted(enumerate(blocks), key=priority):
             if remaining <= 0 or len(excerpts) >= 30:
                 break
+            # Currency/scale and period labels are often paragraphs immediately
+            # before a table rather than cells inside it.
+            preceding = " ".join(row[1] for row in blocks[max(0, index-2):index])[-800:] if element.tag == "table" else ""
+            preceding = preceding[:max(0, remaining-1)]
+            remaining -= len(preceding)
             snippet = text[:min(5000, remaining)]
             remaining -= len(snippet)
             excerpts.append({"block": index, "kind": "table" if element.tag == "table" else "paragraph",
-                             "text": snippet, "truncated": len(snippet) < len(text)})
+                             "text": snippet, "preceding_context": preceding,
+                             "truncated": len(snippet) < len(text)})
         result["text_blocks"] = sorted(excerpts, key=lambda row: row["block"])
         result["text_is_partial"] = True
     return result

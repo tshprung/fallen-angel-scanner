@@ -42,6 +42,16 @@ def test_raw_excerpts_strip_hidden_instructions_and_expose_truncation():
     assert "instructions" not in str(parsed["text_blocks"])
 
 
+def test_financial_table_excerpts_keep_adjacent_units_and_period_labels():
+    from filing_contents import extract_content
+    doc = {"url": BASE + "report.htm", "accessionNumber": "0000001234-26-000001", "form": "10-Q"}
+    body = "<html><body><p>Consolidated balance sheets, September 30, 2026. Amounts in USD millions.</p><table><tr><td>Cash equivalents</td><td>150</td></tr></table><p>" + "Additional public filing context. " * 10 + "</p></body></html>"
+    parsed = extract_content(body, doc, "1234", include_text=True)
+    table = next(row for row in parsed["text_blocks"] if row["kind"] == "table")
+    assert "USD millions" in table["preceding_context"] and "September 30, 2026" in table["preceding_context"]
+    assert sum(len(row["text"]) + len(row["preceding_context"]) for row in parsed["text_blocks"]) <= 14000
+
+
 def test_reviewer_citations_are_constrained_to_provided_raw_sources(monkeypatch):
     from tests.test_ai_research import responses, context, NOW, URLS
     packet = {"documents": [{"url": url, "text_blocks": [{"text": "Actual source evidence"}]} for url in URLS], "failures": []}
