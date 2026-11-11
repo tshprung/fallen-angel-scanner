@@ -20,6 +20,7 @@ import requests
 
 import fallen_angel_scanner as scanner
 from recovery_cases import is_documented_case
+from news_risk import unresolved_news_text
 
 R2K_TOP_N = 750
 R2K_MIN_DOLLAR_VOLUME = 2_000_000
@@ -334,7 +335,8 @@ def classify_drop_cause(stock_record):
             "cause_detail": "No verified catalyst found; price action alone is not treated as a cause.",
         }
 
-    serious_hits = [k for k in SERIOUS_CAUSE_KEYWORDS if k in text]
+    risk_text = unresolved_news_text(headlines)
+    serious_hits = [k for k in SERIOUS_CAUSE_KEYWORDS if k in risk_text]
     temporary_hits = [k for k in TEMPORARY_CAUSE_KEYWORDS if k in text]
 
     if serious_hits:

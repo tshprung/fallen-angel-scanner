@@ -388,7 +388,9 @@ def test_hidden_core_selections_are_not_marked_as_emailed(monkeypatch, tmp_path)
     monkeypatch.setattr(scanner, "save_memory", Mock())
     monkeypatch.setattr(scanner, "check_price_alerts", lambda _: [])
     monkeypatch.setattr(scanner, "stage1_quick_filter", lambda: ([{"ticker": "ABC"}], []))
-    stocks = [{"ticker": f"CO{i}", "current_price": 10, "currency": "USD"} for i in range(15)]
+    stocks = [{"ticker": f"CO{i}", "current_price": 10, "currency": "USD",
+               "risk_score": 2, "recovery_potential": 30} for i in range(15)]
+    monkeypatch.setattr(scanner, "_attach_final_trend_scores", None)
     monkeypatch.setattr(scanner, "stage2_deep_analysis", lambda *a: (stocks, []))
     monkeypatch.setattr(scanner, "enrich_research_audit", Mock())
     monkeypatch.setattr(scanner, "send_email", Mock(return_value=True))

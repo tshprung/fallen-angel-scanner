@@ -9,6 +9,8 @@ import yfinance as yf
 
 import fallen_angel_scanner as scanner
 from recovery_cases import is_documented_case
+from scanner_history import distribution_adjusted_close
+from news_risk import unresolved_news_text
 
 # Re-analyze every Stage 2 candidate on every run. The scanner normally keeps
 # sent-stock memory to prevent duplicate alerts, but this project is typically
@@ -211,12 +213,12 @@ def analyze_price_shape_fixed(stock, current_price):
              "stable_range_pct": None, "recent_drop_pct": None, "shape_recent_volatility": None,
              "shape_stable_r2": None}
     try:
-        hist = stock.history(period="5y")
+        hist = stock.history(period="5y", auto_adjust=False, actions=True)
         min_days = int(scanner.SHAPE_MIN_STABLE_YEARS * 252) + scanner.SHAPE_RECENT_WINDOW_DAYS
         if hist is None or len(hist) < min_days:
             print("    📐 Shape: insufficient history")
             return empty
-        close = pd.to_numeric(hist["Close"], errors="coerce").dropna()
+        close = distribution_adjusted_close(hist).dropna()
         stable = close.iloc[:-scanner.SHAPE_RECENT_WINDOW_DAYS]
         recent = close.iloc[-scanner.SHAPE_RECENT_WINDOW_DAYS:]
         if len(stable) < int(scanner.SHAPE_MIN_STABLE_YEARS * 252):
@@ -280,7 +282,8 @@ def _catalyst_display(stock):
         r"\bdelisting\b", r"\bdefault\b", r"\blayoff", r"\brestructur", r"\bclosure\b",
         r"\brecall\b", r"\bcriminal\b", r"\bsec inquiry\b"
     )
-    if any(re.search(pattern, text) for pattern in serious_patterns):
+    risk_text = unresolved_news_text(headlines)
+    if any(re.search(pattern, risk_text) for pattern in serious_patterns):
         return "🔴 FUNDAMENTAL RISK REQUIRES REVIEW", "Recent company-specific news contains a potentially fundamental problem."
 
     # A catalyst must describe a negative, company-specific event that can
@@ -297,7 +300,7 @@ def _catalyst_display(stock):
         r".{0,60}\b(?:after|following|due to|amid)\b"
         r".{0,80}\b(?:miss|warning|cut|lowered|weak|headwind|disappoint|guidance|outlook)\b"
     )
-    if any(re.search(pattern, text) for pattern in negative_event_patterns):
+    if any(re.search(pattern, risk_text) for pattern in negative_event_patterns):
         return "🟡 DECLINE EVENT; RECOVERY UNVERIFIED", "Company-specific coverage suggests a reason for the decline; it does not establish a temporary setback or a recovery catalyst."
 
     return "🟡 NO VERIFIED CATALYST", "Company-specific news exists, but it does not clearly identify a negative event explaining the decline."

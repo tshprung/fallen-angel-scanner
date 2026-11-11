@@ -237,6 +237,64 @@ def test_statement_date_mismatch_is_visible():
     assert any("align" in message for message in assess_solvency(data, INFO)["missing"])
 
 
+@pytest.mark.parametrize("shape,cap_name", [
+    ("choppy", "MAX_CANDIDATES"), ("sudden_drop", "MAX_FRESH_CRASH_CANDIDATES"),
+])
+def test_production_caps_after_leverage_overlay(monkeypatch, tmp_path, shape, cap_name):
+    from scanner_entry import scanner
+
+    data = evidence()
+    risky = deepcopy(data)
+    risky["balance"]["values"].update(debt=8e9, equity=10e9)
+    info = dict(INFO, currency="USD", marketCap=6e9, longName="Example")
+    def fetch(ticker):
+        return SimpleNamespace(ticker=ticker, history=lambda **kw: pd.DataFrame()), info
+
+    monkeypatch.setattr(scanner, cap_name, 1)
+    monkeypatch.setattr(scanner, "load_memory", lambda: {})
+    monkeypatch.setattr(scanner, "check_price_alerts", lambda _: [])
+    monkeypatch.setattr(scanner, "stage1_quick_filter", lambda: ([
+        {"ticker": ticker, "current_price": 10, "drop_21d_pct": -25}
+        for ticker in ("AAA", "BBB", "CCC")], []))
+    monkeypatch.setattr(scanner, "get_stock_with_retry", fetch)
+    monkeypatch.setattr(scanner, "load_review_holds", dict)
+    monkeypatch.setattr(scanner, "should_send_stock", lambda *a: True)
+    monkeypatch.setattr(scanner, "analyze_price_shape", lambda *a: {
+        "shape": shape, "stable_years": 3, "recent_drop_pct": -35})
+    monkeypatch.setattr(scanner, "get_financial_health", lambda _: {})
+    monkeypatch.setattr(scanner, "collect_evidence", lambda stock, *a, **kw: risky if stock.ticker == "AAA" else data)
+    monkeypatch.setattr(scanner, "assess_solvency", lambda *a: {"status": "SCREEN_PASS"})
+    monkeypatch.setattr(scanner, "valuation_scenarios", lambda *a: {
+        "status": "SENSITIVITY", "plausible_upside_screen": True,
+        "cases": {"bear": {"price": 5}, "base": {"return_pct": 30}, "bull": {"price": 19}}})
+    monkeypatch.setattr(scanner, "check_sec_filings", lambda *a, **kw: {
+        "status": "METADATA_CHECKED", "blocks_selection": False, "checked_at": NOW,
+        "notice": "Fixture filing review"})
+    monkeypatch.setattr(scanner, "compute_piotroski_score", lambda *a: (8, 9))
+    monkeypatch.setattr(scanner, "get_earnings_date", lambda _: (None, None))
+    monkeypatch.setattr(scanner, "search_recent_news", lambda *a: [])
+    monkeypatch.setattr(scanner, "calculate_risk_score", lambda *a, **kw: 2)
+    monkeypatch.setattr(scanner, "detect_bottom", lambda *a: (False, None, None, "LOW"))
+    monkeypatch.setattr(scanner, "enrich_research_audit", lambda *a, **kw: None)
+    monkeypatch.setattr(scanner, "generate_email_html", lambda *a: "")
+    monkeypatch.setattr(scanner, "send_email", lambda *a: False)
+    enriched = []
+    monkeypatch.setattr(scanner, "_attach_final_trend_scores", lambda rows: enriched.extend(row["ticker"] for row in rows))
+    monkeypatch.setattr(scanner, "REPORT_SCOPE", {}, raising=False)
+    monkeypatch.setattr(scanner, "REPORT_PREFIX", str(tmp_path / "report"), raising=False)
+    monkeypatch.setattr(scanner, "PAPER_TRACKING_ENABLED", False, raising=False)
+    monkeypatch.setattr(scanner, "AI_RESEARCH_ENABLED", False, raising=False)
+    monkeypatch.setattr(scanner, "GROWTH_SHADOW_ENABLED", False, raising=False)
+
+    scanner.main()
+
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
+    assert report["selected_tickers"] == enriched == ["BBB"]
+    audit = {row["ticker"]: row for row in report["candidates"]}
+    assert "Equity stub" in audit["AAA"]["reason"]
+    assert audit["CCC"]["decision"] == "final_filter_excluded"
+
+
 @pytest.mark.parametrize("filing_status,blocked,documented", [("METADATA_CHECKED", False, False), ("NOT_COVERED", False, False),
     ("UNVERIFIED", True, False), ("REVIEW_REQUIRED", True, False), ("METADATA_CHECKED", False, True), ("UNVERIFIED", True, True)])
 @pytest.mark.parametrize("case_status", ["DOCUMENTED_6M_CASE", "DOCUMENTED_12M_CASE", "DOCUMENTED_24M_CASE"])

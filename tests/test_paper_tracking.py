@@ -31,6 +31,36 @@ def test_next_session_open_determines_return():
     assert result["return_local_pct"] == pytest.approx(20)
 
 
+def test_entire_next_session_bar_missing_cannot_shift_the_entry():
+    result = assess_selection(selection(), history(["2026-10-23", "2026-10-26"], [100, 110], [105, 120]),
+                              now="2026-10-27T12:00Z")
+    assert result["status"] == "unverified"
+    assert result["expected_entry_session"] == "2026-10-22"
+    assert "entry_session" not in result and "return_local_pct" not in result
+
+
+@pytest.mark.parametrize("ticker,selected,entry", [
+    ("AAA", "2026-04-02T20:00Z", "2026-04-06"),  # Good Friday and weekend
+    ("AAA", "2026-11-26T01:00Z", "2026-11-27"),  # Nov 25 in New York; early close is a session
+    ("AAA.WA", "2026-11-10T20:00Z", "2026-11-12"),  # Polish Independence Day
+    ("AAA.L", "2026-12-24T17:00Z", "2026-12-29"),  # Christmas and substitute Boxing Day
+    ("AAA.DE", "2026-12-23T18:00Z", "2026-12-28"),  # Xetra closes on Christmas Eve
+    ("AAA.TA", "2026-01-01T17:00Z", "2026-01-05"),  # Transition to Monday–Friday
+    ("AAA.TA", "2026-11-12T17:00Z", "2026-11-13"),  # Friday is a trading session
+])
+def test_expected_entry_uses_the_listing_calendar(ticker, selected, entry):
+    result = assess_selection({"ticker": ticker, "selected_at": selected}, history([entry], [100], [105]),
+                              now=pd.Timestamp(entry, tz="UTC") + pd.Timedelta(days=2))
+    assert result["status"] == "tracking" and result["entry_session"] == entry
+    assert result["return_local_pct"] == pytest.approx(5)
+
+
+def test_unknown_entry_calendar_remains_unverified_even_if_prices_exist():
+    result = assess_selection(dict(selection(), ticker="AAA.TO"),
+                              history(["2026-10-22"], [100], [105]), now="2026-10-24T12:00Z")
+    assert result["status"] == "unverified" and "calendar" in result["reason"]
+
+
 def test_unavailable_ticker_is_unverified_not_deleted_or_assumed_zero_return():
     assert assess_selection(selection(), None)["status"] == "unverified"
 

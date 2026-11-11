@@ -256,12 +256,11 @@ def stage2_enhanced(candidates, memory):
     if filtered:
         for stock in filtered:
             print(f"  🧾 Filtered candidate: {stock['ticker']} — {stock['overlay_exclusion_reason']}")
-    analyzed = _attach_trend_scores(analyzed_filtered)
-    fresh = _attach_trend_scores(fresh_filtered)
-    return analyzed, fresh
+    return analyzed_filtered, fresh_filtered
 
 
 scanner.stage2_deep_analysis = stage2_enhanced
+scanner._attach_final_trend_scores = _attach_trend_scores
 
 _original_generate_email_html = scanner.generate_email_html
 
