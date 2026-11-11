@@ -23,6 +23,7 @@ jobs:
       - name: Read 2023 filings for two known SEC issuer IDs
         env:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: >-
           python -u edgar_vintages.py --cik 320193 --cik 886158
           --start 2023-01-01 --end 2023-12-31 --as-of 2024-01-05T00:00:00Z

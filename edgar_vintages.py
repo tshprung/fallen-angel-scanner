@@ -132,8 +132,15 @@ def audit_issuer(cik, start, end, asof, client):
     if not re.fullmatch(r"\d{1,10}", cik) or not int(cik):
         raise ValueError("Expected a nonzero numeric CIK")
     cik = cik.zfill(10)
+    def get(url):
+        try:
+            payload, _ = client.get_json(url)
+        except SourceUnavailable as exc:
+            raise SourceUnavailable(f"{url}: {exc}") from None
+        return payload
+
     endpoint = f"https://data.sec.gov/submissions/CIK{cik}.json"
-    metadata, _ = client.get_json(endpoint)
+    metadata = get(endpoint)
     if int(metadata["cik"]) != int(cik):
         raise ValueError("Submissions issuer does not match requested CIK")
     index = metadata["filings"]
@@ -148,11 +155,11 @@ def audit_issuer(cik, start, end, asof, client):
         if not re.fullmatch(rf"CIK{cik}-submissions-\d{{3}}\.json", name):
             raise ValueError("Unexpected SEC archive identity")
         url = "https://data.sec.gov/submissions/" + name
-        block, _ = client.get_json(url)
+        block = get(url)
         sources.append(url)
         blocks.append(block)
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
-    facts, _ = client.get_json(url)
+    facts = get(url)
     return {**extract_vintages(cik, blocks, facts, start, end, asof), "input_urls": [*sources, url]}
 
 
