@@ -15,9 +15,10 @@ import pandas as pd
 
 from scanner_currency import finite
 from scanner_history import validate_price_bars
+from paper_sessions import next_paper_session
 
 LEDGER = "paper_tracking.json"
-PERFORMANCE_VERSION = 4
+PERFORMANCE_VERSION = 5
 BENCHMARK_VERSION = 1
 COMPLETE_STATUSES = {"complete_6m", "complete_12m", "complete_24m"}
 
@@ -124,25 +125,25 @@ def _assess_selection(selection, history, now=None):
     now = pd.Timestamp(now or datetime.now(timezone.utc))
     if now.tzinfo is None:
         now = now.tz_localize("UTC")
+    entry_day, local_today = next_paper_session(selection["ticker"], selection["selected_at"], now)
+    if entry_day is None:
+        return {"status": "unverified", "reason": "No published entry calendar for this listing/date"}
+    expected = {"expected_entry_session": str(entry_day)}
+    if entry_day >= local_today:
+        return dict(expected, status="pending_next_session")
     if history is None or history.empty:
-        return {"status": "unverified", "reason": "No history; possible provider gap, suspension or delisting"}
-    # Preserve exchange-local session dates; UTC conversion can move Asian
-    # session labels back a day. Selection-day exclusion is conservative.
+        return dict(expected, status="unverified", reason="No history; possible provider gap, suspension or delisting")
+    # Keep exchange-local labels. Later bars cannot substitute for an absent
+    # entry session, even if their dates fall within the usual gap tolerance.
     dates = pd.Index([pd.Timestamp(i).date() for i in history.index])
-    selected_day = pd.Timestamp(selection["selected_at"]).date()
     frame = history.copy()
     frame.index = dates
-    frame = frame[(frame.index > selected_day) & (frame.index < now.date())].sort_index()
-    if frame.empty:
-        return {"status": "pending_next_session"}
-    # Do not silently move entry forward if the first possible session is bad.
-    entry_day = frame.index[0]
+    frame = frame[(frame.index >= entry_day) & (frame.index < local_today)].sort_index()
+    if entry_day not in frame.index:
+        return dict(expected, status="unverified", reason="Expected next-session bar is missing")
     entry = finite(frame.iloc[0].get("Open"))
     if entry is None or entry <= 0:
-        return {"status": "unverified", "reason": "First next-session open is missing/invalid"}
-    # A very delayed first quote can indicate a history gap or suspension.
-    if (entry_day - selected_day).days > 10:
-        return {"status": "unverified", "reason": "First next-session observation delayed over ten days"}
+        return dict(expected, status="unverified", reason="First next-session open is missing/invalid")
     horizon = selection_horizon(selection)
     completion_status = {183: "complete_6m", 365: "complete_12m", 730: "complete_24m"}[horizon]
     maturity = entry_day + pd.Timedelta(days=horizon)
@@ -163,7 +164,7 @@ def _assess_selection(selection, history, now=None):
     else:
         end_day, row = frame.index[-1], frame.iloc[-1]
         status = "tracking"
-        if (now.date() - end_day).days > 7:
+        if (local_today - end_day).days > 7:
             status = "stale_unverified"
     # Only assess the holding window; later bad prices cannot invalidate an
     # already completed observation, and earlier gaps cannot be hidden by a

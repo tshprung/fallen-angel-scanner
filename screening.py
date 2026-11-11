@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 from datetime import datetime, timezone
+from scanner_history import distribution_adjusted_close
 
 
 def drawdown_candidate(history, policy, minimum_drop_pct=20, now=None):
@@ -15,7 +16,7 @@ def drawdown_candidate(history, policy, minimum_drop_pct=20, now=None):
         age = (today - history.index[-1].date()).days if len(history.index) else None
         if age is None or not 0 <= age <= 7:
             return None
-    close = pd.to_numeric(history["Close"], errors="coerce")
+    close = distribution_adjusted_close(history)
     # Dropping bad rows would change what '21 sessions' means.
     if len(close) < 22 or not (np.isfinite(close.tail(22)) & (close.tail(22) > 0)).all():
         return None

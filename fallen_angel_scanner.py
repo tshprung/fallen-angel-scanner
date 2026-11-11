@@ -36,6 +36,8 @@ from filing_contents import enrich_research_audit
 from scan_coverage import (new_coverage, record_outcome, checkpoint, provider_health,
                            MAX_CONSECUTIVE_QUOTE_FAILURES)
 from screening import drawdown_candidate
+from scanner_history import distribution_adjusted_close
+from news_risk import unresolved_news_text
 from disclosure_watch import has_updates as has_disclosure_updates
 from fundamental_analysis import (load_policy, collect_evidence, assess_solvency,
                                   valuation_scenarios, authoritative_health, specialist_requirements)
@@ -746,7 +748,7 @@ def stage1_quick_filter():
             
             # Get price history
             stage = "price_history"
-            hist = stock.history(period="1y")
+            hist = stock.history(period="1y", auto_adjust=False, actions=True)
             if hist is None or len(hist) < 22:
                 outcome = "insufficient_history"
                 continue
@@ -897,7 +899,8 @@ def analyze_news_sentiment(headlines):
     news_text = ' '.join(headlines).lower()
     
     temp_count = sum(1 for kw in temporary_keywords if kw in news_text)
-    serious_count = sum(1 for kw in serious_keywords if kw in news_text)
+    risk_text = unresolved_news_text(headlines)
+    serious_count = sum(1 for kw in serious_keywords if kw in risk_text)
     
     if serious_count > 0:
         return "🔴 SERIOUS ISSUE", "Fundamental problem detected"
@@ -1252,13 +1255,13 @@ def analyze_price_shape(stock, current_price):
         "recent_drop_pct": None,
     }
     try:
-        hist = stock.history(period="5y")
+        hist = stock.history(period="5y", auto_adjust=False, actions=True)
         min_days_needed = int(SHAPE_MIN_STABLE_YEARS * 252) + SHAPE_RECENT_WINDOW_DAYS
 
         if hist is None or len(hist) < min_days_needed:
             return empty_result
 
-        close = hist["Close"]
+        close = distribution_adjusted_close(hist)
         stable = close.iloc[:-SHAPE_RECENT_WINDOW_DAYS]
 
         if len(stable) < int(SHAPE_MIN_STABLE_YEARS * 252):
@@ -1472,16 +1475,7 @@ def stage2_deep_analysis(candidates, memory):
             drop_21d = candidate.get("drop_21d_pct")
             is_dropping = drop_21d is not None and drop_21d < -5
 
-            drop_from_peak_pct = None
-            try:
-                hist_1y = stock.history(period="1y")
-                if hist_1y is not None and len(hist_1y) >= 10:
-                    peak_52w = hist_1y["Close"].max().item()
-                    cp = candidate["current_price"]
-                    if peak_52w and peak_52w > 0:
-                        drop_from_peak_pct = ((cp - peak_52w) / peak_52w) * 100
-            except Exception:
-                pass
+            drop_from_peak_pct = candidate.get("drop_from_peak_pct")
 
             rsi_val = None
             try:
@@ -1605,11 +1599,9 @@ def stage2_deep_analysis(candidates, memory):
             print(f"  ❌ Failed to analyze {ticker}: {e}")
             continue
     
-    analyzed = narrow_analyzed_results(analyzed, MAX_CANDIDATES)
-    fresh_crash = narrow_analyzed_results(fresh_crash, MAX_FRESH_CRASH_CANDIDATES)
 
-    print(f"\n✅ Stage 2 complete: {len(analyzed)} fallen angels (max {MAX_CANDIDATES}), "
-          f"{len(fresh_crash)} fresh crash watch (max {MAX_FRESH_CRASH_CANDIDATES})\n")
+    print(f"\n✅ Core Stage 2 complete: {len(analyzed)} fallen angels and "
+          f"{len(fresh_crash)} fresh crash watches before final filters and caps\n")
     return analyzed, fresh_crash
 
 # ============================================================================
@@ -2060,6 +2052,12 @@ def _run_main():
     fresh_crash_stocks = []
     if candidates:
         analyzed_stocks, fresh_crash_stocks = stage2_deep_analysis(candidates, memory)
+        # Cap only after all production Stage 2 safety gates have run.
+        analyzed_stocks = narrow_analyzed_results(analyzed_stocks, MAX_CANDIDATES)
+        fresh_crash_stocks = narrow_analyzed_results(fresh_crash_stocks, MAX_FRESH_CRASH_CANDIDATES)
+        attach_trend_scores = globals().get("_attach_final_trend_scores")
+        if attach_trend_scores:
+            attach_trend_scores(analyzed_stocks + fresh_crash_stocks)
     
     selected = analyzed_stocks + fresh_crash_stocks
     final_tickers = {stock["ticker"] for stock in selected}
