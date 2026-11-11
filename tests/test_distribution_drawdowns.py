@@ -29,6 +29,28 @@ def test_adjusted_close_can_supply_missing_action_information():
     assert drawdown_candidate(frame, load_policy()) is None
 
 
+@pytest.mark.parametrize("last", [65., 45.])
+def test_reported_dividend_and_later_adj_close_only_distribution(last):
+    from scanner_history import distribution_adjusted_close
+
+    # The earlier $5 dividend appears in both fields. The later $30
+    # distribution appears only in Adj Close; $45 also includes a real loss.
+    frame = pd.DataFrame({
+        "Close": [100.] * 50 + [95.] * 13 + [last],
+        "Dividends": [0.] * 50 + [5.] + [0.] * 13,
+        "Adj Close": [65.] * 63 + [last],
+    })
+    close = distribution_adjusted_close(frame)
+    assert list(close.iloc[:-1]) == pytest.approx([65.] * 63)
+    assert close.iloc[-1] == last
+    signal = drawdown_candidate(frame, load_policy())
+    if last == 65.:
+        assert signal is None
+    else:
+        assert signal["screen_cohort"] == "recent_shock"
+        assert signal["drop_21d_pct"] == pytest.approx((45. / 65. - 1) * 100)
+
+
 def test_invalid_action_is_not_silently_counted_as_zero():
     frame = pd.DataFrame({"Close": [100.] * 63 + [75.], "Dividends": [0.] * 63 + [float("nan")]})
     with pytest.raises(ValueError, match="cash-distribution"):

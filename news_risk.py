@@ -12,7 +12,9 @@ _RESOLVED = re.compile(
     r"|\blawsuit (?:was |has been )?dismissed with prejudice\b"
 )
 _UNCERTAIN = re.compile(
-    r"\b(?:if|unless|could|may|might|would|not|never|pending|temporarily|for now|fails? to|failed to|remains? at risk)\b|\?"
+    r"\b(?:if|unless|could|may|might|would|not|never|pending|until|temporary|temporarily|for now|"
+    r"for the time being|provisionally|on hold|fails? to|failed to|remains? at risk|"
+    r"deny|denies|denied|denying|denial|disput(?:e|es|ed|ing)|contest(?:s|ed|ing)?)\b|\?"
 )
 
 
