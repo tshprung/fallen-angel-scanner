@@ -5,7 +5,6 @@ from collections import Counter, defaultdict
 from datetime import date, datetime, time, timedelta, timezone
 import math
 import re
-from urllib.parse import quote
 from zoneinfo import ZoneInfo
 
 from backtest import write_new
@@ -44,7 +43,7 @@ def conservative_cutoff(filed, accepted):
 
 def collect_filing_index(blocks, cik, start, end, asof):
     rows, counts = {}, Counter()
-    required = ("accessionNumber", "form", "filingDate", "reportDate", "acceptanceDateTime", "primaryDocument")
+    required = ("accessionNumber", "form", "filingDate", "reportDate", "acceptanceDateTime")
     for block in blocks:
         if any(not isinstance(block.get(k), list) for k in required):
             raise ValueError("SEC submission index lacks required arrays")
@@ -52,15 +51,14 @@ def collect_filing_index(blocks, cik, start, end, asof):
         if any(len(block[k]) != n for k in required) or len(block.get("items", [""]*n)) != n:
             raise ValueError("SEC submission arrays are misaligned")
         for i in range(n):
-            acc, form, filed, period, accepted, primary = [block[k][i] for k in required]
+            acc, form, filed, period, accepted = [block[k][i] for k in required]
             if form not in PERIODIC | EVENTS:
                 continue
             filed = date.fromisoformat(filed)
             if not start <= filed <= end:
                 continue
-            if (not re.fullmatch(r"\d{10}-\d{2}-\d{6}", acc)
-                    or not re.fullmatch(r"[A-Za-z0-9_.-]+", primary) or ".." in primary):
-                raise ValueError("Invalid SEC accession or primary document name")
+            if not re.fullmatch(r"\d{10}-\d{2}-\d{6}", acc):
+                raise ValueError("Invalid SEC accession")
             try:
                 accepted_at = instant(accepted)
             except (ValueError, AttributeError, TypeError):
@@ -78,7 +76,9 @@ def collect_filing_index(blocks, cik, start, end, asof):
                 continue
             row = dict(accession=acc, form=form, filed=str(filed), report_period=period or None,
                        accepted_at=accepted_at.isoformat(), available_at=cutoff.isoformat(), items=items,
-                       source_url=f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{acc.replace('-', '')}/{quote(primary, safe='')}")
+                       # The index has acceptance time and all exhibits, and
+                       # does not depend on XML rendering subdirectory names.
+                       source_url=f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{acc.replace('-', '')}/{acc}-index.htm")
             if acc in rows and rows[acc] != row:
                 raise ValueError("Conflicting SEC submission index versions for one accession")
             rows[acc] = row

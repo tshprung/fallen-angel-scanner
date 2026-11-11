@@ -20,7 +20,7 @@ def sources():
         "filingDate": ["2023-05-10", "2023-05-12", "2023-06-07"],
         "reportDate": ["2023-03-31", "2023-03-31", ""],
         "acceptanceDateTime": ["2023-05-10T21:00:00Z", "2023-05-12T21:00:00Z", "2023-06-07T13:00:00Z"],
-        "primaryDocument": ["first.htm", "amendment.htm", "notice.xml"],
+        "primaryDocument": ["first.htm", "amendment.htm", "xslF25X02/primary_doc.xml"],
         "items": ["", "", ""],
     }
     original = dict(accn=BASE, form="10-Q", filed="2023-05-10", end="2023-03-31", val=120)
@@ -57,6 +57,7 @@ def test_no_inferred_release_time_or_false_terminal_outcome():
     assert report["diagnostics"]["missing_aware_acceptance_time"] == 1
     assert [v["accession"] for v in report["vintages"]] == [AMEND]
     assert report["event_notices"][0]["form"] == "25-NSE"
+    assert report["event_notices"][0]["source_url"].endswith(f"/{EVENT}-index.htm")
     assert "cash_per_share" not in report["event_notices"][0]
 
 
