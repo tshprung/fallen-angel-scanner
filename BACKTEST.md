@@ -2,6 +2,8 @@
 
 The offline runner compares a deterministic **scanner-core proxy** against drawdown-only, value/quality without drawdown, sector/size/liquidity matches, and a tradable market benchmark. It reuses the scanner's distribution-aware drawdown, solvency and valuation functions. It also checks archived SEC/hold status and excludes equity stubs. It does not reconstruct the live watchlist universe, headline/Piotroski/risk overlays, discretionary cases or AI. Results cannot establish live-strategy parity or five-year survival.
 
+See the [data acquisition and acceptance checklist](BACKTEST_DATA_SOURCES.md) for provider coverage, a minimum export, and the public EDGAR accession audit.
+
 ## Run the synthetic smoke test
 
 ```sh
