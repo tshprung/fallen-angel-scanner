@@ -10,15 +10,15 @@
   "failures": [
     {
       "ticker": "SPXC",
-      "error": "INVALID_RESEARCH"
+      "error": "SOURCE_NOT_RETRIEVED"
     },
     {
       "ticker": "STRL",
-      "error": "INVALID_RESEARCH"
+      "error": "SOURCE_NOT_RETRIEVED"
     },
     {
       "ticker": "TTMI",
-      "error": "INVALID_RESEARCH"
+      "error": "SOURCE_NOT_RETRIEVED"
     }
   ],
   "requests_today": 6,

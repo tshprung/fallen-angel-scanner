@@ -26,8 +26,9 @@ tokens, without exceeding two requests per company or six per day. Its repair
 request combines web research and structured output; at most 36 web-tool calls
 are possible across three companies if all three need this explicit repair.
 Preliminary research uses pinned `gpt-5.4-mini-2026-03-17`; an independent
-final source review uses `gpt-5.4-2026-03-05`. The final reviewer must retrieve
-at least two primary documents itself and correct stale amendments, facility
+final source review uses `gpt-5.4-2026-03-05`. The final reviewer must read
+at least two primary documents through supplied actual filing excerpts or its
+own web retrieval, and correct stale amendments, facility
 limits confused with borrowings, leases, reporting periods and unsupported
 covenant claims. Changing models requires code review, not an arbitrary
 environment endpoint. Both model IDs and token usage are recorded.
@@ -54,10 +55,20 @@ spending guarantee. Do not run parallel paid probes with independent state.
 2. Search/read primary issuer, SEC and exchange sources through Responses
    web search, using a bounded public-company snapshot. No account email,
    private portfolio, API key, SMTP secret or trading credential enters prompts.
-3. Independently review the draft against primary sources and return a strict
+3. Collect a bounded primary-source packet between the two API calls: up to six
+   same-issuer SEC HTML filing/exhibit attempts, using the existing rate-limited
+   document client. Hidden text/scripts are removed. Up to 14,000 visible
+   characters per document are supplied, prioritizing financial tables and risk
+   passages; excerpts are explicitly partial and omitted content is unknown.
+   A successful packet includes URLs, retrieval times and content hashes.
+   With two or more fetched documents, the final output schema restricts cited
+   URLs to that packet. Failed fetches never enter the permitted citation list.
+   Otherwise, the reviewer must retrieve primary sources through web tools.
+   Independently review the draft against primary sources and return a strict
    JSON brief. Code checks issuer, source URL provenance,
    dates, counterevidence, review horizon and scenario arithmetic. At least
-   two distinct primary-source URLs must occur in the research tool output.
+   two distinct primary-source URLs must occur in supplied retrieved excerpts
+   or the final reviewer's research tool output.
    Unknown data must remain unknown. Schema/citation validation is not an
    independent audit of truth, source classification or financial interpretation.
 4. Save recent findings and reuse them for under three days. Changed source
@@ -96,6 +107,11 @@ never silently becomes an investment case. The large price-alert and filing
 backlogs stay in artifacts rather than making the user read dozens of names.
 The compact format is used even if the key is missing. Omit `--ai-research`
 to restore the original email format and avoid all OpenAI usage.
+
+An empty shortlist with failed reviews is headed **research incomplete**, rather
+than implying that the research found no opportunities. Failure codes distinguish
+unretrieved citations from other invalid output. Same-day reruns retain earlier
+failures even when the daily allowance prevents another attempt.
 
 - `ai_research.json`: current shortlist, calculation inputs/results and failures.
 - `ai_research.md`: rendered brief content and pilot status.

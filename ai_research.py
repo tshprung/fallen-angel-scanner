@@ -1,6 +1,7 @@
 """Bounded, sourced AI research pilot. Never changes admissions or paper trades."""
 
 from datetime import date, datetime, timedelta, timezone
+from copy import deepcopy
 from hashlib import sha256
 from html import escape
 import ipaddress
@@ -13,7 +14,7 @@ from urllib.parse import urlsplit
 
 import requests
 
-VERSION = 2
+VERSION = 3
 MODEL = "gpt-5.4-mini-2026-03-17"
 REVIEW_MODEL = "gpt-5.4-2026-03-05"
 COMPANIES_PER_DAY = 3
@@ -222,6 +223,10 @@ class APIError(Exception):
     """Sanitized error. Never retain provider exception text or request headers."""
 
 
+class ResearchError(ValueError):
+    """Fixed, safe diagnostic code; never provider exception text."""
+
+
 def post_response(payload, key):
     try:
         with requests.post("https://api.openai.com/v1/responses",
@@ -259,7 +264,7 @@ def response_text(data):
     return "\n".join(texts)
 
 
-def retrieved_urls(data):
+def retrieved_urls(data, require_web=True):
     urls = set()
     searched = False
     for item in data.get("output", []):
@@ -275,7 +280,7 @@ def retrieved_urls(data):
             for citation in content.get("annotations") or []:
                 if citation.get("type") == "url_citation" and safe_url(citation.get("url")):
                     urls.add(citation["url"])
-    if not searched:
+    if not searched and require_web:
         raise APIError("NO_COMPLETED_WEB_RESEARCH")
     return urls
 
@@ -305,6 +310,8 @@ def validate_brief(brief, context, retrieved, now):
     for source in sources:
         if not isinstance(source, dict) or set(source) != set(SOURCE["properties"]):
             raise ValueError("Invalid source")
+        if source["url"] not in retrieved:
+            raise ResearchError("SOURCE_NOT_RETRIEVED")
         if (not isinstance(source["id"], str) or not source["id"] or source["id"] in ids
                 or not isinstance(source["finding"], str) or not 1 <= len(source["finding"]) <= 1500
                 or source["url"] not in retrieved or not allowed_source(source["url"], context)
@@ -353,7 +360,8 @@ def research_one(context, now, request, single_pass=False):
               "Read the most recent results first, including earnings exhibits attached to an 8-K. "
               "Before using find-in-page, open at least TWO DISTINCT primary documents; avoid repeatedly reopening "
               "the same cover page. Cite only documents actually retrieved, not URLs merely present in the snapshot. "
-              "Your sources array must contain ONLY exact URLs returned by your own completed web tool calls. "
+              "Your sources array must contain ONLY exact URLs from provided retrieved primary excerpts or "
+              "your own completed web tool calls. A URL in the company snapshot is not retrieved evidence. "
               "If the tool budget runs out, omit unread references and claims depending on them; list the missing "
               "verification in unresolved. Two well-read current documents are preferable to many unread references. "
               "target_by is an assessment horizon date even when valuation_available=false; explain missing "
@@ -387,26 +395,44 @@ def research_one(context, now, request, single_pass=False):
                 "retrieved_urls": sorted(retrieved), "usage": [research.get("usage", {})]}
     if len(text) > 50_000:
         raise ValueError("Research output too large")
+    from ai_sources import primary_packet
+    packet = primary_packet(context, retrieved)
+    packet_urls = {row["url"] for row in packet["documents"]}
+    schema = deepcopy(SCHEMA)
+    if len(packet_urls) >= 2:
+        # Constrain citations before generation; every permitted URL has actual
+        # primary text in this request, rather than another model's description.
+        schema["properties"]["sources"]["items"]["properties"]["url"] = {
+            "type": "string", "enum": sorted(packet_urls)}
     extraction = completed(request({**common, "model": REVIEW_MODEL,
                            "tools": [{"type": "web_search", "search_context_size": "medium",
                                       "filters": {"allowed_domains": domains(context)}}],
                            "max_tool_calls": MAX_TOOL_CALLS, "tool_choice": "auto",
                            "include": ["web_search_call.action.sources"],
                            "text": {"format": {"type": "json_schema", "name": "recovery_brief",
-                           "strict": True, "schema": SCHEMA}},
+                           "strict": True, "schema": schema}},
                            "input": f"As of {now.date()}, independently fact-check and correct the preliminary research, "
                                     "then produce a skeptical final brief. The preliminary notes are not authoritative. "
-                                    "Read at least two distinct primary documents yourself, starting with current filings "
+                                    "Read actual provided primary excerpts or retrieve at least two documents yourself, starting with current filings "
                                     "and any new financing amendment. Correct stale maturities, debt/facility/lease conflation, "
                                     "period mismatches, superseded cost estimates and unsupported covenant claims. "
-                                    "Sources must be exact URLs in your own retrieved results; do not invent source content. "
+                                    "When the source schema restricts URLs, cite only those supplied primary excerpts; "
+                                    "other discoveries remain unresolved until their content is available. Excerpts are partial: "
+                                    "do not assert facts omitted from them or treat omitted risk language as clearance. "
+                                    "Do not invent source content. "
                                     "Use ISO dates. Numeric cash is USD, not millions. If currency conversion or "
                                     "valuation support is unavailable, set valuation_available=false.\n" +
                                     json.dumps({"company": context, "retrieved_urls": sorted(retrieved),
+                                                "primary_excerpts_untrusted": packet,
                                                 "research_notes_untrusted": text}, ensure_ascii=False)}))
-    reviewed_urls = retrieved_urls(extraction)
+    reviewed_urls = retrieved_urls(extraction, require_web=len(packet_urls) < 2) | packet_urls
     brief = validate_brief(json.loads(response_text(extraction)), context, reviewed_urls, now)
+    packet_dates = {row["url"]: row["filingDate"] for row in packet["documents"] if row.get("filingDate")}
+    if any(source["url"] in packet_dates and source["published_at"] != packet_dates[source["url"]]
+           for source in brief["sources"]):
+        raise ResearchError("SOURCE_DATE_MISMATCH")
     return {"brief": brief, "retrieved_urls": sorted(reviewed_urls),
+            "primary_source_packet": packet,
             "usage": [research.get("usage", {}), extraction.get("usage", {})]}
 
 
@@ -465,6 +491,14 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
         daily = state["days"].setdefault(now.date().isoformat(), {"tickers": [], "requests": 0})
         if (type(daily["requests"]) is not int or daily["requests"] < 0 or not isinstance(daily["tickers"], list)):
             raise ValueError("Invalid daily budget")
+        report["failures"] = list(daily.get("failures", []))
+        # Preserve failed reviews when a same-day rerun has no budget left.
+        if not report["failures"] and (directory/"ai_research.json").exists():
+            previous = json.loads((directory/"ai_research.json").read_text(encoding="utf-8"))
+            if previous.get("generated_at") and stamp(previous["generated_at"]).date() == now.date():
+                report["failures"] = [row for row in previous.get("failures", [])
+                                      if row.get("ticker") in daily["tickers"]]
+        daily["failures"] = report["failures"]
         # This is a working cache, not an immutable investment ledger.
         state["cache"] = {ticker: row for ticker, row in state["cache"].items()
                           if 0 <= (now-stamp(row["reviewed_at"])).total_seconds() <= 30*86400}
@@ -538,10 +572,13 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
                 print(f"AI research: {ticker}, provenance and structure validated", flush=True)
             except Exception as exc:
                 # Never persist exception text: it can contain API headers, payloads or credentials.
-                report["failures"].append({"ticker": ticker, "error": str(exc) if isinstance(exc, APIError) else "INVALID_RESEARCH"})
+                report["failures"][:] = [row for row in report["failures"] if row.get("ticker") != ticker]
+                report["failures"].append({"ticker": ticker, "error": str(exc) if isinstance(exc, (APIError, ResearchError)) else "INVALID_RESEARCH"})
+                atomic_json(state_path, state)
                 if isinstance(exc, APIError) and str(exc) in {"HTTP_400", "HTTP_401", "HTTP_403", "HTTP_404", "HTTP_429"}:
                     break  # Authentication, configuration and quota failures are not company-specific.
                 continue
+        report["failures"][:] = [row for row in report["failures"] if row.get("ticker") != ticker]
         report["reviews"].append({"ticker": ticker, "verdict": brief["verdict"],
                                   "reviewed_at": cached["reviewed_at"], "unresolved": brief["unresolved"]})
         if brief["verdict"] in {"PROMISING", "FOLLOW_UP"}:
@@ -563,6 +600,7 @@ def _run_research(candidates, audit, disclosure, shadow, output_dir, *, now=None
     report["reviewed_count"] = len(report["reviews"])
     report["companies_attempted_today"] = list(daily["tickers"])
     report["deferred_count"] = sum(row["ticker"] not in state["cache"] for row in queue)
+    atomic_json(state_path, state)
     save_report(directory, report)
     return report
 
@@ -639,6 +677,8 @@ def email_subject(report, selected):
     documented = sum(is_documented_case(stock) for stock in stocks)
     subject = (f"Fallen Angels: {len(stocks)+len(leads)} companies to review "
                f"({documented} documented cases, {len(leads)} AI leads)")
+    if not stocks and not leads and (report or {}).get("status") == "PARTIAL":
+        subject = "Fallen Angels: research incomplete; no validated shortlist today"
     if not stocks and not leads and (report or {}).get("reviewed_count"):
         subject = f"Fallen Angels: {report['reviewed_count']} companies researched; no qualifying shortlist today"
     if not report or report.get("status") != "COMPLETED":
@@ -678,8 +718,12 @@ def compact_email_html(report, selected, scope):
                  f"{coverage.get('requested_count', 'unknown')}; source gaps: {len(coverage.get('data_gaps', []))}; "
                  f"source health: {escape(str(health.get('status', 'unknown')))}.</p>")
     if report and report.get("failures"):
+        from collections import Counter
+        reasons = Counter(row.get("error", "UNKNOWN") for row in report["failures"])
         parts.append(f"<p>{len(report['failures'])} AI reviews failed validation or access checks; "
-                     "incomplete findings were not promoted. See ai_research.json.</p>")
+                     "incomplete findings were not promoted. " + escape("; ".join(
+                         f"{reason}: {count}" for reason, count in sorted(reasons.items()))) +
+                     ". This is an incomplete research run, not a finding that no opportunities exist. See ai_research.json.</p>")
     parts.append("<p>The full backlog, filing holds, price alerts and research evidence remain in the GitHub Actions artifacts. "
                  "They are not additional recommendations. AI briefs do not enter the selection registry or paper portfolio.</p></body></html>")
     return "".join(parts)

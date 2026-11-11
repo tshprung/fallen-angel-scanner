@@ -124,7 +124,7 @@ def normalized_text(element):
     return " ".join(element.text_content().split())
 
 
-def extract_content(body, document, cik):
+def extract_content(body, document, cik, include_text=False):
     if not isinstance(body, str):
         raise SourceUnavailable("Filing body is not text")
     if len(body.encode()) > MAX_BYTES:
@@ -177,10 +177,30 @@ def extract_content(body, document, cik):
                 "filingDate": document.get("filingDate"), "form": "EXHIBIT"})
             if len(exhibits) == 8:
                 break
-    return {"status": "INDEXED_FOR_REVIEW", "url": document["url"], "form": document["form"],
+    result = {"status": "INDEXED_FOR_REVIEW", "url": document["url"], "form": document["form"],
             "accessionNumber": document["accessionNumber"], "filingDate": document.get("filingDate"),
             "sha256": hashlib.sha256(body.encode()).hexdigest(), "visible_characters": len(visible),
             "topics": topics, "exhibit_links": exhibits, "notice": NOTICE}
+    if include_text:
+        # Bounded actual source text, not generated summaries. Keep table units/headers
+        # and explicitly expose truncation; omitted text is never negative evidence.
+        def priority(row):
+            index, (element, text) = row
+            financial = element.tag == "table" and re.search(
+                r"cash flows|cash equivalents|net income|total assets|revenue", text, re.I)
+            return (0 if financial else 1 if any(re.search(p, text, re.I) for p in TOPICS.values()) else 2, index)
+        remaining = 14000
+        excerpts = []
+        for index, (element, text) in sorted(enumerate(blocks), key=priority):
+            if remaining <= 0 or len(excerpts) >= 30:
+                break
+            snippet = text[:min(5000, remaining)]
+            remaining -= len(snippet)
+            excerpts.append({"block": index, "kind": "table" if element.tag == "table" else "paragraph",
+                             "text": snippet, "truncated": len(snippet) < len(text)})
+        result["text_blocks"] = sorted(excerpts, key=lambda row: row["block"])
+        result["text_is_partial"] = True
+    return result
 
 
 def collect_filing_contents(check, client=None, max_primary=3, max_exhibits=1):

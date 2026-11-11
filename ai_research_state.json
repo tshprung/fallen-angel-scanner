@@ -389,6 +389,20 @@
             "total_tokens": 34809
           }
         }
+      ],
+      "failures": [
+        {
+          "ticker": "SPXC",
+          "error": "SOURCE_NOT_RETRIEVED"
+        },
+        {
+          "ticker": "STRL",
+          "error": "SOURCE_NOT_RETRIEVED"
+        },
+        {
+          "ticker": "TTMI",
+          "error": "SOURCE_NOT_RETRIEVED"
+        }
       ]
     }
   },

@@ -61,6 +61,11 @@ jobs:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
         run: python disclosure_watch.py --output-dir disclosure-probe
+      - name: Check actual primary excerpts for recent AI reviews without paid requests
+        env:
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: python ai_sources.py
       - name: Preserve source access results
         if: always()
         uses: actions/upload-artifact@v4
@@ -70,6 +75,7 @@ jobs:
             sec_source_probe.json
             filing_content_probe.json
             filing_content_probe.md
+            ai_source_probe.json
             disclosure-probe/disclosure_watch.json
             disclosure-probe/disclosure_watch.md
             disclosure-probe/disclosure_watch_state.json

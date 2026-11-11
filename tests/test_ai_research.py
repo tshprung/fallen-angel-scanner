@@ -90,6 +90,20 @@ def test_daily_budget_survives_reruns_and_failed_calls(tmp_path):
     state = json.loads((tmp_path/"ai_research_state.json").read_text())
     assert state["days"]["2026-11-10"]["requests"] == 3
     assert not again["shortlist"]
+    assert again["status"] == "PARTIAL" and again["failures"] == result["failures"]
+
+
+def test_unread_sources_have_safe_diagnostics_and_an_incomplete_subject(tmp_path):
+    first, second = responses()
+    b = brief()
+    b["sources"][0]["url"] = "https://www.sec.gov/unread.htm"
+    second["output"][0]["content"][0]["text"] = json.dumps(b)
+    replies = iter([first, second])
+    result = ai.run_research(*inputs(), None, None, tmp_path, now=NOW, key="test", transport=lambda _: next(replies))
+    assert result["failures"] == [{"ticker": "ABC", "error": "SOURCE_NOT_RETRIEVED"}]
+    assert not result["shortlist"]
+    assert "research incomplete" in ai.email_subject(result, [])
+    assert "SOURCE_NOT_RETRIEVED: 1" in ai.compact_email_html(result, [], {})
 
 
 def test_corrupt_state_cannot_reset_spending(tmp_path):
