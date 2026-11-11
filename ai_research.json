@@ -1,156 +1,33 @@
 {
   "version": 2,
-  "generated_at": "2026-11-10T12:24:47.948649+00:00",
-  "status": "COMPLETED",
+  "generated_at": "2026-11-11T00:01:46.367313+00:00",
+  "status": "PARTIAL",
   "model": "gpt-5.4-mini-2026-03-17",
   "review_model": "gpt-5.4-2026-03-05",
   "notice": "AI research pilot, not qualified investment cases. Source links and schema checks do not verify every claim. AI cannot clear financial exclusions or research holds. No guaranteed return, five-year survival or continued listing.",
-  "shortlist": [
+  "shortlist": [],
+  "reviews": [],
+  "failures": [
     {
-      "ticker": "TTD",
-      "brief": {
-        "ticker": "TTD",
-        "verdict": "FOLLOW_UP",
-        "thesis": "Latest primary documents show a real slowdown rather than a clean reacceleration: Q3 2026 revenue fell 0.5% year over year to $736.0 million, GAAP net income fell to $38.1 million from $115.5 million, and adjusted EBITDA fell to $265.8 million from $317.5 million. Cash generation remained strong on a nine-month basis, but it was helped materially by working-capital inflows and stock compensation add-backs. Balance-sheet risk appears low because funded debt outstanding was zero at 2026-09-30, but lease obligations are meaningful and should not be treated as debt repayment progress. Recovery is plausible, but evidence is not yet strong enough to call the setback temporary.",
-        "decline_reason": "Primary sources do not state the stock-price decline reason. Operating evidence likely contributed: Q3 2026 revenue declined year over year, GAAP margin compressed to 5% from 16%, and the company undertook a 15% workforce reduction with restructuring charges.",
-        "temporary_vs_structural": "Mixed. Temporary supports: no funded debt outstanding, large liquidity, buyback authorization increase, and Q4 guidance above Q3 revenue. Structural concerns: management states competition is intense, CTV/OpenPath adoption still requires investment, and the latest reported quarter did not show stabilized year-over-year growth.",
-        "financial_resilience": "As of 2026-09-30, cash and cash equivalents were $1.229 billion and short-term investments were $420.4 million. The company reported no outstanding debt balance under its revolving facility, with $745 million availability net of $5 million letters of credit. However, operating lease liabilities were $87.4 million current plus $493.9 million non-current, and the company recognized a new roughly $148 million lease liability in Q3 tied to office expansion. Nine-month operating cash flow was $803.7 million, but this included $313.7 million of stock-based compensation add-backs and a $674.8 million accounts-receivable working-capital inflow; after capitalized software of $11.6 million and property/equipment purchases of $226.7 million, internally generated cash remains positive but less robust than raw OCF suggests.",
-        "competition_and_technology": "The 10-Q explicitly says the market is intensely competitive and could intensify, with new technologies and buying methods competing for ad spend. The filing also says TTD is investing heavily in programmatic TV/CTV and OpenPath, but warns those offerings may fail to gain sufficient client or publisher adoption. That makes any recovery thesis dependent on execution and demand, not just cost cuts.",
-        "risks": [
-          "Growth has not yet stabilized: Q3 2026 revenue was down 0.5% year over year.",
-          "GAAP earnings quality is pressured by high stock-based compensation: $95.1 million in Q3 and $313.7 million year-to-date.",
-          "Restructuring may flatter future comparisons but also signals weaker near-term demand/efficiency than previously expected.",
-          "Working-capital timing materially affects cash conversion; nine-month OCF benefited from a $674.8 million decrease in accounts receivable.",
-          "Operating leases are sizable at $581.3 million total liabilities and include a large new office-related lease recognized in Q3.",
-          "Management's Q4 outlook is only for revenue and adjusted EBITDA; no GAAP net income outlook was provided due partly to SBC variability.",
-          "Competitive pressure in ad tech and CTV/OpenPath adoption risk remain explicit in the 10-Q."
-        ],
-        "unresolved": [
-          "Whether Q4 2026 revenue of at least $755 million represents true reacceleration or only an easier compare is not supported by additional primary evidence here.",
-          "Whether the September-quarter weakness was mainly cyclical, share-loss related, or mix related is not established in the retrieved filings.",
-          "Any valuation-based upside case is unsupported because no sourced valuation framework or market price was provided.",
-          "Interest expense should not be assumed to be zero; the company had no debt drawn, but the revolver still carries undrawn commitment fees and customary letter-of-credit fees when applicable."
-        ],
-        "catalyst": "Near-term proof point is delivery against the company's Q4 2026 outlook of at least $755 million revenue and at least $280 million adjusted EBITDA, plus evidence that restructuring does not merely offset underlying demand weakness.",
-        "invalidation": "A weak Q4 relative to the company's own outlook, continued year-over-year revenue decline, or further reliance on restructuring/share repurchases to offset dilution rather than restore growth would weaken the recovery case.",
-        "next_review_by": "2027-02-08",
-        "checkpoint_metric": "Q4 2026 reported revenue >= 755000000 USD, adjusted EBITDA >= 280000000 USD, and evidence that GAAP profitability and diluted share count improve without larger SBC burden.",
-        "opportunity_cost": "High. TTD remains liquid and not balance-sheet stressed, but investors would be paying with time while waiting for proof that growth headwinds are temporary rather than competitive.",
-        "target_by": "2027-11-10",
-        "valuation_available": false,
-        "bear": {
-          "annual_equity_cash_usd": 0,
-          "multiple": 0,
-          "dilution_pct": 0,
-          "rationale": "Unsupported assumption without a primary-source valuation framework and current market price.",
-          "source_ids": [
-            "S1",
-            "S2",
-            "S3"
-          ]
-        },
-        "base": {
-          "annual_equity_cash_usd": 0,
-          "multiple": 0,
-          "dilution_pct": 0,
-          "rationale": "Unsupported assumption without a primary-source valuation framework and current market price.",
-          "source_ids": [
-            "S1",
-            "S2",
-            "S3"
-          ]
-        },
-        "recovery": {
-          "annual_equity_cash_usd": 0,
-          "multiple": 0,
-          "dilution_pct": 0,
-          "rationale": "Unsupported assumption without a primary-source valuation framework and current market price.",
-          "source_ids": [
-            "S1",
-            "S2",
-            "S3"
-          ]
-        },
-        "sources": [
-          {
-            "id": "S1",
-            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000116/ttd-20260930.htm",
-            "published_at": "2026-11-09",
-            "finding": "Form 10-Q for quarter ended 2026-09-30. Reported cash and cash equivalents of $1.229 billion, short-term investments of $420.4 million, zero outstanding revolver debt, $745 million revolver availability net of letters of credit, operating lease liabilities of $581.3 million total, nine-month operating cash flow of $803.7 million, capex of $226.7 million, capitalized software of $11.6 million, stock-based compensation expense of $313.7 million YTD and $95.1 million in Q3, unrecognized restricted-stock compensation of about $863 million, and explicit competition/CTV/OpenPath risk disclosures."
-          },
-          {
-            "id": "S2",
-            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/ttd-20261109.htm",
-            "published_at": "2026-11-09",
-            "finding": "Form 8-K dated 2026-11-09 furnishing Q3 2026 results and announcing an additional $731 million repurchase authorization, bringing total remaining authorization to $1.0 billion."
-          },
-          {
-            "id": "S3",
-            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000115/ttd-20261109x8kexx991.htm",
-            "published_at": "2026-11-09",
-            "finding": "Exhibit 99.1 earnings release. Reported Q3 2026 revenue of $736.0 million (-0.5% y/y), GAAP net income of $38.1 million, adjusted EBITDA of $265.8 million, Q4 2026 outlook of at least $755 million revenue and at least $280 million adjusted EBITDA, and showed restructuring charges of $44.3 million excluded from non-GAAP results."
-          },
-          {
-            "id": "S4",
-            "url": "https://www.sec.gov/Archives/edgar/data/1671933/000119312526382690/d118889d8k.htm",
-            "published_at": "2026-09-04",
-            "finding": "Form 8-K announcing a 2026 restructuring plan with approximately 15% workforce reduction and estimated cash restructuring and related charges of about $39 million to $51 million, partially offset by an estimated $4 million to $5 million stock-compensation reversal."
-          }
-        ]
-      },
-      "reviewed_at": "2026-11-10T09:59:50.667480+00:00",
-      "reused": true,
-      "valuation": null,
-      "in_current_price_candidates": false,
-      "core_decision": "disclosure_review",
-      "core_reason": "Issuer announced September-quarter results for November 9 after market close. Review growth stabilization, competitive pressure, cash conversion and stock compensation. Separate operating leases from funded borrowings; do not invent missing interest as zero. The higher historical price does not prove a temporary setback.",
-      "source_review_corrections": [],
-      "market_cap_usd": null,
-      "observed_price": null,
-      "quote_currency": null,
-      "quote_observed_at": null,
-      "rank_key": [
-        1,
-        4,
-        "TTD"
-      ]
-    }
-  ],
-  "reviews": [
-    {
-      "ticker": "TTD",
-      "verdict": "FOLLOW_UP",
-      "reviewed_at": "2026-11-10T09:59:50.667480+00:00",
-      "unresolved": [
-        "Whether Q4 2026 revenue of at least $755 million represents true reacceleration or only an easier compare is not supported by additional primary evidence here.",
-        "Whether the September-quarter weakness was mainly cyclical, share-loss related, or mix related is not established in the retrieved filings.",
-        "Any valuation-based upside case is unsupported because no sourced valuation framework or market price was provided.",
-        "Interest expense should not be assumed to be zero; the company had no debt drawn, but the revolver still carries undrawn commitment fees and customary letter-of-credit fees when applicable."
-      ]
+      "ticker": "SPXC",
+      "error": "INVALID_RESEARCH"
     },
     {
-      "ticker": "SANM",
-      "verdict": "INSUFFICIENT_EVIDENCE",
-      "reviewed_at": "2026-11-10T12:20:22.919236+00:00",
-      "unresolved": [
-        "No primary-source post-Amendment No. 5 leverage-ratio or interest-coverage calculation was retrieved.",
-        "No current filing retrieved gives a full post-amendment contractual maturity table for all funded debt, especially exact term-B timing under the amended stack.",
-        "I did not retrieve a primary-source comparable historical price series sufficient to support a post-split/post-spin comparison from current price to a prior verified level.",
-        "No retrieved filing quantified receivables sold outstanding at 2026-10-03, only the 2026-06-27 maximum capacity under the program.",
-        "No retrieved filing gave enough detail to normalize equity cash after all integration costs, possible acquisition-related working-capital swings and future contingent consideration.",
-        "No retrieved filing disclosed capitalized software detail relevant to cash-quality adjustment.",
-        "Five-year resilience is not fully evidenced from the documents retrieved; I verified four fiscal years of cash-flow context, not a complete five-year operating history."
-      ]
+      "ticker": "STRL",
+      "error": "INVALID_RESEARCH"
+    },
+    {
+      "ticker": "TTMI",
+      "error": "INVALID_RESEARCH"
     }
   ],
-  "failures": [],
-  "requests_today": 18,
-  "development_requests_today": 12,
-  "reviewed_count": 2,
+  "requests_today": 6,
+  "development_requests_today": 0,
+  "reviewed_count": 0,
   "companies_attempted_today": [
-    "TTD",
-    "SANM",
-    "BOOT"
+    "SPXC",
+    "STRL",
+    "TTMI"
   ],
-  "deferred_count": 72
+  "deferred_count": 70
 }

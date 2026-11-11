@@ -2,7 +2,7 @@
 
 Shadow research only. No valuation, return prediction, financial clearance or investment selection. Cash excludes investments; covenants, restricted cash, lease treatment, stock compensation, debt due in months 13-24, filings and catalysts require manual review. No historical performance or success rate has been established.
 
-Generated: 2026-11-10T02:14:46.368783+00:00; method af057861180c; core policy b15d5b7cc0c3.
+Generated: 2026-11-11T00:01:13.199000+00:00; method af057861180c; core policy b15d5b7cc0c3.
 
 Only current Stage 1 candidates are covered; the daily budget rotates without ranking winners.
 
@@ -10,12 +10,15 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 |---|---|---|---|
 | AA | DEFERRED_BUDGET | filing_review |  |
 | AAOI | DEFERRED_BUDGET | exclude |  |
+| AAP | DEFERRED_BUDGET | not_selected |  |
 | ACLS | DEFERRED_BUDGET | filing_review |  |
 | ACMR | DEFERRED_BUDGET | not_selected |  |
 | ADEA | DEFERRED_BUDGET | insufficient_value_upside |  |
 | ADIG | DEFERRED_BUDGET | exclude |  |
 | ADM | DEFERRED_BUDGET | exclude |  |
+| ADNT | DEFERRED_BUDGET | not_selected |  |
 | AEIS | DEFERRED_BUDGET | unverified |  |
+| AGNC | DEFERRED_BUDGET | specialist_review |  |
 | AGX | DEFERRED_BUDGET | unverified |  |
 | AIR | DEFERRED_BUDGET | unverified |  |
 | AKAM | DEFERRED_BUDGET | exclude |  |
@@ -30,15 +33,18 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | AMN | DEFERRED_BUDGET | not_selected |  |
 | AMR | DEFERRED_BUDGET | exclude |  |
 | ANDE | DEFERRED_BUDGET | exclude |  |
+| ANTO.L | DEFERRED_BUDGET | unverified |  |
 | AORT | DEFERRED_BUDGET | exclude |  |
 | AOSL | DEFERRED_BUDGET | not_selected |  |
 | APLD | DEFERRED_BUDGET | exclude |  |
-| ARLO | DEFERRED_BUDGET | unverified |  |
+| APTV | DEFERRED_BUDGET | not_selected |  |
+| ARE | DEFERRED_BUDGET | specialist_review |  |
 | ARR | DEFERRED_BUDGET | specialist_review |  |
-| ARW | DEFERRED_BUDGET | filing_review |  |
+| ASTH | DEFERRED_BUDGET | not_selected |  |
 | ASTS | DEFERRED_BUDGET | exclude |  |
 | ATI | DEFERRED_BUDGET | filing_review |  |
 | ATT.WA | DEFERRED_BUDGET | not_selected |  |
+| AU | DEFERRED_BUDGET | filing_review |  |
 | AUR | DEFERRED_BUDGET | not_selected |  |
 | AVAV | DEFERRED_BUDGET | unverified |  |
 | AVGO | DEFERRED_BUDGET | filing_review |  |
@@ -48,31 +54,32 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | BAC | DEFERRED_BUDGET | specialist_review |  |
 | BE | DEFERRED_BUDGET | filing_review |  |
 | BFAM | DEFERRED_BUDGET | not_selected |  |
+| BG | DEFERRED_BUDGET | exclude |  |
 | BHE | DEFERRED_BUDGET | insufficient_value_upside |  |
 | BHF | DEFERRED_BUDGET | specialist_review |  |
+| BJRI | DEFERRED_BUDGET | risk_excluded |  |
 | BKNG | DEFERRED_BUDGET | exclude |  |
 | BKR | DEFERRED_BUDGET | filing_review |  |
 | BL | DEFERRED_BUDGET | not_selected |  |
-| BLSH | NOT_MATCHED | exclude | Quarterly revenue growth below exploratory threshold |
-| BMNR | NOT_MATCHED | specialist_review | Specialist financial model required |
-| BOOT | OBSERVE_REVIEW_REQUIRED | filing_review |  |
-| BROS | NOT_MATCHED | exclude | Annual share-count growth above exploratory threshold |
-| BTU | NOT_MATCHED | exclude | Quarterly revenue growth below exploratory threshold; Positive trailing operating and free cash flow required; Positive cash flow after financing buffer required |
-| BURL | NOT_MATCHED | exclude | Quarterly revenue growth below exploratory threshold |
-| BWA | NOT_MATCHED | insufficient_value_upside | Quarterly revenue growth below exploratory threshold |
-| BWXT | NOT_MATCHED | unverified | Quarterly revenue growth below exploratory threshold; Nonnegative cash, total debt and current debt required |
-| BXMT | NOT_MATCHED | specialist_review | Specialist financial model required |
-| CALX | NOT_MATCHED | not_selected | Quarterly revenue growth below exploratory threshold; Gross interest expense required for funding buffer |
-| CASY | UNVERIFIED | unverified | Gross interest expense required for funding buffer |
-| CAT | NOT_MATCHED | exclude | Cash plus stressed cash flow insufficient for current debt |
+| BLSH | DEFERRED_BUDGET | exclude |  |
+| BMNR | DEFERRED_BUDGET | specialist_review |  |
+| BOOT | DEFERRED_BUDGET | filing_review |  |
+| BROS | DEFERRED_BUDGET | exclude |  |
+| BTU | DEFERRED_BUDGET | exclude |  |
+| BURL | DEFERRED_BUDGET | exclude |  |
+| BWA | DEFERRED_BUDGET | insufficient_value_upside |  |
+| BWXT | DEFERRED_BUDGET | unverified |  |
+| BXMT | DEFERRED_BUDGET | specialist_review |  |
+| CALM | DEFERRED_BUDGET | unverified |  |
+| CALX | DEFERRED_BUDGET | not_selected |  |
+| CAT | DEFERRED_BUDGET | exclude |  |
 | CCS | DEFERRED_BUDGET | specialist_review |  |
 | CDE | DEFERRED_BUDGET | filing_review |  |
 | CENX | DEFERRED_BUDGET | unverified |  |
 | CGNX | DEFERRED_BUDGET | not_selected |  |
-| CHTR | DEFERRED_BUDGET | not_selected |  |
 | CIEN | DEFERRED_BUDGET | filing_review |  |
 | CLSK | DEFERRED_BUDGET | specialist_review |  |
-| CMI | DEFERRED_BUDGET | risk_excluded |  |
+| CMI | DEFERRED_BUDGET | unverified |  |
 | COHR | DEFERRED_BUDGET | exclude |  |
 | COHU | DEFERRED_BUDGET | exclude |  |
 | COIN | DEFERRED_BUDGET | specialist_review |  |
@@ -85,30 +92,32 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | CSCO | DEFERRED_BUDGET | not_selected |  |
 | CVI | DEFERRED_BUDGET | filing_review |  |
 | CW | DEFERRED_BUDGET | filing_review |  |
+| CXM | DEFERRED_BUDGET | not_selected |  |
 | DAN | DEFERRED_BUDGET | exclude |  |
 | DAR | DEFERRED_BUDGET | not_selected |  |
 | DASH | DEFERRED_BUDGET | unverified |  |
+| DAVE | DEFERRED_BUDGET | filing_review |  |
+| DBD | DEFERRED_BUDGET | exclude |  |
 | DCH | DEFERRED_BUDGET | not_selected |  |
 | DDOG | DEFERRED_BUDGET | insufficient_value_upside |  |
 | DELL | DEFERRED_BUDGET | exclude |  |
+| DFH | DEFERRED_BUDGET | exclude |  |
 | DGII | DEFERRED_BUDGET | filing_review |  |
 | DINO | DEFERRED_BUDGET | unverified |  |
-| DIOD | DEFERRED_BUDGET | not_selected |  |
 | DKNG | DEFERRED_BUDGET | not_selected |  |
 | DKS | DEFERRED_BUDGET | exclude |  |
 | DOCN | DEFERRED_BUDGET | exclude |  |
 | DOX | DEFERRED_BUDGET | unverified |  |
-| DRS | DEFERRED_BUDGET | unverified |  |
 | DT | DEFERRED_BUDGET | not_selected |  |
 | DXPE | DEFERRED_BUDGET | filing_review |  |
 | DY | DEFERRED_BUDGET | filing_review |  |
+| EAT | DEFERRED_BUDGET | exclude |  |
 | ECG | DEFERRED_BUDGET | filing_review |  |
-| EIX | DEFERRED_BUDGET | exclude |  |
 | EME | DEFERRED_BUDGET | unverified |  |
 | ENPH | DEFERRED_BUDGET | not_selected |  |
 | ENVA | DEFERRED_BUDGET | specialist_review |  |
 | ESE | DEFERRED_BUDGET | filing_review |  |
-| ETN | DEFERRED_BUDGET | filing_review |  |
+| ETN | DEFERRED_BUDGET | exclude |  |
 | EXPE | DEFERRED_BUDGET | exclude |  |
 | FCX | DEFERRED_BUDGET | filing_review |  |
 | FFIV | DEFERRED_BUDGET | unverified |  |
@@ -119,14 +128,13 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | FIVN | DEFERRED_BUDGET | not_selected |  |
 | FIX | DEFERRED_BUDGET | filing_review |  |
 | FLEX | DEFERRED_BUDGET | unverified |  |
-| FLUT | DEFERRED_BUDGET | not_selected |  |
 | FMC | DEFERRED_BUDGET | not_selected |  |
 | FN | DEFERRED_BUDGET | unverified |  |
 | FORM | DEFERRED_BUDGET | unverified |  |
 | FPS | DEFERRED_BUDGET | exclude |  |
 | FSLR | DEFERRED_BUDGET | valuation_unverified |  |
-| FTI | DEFERRED_BUDGET | filing_review |  |
 | FTNT | DEFERRED_BUDGET | unverified |  |
+| FUL | DEFERRED_BUDGET | exclude |  |
 | FUN | DEFERRED_BUDGET | not_selected |  |
 | GEV | DEFERRED_BUDGET | unverified |  |
 | GFS | DEFERRED_BUDGET | not_selected |  |
@@ -139,7 +147,7 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | GWRE | DEFERRED_BUDGET | filing_review |  |
 | HCC | DEFERRED_BUDGET | risk_excluded |  |
 | HE | DEFERRED_BUDGET | not_selected |  |
-| HL | DEFERRED_BUDGET | filing_review |  |
+| HL | DEFERRED_BUDGET | unverified |  |
 | HLIT | DEFERRED_BUDGET | unverified |  |
 | HOOD | DEFERRED_BUDGET | specialist_review |  |
 | HP | DEFERRED_BUDGET | not_selected |  |
@@ -152,12 +160,14 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | IBKR | DEFERRED_BUDGET | specialist_review |  |
 | ICHR | DEFERRED_BUDGET | unverified |  |
 | IESC | DEFERRED_BUDGET | unverified |  |
-| IFX.DE | DEFERRED_BUDGET | not_selected |  |
+| IFX.DE | DEFERRED_BUDGET | unverified |  |
 | ILMN | DEFERRED_BUDGET | not_selected |  |
 | INSW | DEFERRED_BUDGET | filing_review |  |
 | INTC | DEFERRED_BUDGET | exclude |  |
+| INVX | DEFERRED_BUDGET | unverified |  |
 | IONQ | DEFERRED_BUDGET | unverified |  |
 | IOSP | DEFERRED_BUDGET | unverified |  |
+| IPGP | DEFERRED_BUDGET | not_selected |  |
 | IREN | DEFERRED_BUDGET | specialist_review |  |
 | JBHT | DEFERRED_BUDGET | unverified |  |
 | JBL | DEFERRED_BUDGET | risk_excluded |  |
@@ -173,6 +183,7 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | KRMN | DEFERRED_BUDGET | exclude |  |
 | KRU.WA | DEFERRED_BUDGET | specialist_review |  |
 | KTOS | DEFERRED_BUDGET | unverified |  |
+| LAD | DEFERRED_BUDGET | exclude |  |
 | LBRT | DEFERRED_BUDGET | exclude |  |
 | LCID | DEFERRED_BUDGET | not_selected |  |
 | LEU | DEFERRED_BUDGET | unverified |  |
@@ -190,13 +201,13 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | MARA | DEFERRED_BUDGET | specialist_review |  |
 | MBC | DEFERRED_BUDGET | exclude |  |
 | MCHP | DEFERRED_BUDGET | insufficient_value_upside |  |
+| MCY | DEFERRED_BUDGET | specialist_review |  |
 | MDB | DEFERRED_BUDGET | not_selected |  |
 | MGM | DEFERRED_BUDGET | exclude |  |
-| MGY | DEFERRED_BUDGET | unverified |  |
 | MKSI | DEFERRED_BUDGET | exclude |  |
+| MMI | DEFERRED_BUDGET | specialist_review |  |
 | MOD | DEFERRED_BUDGET | filing_review |  |
 | MP | DEFERRED_BUDGET | exclude |  |
-| MPC | DEFERRED_BUDGET | risk_excluded |  |
 | MRCY | DEFERRED_BUDGET | exclude |  |
 | MRTN | DEFERRED_BUDGET | not_selected |  |
 | MRVL | DEFERRED_BUDGET | filing_review |  |
@@ -209,8 +220,11 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | MXL | DEFERRED_BUDGET | not_selected |  |
 | NEU | DEFERRED_BUDGET | risk_excluded |  |
 | NFLX | DEFERRED_BUDGET | filing_review |  |
+| NGVT | DEFERRED_BUDGET | exclude |  |
+| NICE.TA | DEFERRED_BUDGET | not_selected |  |
+| NLY | DEFERRED_BUDGET | specialist_review |  |
 | NOW | DEFERRED_BUDGET | not_selected |  |
-| NPO | DEFERRED_BUDGET | insufficient_value_upside |  |
+| NPO | DEFERRED_BUDGET | unverified |  |
 | NRG | DEFERRED_BUDGET | exclude |  |
 | NSSC | DEFERRED_BUDGET | unverified |  |
 | NTAP | DEFERRED_BUDGET | risk_excluded |  |
@@ -227,14 +241,12 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | OII | DEFERRED_BUDGET | filing_review |  |
 | OKLO | DEFERRED_BUDGET | unverified |  |
 | OKTA | DEFERRED_BUDGET | not_selected |  |
-| ON | DEFERRED_BUDGET | filing_review |  |
-| ONTO | DEFERRED_BUDGET | unverified |  |
+| ONTO | DEFERRED_BUDGET | exclude |  |
 | ORCL | DEFERRED_BUDGET | exclude |  |
 | P | DEFERRED_BUDGET | filing_review |  |
 | PANW | DEFERRED_BUDGET | unverified |  |
-| PARR | DEFERRED_BUDGET | filing_review |  |
+| PARR | DEFERRED_BUDGET | valuation_unverified |  |
 | PATH | DEFERRED_BUDGET | not_selected |  |
-| PCAR | DEFERRED_BUDGET | unverified |  |
 | PCG | DEFERRED_BUDGET | exclude |  |
 | PDFS | DEFERRED_BUDGET | valuation_unverified |  |
 | PENG | DEFERRED_BUDGET | filing_review |  |
@@ -258,9 +270,9 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | ROCK | DEFERRED_BUDGET | not_selected |  |
 | RRR | DEFERRED_BUDGET | exclude |  |
 | RSI | DEFERRED_BUDGET | unverified |  |
-| SAFE | DEFERRED_BUDGET | specialist_review |  |
 | SAH | DEFERRED_BUDGET | exclude |  |
-| SANM | DEFERRED_BUDGET | filing_review |  |
+| SANM | DEFERRED_BUDGET | unverified |  |
+| SCCO | DEFERRED_BUDGET | unverified |  |
 | SCSC | DEFERRED_BUDGET | filing_review |  |
 | SEDG | DEFERRED_BUDGET | not_selected |  |
 | SEI | DEFERRED_BUDGET | exclude |  |
@@ -272,21 +284,19 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | SMCI | DEFERRED_BUDGET | exclude |  |
 | SMTC | DEFERRED_BUDGET | filing_review |  |
 | SNDK | DEFERRED_BUDGET | unverified |  |
-| SNDR | DEFERRED_BUDGET | unverified |  |
-| SNOW | DEFERRED_BUDGET | not_selected |  |
-| SNX | DEFERRED_BUDGET | exclude |  |
-| SPHR | DEFERRED_BUDGET | exclude |  |
-| SPXC | DEFERRED_BUDGET | insufficient_value_upside |  |
-| STC | DEFERRED_BUDGET | specialist_review |  |
-| STRA | DEFERRED_BUDGET | unverified |  |
-| STRL | DEFERRED_BUDGET | filing_review |  |
-| STWD | DEFERRED_BUDGET | specialist_review |  |
-| SXI | DEFERRED_BUDGET | filing_review |  |
-| TALO | DEFERRED_BUDGET | not_selected |  |
-| TBBK | DEFERRED_BUDGET | specialist_review |  |
-| TDW | DEFERRED_BUDGET | filing_review |  |
-| TEAM | DEFERRED_BUDGET | not_selected |  |
-| TER | DEFERRED_BUDGET | unverified |  |
+| SNDR | NOT_MATCHED | unverified | Quarterly revenue growth below exploratory threshold; Gross interest expense required for funding buffer |
+| SPHR | NOT_MATCHED | exclude | Quarterly revenue growth below exploratory threshold; Usable annual share-count growth required |
+| SPXC | OBSERVE_REVIEW_REQUIRED | insufficient_value_upside |  |
+| STC | NOT_MATCHED | specialist_review | Specialist financial model required |
+| STRA | NOT_MATCHED | unverified | Quarterly revenue growth below exploratory threshold; Gross interest expense required for funding buffer |
+| STRL | OBSERVE_REVIEW_REQUIRED | filing_review |  |
+| STWD | NOT_MATCHED | specialist_review | Specialist financial model required |
+| SXI | NOT_MATCHED | filing_review | Quarterly revenue growth below exploratory threshold |
+| TBBK | NOT_MATCHED | specialist_review | Specialist financial model required |
+| TDW | NOT_MATCHED | filing_review | Quarterly revenue growth below exploratory threshold |
+| TEAM | OBSERVE_REVIEW_REQUIRED | not_selected |  |
+| TER | UNVERIFIED | unverified | Invalid quarterly revenues; Fresh income statement required; Four consecutive quarters required for income; Statement periods do not align within 120 days |
+| TFIN | DEFERRED_BUDGET | specialist_review |  |
 | THRM | DEFERRED_BUDGET | not_selected |  |
 | TILE | DEFERRED_BUDGET | unverified |  |
 | TNDM | DEFERRED_BUDGET | not_selected |  |
@@ -304,7 +314,10 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | VICR | DEFERRED_BUDGET | unverified |  |
 | VLO | DEFERRED_BUDGET | filing_review |  |
 | VRT | DEFERRED_BUDGET | unverified |  |
+| VRTS | DEFERRED_BUDGET | specialist_review |  |
 | VSEC | DEFERRED_BUDGET | exclude |  |
+| VSH | DEFERRED_BUDGET | filing_review |  |
+| VST | DEFERRED_BUDGET | exclude |  |
 | WAFD | DEFERRED_BUDGET | specialist_review |  |
 | WDC | DEFERRED_BUDGET | filing_review |  |
 | WERN | DEFERRED_BUDGET | not_selected |  |
@@ -315,5 +328,7 @@ Only current Stage 1 candidates are covered; the daily budget rotates without ra
 | XE | DEFERRED_BUDGET | exclude |  |
 | XP | DEFERRED_BUDGET | specialist_review |  |
 | XPEL | DEFERRED_BUDGET | not_selected |  |
-| YELP | DEFERRED_BUDGET | unverified |  |
+| XYL | DEFERRED_BUDGET | filing_review |  |
+| Z | DEFERRED_BUDGET | not_selected |  |
+| ZG | DEFERRED_BUDGET | exclude |  |
 | ZS | DEFERRED_BUDGET | not_selected |  |

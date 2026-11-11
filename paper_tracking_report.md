@@ -25,6 +25,6 @@ Groups keep financial policy, price-screen cohort and research status as recorde
 
 | Selected | Ticker | Status | Horizon days | Elapsed days | Local return | Annualized return | Entry session | Mark session | SPY return | Stock minus SPY |
 |---|---|---|---:|---:|---:|---:|---|---|---:|---:|
-| 2026-10-21 | SFD | tracking | 365 | 18 | +6.3% | +244.8% | 2026-10-22 | 2026-11-09 | -1.8% | +8.1 pp |
-| 2026-10-21 | LRN | tracking | 365 | 18 | -1.7% | -29.6% | 2026-10-22 | 2026-11-09 | -1.8% | +0.1 pp |
-| 2026-10-21 | LCII | tracking | 365 | 18 | +21.8% | +5345.1% | 2026-10-22 | 2026-11-09 | -1.8% | +23.6 pp |
+| 2026-10-21 | SFD | tracking | 365 | 19 | +4.4% | +130.8% | 2026-10-22 | 2026-11-10 | -2.1% | +6.6 pp |
+| 2026-10-21 | LRN | tracking | 365 | 19 | -1.8% | -29.7% | 2026-10-22 | 2026-11-10 | -2.1% | +0.3 pp |
+| 2026-10-21 | LCII | tracking | 365 | 19 | +18.0% | +2311.5% | 2026-10-22 | 2026-11-10 | -2.1% | +20.2 pp |
