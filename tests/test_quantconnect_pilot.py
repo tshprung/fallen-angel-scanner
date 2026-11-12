@@ -38,22 +38,26 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
         pass
 
     hours = MarketHours()
+    stock_subscriptions = []
+    cohort_replay = problem in {"cohort-reconciled", "cohort-missing-benchmark-dividend"}
 
     class History:
         def __getitem__(self, kind):
             return lambda symbol, start, end, *resolution: self.read(kind, symbol, start, end)
 
         def read(self, kind, symbol, start, end):
+            if cohort_replay and symbol.value == "SPY" and stock_subscriptions:
+                raise ValueError("Benchmark history requested after loading stock subscriptions")
             if kind is Dividend and symbol.value == "SPY":
                 return [SimpleNamespace(time=datetime.fromisoformat(day),
                                         distribution=1.5 if problem == "amount" and day == "2022-12-16"
                                         else round(amount, 2))
                         for day, (_, amount) in SPY_DISTRIBUTIONS.items()
-                        if problem != "missing" or day != "2023-06-16"]
+                        if problem not in {"missing", "cohort-missing-benchmark-dividend"} or day != "2023-06-16"]
             if kind is Dividend and symbol.value == "MRTN" and universe_rows is not None:
                 return [SimpleNamespace(time=datetime.fromisoformat(day), distribution=cash)
                         for day, cash in [("2022-07-01", .06), ("2022-12-12", .06), ("2023-03-16", .10)]]
-            if kind is Dividend and symbol.value == "XRX" and problem == "cohort-reconciled":
+            if kind is Dividend and symbol.value == "XRX" and cohort_replay:
                 return [SimpleNamespace(time=datetime(2023, 6, 29), distribution=.25)]
             if kind is Delisting and symbol.value == "CTXS":
                 return [SimpleNamespace(time=datetime(2022, 9, 30), price=0)]
@@ -91,6 +95,7 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
                                    exchange=SimpleNamespace(hours=hours))
 
         def add_security(self, symbol, resolution, **kwargs):
+            stock_subscriptions.append(symbol.value)
             return self.add_equity(symbol.value, resolution, **kwargs)
 
         def add_universe(self, selection):
@@ -164,16 +169,17 @@ def test_benchmark_distribution_uses_sponsor_amount_and_waits_until_after_paymen
     assert verified["2023-06-16"]["pay_session"] == "2023-08-01"  # Cash remains outside the pilot window.
 
 
-@pytest.mark.parametrize("complete", [False, True])
-def test_cohort_audit_requires_original_members_and_complete_outcomes(complete, monkeypatch, tmp_path, capsys):
+@pytest.mark.parametrize("problem", [None, "cohort-reconciled", "cohort-missing-benchmark-dividend"])
+def test_cohort_audit_requires_original_members_and_complete_outcomes(problem, monkeypatch, tmp_path, capsys):
     tickers = sorted(ANCHORS) + [f"STOCK{i}" for i in range(18)]
     rows = [SimpleNamespace(symbol=SimpleNamespace(value=ticker, id=f"{ticker} ID"),
                             company_reference=SimpleNamespace(cik=("1744676" if ticker == "TME" else
                                                                   SHARES.get(ticker, ("7",))[0])))
             for ticker in tickers]
-    shocks = {"MFC": 65, "XRX": 15, "SEM": 65} if complete else {
+    complete_stock_inputs = problem is not None
+    shocks = {"MFC": 65, "XRX": 15, "SEM": 65} if complete_stock_inputs else {
         "EXLS": 65, "MRTN": 65, "CTXS": 65, "MFC": 65, "MSA": 65, "XRX": 15}
-    mock_quantconnect(monkeypatch, "cohort-reconciled" if complete else None, rows, shocks)
+    mock_quantconnect(monkeypatch, problem, rows, shocks)
     files = build()
     for name, source in files.items():
         (tmp_path / name).write_bytes(source.encode("utf-8"))
@@ -193,19 +199,19 @@ def test_cohort_audit_requires_original_members_and_complete_outcomes(complete, 
         assert counts["quality_inputs_unverified"] == 9
         assert counts["securities_with_delisting_notices"] == counts["horizon_open_missing"] == 1
         assert counts["delisting_notices_without_verified_terms"] == 0
-        assert counts["stock_dividends_reconciled"] == (2 if complete else 1)
+        assert counts["stock_dividends_reconciled"] == (2 if complete_stock_inputs else 1)
         assert counts["stock_dividend_amount_disagreements"] == 1
         assert counts["stock_distributions_with_unknown_payment"] == 2
         assert counts["holding_window_distributions_with_unknown_payment"] == 1
-        assert counts["drawdown_signals"] == (3 if complete else 6)
+        assert counts["drawdown_signals"] == (3 if complete_stock_inputs else 6)
         checks = {
             "net_debt_at_least_market_cap": 1, "nonpositive_trailing_free_cash_flow": 1,
             "specialist_review_required": 1,
         }
-        if not complete:
+        if not complete_stock_inputs:
             checks.update(failed_mapped_quality_checks=1, filing_hold=1, valuation_upper_bound_below_target=1)
         assert result["drawdown_financial_checks"] == checks
-        remaining = int(not complete)
+        remaining = int(not complete_stock_inputs)
         assert result["drawdown_outcome_gaps"] == {
             "delisting_notice_without_verified_terms": 0, "entry_open_missing": 0, "horizon_open_missing": remaining,
             "merger_payment_unverified": remaining, "stocks_with_unknown_dividend_payments": remaining,
@@ -214,7 +220,7 @@ def test_cohort_audit_requires_original_members_and_complete_outcomes(complete, 
         assert "EXLS" not in json.dumps(result)
         replay = result["cohort_replay"]
         assert replay["scanner_core_qualified_signals"] == 0
-        if complete:
+        if problem == "cohort-reconciled":
             assert replay["status"] == "DEVELOPMENT_REPLAY_ONLY"
             drawdown = replay["strategies"]["drawdown_only"]
             market = replay["strategies"]["market"]
@@ -226,6 +232,9 @@ def test_cohort_audit_requires_original_members_and_complete_outcomes(complete, 
             # Flat raw prices. The receivable after exit raises the small
             # drawdown portfolio's NAV, and SPY earns its four distributions.
             assert 0 < drawdown["net_portfolio_return_pct"] < market["net_portfolio_return_pct"]
+        elif problem == "cohort-missing-benchmark-dividend":
+            assert replay == {"status": "REPLAY_CHECK_FAILED", "stage": "benchmark_dividend_reconciliation",
+                              "error_type": "ValueError", "scanner_core_qualified_signals": 0}
         else:
             assert replay["status"] == "DRAWDOWN_OUTCOME_INPUTS_INCOMPLETE"
             assert "strategies" not in replay

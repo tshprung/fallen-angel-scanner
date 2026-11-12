@@ -148,9 +148,15 @@ def drawdown_financial_check(ticker, cap, mapped, data, first, config, policy, p
     return "qualified" if candidates[0]["quality"] else "failed_mapped_quality_checks"
 
 
-def replay_cohort(pilot, inputs, drawdowns, first, exit_i, config):
+REPLAY_ERRORS = (AttributeError, KeyError, TypeError, ValueError, RuntimeError)
+
+
+def replay_failure(stage, error):
+    return {"status": "REPLAY_CHECK_FAILED", "stage": stage, "error_type": type(error).__name__}
+
+
+def replay_cohort(pilot, data, drawdowns, first, exit_i, config):
     """Compare the verified drawdown cohort and SPY over the same holding window."""
-    data = pilot.Dataset(inputs)
     market_adv = data.adv(pilot.MARKET, first)
     if not market_adv:
         return {"status": "BENCHMARK_INPUT_UNVERIFIED"}
@@ -161,7 +167,10 @@ def replay_cohort(pilot, inputs, drawdowns, first, exit_i, config):
     results = {}
     for strategy, rows in groups.items():
         orders = {first + 1: (first, exit_i, rows)}
-        ledger = pilot.simulate(data, config, first, exit_i + 1, orders, strategy, pilot.HORIZON, 1, 0)
+        try:
+            ledger = pilot.simulate(data, config, first, exit_i + 1, orders, strategy, pilot.HORIZON, 1, 0)
+        except REPLAY_ERRORS as error:
+            return replay_failure(f"{strategy}_simulation", error)
         trades = ledger["trades"]
         unresolved = sum(not trade["outcome_known"] for trade in trades)
         entry_debit = sum(trade["initial_notional"] + trade["entry_cost"] for trade in trades)
@@ -177,6 +186,24 @@ def replay_cohort(pilot, inputs, drawdowns, first, exit_i, config):
         row["net_portfolio_return_pct"] is not None for row in results.values()
     ) else "OUTCOMES_INCOMPLETE")
     return dict(status=status, signal_date=str(pilot.SIGNAL), horizon_days=pilot.HORIZON, strategies=results)
+
+
+def load_cohort_benchmark(pilot, history, symbol, bar_type, daily, events, sessions, hours):
+    stage = "benchmark_raw_bars"
+    try:
+        bars = pilot.raw_history(history, symbol, bar_type, daily, sessions, pilot.MARKET)
+        if {bar["session"] for bar in bars} != {str(day) for day in sessions}:
+            return [], [], dict(status="BENCHMARK_INPUT_UNVERIFIED", stage="benchmark_calendar_coverage",
+                                bars_received=len(bars), expected_sessions=len(sessions))
+        stage = "benchmark_corporate_actions"
+        actions, delisted = pilot.market_actions(history, symbol, events, sessions, pilot.MARKET)
+        if delisted:
+            return [], [], dict(status="BENCHMARK_INPUT_UNVERIFIED", stage="benchmark_delisting_notice")
+        stage = "benchmark_dividend_reconciliation"
+        actions, _ = pilot.reconcile_benchmark_distributions(actions, hours)
+    except REPLAY_ERRORS as error:
+        return [], [], replay_failure(stage, error)
+    return bars, actions, None
 
 
 def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candidate, namespace):
@@ -205,9 +232,14 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
     drawdown_outcome_gaps = Counter()
     drawdowns = []
     market_security = dict(security_id=pilot.MARKET, issuer_id=pilot.MARKET, kind="benchmark", currency="USD")
+    # Match the standalone pilot: read SPY before subscribing to the individual stocks.
+    market_bars, market_actions, benchmark_failure = load_cohort_benchmark(
+        pilot, history, market.symbol, bar_type, daily, events, sessions, hours
+    )
     replay_inputs = dict(version=1, kind="historical", source="QuantConnect Research development cohort",
                          benchmark_security_id=pilot.MARKET, sessions=list(sessions.values()),
-                         securities=[market_security], bars=[], actions=[], membership=[], facts=[])
+                         securities=[market_security], bars=market_bars, actions=market_actions,
+                         membership=[], facts=[])
     filing_facts = pilot.filing_facts()
     for sid in ids:
         row = snapshot[sid]
@@ -304,18 +336,15 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
         replay = {"status": "NO_VERIFIED_DRAWDOWNS"}
     elif any(drawdown_outcome_gaps.values()):
         replay = {"status": "DRAWDOWN_OUTCOME_INPUTS_INCOMPLETE"}
+    elif benchmark_failure:
+        replay = benchmark_failure
     else:
         try:
-            market_bars = pilot.raw_history(history, market.symbol, bar_type, daily, sessions, pilot.MARKET)
-            market_actions, market_delisted = pilot.market_actions(history, market.symbol, events, sessions, pilot.MARKET)
-            if market_delisted or {bar["session"] for bar in market_bars} != {str(day) for day in sessions}:
-                raise ValueError("Expected complete benchmark bars and no delisting")
-            market_actions, _ = pilot.reconcile_benchmark_distributions(market_actions, hours)
-            replay_inputs["bars"].extend(market_bars)
-            replay_inputs["actions"].extend(market_actions)
-            replay = replay_cohort(pilot, replay_inputs, drawdowns, first, exit_i, config)
-        except (AttributeError, KeyError, TypeError, ValueError, RuntimeError) as error:
-            replay = {"status": "REPLAY_CHECK_FAILED", "error_type": type(error).__name__}
+            data = pilot.Dataset(replay_inputs)
+        except REPLAY_ERRORS as error:
+            replay = replay_failure("combined_dataset_validation", error)
+        else:
+            replay = replay_cohort(pilot, data, drawdowns, first, exit_i, config)
     replay["scanner_core_qualified_signals"] = drawdown_checks["qualified"]
     return {"status": "DEVELOPMENT_COVERAGE_ONLY", "sample_size": len(ids), "coverage": dict(counts),
             "drawdown_financial_checks": dict(drawdown_checks), "drawdown_outcome_gaps": dict(drawdown_outcome_gaps),
