@@ -24,7 +24,7 @@ class MarketHours:
         return datetime.combine(opening.date(), time(hour))
 
 
-def mock_quantconnect(monkeypatch, problem, universe_rows=None):
+def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=None):
     class TradeBar:
         pass
 
@@ -67,7 +67,10 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None):
                 close = hours.get_next_market_close(opening, False)
                 if problem == "clock" and day == date(2023, 7, 3):
                     close = datetime.combine(day, time(16))
-                result.append(SimpleNamespace(time=opening, end_time=close, open=100, close=100, volume=1_000_000))
+                price = (drawdown_prices or {}).get(symbol.value, 100)
+                if symbol.value in (drawdown_prices or {}) and day < date(2022, 6, 16):
+                    price /= .65
+                result.append(SimpleNamespace(time=opening, end_time=close, open=price, close=price, volume=1_000_000))
                 cursor = datetime.combine(day+timedelta(days=1), time.min)
             return result
 
@@ -165,7 +168,8 @@ def test_cohort_audit_requires_original_members_and_keeps_unverified_names_visib
                             company_reference=SimpleNamespace(cik=("1744676" if ticker == "TME" else
                                                                   SHARES.get(ticker, ("7",))[0])))
             for ticker in tickers]
-    mock_quantconnect(monkeypatch, None, rows)
+    mock_quantconnect(monkeypatch, None, rows, {"EXLS": 65, "MRTN": 65, "CTXS": 65,
+                                                "MFC": 65, "MSA": 65, "XRX": 15})
     files = build()
     for name, source in files.items():
         (tmp_path / name).write_bytes(source.encode("utf-8"))
@@ -191,6 +195,16 @@ def test_cohort_audit_requires_original_members_and_keeps_unverified_names_visib
         assert counts["stock_dividend_amount_disagreements"] == 1
         assert counts["stock_distributions_with_unknown_payment"] == 2
         assert counts["holding_window_distributions_with_unknown_payment"] == 1
+        assert counts["drawdown_signals"] == 6
+        assert result["drawdown_financial_checks"] == {
+            "failed_mapped_quality_checks": 1, "filing_hold": 1, "net_debt_at_least_market_cap": 1,
+            "nonpositive_trailing_free_cash_flow": 1, "specialist_review_required": 1,
+            "valuation_upper_bound_below_target": 1,
+        }
+        assert result["drawdown_outcome_gaps"] == {
+            "delisting_notice_without_verified_terms": 0, "entry_open_missing": 0, "horizon_open_missing": 1,
+            "merger_payment_unverified": 1, "stocks_with_unknown_dividend_payments": 1, "unknown_dividend_payments": 1,
+        }
         assert "EXLS" not in json.dumps(result)
 
         alternate = cohort[:-1] + [rows[-1].symbol]

@@ -25,6 +25,10 @@ SHARES = {
     "XRX": ("1770450", "2022-04-30", 154_862_456),
 }
 ANCHORS = SHARES.keys() | {"BOWL", "EGP", "SATS", "TME"}
+# Public financial statements available before the June 2022 signal.
+TRAILING_FCF = {"AMRC": -594_723_000, "MRTN": -12_362_000, "SEM": -19_986_000, "MSA": 135_821_000}
+SPECIALIST_ISSUERS = {"BAC", "MFC", "NBHC", "WABC"}
+XEROX_NET_DEBT = 4_271_000_000 - 1_681_000_000
 # Ex-dates use the then applicable Nasdaq rule, one business day before
 # the stated record date for these ordinary dividends. The feed must agree.
 STOCK_DIVIDENDS = {
@@ -91,6 +95,34 @@ def reconcile_stock_distributions(actions, ticker, cik, hours):
     return reconciled, counts
 
 
+def drawdown_financial_check(ticker, cap, mapped, data, first, config, policy, pilot):
+    if ticker == "CTXS":
+        return "filing_hold"
+    if ticker in SPECIALIST_ISSUERS:
+        return "specialist_review_required"
+    if ticker == "XRX" and XEROX_NET_DEBT >= cap:
+        return "net_debt_at_least_market_cap"
+    if (fcf := TRAILING_FCF.get(ticker)) is not None:
+        if fcf <= 0:
+            return "nonpositive_trailing_free_cash_flow"
+        # The shared valuation model caps normalized cash flow at trailing FCF
+        # before subtracting its interest buffer. This bound can only rule out.
+        valuation = policy["valuation"]
+        for case, minimum in (("base", policy["minimum_base_upside_pct"]),
+                              ("bull", policy["minimum_bull_upside_pct"])):
+            assumptions = valuation[case]
+            max_value = fcf * assumptions["fcf_factor"] * assumptions["equity_fcf_multiple"]
+            required_value = cap * (1 + valuation["assumed_share_dilution"]) * (1 + minimum / 100)
+            if max_value < required_value:
+                return "valuation_upper_bound_below_target"
+    if not mapped:
+        return "financial_evidence_unverified"
+    candidates, coverage = pilot.scan_candidates(data, first, config, policy)
+    if not candidates or coverage["unverified_quality_inputs"]:
+        return "financial_evidence_unverified"
+    return "qualified" if candidates[0]["quality"] else "failed_mapped_quality_checks"
+
+
 def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candidate, namespace):
     book.settings.daily_precise_end_time = True
     book.set_start_date(2023, 7, 6)
@@ -113,6 +145,9 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
     config, policy = pilot.DEFAULTS, pilot.load_policy()
     history = book.history
     counts = Counter()
+    drawdown_checks = Counter()
+    drawdown_outcome_gaps = Counter()
+    filing_facts = pilot.filing_facts()
     for sid in ids:
         row = snapshot[sid]
         ticker = row.symbol.value
@@ -120,6 +155,8 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
         if ticker == "TME" and cik == "1744676":
             counts["documented_ads"] += 1
             continue
+        fact = filing_facts.get(ticker, {})
+        mapped = fact.get("issuer_id") == cik and fact.get("evidence") is not None
         try:
             book.add_security(row.symbol, daily, fill_forward=False, data_normalization_mode=raw_mode)
             bars = pilot.raw_history(history, row.symbol, bar_type, daily, sessions, sid)
@@ -130,7 +167,11 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
                 benchmark_security_id=pilot.MARKET, sessions=list(sessions.values()),
                 securities=[dict(security_id=pilot.MARKET, issuer_id=pilot.MARKET, kind="benchmark", currency="USD"),
                             dict(security_id=sid, issuer_id=cik or sid, kind="ordinary", currency="USD")],
-                bars=bars, actions=actions, membership=[], facts=[],
+                bars=bars, actions=actions,
+                membership=[dict(security_id=sid, session=str(pilot.SIGNAL), active=True, ticker=ticker,
+                                 available_at=sessions[pilot.SIGNAL]["open_at"], source_id="Dated QuantConnect universe")]
+                if mapped else [],
+                facts=[dict(security_id=sid, **fact)] if mapped else [],
             ))
         except (AttributeError, KeyError, TypeError, ValueError, RuntimeError):
             counts["data_check_failed"] += 1
@@ -143,14 +184,17 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
         exit_i = eligible[first]
         counts.update(dividend_counts)
         counts["securities_with_delisting_notices"] += int(has_delisting_notice)
-        counts["delisting_notices_without_verified_terms"] += int(
-            has_delisting_notice and not (ticker == "CTXS" and cik == "877890"))
-        counts["next_open_missing"] += int(not data.bars[sid].get(first+1, {}).get("open"))
-        counts["horizon_open_missing"] += int(not data.bars[sid].get(exit_i, {}).get("open"))
+        merger_terms_known = has_delisting_notice and ticker == "CTXS" and cik == "877890"
+        unknown_delisting = has_delisting_notice and not merger_terms_known
+        entry_open_missing = not data.bars[sid].get(first+1, {}).get("open")
+        exit_open_missing = not data.bars[sid].get(exit_i, {}).get("open")
+        counts["delisting_notices_without_verified_terms"] += int(unknown_delisting)
+        counts["next_open_missing"] += int(entry_open_missing)
+        counts["horizon_open_missing"] += int(exit_open_missing)
         unknown_dividends = [e for e in data.actions_by_security[sid] if e["kind"] == "dividend" and e["pay"] is None]
         counts["stock_distributions_with_unknown_payment"] += len(unknown_dividends)
-        counts["holding_window_distributions_with_unknown_payment"] += sum(
-            first+1 < event["i"] <= exit_i for event in unknown_dividends)
+        unknown_holding_payments = sum(first+1 < event["i"] <= exit_i for event in unknown_dividends)
+        counts["holding_window_distributions_with_unknown_payment"] += unknown_holding_payments
         bar, adv = data.bars[sid].get(first), data.adv(sid, first)
         if not bar or adv is None:
             counts["missing_close_or_adv"] += 1
@@ -164,24 +208,33 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
                 if (action["kind"] == "split" and date.fromisoformat(shares_day) < data.days[action["i"]]
                         <= pilot.SIGNAL and action["known"] <= data.closes[first]):
                     shares *= action["ratio"]
-            if shares * bar["close"] < config["min_market_cap"]:
+            cap = shares * bar["close"]
+            if cap < config["min_market_cap"]:
                 counts["below_verified_market_cap_floor"] += 1
                 continue
             counts["passed_verified_common_floors"] += 1
             prices = data.signal_history(sid, first)
             if len(prices) < 22 or prices["Close"].isna().any():
                 counts["drawdown_history_unverified"] += 1
-            else:
-                counts["drawdown_signals"] += int(drawdown_candidate(
-                    prices, policy, minimum_drop_pct=config["min_drawdown_pct"], now=pilot.SIGNAL) is not None)
+            elif drawdown_candidate(prices, policy, minimum_drop_pct=config["min_drawdown_pct"], now=pilot.SIGNAL) is not None:
+                counts["drawdown_signals"] += 1
+                check = drawdown_financial_check(ticker, cap, mapped, data, first, config, policy, pilot)
+                drawdown_checks[check] += 1
+                drawdown_outcome_gaps["entry_open_missing"] += int(entry_open_missing)
+                drawdown_outcome_gaps["horizon_open_missing"] += int(exit_open_missing)
+                drawdown_outcome_gaps["delisting_notice_without_verified_terms"] += int(unknown_delisting)
+                drawdown_outcome_gaps["merger_payment_unverified"] += int(merger_terms_known)
+                drawdown_outcome_gaps["stocks_with_unknown_dividend_payments"] += int(unknown_holding_payments > 0)
+                drawdown_outcome_gaps["unknown_dividend_payments"] += unknown_holding_payments
             if ticker == "CTXS":
                 counts["known_filing_hold"] += 1
-            elif ticker == "EXLS":
+            elif mapped:
                 counts["mapped_quality_inputs"] += 1
             else:
                 counts["quality_inputs_unverified"] += 1
 
     return {"status": "DEVELOPMENT_COVERAGE_ONLY", "sample_size": len(ids), "coverage": dict(counts),
+            "drawdown_financial_checks": dict(drawdown_checks), "drawdown_outcome_gaps": dict(drawdown_outcome_gaps),
             "performance_gate": "INSUFFICIENT_EVIDENCE"}
 
 
