@@ -13,6 +13,16 @@ python backtest.py run --data demo-data/dataset.json --protocol demo-data/protoc
 
 The output must say `SYNTHETIC_ONLY`. Fictional crashes, recoveries and venue sessions are deliberately chosen to exercise the code. Their returns have no empirical meaning.
 
+## Run the hosted development pilot
+
+```sh
+python build_quantconnect_pilot.py quantconnect_pilot_cell.py
+```
+
+In a QuantConnect Python project, open `research.ipynb`, paste the generated source into a new Python cell, and run it with **Shift+Enter**. The cell uses QuantConnect's documented Research APIs and keeps its data in memory on the platform. The output contains aggregate coverage and order counts only. See [QuantConnect's research notebook guide](https://www.quantconnect.com/docs/v2/cloud-platform/research/getting-started).
+
+The pilot uses a single June 2022 signal, three public filing cases, a 365-day horizon, and SPY. It exercises the shared ranking and execution code, the historical universe join, and Citrix's verified merger proceeds with an unknown payment date. `DEVELOPMENT_ONLY` confirms that the wiring ran. It is a purpose-selected case set, with one fully mapped financial snapshot and unverified dividend payment dates. The reported performance gate remains `INSUFFICIENT_EVIDENCE`. A cloud-side API or data mismatch returns `INPUT_CHECK_FAILED` with the stage and exception type.
+
 ## Freeze a real experiment
 
 ```sh
