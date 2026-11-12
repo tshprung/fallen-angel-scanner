@@ -1,4 +1,4 @@
-"""Package the existing replay into readable source for one QuantConnect Research cell."""
+"""Package the replay as two Python files for QuantConnect Research."""
 
 import argparse
 import ast
@@ -9,33 +9,36 @@ from fundamental_analysis import load_policy
 
 
 ROOT = Path(__file__).resolve().parent
+MAX_FILE_BYTES = 32_000
 SHARED_CODE = (
     ("scanner_currency.py", ("finite",)),
     ("scanner_history.py", ("distribution_adjusted_close",)),
     ("screening.py", ("drawdown_candidate",)),
     ("fundamental_analysis.py", ("_date", "_consecutive", "specialist_requirements", "assess_solvency", "valuation_scenarios")),
     ("backtest_data.py", ("ATTESTATIONS", "ACTION_KINDS", "TERMINAL", "instant", "amount", "Dataset")),
+)
+REPLAY_CODE = (
     ("backtest_engine.py", ("scan_candidates", "ranked_groups", "schedule", "Lot", "simulate")),
     ("backtest.py", ("DEFAULTS",)),
 )
-HEADER = '''"""Fallen Angel Scanner development pilot for QuantConnect Research.
-
-Generated locally from readable scanner source. Runs in memory and prints only coverage counts.
-Paste into a Python code cell in QuantConnect Research and run the cell.
-"""
-
-from bisect import bisect_left
-from collections import Counter, defaultdict
+INPUT_IMPORTS = '''from collections import defaultdict
 from copy import deepcopy
-from dataclasses import dataclass, field
-from datetime import date, datetime, time, timedelta, timezone
+from datetime import date, datetime, timezone
 from statistics import median
-from zoneinfo import ZoneInfo
-import json
 import math
 
 import numpy as np
 import pandas as pd
+'''
+REPLAY_IMPORTS = '''from bisect import bisect_left
+from collections import Counter, defaultdict
+from copy import deepcopy
+from dataclasses import dataclass, field
+from datetime import date, datetime, time, timedelta
+from zoneinfo import ZoneInfo
+import math
+
+from fa_pilot_inputs import Dataset, TERMINAL, assess_solvency, drawdown_candidate, load_policy, valuation_scenarios
 '''
 
 
@@ -57,6 +60,10 @@ def definitions(path, names):
     return "\n\n\n".join(found[name] for name in names)
 
 
+def shared_sections(group):
+    return [f"# From {name}\n\n" + definitions(ROOT / name, symbols) for name, symbols in group]
+
+
 def build():
     runner = ROOT / "quantconnect_pilot.py"
     source = runner.read_text(encoding="utf-8")
@@ -65,21 +72,30 @@ def build():
     adapter = "\n\n\n".join(source_text(lines, node) for node in nodes
                              if isinstance(node, (ast.Assign, ast.FunctionDef)))
     policy = "PILOT_POLICY = " + pformat(load_policy(), sort_dicts=True, width=100)
-    sections = [HEADER, policy, "def load_policy():\n    return deepcopy(PILOT_POLICY)"]
-    sections.extend(f"# From {name}\n\n" + definitions(ROOT / name, symbols) for name, symbols in SHARED_CODE)
-    sections.extend(["# QuantConnect Research adapter\n\n" + adapter,
-                     'print(json.dumps(run_quantconnect_pilot(), indent=2, sort_keys=True))'])
-    bundle = "\n\n\n".join(sections) + "\n"
-    compile(bundle, "quantconnect_pilot_cell.py", "exec")
-    return bundle
+    sections = {
+        "fa_pilot_inputs.py": [INPUT_IMPORTS, policy, "def load_policy():\n    return deepcopy(PILOT_POLICY)",
+                               *shared_sections(SHARED_CODE)],
+        "fa_pilot_replay.py": [REPLAY_IMPORTS, *shared_sections(REPLAY_CODE),
+                               "# QuantConnect Research adapter\n\n" + adapter],
+    }
+    files = {}
+    for name, parts in sections.items():
+        source = '# Generated from Fallen Angel Scanner source.\n\n' + "\n\n\n".join(parts) + "\n"
+        compile(source, name, "exec")
+        if len(source.replace("\n", "\r\n").encode("utf-8")) >= MAX_FILE_BYTES:
+            raise ValueError(f"{name} exceeds the QuantConnect Free project file limit")
+        files[name] = source
+    return files
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("output", type=Path)
+    parser.add_argument("output_dir", type=Path, help="New directory for the two generated source files")
     args = parser.parse_args()
-    with args.output.open("x", encoding="utf-8", newline="\n") as file:
-        file.write(build())
+    files = build()
+    args.output_dir.mkdir()
+    for name, source in files.items():
+        (args.output_dir / name).write_bytes(source.encode("utf-8"))
 
 
 if __name__ == "__main__":

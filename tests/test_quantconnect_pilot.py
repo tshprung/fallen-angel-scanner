@@ -103,11 +103,20 @@ def mock_quantconnect(monkeypatch, stale_clock):
 
 
 @pytest.mark.parametrize("stale_clock", [False, True])
-def test_standalone_hosted_cell_replays_or_reports_calendar_gap(stale_clock, monkeypatch, tmp_path, capsys):
+def test_hosted_modules_replay_or_report_calendar_gap(stale_clock, monkeypatch, tmp_path, capsys):
     mock_quantconnect(monkeypatch, stale_clock)
-    standalone = tmp_path / "research_cell.py"
-    standalone.write_text(build(), encoding="utf-8")
-    runpy.run_path(str(standalone))
+    files = build()
+    for name, source in files.items():
+        (tmp_path / name).write_bytes(source.encode("utf-8"))
+    monkeypatch.syspath_prepend(str(tmp_path))
+    notebook_cell = tmp_path / "research_cell.py"
+    notebook_cell.write_text("import json\nfrom fa_pilot_replay import run_quantconnect_pilot\n"
+                             "print(json.dumps(run_quantconnect_pilot(), indent=2))\n", encoding="utf-8")
+    try:
+        runpy.run_path(str(notebook_cell))
+    finally:
+        for name in files:
+            sys.modules.pop(name.removesuffix(".py"), None)
     output = capsys.readouterr().out
     result = json.loads(output)
     assert "CTXS" not in output and "net_return" not in output and "receivable" not in output

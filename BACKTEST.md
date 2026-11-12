@@ -16,10 +16,18 @@ The output must say `SYNTHETIC_ONLY`. Fictional crashes, recoveries and venue se
 ## Run the hosted development pilot
 
 ```sh
-python build_quantconnect_pilot.py quantconnect_pilot_cell.py
+python build_quantconnect_pilot.py quantconnect-pilot
 ```
 
-In a QuantConnect Python project, open `research.ipynb`, paste the generated source into a new Python cell, and run it with **Shift+Enter**. The cell uses QuantConnect's documented Research APIs and keeps its data in memory on the platform. The output contains aggregate coverage and order counts only. See [QuantConnect's research notebook guide](https://www.quantconnect.com/docs/v2/cloud-platform/research/getting-started).
+In a QuantConnect Python project, use **Explorer → Workspace → New File** to create `fa_pilot_inputs.py` and `fa_pilot_replay.py`. Paste the matching generated source into each file and save. The two files fit the [Free plan's per-file limit](https://www.quantconnect.com/docs/v2/cloud-platform/projects/files#07-Quotas). Create `fallen_angel_pilot.ipynb` in the same workspace and run this code cell with **Shift+Enter**. See [QuantConnect's research notebook guide](https://www.quantconnect.com/docs/v2/cloud-platform/research/getting-started).
+
+```python
+import json
+from fa_pilot_replay import run_quantconnect_pilot
+print(json.dumps(run_quantconnect_pilot(), indent=2))
+```
+
+The pilot uses QuantConnect's Research APIs and keeps market data in memory on the platform. The output contains aggregate coverage and order counts only.
 
 The pilot uses a single June 2022 signal, three public filing cases, a 365-day horizon, and SPY. It exercises the shared ranking and execution code, the historical universe join, and Citrix's verified merger proceeds with an unknown payment date. `DEVELOPMENT_ONLY` confirms that the wiring ran. It is a purpose-selected case set, with one fully mapped financial snapshot and unverified dividend payment dates. The reported performance gate remains `INSUFFICIENT_EVIDENCE`. A cloud-side API or data mismatch returns `INPUT_CHECK_FAILED` with the stage and exception type.
 
