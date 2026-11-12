@@ -33,6 +33,10 @@ The pilot uses a single June 2022 signal, three public filing cases, a 365-day h
 
 `DEVELOPMENT_ONLY` confirms that the wiring ran. This is a purpose-selected case set with one fully mapped financial snapshot. The reported performance gate remains `INSUFFICIENT_EVIDENCE`. A cloud-side API or data mismatch returns `INPUT_CHECK_FAILED` with the stage and exception type.
 
+For the 32-stock June 2022 coverage audit, run the original sampler in its QuantConnect notebook. Paste [quantconnect_cohort.py](quantconnect_cohort.py) into a new cell in the same notebook. It reuses the installed pilot modules and requires a unique sample of 32 stable security IDs present at the dated cutoff, including the 15 previously audited names. If necessary, assign the original sampler's output of stable IDs or symbols to `cohort_ids` before running the audit. Do not regenerate a cohort based on which names had complete data or favorable results.
+
+The coverage audit applies the existing raw price and liquidity floors, uses dated public share counts only when the issuer matches, and checks the shared distribution-aware drawdown rule. The three composite share reconstructions (Bowlero, EastGroup Properties and EchoStar) need additional basis checks before they can pass the verified market-cap gate. Tencent Music's [filing](https://www.sec.gov/Archives/edgar/data/1744676/000119312521111096/d31001d20f.htm) identifies the listed security as an ADS. Missing data, absent entry and horizon opens, delisting evidence, and payment dates are reported as counts. The audit does not calculate returns or rank a portfolio. A complete strategy comparison still requires fully mapped financial statements, time-stamped event clearance, verified corporate action coverage and broader dates.
+
 ## Freeze a real experiment
 
 ```sh

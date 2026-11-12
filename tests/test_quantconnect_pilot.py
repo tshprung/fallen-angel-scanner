@@ -2,11 +2,13 @@ import json
 import runpy
 import sys
 from datetime import date, datetime, time, timedelta
+from pathlib import Path
 from types import ModuleType, SimpleNamespace
 
 import pytest
 
 from build_quantconnect_pilot import build
+from quantconnect_cohort import ANCHORS, SHARES, run_cohort_audit
 from quantconnect_pilot import SIGNAL, SPY_DISTRIBUTIONS, reconcile_benchmark_distributions
 
 
@@ -22,7 +24,7 @@ class MarketHours:
         return datetime.combine(opening.date(), time(hour))
 
 
-def mock_quantconnect(monkeypatch, problem):
+def mock_quantconnect(monkeypatch, problem, universe_rows=None):
     class TradeBar:
         pass
 
@@ -88,6 +90,8 @@ def mock_quantconnect(monkeypatch, problem):
 
         def universe_history(self, universe, start, end):
             assert start.date() < end.date() == SIGNAL
+            if universe_rows is not None:
+                return {("universe", datetime.combine(SIGNAL, time.min)): universe_rows}
             rows = [SimpleNamespace(symbol=SimpleNamespace(value=ticker, id=f"{ticker} ID"),
                                     company_reference=SimpleNamespace(cik=cik))
                     for ticker, cik in (("EXLS", "0001297989"), ("MRTN", "799167"), ("CTXS", "877890"),
@@ -150,3 +154,44 @@ def test_benchmark_distribution_uses_sponsor_amount_and_waits_until_after_paymen
     assert verified["2022-12-16"]["pay_session"] == "2023-02-01"
     assert verified["2023-03-17"]["pay_session"] == "2023-05-01"  # April 28 was a Friday.
     assert verified["2023-06-16"]["pay_session"] == "2023-08-01"  # Cash remains outside the pilot window.
+
+
+def test_cohort_audit_requires_original_members_and_keeps_unverified_names_visible(monkeypatch, tmp_path, capsys):
+    tickers = sorted(ANCHORS) + [f"STOCK{i}" for i in range(18)]
+    rows = [SimpleNamespace(symbol=SimpleNamespace(value=ticker, id=f"{ticker} ID"),
+                            company_reference=SimpleNamespace(cik=("1744676" if ticker == "TME" else
+                                                                  SHARES.get(ticker, ("7",))[0])))
+            for ticker in tickers]
+    mock_quantconnect(monkeypatch, None, rows)
+    files = build()
+    for name, source in files.items():
+        (tmp_path / name).write_bytes(source.encode("utf-8"))
+    monkeypatch.syspath_prepend(str(tmp_path))
+    cohort = [row.symbol for row in rows[:32]]
+    try:
+        cell = Path(__file__).resolve().parents[1] / "quantconnect_cohort.py"
+        runpy.run_path(str(cell), init_globals={"selected_ids": cohort}, run_name="__main__")
+        result = json.loads(capsys.readouterr().out)
+        assert result["status"] == "DEVELOPMENT_COVERAGE_ONLY"
+        assert result["sample_size"] == 32
+        assert result["performance_gate"] == "INSUFFICIENT_EVIDENCE"
+        counts = result["coverage"]
+        assert counts["documented_ads"] == 1
+        assert counts["share_basis_unverified"] == 20
+        assert counts["passed_verified_common_floors"] == 11
+        assert counts["mapped_quality_inputs"] == 1
+        assert counts["known_filing_hold"] == 1
+        assert counts["quality_inputs_unverified"] == 9
+        assert counts["securities_with_delisting_notices"] == counts["horizon_open_missing"] == 1
+        assert counts["delisting_notices_without_verified_terms"] == 0
+        assert "EXLS" not in json.dumps(result)
+
+        alternate = cohort[:-1] + [rows[-1].symbol]
+        assert run_cohort_audit({"original_selection": cohort, "other_sample": alternate}) == {
+            "status": "ORIGINAL_SAMPLE_NOT_IDENTIFIED"}
+        assert run_cohort_audit({"cohort_ids": [symbol.value for symbol in cohort]}) == {
+            "status": "ORIGINAL_SAMPLE_NOT_IDENTIFIED"}
+        assert not capsys.readouterr().out
+    finally:
+        for name in files:
+            sys.modules.pop(name.removesuffix(".py"), None)
