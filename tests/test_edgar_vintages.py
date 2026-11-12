@@ -52,6 +52,17 @@ def test_uses_conservative_cutoff_and_keeps_amendments_as_distinct_vintages():
         "2022-10-01", "2023-01-01"]
 
 
+def test_comparative_cash_flow_keeps_its_period_and_publication_vintage():
+    block, payload = sources()
+    cash_flows = payload["facts"]["us-gaap"]["NetCashProvidedByUsedInOperatingActivities"]["units"]["USD"]
+    cash_flows.append({**cash_flows[1], "start": "2022-01-01", "end": "2022-03-31", "val": 15})
+    assert not extract(block, payload, "2023-05-11T03:59:59Z")["vintages"]
+    vintage = extract(block, payload, "2023-05-11T04:00:00Z")["vintages"][0]
+    assert [row["end"] for row in vintage["candidate_facts"]] == ["2023-03-31"] * 3
+    assert [(row["start"], row["end"], row["value"]) for row in vintage["comparative_facts"]] == [
+        ("2022-01-01", "2022-03-31", 15)]
+
+
 def test_no_inferred_release_time_or_false_terminal_outcome():
     block, payload = sources()
     block["acceptanceDateTime"][0] = ""
@@ -66,11 +77,11 @@ def test_no_inferred_release_time_or_false_terminal_outcome():
 def test_reports_merger_proxy_and_nonreliance_only_after_availability():
     block, payload = sources()
     block["form"] = ["DEFM14A", "8-K", "8-K"]
-    block["items"] = ["", "4.02", "2.02"]
+    block["items"] = ["", "1.01,3.02,4.02", "2.02"]
     before = extract(block, payload, "2023-05-13T03:59:59Z")
     assert [event["form"] for event in before["event_notices"]] == ["DEFM14A"]
     after = extract(block, payload)
-    assert [event["items"] for event in after["event_notices"]] == [[], ["4.02"]]
+    assert [event["items"] for event in after["event_notices"]] == [[], ["1.01", "3.02", "4.02"]]
 
 
 def test_cohort_audit_preserves_available_facts_when_one_issuer_is_unreachable(monkeypatch, tmp_path):

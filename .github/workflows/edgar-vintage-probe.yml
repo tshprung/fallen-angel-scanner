@@ -28,7 +28,8 @@ jobs:
           python -u edgar_vintages.py --cik 320193 --cik 886158
           --start 2023-01-01 --end 2023-12-31 --as-of 2024-01-05T00:00:00Z
           --output edgar-vintage-audit.json
-      - name: Audit filing coverage for the June 2022 development cohort
+      # Manulife files Canadian IFRS statements. This audit reads US GAAP only.
+      - name: Audit US GAAP filing coverage for the June 2022 development cohort
         if: always()
         env:
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
@@ -36,7 +37,7 @@ jobs:
         run: >-
           python -u edgar_vintages.py
           --cik 1488139 --cik 70858 --cik 1840572 --cik 877890 --cik 49600
-          --cik 1297989 --cik 1086888 --cik 799167 --cik 66570 --cik 1475841
+          --cik 1297989 --cik 799167 --cik 66570 --cik 1475841
           --cik 1415404 --cik 1320414 --cik 311094 --cik 1770450
           --start 2019-01-01 --end 2022-06-30 --as-of 2022-06-30T20:00:00Z
           --output edgar-cohort-2022.json

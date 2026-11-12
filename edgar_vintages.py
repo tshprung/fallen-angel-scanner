@@ -9,12 +9,11 @@ from zoneinfo import ZoneInfo
 
 from backtest import write_new
 from backtest_data import instant
-from sec_filings import MERGER, SecClient, SourceUnavailable
+from sec_filings import MATERIAL_ITEMS, MERGER, SecClient, SourceUnavailable
 
 
 PERIODIC = {"10-Q", "10-K", "10-Q/A", "10-K/A"}
 EVENTS = {"8-K", "8-K/A", "25", "25-NSE", "25/A", "25-NSE/A"} | MERGER
-AUDIT_8K_ITEMS = {"1.03", "2.01", "2.04", "2.05", "2.06", "3.01", "4.02"}
 NY = ZoneInfo("America/New_York")
 # This is a candidate crosswalk, not an accounting normalization. In
 # particular, never combine debt lines or sum cumulative cash-flow durations.
@@ -33,6 +32,7 @@ TAGS = {
     "capex_candidates": ("PaymentsToAcquirePropertyPlantAndEquipment", "PaymentsToAcquireProductiveAssets"),
     "shares_candidates": ("CommonStockSharesOutstanding", "EntityCommonStockSharesOutstanding"),
 }
+FLOW_GROUPS = {"operating_cash_flow", "capex_candidates", "operating_income", "interest_candidates", "revenue_candidates"}
 
 
 def conservative_cutoff(filed, accepted):
@@ -70,7 +70,7 @@ def collect_filing_index(blocks, cik, start, end, asof):
                 counts["not_available_by_cutoff"] += 1
                 continue
             items = sorted(set(re.findall(r"\b\d\.\d{2}\b", block.get("items", [""]*n)[i] or "")))
-            if form.startswith("8-K") and not AUDIT_8K_ITEMS.intersection(items):
+            if form.startswith("8-K") and MATERIAL_ITEMS.keys().isdisjoint(items):
                 continue
             if form in PERIODIC and (not period or date.fromisoformat(period) > filed):
                 counts["missing_or_invalid_report_period"] += 1
@@ -91,7 +91,7 @@ def extract_vintages(cik, blocks, companyfacts, start, end, asof):
         raise ValueError("Companyfacts issuer does not match requested CIK")
     filings, counts = collect_filing_index(blocks, cik, start, end, asof)
     periodic = {k: v for k, v in filings.items() if v["form"] in PERIODIC}
-    facts = defaultdict(set)
+    facts, comparative = defaultdict(set), defaultdict(set)
     for category, tags in TAGS.items():
         for tag in tags:
             namespace = "dei" if tag == "EntityCommonStockSharesOutstanding" else "us-gaap"
@@ -103,21 +103,30 @@ def extract_vintages(cik, blocks, companyfacts, start, end, asof):
                 if source is None:
                     continue
                 fact_date = obs.get("end")
+                started = obs.get("start") or ""
+                is_comparative = (category in FLOW_GROUPS and bool(started and fact_date)
+                                  and fact_date < source["report_period"])
                 if namespace == "dei":
                     # A cover-page share count is an instant, often dated after quarter end.
-                    if not fact_date or obs.get("start") or not source["report_period"] <= fact_date <= source["filed"]:
+                    if not fact_date or started or not source["report_period"] <= fact_date <= source["filed"]:
                         continue
-                elif fact_date != source["report_period"]:
+                elif fact_date != source["report_period"] and not is_comparative:
                     continue
                 if obs.get("filed") != source["filed"] or obs.get("form") != source["form"]:
                     counts["fact_filing_metadata_conflict"] += 1
                     continue
-                val, started = obs.get("val"), obs.get("start") or ""
+                val = obs.get("val")
                 if (type(val) not in (int, float) or not math.isfinite(val)
                         or (started and date.fromisoformat(started) > date.fromisoformat(obs["end"]))):
                     counts["invalid_fact_values_or_duration"] += 1
                     continue
-                facts[acc].add((category, f"{namespace}:{tag}", unit, started, fact_date, val))
+                target = comparative if is_comparative else facts
+                target[acc].add((category, f"{namespace}:{tag}", unit, started, fact_date, val))
+
+    def records(values):
+        return [dict(category=k, tag=t, unit=u, start=s or None, end=e, value=v)
+                for k, t, u, s, e, v in sorted(values)]
+
     result = []
     for acc, row in sorted(periodic.items(), key=lambda pair: (pair[1]["available_at"], pair[0])):
         values = sorted(facts[acc])
@@ -126,9 +135,8 @@ def extract_vintages(cik, blocks, companyfacts, start, end, asof):
         for category, tag, unit, start_date, end_date, value in values:
             grouped[(category, unit, start_date, end_date)].add(value)
         ambiguous = sorted({key[0] for key, vals in grouped.items() if len(vals) > 1})
-        result.append({**row, "candidate_facts": [
-            dict(category=k, tag=t, unit=u, start=s or None, end=e, value=v)
-            for k, t, u, s, e, v in values],
+        result.append({**row, "candidate_facts": records(values),
+            "comparative_facts": records(comparative[acc]),
             "missing_groups": sorted(set(TAGS)-categories), "ambiguous_groups": ambiguous})
     return dict(cik=str(cik).zfill(10), issuer=companyfacts.get("entityName"), vintages=result,
                 event_notices=sorted((r for r in filings.values() if r["form"] not in PERIODIC),
