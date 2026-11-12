@@ -1,4 +1,4 @@
-"""Paste this file into a Research cell after running the original 32-stock sampler."""
+"""Audit and replay the original 32-stock sample in a Research notebook."""
 
 if __name__ == "__main__":
     _original_notebook_state = dict(globals())
@@ -148,6 +148,37 @@ def drawdown_financial_check(ticker, cap, mapped, data, first, config, policy, p
     return "qualified" if candidates[0]["quality"] else "failed_mapped_quality_checks"
 
 
+def replay_cohort(pilot, inputs, drawdowns, first, exit_i, config):
+    """Compare the verified drawdown cohort and SPY over the same holding window."""
+    data = pilot.Dataset(inputs)
+    market_adv = data.adv(pilot.MARKET, first)
+    if not market_adv:
+        return {"status": "BENCHMARK_INPUT_UNVERIFIED"}
+    groups = {
+        "drawdown_only": sorted(drawdowns, key=lambda row: (row["drop_pct"], row["sid"])),
+        "market": [dict(sid=pilot.MARKET, issuer=pilot.MARKET, adv=market_adv)],
+    }
+    results = {}
+    for strategy, rows in groups.items():
+        orders = {first + 1: (first, exit_i, rows)}
+        ledger = pilot.simulate(data, config, first, exit_i + 1, orders, strategy, pilot.HORIZON, 1, 0)
+        trades = ledger["trades"]
+        unresolved = sum(not trade["outcome_known"] for trade in trades)
+        entry_debit = sum(trade["initial_notional"] + trade["entry_cost"] for trade in trades)
+        results[strategy] = dict(ranked=len(rows), fills=len(trades), unresolved=unresolved,
+                                 target_hits_at_exit=sum(trade["target_met_at_exit"] is True for trade in trades),
+                                 entry_capital_used_pct=round(100 * entry_debit / config["initial_cash"], 4),
+                                 net_portfolio_return_pct=None)
+        if trades and not unresolved:
+            results[strategy]["net_portfolio_return_pct"] = round(
+                100 * (ledger["daily"][-1]["nav"] / config["initial_cash"] - 1), 4
+            )
+    status = ("DEVELOPMENT_REPLAY_ONLY" if all(
+        row["net_portfolio_return_pct"] is not None for row in results.values()
+    ) else "OUTCOMES_INCOMPLETE")
+    return dict(status=status, signal_date=str(pilot.SIGNAL), horizon_days=pilot.HORIZON, strategies=results)
+
+
 def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candidate, namespace):
     book.settings.daily_precise_end_time = True
     book.set_start_date(2023, 7, 6)
@@ -172,6 +203,11 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
     counts = Counter()
     drawdown_checks = Counter()
     drawdown_outcome_gaps = Counter()
+    drawdowns = []
+    market_security = dict(security_id=pilot.MARKET, issuer_id=pilot.MARKET, kind="benchmark", currency="USD")
+    replay_inputs = dict(version=1, kind="historical", source="QuantConnect Research development cohort",
+                         benchmark_security_id=pilot.MARKET, sessions=list(sessions.values()),
+                         securities=[market_security], bars=[], actions=[], membership=[], facts=[])
     filing_facts = pilot.filing_facts()
     for sid in ids:
         row = snapshot[sid]
@@ -187,11 +223,11 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
             bars = pilot.raw_history(history, row.symbol, bar_type, daily, sessions, sid)
             actions, has_delisting_notice = pilot.market_actions(history, row.symbol, events, sessions, sid)
             actions, dividend_counts = reconcile_stock_distributions(actions, ticker, cik, hours)
+            security = dict(security_id=sid, issuer_id=cik or sid, kind="ordinary", currency="USD")
             data = pilot.Dataset(dict(
                 version=1, kind="historical", source="QuantConnect Research coverage check",
                 benchmark_security_id=pilot.MARKET, sessions=list(sessions.values()),
-                securities=[dict(security_id=pilot.MARKET, issuer_id=pilot.MARKET, kind="benchmark", currency="USD"),
-                            dict(security_id=sid, issuer_id=cik or sid, kind="ordinary", currency="USD")],
+                securities=[market_security, security],
                 bars=bars, actions=actions,
                 membership=[dict(security_id=sid, session=str(pilot.SIGNAL), active=True, ticker=ticker,
                                  available_at=sessions[pilot.SIGNAL]["open_at"], source_id="Dated QuantConnect universe")]
@@ -241,8 +277,14 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
             prices = data.signal_history(sid, first)
             if len(prices) < 22 or prices["Close"].isna().any():
                 counts["drawdown_history_unverified"] += 1
-            elif drawdown_candidate(prices, policy, minimum_drop_pct=config["min_drawdown_pct"], now=pilot.SIGNAL) is not None:
+            elif (shock := drawdown_candidate(
+                prices, policy, minimum_drop_pct=config["min_drawdown_pct"], now=pilot.SIGNAL
+            )) is not None:
                 counts["drawdown_signals"] += 1
+                drawdowns.append(dict(sid=sid, issuer=cik or sid, adv=adv, drop_pct=shock["drop_recent_peak_pct"]))
+                replay_inputs["securities"].append(security)
+                replay_inputs["bars"].extend(bars)
+                replay_inputs["actions"].extend(actions)
                 check = drawdown_financial_check(ticker, cap, mapped, data, first, config, policy, pilot)
                 drawdown_checks[check] += 1
                 drawdown_outcome_gaps["entry_open_missing"] += int(entry_open_missing)
@@ -258,8 +300,26 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
             else:
                 counts["quality_inputs_unverified"] += 1
 
+    if not drawdowns:
+        replay = {"status": "NO_VERIFIED_DRAWDOWNS"}
+    elif any(drawdown_outcome_gaps.values()):
+        replay = {"status": "DRAWDOWN_OUTCOME_INPUTS_INCOMPLETE"}
+    else:
+        try:
+            market_bars = pilot.raw_history(history, market.symbol, bar_type, daily, sessions, pilot.MARKET)
+            market_actions, market_delisted = pilot.market_actions(history, market.symbol, events, sessions, pilot.MARKET)
+            if market_delisted or {bar["session"] for bar in market_bars} != {str(day) for day in sessions}:
+                raise ValueError("Expected complete benchmark bars and no delisting")
+            market_actions, _ = pilot.reconcile_benchmark_distributions(market_actions, hours)
+            replay_inputs["bars"].extend(market_bars)
+            replay_inputs["actions"].extend(market_actions)
+            replay = replay_cohort(pilot, replay_inputs, drawdowns, first, exit_i, config)
+        except (AttributeError, KeyError, TypeError, ValueError, RuntimeError) as error:
+            replay = {"status": "REPLAY_CHECK_FAILED", "error_type": type(error).__name__}
+    replay["scanner_core_qualified_signals"] = drawdown_checks["qualified"]
     return {"status": "DEVELOPMENT_COVERAGE_ONLY", "sample_size": len(ids), "coverage": dict(counts),
             "drawdown_financial_checks": dict(drawdown_checks), "drawdown_outcome_gaps": dict(drawdown_outcome_gaps),
+            "cohort_replay": replay,
             "performance_gate": "INSUFFICIENT_EVIDENCE"}
 
 
@@ -280,4 +340,5 @@ def run_cohort_audit(namespace):
 
 
 if __name__ == "__main__":
-    print(json.dumps(run_cohort_audit(_original_notebook_state), indent=2, sort_keys=True))
+    cohort_result = run_cohort_audit(_original_notebook_state)
+    print(json.dumps(cohort_result.get("cohort_replay", cohort_result), indent=2))
