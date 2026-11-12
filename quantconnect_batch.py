@@ -93,13 +93,37 @@ def batch_spy_actions(sessions, hours, entry, exit_day):
     return distributions
 
 
-def batch_book(data, config, first, exit_i, rows, strategy, unknown_delistings):
+def batch_book(data, config, first, exit_i, rows, strategy, unknown_delistings, conflicting_dividends=frozenset()):
     orders = {first + 1: (first, exit_i, rows)}
     ledger = simulate(data, config, first, exit_i + 1, orders, strategy, BATCH_HORIZON, 1, 0)
     trades = ledger["trades"]
     resolved = [trade for trade in trades
                 if trade["outcome_known"] and trade["sid"] not in unknown_delistings]
     unresolved = len(trades) - len(resolved)
+    timing_only = []
+    review_orders = []
+    failures = Counter()
+    timing_reason = "dividend: cash payment date unverified"
+    for trade in trades:
+        sid = trade["sid"]
+        reasons = set(trade["unknown_reasons"])
+        if timing_reason in reasons:
+            failures["dividend_payment_date"] += 1
+        if sid in unknown_delistings:
+            failures["delisting_notice"] += 1
+        if sid in conflicting_dividends:
+            failures["dividend_amount_conflict"] += 1
+        if reasons - {timing_reason}:
+            failures["exit_or_other_corporate_action"] += 1
+        if reasons == {timing_reason} and sid not in unknown_delistings and sid not in conflicting_dividends:
+            timing_only.append(trade)
+        elif reasons or sid in unknown_delistings:
+            review_orders.append(dict(ticker=trade.get("ticker"), entry_session=trade["entry_session"],
+                                      exit_session=trade["exit_session"]))
+    # This book enters only once. Its ledger already carries entitlements at
+    # face value. Payment timing cannot affect order sizing or cash interest.
+    unresolved_with_receivables = unresolved - len(timing_only)
+    net = round(100 * (ledger["daily"][-1]["nav"] / config["initial_cash"] - 1), 4)
     debit = sum(trade["initial_notional"] + trade["entry_cost"] for trade in trades)
     return dict(ranked=len(rows), fills=len(trades), unresolved=unresolved,
                 missed_entry_opens=ledger["counts"].get("missed_entry_open", 0),
@@ -108,8 +132,13 @@ def batch_book(data, config, first, exit_i, rows, strategy, unknown_delistings):
                 target_hits_at_exit=sum(trade["target_met_at_exit"] is True for trade in resolved),
                 losses_of_50_pct_or_more=sum(trade["net_return"] <= -.5 for trade in resolved),
                 entry_capital_used_pct=round(100 * debit / config["initial_cash"], 6),
-                net_portfolio_return_pct=(round(100 * (ledger["daily"][-1]["nav"] / config["initial_cash"] - 1), 4)
-                                          if trades and not unresolved else None)), debit
+                net_portfolio_return_pct=net if trades and not unresolved else None,
+                outcome_gaps=dict(failures), dividend_timing_only=len(timing_only),
+                unresolved_with_receivables=unresolved_with_receivables,
+                target_hits_with_receivables_at_exit=(sum(trade["target_met_at_exit"] is True for trade in resolved)
+                                                     + sum(trade["net_return"] >= .5 for trade in timing_only)),
+                net_return_with_receivables_pct=net if trades and not unresolved_with_receivables else None,
+                outcome_review_orders=review_orders), debit
 
 
 def batch_market_reference(data, config, first, exit_i, market_rows, debit):
@@ -147,6 +176,7 @@ def audit_batch_date(book, api, universe, sessions, market_bars, hours, day, con
                bars=spy_bars, actions=batch_spy_actions(window, hours, entry, exit_day), membership=[], facts=[])
     first, exit_i = window_days.index(day), len(window_days) - 1
     unknown_delistings = set()
+    conflicting_dividends = set()
     provisional_drawdowns = []
     dividend_records = STOCK_DIVIDENDS | evidence.get("dividends", {})
     for sid, cik, symbol in sample:
@@ -168,6 +198,10 @@ def audit_batch_date(book, api, universe, sessions, market_bars, hours, day, con
             continue
         if delisted:
             unknown_delistings.add(sid)
+        if any(row["kind"] == "dividend" and row["pay_session"] is None
+               and (ticker, cik, row["session"]) in dividend_records
+               and entry < date.fromisoformat(row["session"]) <= exit_day for row in actions):
+            conflicting_dividends.add(sid)
         counts.update(dividend_counts)
         counts["holding_window_delisting_notices"] += int(delisted)
         raw["securities"].append(security)
@@ -187,7 +221,7 @@ def audit_batch_date(book, api, universe, sessions, market_bars, hours, day, con
                 continue
             shock = drawdown_candidate(prices, policy, minimum_drop_pct=config["min_drawdown_pct"], now=day)
             if shock:
-                provisional_drawdowns.append(dict(sid=sid, issuer=cik, adv=adv, shock=shock))
+                provisional_drawdowns.append(dict(sid=sid, issuer=cik, ticker=ticker, adv=adv, shock=shock))
                 counts["drawdowns_using_vendor_size"] += 1
                 counts["drawdowns_missing_entry_open"] += int(not data.bars[sid].get(first + 1, {}).get("open"))
                 counts["drawdowns_missing_exit_open"] += int(not data.bars[sid].get(exit_i, {}).get("open"))
@@ -210,12 +244,14 @@ def audit_batch_date(book, api, universe, sessions, market_bars, hours, day, con
                   core_comparison="READY_FOR_DEVELOPMENT_REPLAY" if complete else "INPUT_COVERAGE_INCOMPLETE")
     if complete:
         for strategy in ("scanner_core", "drawdown_only"):
-            report, debit = batch_book(data, config, first, exit_i, groups[strategy], strategy, unknown_delistings)
+            report, debit = batch_book(data, config, first, exit_i, groups[strategy], strategy, unknown_delistings,
+                                       conflicting_dividends)
             report["spy_with_same_capital_pct"] = batch_market_reference(data, config, first, exit_i, market_rows, debit)
             result[strategy] = report
     elif price_inputs_complete:
         ranked = sorted(provisional_drawdowns, key=lambda row: (row["shock"]["drop_recent_peak_pct"], row["sid"]))
-        report, debit = batch_book(data, config, first, exit_i, ranked, "drawdown_only", unknown_delistings)
+        report, debit = batch_book(data, config, first, exit_i, ranked, "drawdown_only", unknown_delistings,
+                                   conflicting_dividends)
         report["spy_with_same_capital_pct"] = batch_market_reference(data, config, first, exit_i, market_rows, debit)
         result["drawdown_only_vendor_size"] = report
     return result
@@ -279,11 +315,15 @@ def batch_summary(result):
                 row = detail[strategy]
                 strategies[strategy] = {key: row[key] for key in (
                     "fills", "unresolved", "target_touches_at_close", "target_hits_at_exit",
-                    "net_portfolio_return_pct", "spy_with_same_capital_pct")}
+                    "net_portfolio_return_pct", "spy_with_same_capital_pct", "outcome_gaps",
+                    "unresolved_with_receivables", "target_hits_with_receivables_at_exit",
+                    "net_return_with_receivables_pct")}
         dates[day] = dict(sampled=coverage.get("sampled", 0),
                           verified_size_inputs=coverage.get("dated_share_basis_present", 0),
                           vendor_size_drawdowns=coverage.get("drawdowns_using_vendor_size", 0),
                           stock_data_failed=coverage.get("stock_data_failed", 0),
+                          signal_market_gaps=coverage.get("signal_market_inputs_unverified", 0),
+                          drawdown_history_gaps=coverage.get("drawdown_history_unverified", 0),
                           dividend_gaps=coverage.get("drawdowns_with_unverified_dividends", 0),
                           delisting_notices=coverage.get("drawdowns_with_delisting_notices", 0),
                           spy_return_pct=detail["market"]["net_portfolio_return_pct"],

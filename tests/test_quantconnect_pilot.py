@@ -7,9 +7,11 @@ from types import ModuleType, SimpleNamespace
 
 import pytest
 
+from backtest import DEFAULTS
+from backtest_data import Dataset
 from backtest_demo import snapshot
 from build_quantconnect_pilot import build, build_batch_cell
-from quantconnect_batch import BATCH_SAMPLE_SIZE, batch_sample
+from quantconnect_batch import BATCH_SAMPLE_SIZE, batch_book, batch_sample
 from quantconnect_cohort import ANCHORS, SHARES, reconcile_stock_distributions, run_cohort_audit
 from quantconnect_pilot import SIGNAL, SPY_DISTRIBUTIONS, reconcile_benchmark_distributions
 
@@ -340,6 +342,8 @@ def test_generated_development_batch_keeps_missing_evidence_and_delisting_outcom
     assert drawdown["fills"] == 2
     assert drawdown["unresolved"] == 1
     assert drawdown["net_portfolio_return_pct"] is None
+    assert drawdown["net_return_with_receivables_pct"] is None
+    assert drawdown["outcome_gaps"] == {"delisting_notice": 1}
     detail = next(row for row in globals_after_run["batch_result"]["dates"] if row["signal_date"] == "2022-09-30")
     assert drawdown["spy_with_same_capital_pct"] > detail["market"]["net_portfolio_return_pct"] * .20
     unverified = summary["dates"]["2022-03-31"]
@@ -361,3 +365,42 @@ def test_batch_sample_is_independent_of_snapshot_order_and_limits_each_issuer_to
     assert selected == reversed_sample and counts == reversed_counts
     assert counts["eligible_issuers"] == 20
     assert len({cik for _, cik, _ in selected}) == BATCH_SAMPLE_SIZE
+
+
+def test_single_entry_batch_values_entitlements_without_assuming_cash_dates():
+    days = [date(2022, 1, 1) + timedelta(days=i) for i in range(400)]
+    days = [day.isoformat() for day in days if day.weekday() < 5]
+    first = 20
+    exit_i = next(i for i, day in enumerate(days) if day >= str(date.fromisoformat(days[first + 1])
+                                                              + timedelta(days=365)))
+    sessions = [dict(date=day, open_at=f"{day}T14:30:00Z", close_at=f"{day}T21:00:00Z") for day in days]
+    stock = dict(security_id="STOCK", issuer_id="1", currency="USD", kind="ordinary")
+    market = dict(security_id="SPY", issuer_id="SPY", currency="USD", kind="benchmark")
+    bars = [dict(security_id="STOCK", session=day, open=149 if i == exit_i else 100,
+                 close=100, volume=1_000_000) for i, day in enumerate(days)]
+    ex_date = days[first + 2]
+    dividend = dict(security_id="STOCK", session=ex_date, kind="dividend", cash_per_share=3.,
+                    pay_session=None, available_at=f"{ex_date}T14:30:00Z", source_id="synthetic")
+    raw = dict(version=1, kind="synthetic", source="entitlement test", benchmark_security_id="SPY",
+               sessions=sessions, securities=[stock, market], bars=bars, membership=[], facts=[])
+    orders = [dict(sid="STOCK", issuer="1", ticker="TEST", adv=100_000_000.)]
+    unknown = Dataset(dict(raw, actions=[dividend]))
+    confirmed = Dataset(dict(raw, actions=[dict(dividend, pay_session=days[first + 10])]))
+    provisional, _ = batch_book(unknown, DEFAULTS, first, exit_i, orders, "drawdown_only", set())
+    settled, _ = batch_book(confirmed, DEFAULTS, first, exit_i, orders, "drawdown_only", set())
+    assert provisional["net_portfolio_return_pct"] is None
+    assert provisional["unresolved"] == 1
+    assert provisional["unresolved_with_receivables"] == 0
+    assert provisional["net_return_with_receivables_pct"] == settled["net_portfolio_return_pct"]
+    assert provisional["target_hits_with_receivables_at_exit"] == settled["target_hits_at_exit"] == 1
+    assert provisional["outcome_gaps"] == {"dividend_payment_date": 1}
+    conflicting, _ = batch_book(unknown, DEFAULTS, first, exit_i, orders, "drawdown_only", set(), {"STOCK"})
+    assert conflicting["net_return_with_receivables_pct"] is None
+    assert conflicting["outcome_gaps"] == {"dividend_payment_date": 1, "dividend_amount_conflict": 1}
+    assert conflicting["outcome_review_orders"] == [
+        {"ticker": "TEST", "entry_session": days[first + 1], "exit_session": days[exit_i]}
+    ]
+    missing_exit = Dataset(dict(raw, bars=bars[:exit_i], actions=[dividend]))
+    missing, _ = batch_book(missing_exit, DEFAULTS, first, exit_i, orders, "drawdown_only", set())
+    assert missing["net_return_with_receivables_pct"] is None
+    assert missing["outcome_gaps"] == {"dividend_payment_date": 1, "exit_or_other_corporate_action": 1}
