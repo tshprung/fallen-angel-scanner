@@ -77,6 +77,24 @@ def test_rejects_premature_full_bar_and_future_statement_period():
         Dataset(raw)
 
 
+def test_filing_cover_shares_adjust_only_for_splits_after_the_share_count():
+    raw, d = tape()
+    raw["membership"] = [dict(security_id="A", session=d[0], active=True,
+                              available_at=d[0]+"T14:00Z", ticker="A", source_id="listed")]
+    raw["facts"] = [{**fact("A", d[1], d[16]+"T14:00Z", "quarterly-cover"),
+                     "shares_outstanding": 40e6, "shares_asof": d[15]}]
+    raw["actions"] = [event("A", d[12], "split", ratio=2), event("A", d[18], "split", ratio=2)]
+    price(raw, "A", d[12], 50)
+    price(raw, "A", d[18], 25)
+    data = Dataset(raw)
+    assert data.facts_at("A", 15) is None
+    candidates, _ = scan_candidates(data, 22, bt.DEFAULTS, load_policy())
+    assert [row["cap"] for row in candidates] == [2e9]
+    raw["facts"][0]["shares_asof"] = d[17]
+    with pytest.raises(ValueError, match="Shares date"):
+        Dataset(raw)
+
+
 def test_signal_normalizes_split_and_special_distribution_without_future_actions():
     raw, d = tape()
     price(raw, "A", d[40], 50.)
@@ -182,6 +200,26 @@ def test_late_disclosed_terminal_cash_does_not_influence_an_earlier_fill():
         assert next(x for x in r["daily"] if x["session"] == d[23])["provisional_mark"]
         disclosed = next(x for x in r["daily"] if x["session"] == d[24])
         assert disclosed["receivable"] == 50*value
+
+
+@pytest.mark.parametrize("has_pay_date", [False, True])
+def test_confirmed_merger_cash_requires_a_payment_date_to_fund_the_next_trade(has_pay_date):
+    raw, d = tape()
+    raw["bars"] = [b for b in raw["bars"] if b["security_id"] != "A" or b["session"] < d[22]]
+    raw["actions"] = [event("A", d[22], "merger", cash_per_share=104,
+                            pay_session=d[24] if has_pay_date else None)]
+    cfg = {**bt.DEFAULTS, "initial_cash": 10000, "max_positions": 1, "min_order": 1,
+           "cost_bps": {k: 0 for k in bt.DEFAULTS["cost_bps"]}}
+    orders = {20: (19, 26, [dict(sid="A", issuer="A", adv=1e8)]),
+              24: (23, 26, [dict(sid="B", issuer="B", adv=1e8)])}
+    result = simulate(Dataset(raw), cfg, 19, 28, orders, "scanner_core", 365, 1, 0)
+    trade = result["trades"][0]
+    on_payment_day = next(row for row in result["daily"] if row["session"] == d[24])
+    assert trade["net_proceeds"] == pytest.approx(10400)
+    assert trade["outcome_known"] is has_pay_date
+    assert on_payment_day["provisional_mark"] is not has_pay_date
+    assert on_payment_day["receivable"] == pytest.approx(0 if has_pay_date else 10400)
+    assert result["counts"]["filled_entries"] == (2 if has_pay_date else 1)
 
 
 def test_transaction_costs_reduce_nav_under_base_and_stress():

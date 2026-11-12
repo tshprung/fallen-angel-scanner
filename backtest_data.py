@@ -84,9 +84,12 @@ class Dataset:
             if sid not in self.securities:
                 raise ValueError("Fact references unknown security")
             period, known = date.fromisoformat(row["period_end"]), instant(row["available_at"])
+            shares_asof = date.fromisoformat(row.get("shares_asof", row["period_end"]))
             key = ("fact", sid, period, known)
             if key in keys or period > known.date() or not row["source_id"] or not row["sector"]:
                 raise ValueError("Invalid or duplicate statement vintage")
+            if not period <= shares_asof <= known.date():
+                raise ValueError("Shares date must be on or after the period end and on or before availability")
             keys.add(key)
             amount(row["shares_outstanding"], 1)
             evidence = row.get("evidence")
@@ -95,7 +98,7 @@ class Dataset:
                 dates.extend(date.fromisoformat(x["asof"]) for x in evidence["annual_fcf"])
                 if any(d > period for d in dates):
                     raise ValueError("Statement vintage contains a future financial period")
-            self.facts[sid].append((period, known, row))
+            self.facts[sid].append((period, known, shares_asof, row))
         for row in raw["actions"]:
             sid, i = self._key(row)
             kind = row["kind"]
@@ -121,8 +124,11 @@ class Dataset:
                 raise ValueError("Set cash_per_share explicitly, including zero for stock-only consideration")
             if (kind == "split" or child) and known > self.opens[i]:
                 raise ValueError("Share conversions require terms available by the effective session open")
-            pay = date.fromisoformat(row.get("pay_session", row["session"]))
-            if pay < self.days[i] or (pay <= self.days[-1] and pay not in self.indices):
+            pay_session = row.get("pay_session", row["session"])
+            pay = date.fromisoformat(pay_session) if pay_session is not None else None
+            if pay is None and (cash is None or cash <= 0):
+                raise ValueError("Unknown payment timing requires an explicit positive cash amount")
+            if pay is not None and (pay < self.days[i] or (pay <= self.days[-1] and pay not in self.indices)):
                 raise ValueError("Payment date must be an effective session on or after the event")
             event = dict(kind=kind, security_id=sid, i=i, known=known, ratio=ratio,
                          child=child, cash=cash, pay=pay, source_id=row["source_id"])
@@ -154,8 +160,8 @@ class Dataset:
                      if effective <= i and known <= self.closes[i]), None)
 
     def facts_at(self, sid, i):
-        return next((row for period, known, row in reversed(self.facts[sid])
-                     if period <= self.days[i] and known <= self.closes[i]), None)
+        return next((row for _, known, shares_asof, row in reversed(self.facts[sid])
+                     if shares_asof <= self.days[i] and known <= self.closes[i]), None)
 
     def adv(self, sid, i, window=20):
         """Trailing dollar volume known at signal close (or previous close for exit)."""

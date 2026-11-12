@@ -9,11 +9,12 @@ from zoneinfo import ZoneInfo
 
 from backtest import write_new
 from backtest_data import instant
-from sec_filings import SecClient, SourceUnavailable
+from sec_filings import MERGER, SecClient, SourceUnavailable
 
 
 PERIODIC = {"10-Q", "10-K", "10-Q/A", "10-K/A"}
-EVENTS = {"8-K", "8-K/A", "25", "25-NSE", "25/A", "25-NSE/A"}
+EVENTS = {"8-K", "8-K/A", "25", "25-NSE", "25/A", "25-NSE/A"} | MERGER
+AUDIT_8K_ITEMS = {"1.03", "2.01", "2.04", "2.05", "2.06", "3.01", "4.02"}
 NY = ZoneInfo("America/New_York")
 # This is a candidate crosswalk, not an accounting normalization. In
 # particular, never combine debt lines or sum cumulative cash-flow durations.
@@ -69,7 +70,7 @@ def collect_filing_index(blocks, cik, start, end, asof):
                 counts["not_available_by_cutoff"] += 1
                 continue
             items = sorted(set(re.findall(r"\b\d\.\d{2}\b", block.get("items", [""]*n)[i] or "")))
-            if form.startswith("8-K") and not {"1.03", "3.01", "2.01", "2.04"}.intersection(items):
+            if form.startswith("8-K") and not AUDIT_8K_ITEMS.intersection(items):
                 continue
             if form in PERIODIC and (not period or date.fromisoformat(period) > filed):
                 counts["missing_or_invalid_report_period"] += 1
@@ -99,7 +100,14 @@ def extract_vintages(cik, blocks, companyfacts, start, end, asof):
             for obs in rows:
                 acc = obs.get("accn")
                 source = periodic.get(acc)
-                if source is None or obs.get("end") != source["report_period"]:
+                if source is None:
+                    continue
+                fact_date = obs.get("end")
+                if namespace == "dei":
+                    # A cover-page share count is an instant, often dated after quarter end.
+                    if not fact_date or obs.get("start") or not source["report_period"] <= fact_date <= source["filed"]:
+                        continue
+                elif fact_date != source["report_period"]:
                     continue
                 if obs.get("filed") != source["filed"] or obs.get("form") != source["form"]:
                     counts["fact_filing_metadata_conflict"] += 1
@@ -109,7 +117,7 @@ def extract_vintages(cik, blocks, companyfacts, start, end, asof):
                         or (started and date.fromisoformat(started) > date.fromisoformat(obs["end"]))):
                     counts["invalid_fact_values_or_duration"] += 1
                     continue
-                facts[acc].add((category, f"{namespace}:{tag}", unit, started, obs["end"], val))
+                facts[acc].add((category, f"{namespace}:{tag}", unit, started, fact_date, val))
     result = []
     for acc, row in sorted(periodic.items(), key=lambda pair: (pair[1]["available_at"], pair[0])):
         values = sorted(facts[acc])
@@ -173,19 +181,25 @@ def main():
     args = parser.parse_args()
     try:
         start, end, asof = date.fromisoformat(args.start), date.fromisoformat(args.end), instant(args.as_of)
-        if len(args.cik) > 3 or not 0 <= (end-start).days <= 366:
-            raise ValueError("Pilot limit: three issuers and at most 366 calendar days")
+        if len(args.cik) > 15 or not 0 <= (end-start).days <= 1461:
+            raise ValueError("Audit limit: 15 issuers and at most 1461 calendar days")
         client = SecClient()
-        results = [audit_issuer(cik, start, end, asof, client) for cik in args.cik]
+        results, unavailable = [], []
+        for cik in args.cik:
+            try:
+                results.append(audit_issuer(cik, start, end, asof, client))
+            except SourceUnavailable as exc:
+                unavailable.append(dict(cik=cik.zfill(10), reason=str(exc)))
+                print(f"CIK {cik.zfill(10)}: {exc}")
         write_new(args.output, dict(kind="edgar_vintage_audit_only", as_of=asof.isoformat(),
-                                   filing_window=[str(start), str(end)], results=results,
+                                   filing_window=[str(start), str(end)], results=results, unavailable=unavailable,
                                    notice="No raw market data, historical membership, terminal proceeds, risk clearance or performance. "
                                           "Keep original fact dates/units; no TTM normalization or facts imported into replay."))
         for r in results:
             populated = sum(bool(row["candidate_facts"]) for row in r["vintages"])
             print(f"CIK {r['cik']}: {populated}/{len(r['vintages'])} filings with candidate facts; "
                   f"{len(r['event_notices'])} event notices; diagnostics={r['diagnostics']}")
-        if any(not any(row["candidate_facts"] for row in r["vintages"]) for r in results):
+        if unavailable or any(not any(row["candidate_facts"] for row in r["vintages"]) for r in results):
             return 1
         return 0
     except (ValueError, TypeError, KeyError, OSError) as exc:

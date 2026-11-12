@@ -37,8 +37,9 @@ def scan_candidates(data, i, config, policy):
             coverage["input_unverified_members"] += 1
             continue
         shares = fact["shares_outstanding"]
+        shares_asof = date.fromisoformat(fact.get("shares_asof", fact["period_end"]))
         for e in data.actions_by_security[sid]:
-            if e["kind"] == "split" and period < data.days[e["i"]] <= today and e["known"] <= data.closes[i]:
+            if e["kind"] == "split" and shares_asof < data.days[e["i"]] <= today and e["known"] <= data.closes[i]:
                 shares *= e["ratio"]
         cap = shares * bar["close"]
         if cap < config["min_market_cap"] or adv < config["min_adv"] or bar["close"] < config["min_price"]:
@@ -200,8 +201,10 @@ def simulate(data, config, first, stop, orders, strategy, horizon, cost_scale, u
                     lot.income += proceeds
                     lot.cash_terms.append((known, proceeds))
                     receivable[(event["pay"], known)] += proceeds
+                    if proceeds > 0 and event["pay"] is None:
+                        lot.unknown.append(f"{kind}: cash payment date unverified")
         for pay, known in list(receivable):
-            if pay <= day and known <= data.opens[i]:
+            if pay is not None and pay <= day and known <= data.opens[i]:
                 cash += receivable.pop((pay, known))
         for lot in list(lots):
             if not lot.units:
@@ -282,10 +285,10 @@ def simulate(data, config, first, stop, orders, strategy, horizon, cost_scale, u
                 lot.touched = True
             values.append(value)
         recognized = sum(value for (_, known), value in receivable.items() if known <= data.closes[i])
-        unrecognized = any(known > data.closes[i] for _, known in receivable)
+        provisional_receivable = any(pay is None or known > data.closes[i] for pay, known in receivable)
         nav = cash + recognized + sum(values)
         daily.append(dict(session=str(day), nav=nav, cash=cash, receivable=recognized,
-                          positions=len(lots), provisional_mark=stale or unrecognized or any(lot.unknown for lot in lots)))
+                          positions=len(lots), provisional_mark=stale or provisional_receivable or any(lot.unknown for lot in lots)))
     if lots:
         raise ValueError("A scheduled position escaped its fold")
     return dict(daily=daily, trades=trades, counts=dict(counts), turnover_notional=turnover, costs=costs)
