@@ -18,6 +18,19 @@ SIGNAL = date(2022, 6, 30)
 END = datetime(2023, 7, 5)
 HORIZON = 365
 MARKET = "SPY"
+# State Street US historical distributions, CUSIP 78462F103. Amounts are in USD.
+SPY_DISTRIBUTION_SOURCE = "https://www.ssga.com/library-content/products/fund-data/etfs/us/spdr-etf-historical-distributions.xlsx"
+SPY_DISTRIBUTIONS = {
+    "2021-06-18": ("2021-07-30", 1.375875),
+    "2021-09-17": ("2021-10-29", 1.428117),
+    "2021-12-17": ("2022-01-31", 1.636431),
+    "2022-03-18": ("2022-04-29", 1.366009),
+    "2022-06-17": ("2022-07-29", 1.576871),
+    "2022-09-16": ("2022-10-31", 1.596398),
+    "2022-12-16": ("2023-01-31", 1.781400),
+    "2023-03-17": ("2023-04-28", 1.506204),
+    "2023-06-16": ("2023-07-31", 1.638367),
+}
 
 
 def filing_facts():
@@ -108,6 +121,27 @@ def market_actions(history, symbol, event_types, sessions, sid):
     return actions, delisted
 
 
+def reconcile_benchmark_distributions(actions, hours):
+    dividends = [action for action in actions if action["kind"] == "dividend"]
+    if len(dividends) != len(SPY_DISTRIBUTIONS) or {row["session"] for row in dividends} != SPY_DISTRIBUTIONS.keys():
+        raise ValueError("SPY ex-dates do not match the issuer distribution history")
+    reconciled = []
+    for row in actions:
+        if row["kind"] != "dividend":
+            reconciled.append(row)
+            continue
+        payable, amount = SPY_DISTRIBUTIONS[row["session"]]
+        # Allow for rounding in the feed, then use the sponsor's exact amount.
+        if not math.isclose(row["cash_per_share"], amount, rel_tol=0, abs_tol=0.005001):
+            raise ValueError("SPY cash distribution does not match the issuer amount")
+        # Without a posting time, cash is available from the next regular open.
+        next_day = date.fromisoformat(payable) + timedelta(days=1)
+        cash_open = hours.get_next_market_open(datetime.combine(next_day, time.min), False)
+        reconciled.append(dict(row, cash_per_share=amount, pay_session=cash_open.date().isoformat(),
+                               source_id=SPY_DISTRIBUTION_SOURCE))
+    return reconciled
+
+
 def collect_quantconnect_inputs(book, daily, raw_mode, bar_type, event_types):
     book.settings.daily_precise_end_time = True
     book.set_start_date(2023, 7, 6)
@@ -127,6 +161,8 @@ def collect_quantconnect_inputs(book, daily, raw_mode, bar_type, event_types):
     actions, benchmark_delisted = market_actions(history, spy.symbol, event_types, sessions, MARKET)
     if benchmark_delisted:
         raise ValueError("Unexpected benchmark delisting")
+    actions = reconcile_benchmark_distributions(actions, spy.exchange.hours)
+    benchmark_distributions = sum(row["kind"] == "dividend" for row in actions)
     raw = dict(version=1, kind="historical", source="QuantConnect Cloud and dated public SEC filings",
                benchmark_security_id=MARKET, sessions=list(sessions.values()), bars=bars, actions=actions,
                securities=[dict(security_id=MARKET, issuer_id=MARKET, currency="USD", kind="benchmark")],
@@ -160,6 +196,7 @@ def collect_quantconnect_inputs(book, daily, raw_mode, bar_type, event_types):
             unmatched_delistings += 1
     return raw, dict(public_filing_cases=len(evidence), matched_cases=len(seen),
                      unmatched_delistings=unmatched_delistings,
+                     benchmark_distributions_reconciled=benchmark_distributions,
                      unverified_payment_dates=sum(row.get("pay_session", "") is None for row in raw["actions"]))
 
 
