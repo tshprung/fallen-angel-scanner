@@ -39,7 +39,7 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
 
     hours = MarketHours()
     stock_subscriptions = []
-    cohort_replay = problem in {"cohort-reconciled", "cohort-missing-benchmark-dividend"}
+    cohort_replay = problem in {"cohort-reconciled", "cohort-benchmark-feed-differs"}
 
     class History:
         def __getitem__(self, kind):
@@ -49,11 +49,16 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
             if cohort_replay and symbol.value == "SPY" and stock_subscriptions:
                 raise ValueError("Benchmark history requested after loading stock subscriptions")
             if kind is Dividend and symbol.value == "SPY":
-                return [SimpleNamespace(time=datetime.fromisoformat(day),
-                                        distribution=1.5 if problem == "amount" and day == "2022-12-16"
-                                        else round(amount, 2))
-                        for day, (_, amount) in SPY_DISTRIBUTIONS.items()
-                        if problem not in {"missing", "cohort-missing-benchmark-dividend"} or day != "2023-06-16"]
+                dividends = {day: round(amount, 2) for day, (_, amount) in SPY_DISTRIBUTIONS.items()}
+                if problem in {"missing", "cohort-benchmark-feed-differs"}:
+                    del dividends["2023-06-16"]
+                if problem in {"amount", "cohort-benchmark-feed-differs"}:
+                    dividends["2022-12-16"] = 1.5
+                rows = list(dividends.items())
+                if problem == "cohort-benchmark-feed-differs":
+                    rows.extend([("2023-06-20", 1.64), ("2023-03-17", 1.51)])
+                return [SimpleNamespace(time=datetime.fromisoformat(day), distribution=amount)
+                        for day, amount in rows]
             if kind is Dividend and symbol.value == "MRTN" and universe_rows is not None:
                 return [SimpleNamespace(time=datetime.fromisoformat(day), distribution=cash)
                         for day, cash in [("2022-07-01", .06), ("2022-12-12", .06), ("2023-03-16", .10)]]
@@ -169,7 +174,7 @@ def test_benchmark_distribution_uses_sponsor_amount_and_waits_until_after_paymen
     assert verified["2023-06-16"]["pay_session"] == "2023-08-01"  # Cash remains outside the pilot window.
 
 
-@pytest.mark.parametrize("problem", [None, "cohort-reconciled", "cohort-missing-benchmark-dividend"])
+@pytest.mark.parametrize("problem", [None, "cohort-reconciled", "cohort-benchmark-feed-differs"])
 def test_cohort_audit_requires_original_members_and_complete_outcomes(problem, monkeypatch, tmp_path, capsys):
     tickers = sorted(ANCHORS) + [f"STOCK{i}" for i in range(18)]
     rows = [SimpleNamespace(symbol=SimpleNamespace(value=ticker, id=f"{ticker} ID"),
@@ -220,7 +225,7 @@ def test_cohort_audit_requires_original_members_and_complete_outcomes(problem, m
         assert "EXLS" not in json.dumps(result)
         replay = result["cohort_replay"]
         assert replay["scanner_core_qualified_signals"] == 0
-        if problem == "cohort-reconciled":
+        if complete_stock_inputs:
             assert replay["status"] == "DEVELOPMENT_REPLAY_ONLY"
             drawdown = replay["strategies"]["drawdown_only"]
             market = replay["strategies"]["market"]
@@ -232,9 +237,12 @@ def test_cohort_audit_requires_original_members_and_complete_outcomes(problem, m
             # Flat raw prices. The receivable after exit raises the small
             # drawdown portfolio's NAV, and SPY earns its four distributions.
             assert 0 < drawdown["net_portfolio_return_pct"] < market["net_portfolio_return_pct"]
-        elif problem == "cohort-missing-benchmark-dividend":
-            assert replay == {"status": "REPLAY_CHECK_FAILED", "stage": "benchmark_dividend_reconciliation",
-                              "error_type": "ValueError", "scanner_core_qualified_signals": 0}
+            assert market["net_portfolio_return_pct"] == pytest.approx(5.8639)
+            difference = int(problem == "cohort-benchmark-feed-differs")
+            assert replay["benchmark_distributions"] == {
+                "sponsor_distributions": 4, "missing_feed_dates": difference, "unexpected_feed_dates": difference,
+                "duplicate_feed_rows": difference, "feed_amount_disagreements": difference,
+            }
         else:
             assert replay["status"] == "DRAWDOWN_OUTCOME_INPUTS_INCOMPLETE"
             assert "strategies" not in replay

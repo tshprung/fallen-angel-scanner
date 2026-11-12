@@ -102,6 +102,11 @@ def selected_ids(namespace, snapshot):
     return sorted(next(iter(matches))) if len(matches) == 1 else None
 
 
+def cash_available_session(payable, hours):
+    next_day = date.fromisoformat(payable) + timedelta(days=1)
+    return hours.get_next_market_open(datetime.combine(next_day, time.min), False).date().isoformat()
+
+
 def reconcile_stock_distributions(actions, ticker, cik, hours):
     reconciled = []
     counts = Counter()
@@ -110,14 +115,41 @@ def reconcile_stock_distributions(actions, ticker, cik, hours):
         if evidence is not None:
             payable, cash, source = evidence
             if math.isclose(row["cash_per_share"], cash, rel_tol=0, abs_tol=.005001):
-                next_day = date.fromisoformat(payable) + timedelta(days=1)
-                cash_open = hours.get_next_market_open(datetime.combine(next_day, time.min), False)
-                row = dict(row, cash_per_share=cash, pay_session=cash_open.date().isoformat(), source_id=source)
+                row = dict(row, cash_per_share=cash, pay_session=cash_available_session(payable, hours),
+                           source_id=source)
                 counts["stock_dividends_reconciled"] += 1
             else:
                 counts["stock_dividend_amount_disagreements"] += 1
         reconciled.append(row)
     return reconciled, counts
+
+
+def cohort_benchmark_actions(pilot, feed_actions, sessions, hours, entry_day, exit_day):
+    """Use the US sponsor's complete SPY distribution history for this replay window."""
+    if (entry_day, exit_day) != (date(2022, 7, 1), date(2023, 7, 3)):
+        raise ValueError("SPY cash records were verified for the June 2022 cohort only")
+    sponsor = {day: terms for day, terms in pilot.SPY_DISTRIBUTIONS.items()
+               if entry_day < date.fromisoformat(day) <= exit_day}
+    if len(sponsor) != 4:
+        raise ValueError("Expected all four verified SPY distributions")
+    feed = [row for row in feed_actions if row["kind"] == "dividend"
+            and entry_day < date.fromisoformat(row["session"]) <= exit_day]
+    feed_dates = Counter(row["session"] for row in feed)
+    counts = dict(sponsor_distributions=len(sponsor),
+                  missing_feed_dates=len(sponsor.keys() - feed_dates.keys()),
+                  unexpected_feed_dates=len(feed_dates.keys() - sponsor.keys()),
+                  duplicate_feed_rows=sum(count - 1 for count in feed_dates.values()),
+                  feed_amount_disagreements=sum(
+                      not math.isclose(row["cash_per_share"], sponsor[row["session"]][1],
+                                       rel_tol=0, abs_tol=.005001)
+                      for row in feed if row["session"] in sponsor))
+    actions = [row for row in feed_actions if row["kind"] != "dividend"]
+    for day, (payable, amount) in sponsor.items():
+        actions.append(dict(security_id=pilot.MARKET, session=day, kind="dividend", cash_per_share=amount,
+                            pay_session=cash_available_session(payable, hours),
+                            available_at=sessions[date.fromisoformat(day)]["open_at"],
+                            source_id=pilot.SPY_DISTRIBUTION_SOURCE))
+    return actions, counts
 
 
 def drawdown_financial_check(ticker, cap, mapped, data, first, config, policy, pilot):
@@ -199,8 +231,6 @@ def load_cohort_benchmark(pilot, history, symbol, bar_type, daily, events, sessi
         actions, delisted = pilot.market_actions(history, symbol, events, sessions, pilot.MARKET)
         if delisted:
             return [], [], dict(status="BENCHMARK_INPUT_UNVERIFIED", stage="benchmark_delisting_notice")
-        stage = "benchmark_dividend_reconciliation"
-        actions, _ = pilot.reconcile_benchmark_distributions(actions, hours)
     except REPLAY_ERRORS as error:
         return [], [], replay_failure(stage, error)
     return bars, actions, None
@@ -238,7 +268,7 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
     )
     replay_inputs = dict(version=1, kind="historical", source="QuantConnect Research development cohort",
                          benchmark_security_id=pilot.MARKET, sessions=list(sessions.values()),
-                         securities=[market_security], bars=market_bars, actions=market_actions,
+                         securities=[market_security], bars=market_bars, actions=[],
                          membership=[], facts=[])
     filing_facts = pilot.filing_facts()
     for sid in ids:
@@ -339,12 +369,20 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
     elif benchmark_failure:
         replay = benchmark_failure
     else:
+        days = list(sessions)
+        stage = "benchmark_sponsor_distributions"
         try:
+            actions, benchmark_counts = cohort_benchmark_actions(
+                pilot, market_actions, sessions, hours, days[first + 1], days[exit_i]
+            )
+            replay_inputs["actions"].extend(actions)
+            stage = "combined_dataset_validation"
             data = pilot.Dataset(replay_inputs)
         except REPLAY_ERRORS as error:
-            replay = replay_failure("combined_dataset_validation", error)
+            replay = replay_failure(stage, error)
         else:
             replay = replay_cohort(pilot, data, drawdowns, first, exit_i, config)
+            replay["benchmark_distributions"] = benchmark_counts
     replay["scanner_core_qualified_signals"] = drawdown_checks["qualified"]
     return {"status": "DEVELOPMENT_COVERAGE_ONLY", "sample_size": len(ids), "coverage": dict(counts),
             "drawdown_financial_checks": dict(drawdown_checks), "drawdown_outcome_gaps": dict(drawdown_outcome_gaps),
