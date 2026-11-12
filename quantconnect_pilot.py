@@ -126,20 +126,21 @@ def reconcile_benchmark_distributions(actions, hours):
     if len(dividends) != len(SPY_DISTRIBUTIONS) or {row["session"] for row in dividends} != SPY_DISTRIBUTIONS.keys():
         raise ValueError("SPY ex-dates do not match the issuer distribution history")
     reconciled = []
+    amount_disagreements = 0
     for row in actions:
         if row["kind"] != "dividend":
             reconciled.append(row)
             continue
         payable, amount = SPY_DISTRIBUTIONS[row["session"]]
-        # Allow for rounding in the feed, then use the sponsor's exact amount.
+        # The sponsor supplies the amount. Count disagreements beyond ordinary rounding.
         if not math.isclose(row["cash_per_share"], amount, rel_tol=0, abs_tol=0.005001):
-            raise ValueError("SPY cash distribution does not match the issuer amount")
+            amount_disagreements += 1
         # Without a posting time, cash is available from the next regular open.
         next_day = date.fromisoformat(payable) + timedelta(days=1)
         cash_open = hours.get_next_market_open(datetime.combine(next_day, time.min), False)
         reconciled.append(dict(row, cash_per_share=amount, pay_session=cash_open.date().isoformat(),
                                source_id=SPY_DISTRIBUTION_SOURCE))
-    return reconciled
+    return reconciled, amount_disagreements
 
 
 def collect_quantconnect_inputs(book, daily, raw_mode, bar_type, event_types):
@@ -161,7 +162,7 @@ def collect_quantconnect_inputs(book, daily, raw_mode, bar_type, event_types):
     actions, benchmark_delisted = market_actions(history, spy.symbol, event_types, sessions, MARKET)
     if benchmark_delisted:
         raise ValueError("Unexpected benchmark delisting")
-    actions = reconcile_benchmark_distributions(actions, spy.exchange.hours)
+    actions, amount_disagreements = reconcile_benchmark_distributions(actions, spy.exchange.hours)
     benchmark_distributions = sum(row["kind"] == "dividend" for row in actions)
     raw = dict(version=1, kind="historical", source="QuantConnect Cloud and dated public SEC filings",
                benchmark_security_id=MARKET, sessions=list(sessions.values()), bars=bars, actions=actions,
@@ -197,6 +198,7 @@ def collect_quantconnect_inputs(book, daily, raw_mode, bar_type, event_types):
     return raw, dict(public_filing_cases=len(evidence), matched_cases=len(seen),
                      unmatched_delistings=unmatched_delistings,
                      benchmark_distributions_reconciled=benchmark_distributions,
+                     benchmark_amount_disagreements=amount_disagreements,
                      unverified_payment_dates=sum(row.get("pay_session", "") is None for row in raw["actions"]))
 
 

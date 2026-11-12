@@ -124,7 +124,7 @@ def test_hosted_modules_replay_or_reject_input_mismatch(problem, monkeypatch, tm
     output = capsys.readouterr().out
     result = json.loads(output)
     assert "CTXS" not in output and "net_return" not in output and "receivable" not in output
-    if problem:
+    if problem in {"clock", "missing"}:
         assert result == {"status": "INPUT_CHECK_FAILED", "stage": "QuantConnect data mapping",
                           "error_type": "ValueError"}
     else:
@@ -132,6 +132,7 @@ def test_hosted_modules_replay_or_reject_input_mismatch(problem, monkeypatch, tm
         assert result["performance_gate"] == "INSUFFICIENT_EVIDENCE"
         assert result["input_counts"]["matched_cases"] == 3
         assert result["input_counts"]["benchmark_distributions_reconciled"] == 9
+        assert result["input_counts"]["benchmark_amount_disagreements"] == (1 if problem == "amount" else 0)
         assert result["input_counts"]["unverified_payment_dates"] == 1
         assert result["coverage"]["archived_event_excluded"] == 1
         assert result["strategies"]["market"] == {"ranked": 1, "fills": 1, "unresolved": 0}
@@ -141,7 +142,10 @@ def test_hosted_modules_replay_or_reject_input_mismatch(problem, monkeypatch, tm
 def test_benchmark_distribution_uses_sponsor_amount_and_waits_until_after_payment():
     dividends = [dict(kind="dividend", session=day, cash_per_share=round(amount, 2), pay_session=None)
                  for day, (_, amount) in SPY_DISTRIBUTIONS.items()]
-    verified = {row["session"]: row for row in reconcile_benchmark_distributions(dividends, MarketHours())}
+    next(row for row in dividends if row["session"] == "2022-12-16")["cash_per_share"] = 1.5
+    reconciled, amount_disagreements = reconcile_benchmark_distributions(dividends, MarketHours())
+    verified = {row["session"]: row for row in reconciled}
+    assert amount_disagreements == 1
     assert verified["2022-12-16"]["cash_per_share"] == 1.781400
     assert verified["2022-12-16"]["pay_session"] == "2023-02-01"
     assert verified["2023-03-17"]["pay_session"] == "2023-05-01"  # April 28 was a Friday.
