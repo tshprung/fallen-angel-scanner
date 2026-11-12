@@ -4,7 +4,7 @@
       "0000077360-26-000058",
       "0001104659-26-104725"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "EXPECTED_REPORT_REQUIRES_REVIEW"
   },
   "ASB.WA": {
@@ -14,14 +14,14 @@
       "https://investor.asbis.com/download/Raport_za_Q3_2026.pdf",
       "https://investor.asbis.com/download/Sprawozdanie_finansowe_za_9M_2026.pdf"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "EXPECTED_REPORT_LINKS_REQUIRE_REVIEW"
   },
   "LZB": {
     "document_ids": [
       "0000057131-26-000035"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "UNCHANGED"
   },
   "SANM": {
@@ -29,7 +29,7 @@
       "0000897723-26-000037",
       "0000897723-26-000044"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "EXPECTED_REPORT_NOT_CONFIRMED"
   },
   "WDC": {
@@ -40,15 +40,14 @@
       "0001193125-26-371309",
       "0001628280-26-066933"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "UNCHANGED"
   },
   "NOW": {
     "document_ids": [
-      "0001193125-26-226644",
       "0001373715-26-000096"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "UNCHANGED"
   },
   "TTD": {
@@ -56,7 +55,7 @@
       "0001193125-26-382690",
       "0001671933-26-000116"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "EXPECTED_REPORT_REQUIRES_REVIEW"
   },
   "ALB": {
@@ -65,7 +64,7 @@
       "0000915913-26-000124",
       "0000915913-26-000129"
     ],
-    "observed_at": "2026-11-10T23:39:11.269191+00:00",
+    "observed_at": "2026-11-12T00:56:37.165531+00:00",
     "status": "UNCHANGED"
   }
 }

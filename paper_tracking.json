@@ -287,7 +287,7 @@
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 4,
+        "method_version": 5,
         "benchmark": {
           "method_version": 1,
           "status": "MATCHED",
@@ -585,7 +585,7 @@
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 4,
+        "method_version": 5,
         "benchmark": {
           "method_version": 1,
           "status": "MATCHED",
@@ -884,7 +884,7 @@
         "touched_2x_at_close": false,
         "ended_2x": null,
         "return_basis": "listing currency; dividend/split-adjusted; before costs and taxes",
-        "method_version": 4,
+        "method_version": 5,
         "benchmark": {
           "method_version": 1,
           "status": "MATCHED",
@@ -898,5 +898,5 @@
       }
     }
   ],
-  "last_refreshed_at": "2026-11-11T00:06:33.456378+00:00"
+  "last_refreshed_at": "2026-11-12T01:28:48.831540+00:00"
 }

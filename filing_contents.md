@@ -10,7 +10,7 @@ Deferred documents: 13.
 
 Source: <https://www.sec.gov/Archives/edgar/data/915913/000091591326000129/alb-20260930.htm> — INDEXED_FOR_REVIEW
 
-Retrieved 2026-11-05T00:13:46.664134+00:00; decoded-content SHA-256 a86ba4fda1c3c52497ba81900ad277f46b4b3abb1a135bca2f15d0a2dc43924a.
+Retrieved 2026-11-12T01:25:46.445477+00:00; decoded-content SHA-256 38356dcfa8e424f21b19aeb568e457d9d5ca074e80134d123699869ec0112948.
 
 - liquidity: 12 matching blocks; absence of matches is not risk clearance.
   - table block 62: $1,845,999; $1,618,001; $4,582; $4,578
@@ -91,7 +91,7 @@ Retrieved 2026-11-10T02:14:51.528683+00:00; decoded-content SHA-256 a4378f0cc214
 
 Source: <https://www.sec.gov/Archives/edgar/data/915913/000091591326000129/exhibit3110930202610q.htm> — INDEXED_FOR_REVIEW
 
-Retrieved 2026-11-05T00:13:47.654643+00:00; decoded-content SHA-256 be8ad7fde1c593457f1f1c2f719312a3eb94793841a69f38853749a51c5578c8.
+Retrieved 2026-11-12T01:25:47.168221+00:00; decoded-content SHA-256 7d03288ed702b65cee053c5d86fe464ecf02de45b681ff6be003f1ca2aa3e8f9.
 
 - liquidity: 0 matching blocks; absence of matches is not risk clearance.
 - debt_maturities: 0 matching blocks; absence of matches is not risk clearance.
@@ -101,108 +101,11 @@ Retrieved 2026-11-05T00:13:47.654643+00:00; decoded-content SHA-256 be8ad7fde1c5
 - dilution: 0 matching blocks; absence of matches is not risk clearance.
 - outlook: 0 matching blocks; absence of matches is not risk clearance.
 
-## AA: PARTIAL
+## AA: DEFERRED_BUDGET
 
-Deferred documents: 3.
+Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
 
-Source: <https://www.sec.gov/Archives/edgar/data/1675149/000119312526437885/aa-20260930.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:42.046689+00:00; decoded-content SHA-256 004a201c1cde65ddd252d6dfd7b721d5b1f7b38cb61332cb321f6bb9e957690f.
-
-- liquidity: 25 matching blocks; absence of matches is not risk clearance.
-  - table block 51: $ 4,408; $ 1,597
-  - table block 57: $ 4,538; $ 1,574
-  - paragraph block 176: no raw amounts/dates in search context
-- debt_maturities: 22 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 89: no raw amounts/dates in search context
-  - paragraph block 156: November 13, 2026
-  - paragraph block 172: $1,500; 6.625%; $1,100; 6.875%; $2,592,; $3,100
-- covenants: 10 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 81: no raw amounts/dates in search context
-  - paragraph block 173: March 31, 2027; 6.125%; 6.375%
-  - paragraph block 177: December 31, 2025
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 1 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 657: $890; $79; $74; $47; $985; $27
-- dilution: 12 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 32: no raw amounts/dates in search context
-  - table block 39: $ 944; $ 1.83; $ 0.88; $ 4.98; $ 3.59; $ 1.81; $ 4.95; $ 3.57
-  - table block 57: no raw amounts/dates in search context
-- outlook: 11 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 30: no raw amounts/dates in search context
-  - paragraph block 73: no raw amounts/dates in search context
-  - paragraph block 74: December 15, 2027
-
-Source: <https://www.sec.gov/Archives/edgar/data/1675149/000119312526077167/aa-20251231.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:42.843195+00:00; decoded-content SHA-256 f8ab9f38b0099d208e3ad1335cebd72bda44c1fb531f32c5b67166f38ce5b3cf.
-
-- liquidity: 69 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 278: no raw amounts/dates in search context
-  - paragraph block 341: no raw amounts/dates in search context
-  - paragraph block 343: no raw amounts/dates in search context
-- debt_maturities: 52 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 332: no raw amounts/dates in search context
-  - paragraph block 653: $38; December 31, 2025
-  - paragraph block 655: $500; 6.125%; 6.375%; $985,
-- covenants: 31 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 243: no raw amounts/dates in search context
-  - paragraph block 267: no raw amounts/dates in search context
-  - paragraph block 342: no raw amounts/dates in search context
-- going_concern: 4 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 229: no raw amounts/dates in search context
-  - paragraph block 361: no raw amounts/dates in search context
-  - paragraph block 925: no raw amounts/dates in search context
-- listing_and_transactions: 8 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 331: no raw amounts/dates in search context
-  - paragraph block 359: no raw amounts/dates in search context
-  - paragraph block 655: no raw amounts/dates in search context
-- dilution: 31 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 115: 75%; 25%; $153; September 1, 2026
-  - paragraph block 138: no raw amounts/dates in search context
-  - paragraph block 315: no raw amounts/dates in search context
-- outlook: 24 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 50: no raw amounts/dates in search context
-  - paragraph block 57: no raw amounts/dates in search context
-  - paragraph block 158: no raw amounts/dates in search context
-
-Source: <https://www.sec.gov/Archives/edgar/data/1675149/000119312526399499/aa-20260923.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:44.003792+00:00; decoded-content SHA-256 3fd71cba8503fb91b6e51ef2c109c4296d1595f082d495d3d7b5da871222b448.
-
-- liquidity: 0 matching blocks; absence of matches is not risk clearance.
-- debt_maturities: 4 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 23: $1,500,000,000; 6.625%; $1,100,000,000; 6.875%
-  - paragraph block 25: September 30, 2031; September 30, 2029; 40%
-  - paragraph block 28: no raw amounts/dates in search context
-- covenants: 2 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 24: no raw amounts/dates in search context
-  - paragraph block 29: no raw amounts/dates in search context
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
-- dilution: 0 matching blocks; absence of matches is not risk clearance.
-- outlook: 0 matching blocks; absence of matches is not risk clearance.
-
-Source: <https://www.sec.gov/Archives/edgar/data/1675149/000119312526437885/aa-ex10_1.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:44.822280+00:00; decoded-content SHA-256 ade9c908687e8e23a68374550c487738e08bedccefde08e17e725e06197c11df.
-
-- liquidity: 0 matching blocks; absence of matches is not risk clearance.
-- debt_maturities: 5 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 36: no raw amounts/dates in search context
-  - paragraph block 58: 20%
-  - paragraph block 82: no raw amounts/dates in search context
-- covenants: 9 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 30: no raw amounts/dates in search context
-  - paragraph block 31: no raw amounts/dates in search context
-  - paragraph block 36: no raw amounts/dates in search context
-- going_concern: 1 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 23: no raw amounts/dates in search context
-- listing_and_transactions: 2 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 83: no raw amounts/dates in search context
-  - paragraph block 87: no raw amounts/dates in search context
-- dilution: 0 matching blocks; absence of matches is not risk clearance.
-- outlook: 0 matching blocks; absence of matches is not risk clearance.
+Deferred documents: not evaluated.
 
 ## ALM: DEFERRED_BUDGET
 
@@ -222,12 +125,6 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 
 Deferred documents: not evaluated.
 
-## ATI: DEFERRED_BUDGET
-
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
-
-Deferred documents: not evaluated.
-
 ## BKR: DEFERRED_BUDGET
 
 Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
@@ -235,12 +132,6 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 Deferred documents: not evaluated.
 
 ## BE: DEFERRED_BUDGET
-
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
-
-Deferred documents: not evaluated.
-
-## AVGO: DEFERRED_BUDGET
 
 Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
 
@@ -276,6 +167,12 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 
 Deferred documents: not evaluated.
 
+## ETN: DEFERRED_BUDGET
+
+Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
+
+Deferred documents: not evaluated.
+
 ## P: DEFERRED_BUDGET
 
 Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
@@ -295,6 +192,12 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 Deferred documents: not evaluated.
 
 ## GWRE: DEFERRED_BUDGET
+
+Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
+
+Deferred documents: not evaluated.
+
+## HL: DEFERRED_BUDGET
 
 Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
 
@@ -324,12 +227,6 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 
 Deferred documents: not evaluated.
 
-## NTNX: DEFERRED_BUDGET
-
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
-
-Deferred documents: not evaluated.
-
 ## NVT: DEFERRED_BUDGET
 
 Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
@@ -348,17 +245,171 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 
 Deferred documents: not evaluated.
 
-## SMTC: DEFERRED_BUDGET
+## SMTC: PARTIAL
 
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
+Deferred documents: 1.
 
-Deferred documents: not evaluated.
+Source: <https://www.sec.gov/Archives/edgar/data/88941/000008894126000034/smtc-20260726.htm> — INDEXED_FOR_REVIEW
 
-## STRL: DEFERRED_BUDGET
+Retrieved 2026-11-12T01:25:47.902181+00:00; decoded-content SHA-256 3310f539d6b2030ed7db7e69c8b6a72e6876a169b49629c5c21722fbc339729e.
 
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
+- liquidity: 34 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 38: no raw amounts/dates in search context
+  - table block 61: July 26, 2026; $204,051; $195,179; $8,328; $7,976,; $342,356; $340,331,
+  - table block 83: $204,051; $168,560
+- debt_maturities: 45 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 149: no raw amounts/dates in search context
+  - table block 165: 625%; $99,563; $338,340; $99,176; $221,095; 0%; $492,730; $953,285; $491,234; $662,632
+  - paragraph block 166: 1.625%; $0.9 million; $1.3 million; July 26, 2026; January 25, 2026
+- covenants: 13 matching blocks; absence of matches is not risk clearance.
+  - table block 34: no raw amounts/dates in search context
+  - paragraph block 38: January 25, 2026; March 23, 2026
+  - paragraph block 216: no raw amounts/dates in search context
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 34 matching blocks; absence of matches is not risk clearance.
+  - table block 47: $160,121; $186,684; $1.72; $2.01; $1.59; $1.88
+  - paragraph block 122: no raw amounts/dates in search context
+  - table block 123: $160,121; $186,684; $1.72; $2.01; $1.59; $1.88
+- outlook: 8 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 38: no raw amounts/dates in search context
+  - paragraph block 112: no raw amounts/dates in search context
+  - paragraph block 113: December 15, 2026
 
-Deferred documents: not evaluated.
+Source: <https://www.sec.gov/Archives/edgar/data/88941/000008894126000005/smtc-20260125.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:48.534007+00:00; decoded-content SHA-256 46e7bc97805a25dc8066c1d5723a25cc91b9ec1940a3f75c6ba534e6c637ec95.
+
+- liquidity: 49 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 51: no raw amounts/dates in search context
+  - paragraph block 240: no raw amounts/dates in search context
+  - paragraph block 254: no raw amounts/dates in search context
+- debt_maturities: 65 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 417: $895.0 million
+  - paragraph block 482: 1.625%; 0%
+  - paragraph block 484: January 25, 2026; 130%
+- covenants: 33 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 108: no raw amounts/dates in search context
+  - paragraph block 254: no raw amounts/dates in search context
+  - paragraph block 417: no raw amounts/dates in search context
+- going_concern: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 493: no raw amounts/dates in search context
+- listing_and_transactions: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 287: no raw amounts/dates in search context
+- dilution: 67 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 110: no raw amounts/dates in search context
+  - paragraph block 111: no raw amounts/dates in search context
+  - paragraph block 438: no raw amounts/dates in search context
+- outlook: 33 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 51: no raw amounts/dates in search context
+  - paragraph block 95: no raw amounts/dates in search context
+  - paragraph block 240: no raw amounts/dates in search context
+
+Source: <https://www.sec.gov/Archives/edgar/data/88941/000008894126000041/smtc-20261015.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:49.022292+00:00; decoded-content SHA-256 19df2689e9f609cee7f58fbae5036d6f340f5139af4a8e45ff8c92fa06b4db1c.
+
+- liquidity: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 32: no raw amounts/dates in search context
+- debt_maturities: 0 matching blocks; absence of matches is not risk clearance.
+- covenants: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 34: January 25, 2026; March 23, 2026
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 3 matching blocks; absence of matches is not risk clearance.
+  - table block 26: 63.9%; 0%; 31.0%; $1.05; $0.03; $1.14; $0.02
+  - table block 27: 70%; 48%; 50%; 35%; $12.40; $13.00; 64%; 66%; 104 million; 20%
+  - paragraph block 38: no raw amounts/dates in search context
+- outlook: 6 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 25: no raw amounts/dates in search context
+  - table block 26: $410.0; $5.0; $417.5; $2.5; 58.3%; 0%; 63.9%; 31.0%; $1.05; $0.03; $1.14; $0.02
+  - paragraph block 32: no raw amounts/dates in search context
+
+## STRL: PARTIAL
+
+Deferred documents: 12.
+
+Source: <https://www.sec.gov/Archives/edgar/data/874238/000087423826000125/strl-20260930.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:49.563876+00:00; decoded-content SHA-256 dba20ef91ebc7b2e4e698b1d62f6272174f617b4d89371fe428e8206a9c1ef96.
+
+- liquidity: 16 matching blocks; absence of matches is not risk clearance.
+  - table block 34: December 31, 2026; $200,130; $76,154; $216,937; $390,721; $269,800; $29,196; $656; $5,057
+  - table block 41: no raw amounts/dates in search context
+  - paragraph block 71: no raw amounts/dates in search context
+- debt_maturities: 10 matching blocks; absence of matches is not risk clearance.
+  - table block 34: $387,993; $226,810; $248,619; $89,630; $1,336; $0; $12
+  - table block 41: no raw amounts/dates in search context
+  - paragraph block 71: no raw amounts/dates in search context
+- covenants: 5 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 136: 3.50 to 1.00; 3.00 to 1.00
+  - paragraph block 137: $1.4 billion; September 30, 2026; 3.74%; 3.79%; 1.25%; 5.00%
+  - paragraph block 221: no raw amounts/dates in search context
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 9 matching blocks; absence of matches is not risk clearance.
+  - table block 27: $466,728; $202,556; $7.02; $3.02; $15.23; $6.64; $6.92; $2.97; $15.01; $6.56
+  - table block 41: no raw amounts/dates in search context
+  - table block 48: $315; $366,101; $872,648; $1,108,517; $1,106,435; March 31, 2026; $367,469; $968,617; $1,189,555; $5,714; $1,195,269
+- outlook: 6 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 73: December 15, 2026; December 15, 2027
+  - paragraph block 134: no raw amounts/dates in search context
+  - paragraph block 192: no raw amounts/dates in search context
+
+Source: <https://www.sec.gov/Archives/edgar/data/874238/000087423826000024/strl-20251231.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:50.112625+00:00; decoded-content SHA-256 1565efa5c74263a9a5922473162d99086eb6ed77a912e6b847249c1133d8e002.
+
+- liquidity: 26 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 16: no raw amounts/dates in search context
+  - paragraph block 238: no raw amounts/dates in search context
+  - paragraph block 239: no raw amounts/dates in search context
+- debt_maturities: 21 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 253: December 31, 2025; $292.5 million; June 5, 2028
+  - paragraph block 255: no raw amounts/dates in search context
+  - paragraph block 268: no raw amounts/dates in search context
+- covenants: 13 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 33: no raw amounts/dates in search context
+  - paragraph block 42: no raw amounts/dates in search context
+  - paragraph block 91: no raw amounts/dates in search context
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 2 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 179: no raw amounts/dates in search context
+  - paragraph block 288: no raw amounts/dates in search context
+- dilution: 11 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 238: no raw amounts/dates in search context
+  - paragraph block 405: no raw amounts/dates in search context
+  - table block 486: $290,153; $257,461; $138,655; $9.50; $8.35; $4.51; $9.38; $8.27; $4.44
+- outlook: 15 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 16: no raw amounts/dates in search context
+  - paragraph block 164: no raw amounts/dates in search context
+  - paragraph block 219: no raw amounts/dates in search context
+
+Source: <https://www.sec.gov/Archives/edgar/data/874238/000087423826000093/strl-20260702.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:50.558723+00:00; decoded-content SHA-256 6d510ffc39513b0a2ed1cb386b67e18670823d7f78aea1bdb57bd121871d6273.
+
+- liquidity: 0 matching blocks; absence of matches is not risk clearance.
+- debt_maturities: 1 matching blocks; absence of matches is not risk clearance.
+  - table block 6: June 5, 2025; July 2, 2031; $1.05 billion; $1.5 billion; $600 million; $50 million
+- covenants: 1 matching blocks; absence of matches is not risk clearance.
+  - table block 6: 3.50 to 1.00; 4.00 to 1.00
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 0 matching blocks; absence of matches is not risk clearance.
+- outlook: 0 matching blocks; absence of matches is not risk clearance.
+
+Source: <https://www.sec.gov/Archives/edgar/data/874238/000087423826000125/a2026093010-qexhibit311.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:51.131378+00:00; decoded-content SHA-256 873bea42b2b729196284265cda0e07f289af0d14c22bf3d9a42090fdd3184160.
+
+- liquidity: 0 matching blocks; absence of matches is not risk clearance.
+- debt_maturities: 0 matching blocks; absence of matches is not risk clearance.
+- covenants: 0 matching blocks; absence of matches is not risk clearance.
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 0 matching blocks; absence of matches is not risk clearance.
+- outlook: 0 matching blocks; absence of matches is not risk clearance.
 
 ## TTMI: PARTIAL
 
@@ -715,176 +766,17 @@ Retrieved 2026-11-11T00:01:38.976860+00:00; decoded-content SHA-256 c75cf4dbe79c
 - dilution: 0 matching blocks; absence of matches is not risk clearance.
 - outlook: 0 matching blocks; absence of matches is not risk clearance.
 
-## XYL: PARTIAL
+## XYL: DEFERRED_BUDGET
 
-Deferred documents: 5.
+Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
 
-Source: <https://www.sec.gov/Archives/edgar/data/1524472/000152447226000148/xyl-20260930.htm> — INDEXED_FOR_REVIEW
+Deferred documents: not evaluated.
 
-Retrieved 2026-11-11T00:01:39.532356+00:00; decoded-content SHA-256 df49c745baa3fd3269b06eff44ddb3764b44fb9b97910e86c9a56ccb05b0863b.
+## ACLS: DEFERRED_BUDGET
 
-- liquidity: 15 matching blocks; absence of matches is not risk clearance.
-  - table block 44: September 30, 2026; $708; $1,479; $58; $68; $17,326; $17,634
-  - table block 49: $708; $1,191; $39; $43; $221; $208
-  - paragraph block 245: no raw amounts/dates in search context
-- debt_maturities: 26 matching blocks; absence of matches is not risk clearance.
-  - table block 44: $1,055; $1,013; $0.01
-  - paragraph block 196: no raw amounts/dates in search context
-  - paragraph block 214: $250 million; $244 million; September 30, 2026; December 31, 2025
-- covenants: 12 matching blocks; absence of matches is not risk clearance.
-  - table block 25: no raw amounts/dates in search context
-  - paragraph block 225: no raw amounts/dates in search context
-  - paragraph block 226: no raw amounts/dates in search context
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 1 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 250: September 30, 2026; $1.5
-- dilution: 6 matching blocks; absence of matches is not risk clearance.
-  - table block 32: $291; $227; $747; $622; $1.25; $0.93; $3.15; $2.56; $3.14; $2.55
-  - paragraph block 161: no raw amounts/dates in search context
-  - table block 162: $1.25; $0.93; $3.15; $2.56; $3.14; $2.55
-- outlook: 8 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 71: December 15, 2027
-  - paragraph block 72: no raw amounts/dates in search context
-  - paragraph block 74: January 1, 2026
+Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
 
-Source: <https://www.sec.gov/Archives/edgar/data/1524472/000152447226000012/xyl-20251231.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:40.093921+00:00; decoded-content SHA-256 c753f0f3ef91cac48a9e31e1c1ba2497f6627b608b0de1f9d0ab3c81a2847b0f.
-
-- liquidity: 23 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 140: no raw amounts/dates in search context
-  - paragraph block 344: no raw amounts/dates in search context
-  - paragraph block 453: no raw amounts/dates in search context
-- debt_maturities: 27 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 150: no raw amounts/dates in search context
-  - paragraph block 344: no raw amounts/dates in search context
-  - paragraph block 450: April 19, 2024
-- covenants: 7 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 265: no raw amounts/dates in search context
-  - paragraph block 269: no raw amounts/dates in search context
-  - paragraph block 940: no raw amounts/dates in search context
-- going_concern: 2 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 266: no raw amounts/dates in search context
-  - paragraph block 657: no raw amounts/dates in search context
-- listing_and_transactions: 2 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 952: December 31, 2025; $1 billion
-  - paragraph block 954: no raw amounts/dates in search context
-- dilution: 9 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 344: no raw amounts/dates in search context
-  - table block 348: $1,240; $5.08; $1,041; $4.27
-  - paragraph block 365: $957 million; $3.92; 7.4%; $1,240 million; $5.08; 19.0%
-- outlook: 18 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 39: no raw amounts/dates in search context
-  - paragraph block 41: no raw amounts/dates in search context
-  - paragraph block 257: no raw amounts/dates in search context
-
-Source: <https://www.sec.gov/Archives/edgar/data/1524472/000152447226000132/xyl-20260908.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:40.740564+00:00; decoded-content SHA-256 a66138e59901465fbc90f48418a9a94547413c2537d0a90db657caf7e2da8e21.
-
-- liquidity: 3 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 22: September 8, 2026; $1,500,000,000
-  - paragraph block 30: September 8, 2026; March 1, 2023; $1,000,000,000; $300,000,000; $1,300,000,000
-  - table block 35: September 8, 2026
-- debt_maturities: 2 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 22: $1,500,000,000
-  - paragraph block 30: $300,000,000; $1,300,000,000
-- covenants: 1 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 25: no raw amounts/dates in search context
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 1 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 25: no raw amounts/dates in search context
-- dilution: 0 matching blocks; absence of matches is not risk clearance.
-- outlook: 0 matching blocks; absence of matches is not risk clearance.
-
-Source: <https://www.sec.gov/Archives/edgar/data/1524472/000152447226000148/exhibit102-xylemofferlette.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:41.208668+00:00; decoded-content SHA-256 5aab51c26bf386918c8de0aa6e1e98dc5eef94a67915f7a2357d538cfc6d09b1.
-
-- liquidity: 0 matching blocks; absence of matches is not risk clearance.
-- debt_maturities: 0 matching blocks; absence of matches is not risk clearance.
-- covenants: 0 matching blocks; absence of matches is not risk clearance.
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
-- dilution: 0 matching blocks; absence of matches is not risk clearance.
-- outlook: 0 matching blocks; absence of matches is not risk clearance.
-
-## ACLS: PARTIAL
-
-Deferred documents: 2.
-
-Source: <https://www.sec.gov/Archives/edgar/data/1113232/000110465926123333/acls-20260930x10q.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:45.321921+00:00; decoded-content SHA-256 3be7818c810acfca6f27943394f30fa5bcc86453af9a33ba19e43de22cb31de2.
-
-- liquidity: 15 matching blocks; absence of matches is not risk clearance.
-  - table block 57: no raw amounts/dates in search context
-  - table block 99: $ 190,769; $ 145,451
-  - table block 136: $ 201,407; $ 195,127
-- debt_maturities: 9 matching blocks; absence of matches is not risk clearance.
-  - table block 136: no raw amounts/dates in search context
-  - table block 193: $ 1,505; $ 1,697; $ 3,202; $ 69,219; $ 42,625; $ 111,844; $ 41,166; $ 28,696; $ 69,862
-  - paragraph block 279: no raw amounts/dates in search context
-- covenants: 3 matching blocks; absence of matches is not risk clearance.
-  - table block 57: no raw amounts/dates in search context
-  - paragraph block 174: no raw amounts/dates in search context
-  - paragraph block 652: no raw amounts/dates in search context
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 10 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 408: no raw amounts/dates in search context
-  - paragraph block 410: September 30, 2025
-  - paragraph block 412: $0.01
-- dilution: 12 matching blocks; absence of matches is not risk clearance.
-  - table block 73: $ 37,759; $ 25,986; $ 70,264; $ 85,941; $1.22; $0.83; $2.28; $ 2.70; $1.21; $2.26
-  - table block 110: March 31, 2025; $ 32; $ 547,020; $ 485,673; $ 1,027,238
-  - table block 125: March 31, 2026; $ 31; $ 537,185; $ 512,753; $ 1,044,643
-- outlook: 11 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 174: no raw amounts/dates in search context
-  - paragraph block 245: no raw amounts/dates in search context
-  - paragraph block 248: no raw amounts/dates in search context
-
-Source: <https://www.sec.gov/Archives/edgar/data/1113232/000110465926020461/acls-20251231x10k.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:45.893975+00:00; decoded-content SHA-256 c959790b05f24aa65dfec05a74997f6113706758aaeeae32842b972348534b7e.
-
-- liquidity: 20 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 625: no raw amounts/dates in search context
-  - paragraph block 793: no raw amounts/dates in search context
-  - paragraph block 795: no raw amounts/dates in search context
-- debt_maturities: 17 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 93: no raw amounts/dates in search context
-  - paragraph block 179: no raw amounts/dates in search context
-  - paragraph block 224: no raw amounts/dates in search context
-- covenants: 1 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 1418: no raw amounts/dates in search context
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 49 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 268: no raw amounts/dates in search context
-  - paragraph block 441: no raw amounts/dates in search context
-  - paragraph block 445: no raw amounts/dates in search context
-- dilution: 17 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 748: $146.1 million; 56.7%; December 31, 2025; $144.2 million; 59.1%; December 31, 2024
-  - paragraph block 791: no raw amounts/dates in search context
-  - table block 1051: $ 120,238; $ 200,992; $ 246,263; $ 3.81; $ 6.17; $ 7.52; $ 3.80; $ 6.15; $ 7.43
-- outlook: 25 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 101: no raw amounts/dates in search context
-  - table block 296: no raw amounts/dates in search context
-  - paragraph block 370: no raw amounts/dates in search context
-
-Source: <https://www.sec.gov/Archives/edgar/data/1113232/000110465926020461/acls-20251231xex10d1.htm> — INDEXED_FOR_REVIEW
-
-Retrieved 2026-11-11T00:01:46.342834+00:00; decoded-content SHA-256 ad00df37a168e59c51b58eb8896c4cca56cf8c47e840375d6b501fd5de57d439.
-
-- liquidity: 0 matching blocks; absence of matches is not risk clearance.
-- debt_maturities: 0 matching blocks; absence of matches is not risk clearance.
-- covenants: 0 matching blocks; absence of matches is not risk clearance.
-- going_concern: 0 matching blocks; absence of matches is not risk clearance.
-- listing_and_transactions: 4 matching blocks; absence of matches is not risk clearance.
-  - paragraph block 4: May 4, 2016; June 30, 2016
-  - paragraph block 22: no raw amounts/dates in search context
-  - table block 47: no raw amounts/dates in search context
-- dilution: 0 matching blocks; absence of matches is not risk clearance.
-- outlook: 0 matching blocks; absence of matches is not risk clearance.
+Deferred documents: not evaluated.
 
 ## BOOT: DEFERRED_BUDGET
 
@@ -922,19 +814,7 @@ Content collection limited to 12 issuers per scan; routine queue rotates daily i
 
 Deferred documents: not evaluated.
 
-## INSW: DEFERRED_BUDGET
-
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
-
-Deferred documents: not evaluated.
-
 ## KLIC: DEFERRED_BUDGET
-
-Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
-
-Deferred documents: not evaluated.
-
-## LPG: DEFERRED_BUDGET
 
 Content collection limited to 12 issuers per scan; routine queue rotates daily in UTC
 
@@ -1148,6 +1028,87 @@ Retrieved 2026-11-11T00:01:23.288182+00:00; decoded-content SHA-256 144e2aa77e27
 - listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
 - dilution: 1 matching blocks; absence of matches is not risk clearance.
   - paragraph block 281: no raw amounts/dates in search context
+- outlook: 0 matching blocks; absence of matches is not risk clearance.
+
+## TILE: PARTIAL
+
+Deferred documents: 3.
+
+Source: <https://www.sec.gov/Archives/edgar/data/715787/000071578726000029/tile-20261004.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:52.545781+00:00; decoded-content SHA-256 09137189944ae9613f3a16831a1a588d5af3719a62bf19a0c13422989399fa56.
+
+- liquidity: 7 matching blocks; absence of matches is not risk clearance.
+  - table block 32: OCTOBER 4, 2026; $81,077; $71,323; $1,267,543; $1,206,522; $88,812
+  - table block 56: $81,077; $187,355
+  - paragraph block 313: no raw amounts/dates in search context
+- debt_maturities: 8 matching blocks; absence of matches is not risk clearance.
+  - table block 56: no raw amounts/dates in search context
+  - paragraph block 110: December 3, 2030; October 4, 2026; $247.7 million
+  - paragraph block 117: no raw amounts/dates in search context
+- covenants: 5 matching blocks; absence of matches is not risk clearance.
+  - table block 25: no raw amounts/dates in search context
+  - paragraph block 114: no raw amounts/dates in search context
+  - paragraph block 337: no raw amounts/dates in search context
+- going_concern: 0 matching blocks; absence of matches is not risk clearance.
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 6 matching blocks; absence of matches is not risk clearance.
+  - table block 40: $39,220; $46,146; $114,238; $91,709; $0.68; $0.79; $1.97; $1.57; $0.67; $0.78; $1.95; $1.55
+  - paragraph block 98: no raw amounts/dates in search context
+  - paragraph block 99: October 4, 2026
+- outlook: 5 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 77: December 15, 2027
+  - paragraph block 78: December 15, 2026; December 15, 2027
+  - paragraph block 189: no raw amounts/dates in search context
+
+Source: <https://www.sec.gov/Archives/edgar/data/715787/000071578726000006/tile-20251228.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:53.139828+00:00; decoded-content SHA-256 2782e5554e817b99d7849d94ee564a0b43bc6698aba143a06bdb9fee4ad69eff.
+
+- liquidity: 16 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 280: December 28, 2025; $181.8 million; $243.2 million
+  - paragraph block 296: no raw amounts/dates in search context
+  - paragraph block 468: no raw amounts/dates in search context
+- debt_maturities: 25 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 289: no raw amounts/dates in search context
+  - paragraph block 474: no raw amounts/dates in search context
+  - paragraph block 481: December 3, 2030
+- covenants: 12 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 196: no raw amounts/dates in search context
+  - paragraph block 283: no raw amounts/dates in search context
+  - paragraph block 296: no raw amounts/dates in search context
+- going_concern: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 779: $20 million
+- listing_and_transactions: 0 matching blocks; absence of matches is not risk clearance.
+- dilution: 8 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 296: no raw amounts/dates in search context
+  - paragraph block 377: $116.1 million; $1.96; $86.9 million; $1.48
+  - paragraph block 378: $86.9 million; $1.48; $44.5 million; $0.76
+- outlook: 15 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 219: no raw amounts/dates in search context
+  - paragraph block 521: no raw amounts/dates in search context
+  - paragraph block 522: 11%
+
+Source: <https://www.sec.gov/Archives/edgar/data/715787/000071578726000006/exhibit1014-thirdarsecurit.htm> — INDEXED_FOR_REVIEW
+
+Retrieved 2026-11-12T01:25:53.698558+00:00; decoded-content SHA-256 4c859f1af05c0886656235f7904bcea9a455ab223191130642a7d93b6b3cf6f5.
+
+- liquidity: 0 matching blocks; absence of matches is not risk clearance.
+- debt_maturities: 3 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 25: no raw amounts/dates in search context
+  - paragraph block 62: no raw amounts/dates in search context
+  - paragraph block 96: no raw amounts/dates in search context
+- covenants: 15 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 42: no raw amounts/dates in search context
+  - paragraph block 47: no raw amounts/dates in search context
+  - paragraph block 56: no raw amounts/dates in search context
+- going_concern: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 72: no raw amounts/dates in search context
+- listing_and_transactions: 2 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 18: no raw amounts/dates in search context
+  - paragraph block 84: no raw amounts/dates in search context
+- dilution: 1 matching blocks; absence of matches is not risk clearance.
+  - paragraph block 35: no raw amounts/dates in search context
 - outlook: 0 matching blocks; absence of matches is not risk clearance.
 
 ## VECO: INDEXED_FOR_REVIEW

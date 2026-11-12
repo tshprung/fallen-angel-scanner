@@ -2,7 +2,7 @@
 
 Disclosure follow-up only. New links or filing metadata require review; they do not verify financial contents, resolve a hold, or select a stock. Missing access is unverified, not evidence that an issuer failed to report.
 
-Checked: 2026-11-10T23:39:11.269191+00:00
+Checked: 2026-11-12T00:56:37.165531+00:00
 
 ## PNR: EXPECTED_REPORT_REQUIRES_REVIEW
 
@@ -43,7 +43,6 @@ Verify November 16 convertible redemption/conversion settlement and dilution, Ja
 Review Armis integration, cash after acquisition addbacks and stock compensation, short-term commercial paper and five-year maturities through 2031. A higher historical price and 20% subscription growth do not by themselves establish 50% upside.
 
 - [10-Q filed 2026-10-28](<https://www.sec.gov/Archives/edgar/data/1373715/000137371526000096/now-20260930.htm>)
-- [8-K filed 2026-05-15](<https://www.sec.gov/Archives/edgar/data/1373715/000119312526226644/d60522d8k.htm>)
 ## TTD: EXPECTED_REPORT_REQUIRES_REVIEW
 
 September 10-Q is published. Review revenue stabilization, competitive substitution, restructuring execution and dilution. Reconcile recurring cash after software investment and working capital; gross interest is disclosed in Note 10. Verify listing compliance separately. A strong cash balance and former share price do not establish a temporary setback or a doubling case.

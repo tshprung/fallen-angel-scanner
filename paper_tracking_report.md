@@ -3,7 +3,7 @@
 Hypothetical entries use the next session's opening price. Returns are in the listing currency, dividend/split adjusted, before costs and taxes.
 Daily selections can repeat the same stock. These are correlated observations, not independent trades or a portfolio backtest.
 
-Saved selections: 3. Completed observations at their saved 6/12/24-month horizons under method v4: 0.
+Saved selections: 3. Completed observations at their saved 6/12/24-month horizons under method v5: 0.
 
 Legacy selections retain a 365-day horizon. New documented cases use their saved valuation deadline within a 183/365/730-day band. A losing observation is never extended to improve its result. Annualized returns are arithmetic comparisons, not forecasts of repeatable returns.
 
