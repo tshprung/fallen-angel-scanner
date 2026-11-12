@@ -6,6 +6,7 @@ if __name__ == "__main__":
 from collections import Counter
 from datetime import date, datetime, time, timedelta
 import json
+import math
 
 
 # June 2022 filing reconciliation. Keys are historical tickers; the CIK is
@@ -24,6 +25,15 @@ SHARES = {
     "XRX": ("1770450", "2022-04-30", 154_862_456),
 }
 ANCHORS = SHARES.keys() | {"BOWL", "EGP", "SATS", "TME"}
+# Ex-dates use the then applicable Nasdaq rule, one business day before
+# the stated record date for these ordinary dividends. The feed must agree.
+STOCK_DIVIDENDS = {
+    ("CTXS", "877890", "2021-09-09"): ("2021-09-24", .37, "SEC:0001193125-21-228138"),
+    ("CTXS", "877890", "2021-12-06"): ("2021-12-21", .37, "SEC:0001193125-21-319281"),
+    ("MRTN", "799167", "2022-06-15"): ("2022-06-30", .06, "Marten Transport issuer release 2022-05-04"),
+    ("MRTN", "799167", "2022-12-12"): ("2022-12-27", .06, "Marten Transport issuer release 2022-11-30"),
+    ("MRTN", "799167", "2023-03-16"): ("2023-03-31", .06, "Marten Transport issuer release 2023-02-20"),
+}
 
 
 def member_id(item):
@@ -63,11 +73,30 @@ def selected_ids(namespace, snapshot):
     return sorted(next(iter(matches))) if len(matches) == 1 else None
 
 
+def reconcile_stock_distributions(actions, ticker, cik, hours):
+    reconciled = []
+    counts = Counter()
+    for row in actions:
+        evidence = STOCK_DIVIDENDS.get((ticker, cik, row["session"])) if row["kind"] == "dividend" else None
+        if evidence is not None:
+            payable, cash, source = evidence
+            if math.isclose(row["cash_per_share"], cash, rel_tol=0, abs_tol=.005001):
+                next_day = date.fromisoformat(payable) + timedelta(days=1)
+                cash_open = hours.get_next_market_open(datetime.combine(next_day, time.min), False)
+                row = dict(row, cash_per_share=cash, pay_session=cash_open.date().isoformat(), source_id=source)
+                counts["stock_dividends_reconciled"] += 1
+            else:
+                counts["stock_dividend_amount_disagreements"] += 1
+        reconciled.append(row)
+    return reconciled, counts
+
+
 def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candidate, namespace):
     book.settings.daily_precise_end_time = True
     book.set_start_date(2023, 7, 6)
     market = book.add_equity(pilot.MARKET, daily, fill_forward=False, data_normalization_mode=raw_mode)
-    sessions = pilot.market_sessions(market.exchange.hours)
+    hours = market.exchange.hours
+    sessions = pilot.market_sessions(hours)
     universe = book.add_universe(lambda rows: [row.symbol for row in rows])
     cutoff = datetime.combine(pilot.SIGNAL, time.min)
     snapshots = list(book.universe_history(universe, cutoff-timedelta(days=1), cutoff).items())
@@ -95,6 +124,7 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
             book.add_security(row.symbol, daily, fill_forward=False, data_normalization_mode=raw_mode)
             bars = pilot.raw_history(history, row.symbol, bar_type, daily, sessions, sid)
             actions, has_delisting_notice = pilot.market_actions(history, row.symbol, events, sessions, sid)
+            actions, dividend_counts = reconcile_stock_distributions(actions, ticker, cik, hours)
             data = pilot.Dataset(dict(
                 version=1, kind="historical", source="QuantConnect Research coverage check",
                 benchmark_security_id=pilot.MARKET, sessions=list(sessions.values()),
@@ -111,14 +141,16 @@ def cohort_audit(book, daily, raw_mode, bar_type, events, pilot, drawdown_candid
         if first not in eligible:
             return {"status": "CALENDAR_HORIZON_MISSING"}
         exit_i = eligible[first]
+        counts.update(dividend_counts)
         counts["securities_with_delisting_notices"] += int(has_delisting_notice)
         counts["delisting_notices_without_verified_terms"] += int(
             has_delisting_notice and not (ticker == "CTXS" and cik == "877890"))
         counts["next_open_missing"] += int(not data.bars[sid].get(first+1, {}).get("open"))
         counts["horizon_open_missing"] += int(not data.bars[sid].get(exit_i, {}).get("open"))
-        counts["stock_distributions_with_unknown_payment"] += sum(
-            e["kind"] == "dividend" and e["pay"] is None for e in data.actions_by_security[sid]
-        )
+        unknown_dividends = [e for e in data.actions_by_security[sid] if e["kind"] == "dividend" and e["pay"] is None]
+        counts["stock_distributions_with_unknown_payment"] += len(unknown_dividends)
+        counts["holding_window_distributions_with_unknown_payment"] += sum(
+            first+1 < event["i"] <= exit_i for event in unknown_dividends)
         bar, adv = data.bars[sid].get(first), data.adv(sid, first)
         if not bar or adv is None:
             counts["missing_close_or_adv"] += 1

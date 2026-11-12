@@ -8,7 +8,7 @@ from types import ModuleType, SimpleNamespace
 import pytest
 
 from build_quantconnect_pilot import build
-from quantconnect_cohort import ANCHORS, SHARES, run_cohort_audit
+from quantconnect_cohort import ANCHORS, SHARES, reconcile_stock_distributions, run_cohort_audit
 from quantconnect_pilot import SIGNAL, SPY_DISTRIBUTIONS, reconcile_benchmark_distributions
 
 
@@ -50,6 +50,9 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None):
                                         else round(amount, 2))
                         for day, (_, amount) in SPY_DISTRIBUTIONS.items()
                         if problem != "missing" or day != "2023-06-16"]
+            if kind is Dividend and symbol.value == "MRTN" and universe_rows is not None:
+                return [SimpleNamespace(time=datetime.fromisoformat(day), distribution=cash)
+                        for day, cash in [("2022-07-01", .06), ("2022-12-12", .06), ("2023-03-16", .10)]]
             if kind is Delisting and symbol.value == "CTXS":
                 return [SimpleNamespace(time=datetime(2022, 9, 30), price=0)]
             if kind is not TradeBar:
@@ -184,6 +187,10 @@ def test_cohort_audit_requires_original_members_and_keeps_unverified_names_visib
         assert counts["quality_inputs_unverified"] == 9
         assert counts["securities_with_delisting_notices"] == counts["horizon_open_missing"] == 1
         assert counts["delisting_notices_without_verified_terms"] == 0
+        assert counts["stock_dividends_reconciled"] == 1
+        assert counts["stock_dividend_amount_disagreements"] == 1
+        assert counts["stock_distributions_with_unknown_payment"] == 2
+        assert counts["holding_window_distributions_with_unknown_payment"] == 1
         assert "EXLS" not in json.dumps(result)
 
         alternate = cohort[:-1] + [rows[-1].symbol]
@@ -195,3 +202,13 @@ def test_cohort_audit_requires_original_members_and_keeps_unverified_names_visib
     finally:
         for name in files:
             sys.modules.pop(name.removesuffix(".py"), None)
+
+
+def test_stock_distribution_requires_matching_security_and_defers_cash_past_payable_day():
+    dividend = dict(session="2023-03-16", kind="dividend", cash_per_share=.06, pay_session=None)
+    actions, counts = reconcile_stock_distributions([dividend], "MRTN", "799167", MarketHours())
+    assert counts["stock_dividends_reconciled"] == 1
+    assert actions[0]["pay_session"] == "2023-04-03"
+    assert dividend["pay_session"] is None
+    assert reconcile_stock_distributions([dividend], "MRTN", "7", MarketHours()) == ([dividend], {})
+    assert reconcile_stock_distributions([dividend], "OTHER", "799167", MarketHours()) == ([dividend], {})
