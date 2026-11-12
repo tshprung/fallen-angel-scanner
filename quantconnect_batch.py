@@ -93,6 +93,14 @@ def batch_spy_actions(sessions, hours, entry, exit_day):
     return distributions
 
 
+def batch_exit_input_gap(data, sid, exit_i):
+    if not data.bars[sid].get(exit_i, {}).get("open"):
+        return "missing_exit_open"
+    if not data.adv(sid, exit_i - 1):
+        return "missing_exit_liquidity"
+    return None
+
+
 def batch_book(data, config, first, exit_i, rows, strategy, unknown_delistings, conflicting_dividends=frozenset()):
     orders = {first + 1: (first, exit_i, rows)}
     ledger = simulate(data, config, first, exit_i + 1, orders, strategy, BATCH_HORIZON, 1, 0)
@@ -107,14 +115,17 @@ def batch_book(data, config, first, exit_i, rows, strategy, unknown_delistings, 
     for trade in trades:
         sid = trade["sid"]
         reasons = set(trade["unknown_reasons"])
+        exit_reason = f"{sid}: planned exit open or capacity unavailable"
         if timing_reason in reasons:
             failures["dividend_payment_date"] += 1
         if sid in unknown_delistings:
             failures["delisting_notice"] += 1
         if sid in conflicting_dividends:
             failures["dividend_amount_conflict"] += 1
-        if reasons - {timing_reason}:
-            failures["exit_or_other_corporate_action"] += 1
+        if exit_reason in reasons:
+            failures[batch_exit_input_gap(data, sid, exit_i) or "exit_participation_limit"] += 1
+        if reasons - {timing_reason, exit_reason}:
+            failures["other_corporate_action"] += 1
         if reasons == {timing_reason} and sid not in unknown_delistings and sid not in conflicting_dividends:
             timing_only.append(trade)
         elif reasons or sid in unknown_delistings:
@@ -297,6 +308,65 @@ def run_development_batch(evidence=None):
         return collect_development_batch(QuantBook(), api, evidence or {})
     except BATCH_ERRORS as error:
         return dict(status="BATCH_SETUP_FAILED", error_type=type(error).__name__)
+
+
+def inspect_saved_batch_exits(result):
+    """Check only unresolved simulated orders from the saved development run."""
+    from AlgorithmImports import DataNormalizationMode, Delisting, Resolution, TradeBar
+    from QuantConnect.Research import QuantBook
+
+    book = QuantBook()
+    book.settings.daily_precise_end_time = True
+    book.set_start_date(2024, 10, 10)
+    raw_mode, daily = DataNormalizationMode.RAW, Resolution.DAILY
+    market = book.add_equity(MARKET, daily, fill_forward=False, data_normalization_mode=raw_mode)
+    sessions = market_sessions(market.exchange.hours, BATCH_START, BATCH_END)
+    days = list(sessions)
+    universe = book.add_universe(lambda rows: [row.symbol for row in rows])
+    report = []
+    for detail in result["dates"]:
+        orders = {}
+        for strategy in ("scanner_core", "drawdown_only", "drawdown_only_vendor_size"):
+            for order in detail.get(strategy, {}).get("outcome_review_orders", ()):
+                orders[order["ticker"], order["entry_session"], order["exit_session"]] = order
+        if not orders:
+            continue
+        day = date.fromisoformat(detail["signal_date"])
+        cutoff = datetime.combine(day, time.min)
+        try:
+            snapshots = list(book.universe_history(universe, cutoff - timedelta(days=1), cutoff).items())
+            if len(snapshots) != 1 or snapshots[0][0][1].date() != day:
+                raise ValueError("Expected the original dated universe")
+            sample, _ = batch_sample(snapshots[0][1], day, DEFAULTS)
+        except BATCH_ERRORS as error:
+            report.append(dict(signal_date=str(day), status="UNIVERSE_CHECK_FAILED", error_type=type(error).__name__))
+            continue
+        for order in orders.values():
+            row = dict(order)
+            try:
+                [(sid, cik, symbol)] = [item for item in sample if str(item[2].value) == row["ticker"]]
+                book.add_security(symbol, daily, fill_forward=False, data_normalization_mode=raw_mode)
+                exit_day = date.fromisoformat(row["exit_session"])
+                last = days.index(exit_day)
+                window_days = days[last - 20:last + 1]
+                window = {session: sessions[session] for session in window_days}
+                start = datetime.combine(window_days[0], time.min)
+                end = datetime.combine(exit_day + timedelta(days=1), time.min)
+                bars = raw_history(book.history, symbol, TradeBar, daily, window, sid, start, end)
+                market_security = dict(security_id=MARKET, issuer_id=MARKET, currency="USD", kind="benchmark")
+                stock = dict(security_id=sid, issuer_id=cik, currency="USD", kind="ordinary")
+                data = Dataset(dict(version=1, kind="historical", source="QuantConnect exit review",
+                                    benchmark_security_id=MARKET, sessions=list(window.values()),
+                                    securities=[market_security, stock], bars=bars,
+                                    actions=[], membership=[], facts=[]))
+                entry = datetime.fromisoformat(row["entry_session"])
+                row["delisting_notice"] = any(book.history[Delisting](symbol, entry, end))
+                row["exit_inputs"] = batch_exit_input_gap(data, sid, len(window_days) - 1) or "present"
+            except BATCH_ERRORS as error:
+                row["status"] = "ORDER_CHECK_FAILED"
+                row["error_type"] = type(error).__name__
+            report.append(row)
+    return {"status": "DEVELOPMENT_EXIT_CHECK", "orders": report}
 
 
 def batch_summary(result):

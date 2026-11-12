@@ -104,7 +104,8 @@ def build_batch_cell():
     source = runner.read_text(encoding="utf-8")
     lines = source.splitlines()
     adapter = "\n\n\n".join(source_text(lines, node) for node in ast.parse(source, filename=str(runner)).body
-                            if isinstance(node, (ast.Assign, ast.FunctionDef, ast.If)))
+                            if isinstance(node, (ast.Assign, ast.FunctionDef, ast.If))
+                            and getattr(node, "name", None) != "inspect_saved_batch_exits")
     shared = shared_sections((
         ("quantconnect_pilot.py", ("NEW_YORK", "WARMUP", "END", "MARKET", "SPY_DISTRIBUTION_SOURCE",
                                   "market_sessions", "raw_history", "market_actions")),
@@ -117,14 +118,27 @@ def build_batch_cell():
     return cell
 
 
+def build_exit_check_cell():
+    helpers = definitions(ROOT / "quantconnect_batch.py", ("batch_exit_input_gap", "inspect_saved_batch_exits"))
+    cell = (helpers + "\n\n\nif 'batch_result' in globals() and batch_result.get('status') == 'DEVELOPMENT_BATCH_ONLY':\n"
+            "    print(json.dumps(inspect_saved_batch_exits(batch_result), separators=(',', ':')))\n"
+            "else:\n"
+            "    print('Run the development batch in this notebook first.')\n")
+    compile(cell, "quantconnect_exit_check_cell.py", "exec")
+    return cell
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path, help="Output directory for modules or output file for the batch cell")
-    parser.add_argument("--batch-cell", action="store_true", help="Generate one cell using the installed pilot modules")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--batch-cell", action="store_true", help="Generate one cell using the installed pilot modules")
+    mode.add_argument("--exit-check-cell", action="store_true", help="Generate a cell that inspects the last batch result")
     args = parser.parse_args()
-    if args.batch_cell:
+    if args.batch_cell or args.exit_check_cell:
+        cell = build_batch_cell() if args.batch_cell else build_exit_check_cell()
         with args.output.open("x", encoding="utf-8") as output:
-            output.write(build_batch_cell())
+            output.write(cell)
         return
     files = build()
     args.output.mkdir()

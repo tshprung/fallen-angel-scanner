@@ -59,6 +59,12 @@ The batch reports a provisional drawdown-only replay using the vendor size scree
 
 For the scanner-core comparison, supply independently reconciled public evidence in `batch_verified_evidence` before running the cell. Its optional `facts` mapping uses `(signal date, ticker, CIK)` keys and the facts fields in the input contract below. Its optional `dividends` mapping uses `(ex-date ticker, CIK, ex-date)` keys and `(payable date, USD amount, source ID)` values. The batch reuses the previously reconciled June pilot dividends where dates and identity match. It checks statement availability and blocks the core comparison when required inputs are incomplete. Pending delistings remain visible as unresolved outcomes. The initial run identifies which evidence is missing and reports `DEVELOPMENT_BATCH_ONLY`.
 
+Paste the exit check into a new cell in the same running notebook to inspect the unresolved simulated orders retained in `batch_result`. It checks the original dated listing, the scheduled opening bar, the previous 20 sessions used for liquidity, and the presence of a delisting notice. It prints the simulated order identifiers and check results.
+
+```sh
+python build_quantconnect_pilot.py --exit-check-cell quantconnect-exit-check-cell.py
+```
+
 ## Freeze a real experiment
 
 ```sh

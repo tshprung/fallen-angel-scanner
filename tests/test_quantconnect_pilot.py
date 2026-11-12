@@ -10,7 +10,7 @@ import pytest
 from backtest import DEFAULTS
 from backtest_data import Dataset
 from backtest_demo import snapshot
-from build_quantconnect_pilot import build, build_batch_cell
+from build_quantconnect_pilot import build, build_batch_cell, build_exit_check_cell
 from quantconnect_batch import BATCH_SAMPLE_SIZE, batch_book, batch_sample
 from quantconnect_cohort import ANCHORS, SHARES, reconcile_stock_distributions, run_cohort_audit
 from quantconnect_pilot import SIGNAL, SPY_DISTRIBUTIONS, reconcile_benchmark_distributions
@@ -350,6 +350,12 @@ def test_generated_development_batch_keeps_missing_evidence_and_delisting_outcom
     assert unverified["verified_size_inputs"] == 0
     assert unverified["core_comparison"] == "INPUT_COVERAGE_INCOMPLETE"
     assert "scanner_core" not in unverified["strategies"]
+    exec(build_exit_check_cell(), globals_after_run)
+    exit_report = json.loads(capsys.readouterr().out)
+    assert exit_report == {"status": "DEVELOPMENT_EXIT_CHECK", "orders": [
+        {"ticker": "LATE", "entry_session": "2022-10-03", "exit_session": "2023-10-03",
+         "delisting_notice": True, "exit_inputs": "present"}
+    ]}
 
 
 def test_batch_sample_is_independent_of_snapshot_order_and_limits_each_issuer_to_one_listing():
@@ -403,4 +409,11 @@ def test_single_entry_batch_values_entitlements_without_assuming_cash_dates():
     missing_exit = Dataset(dict(raw, bars=bars[:exit_i], actions=[dividend]))
     missing, _ = batch_book(missing_exit, DEFAULTS, first, exit_i, orders, "drawdown_only", set())
     assert missing["net_return_with_receivables_pct"] is None
-    assert missing["outcome_gaps"] == {"dividend_payment_date": 1, "exit_or_other_corporate_action": 1}
+    assert missing["outcome_gaps"] == {"dividend_payment_date": 1, "missing_exit_open": 1}
+    missing_liquidity = Dataset(dict(raw, bars=[bar for i, bar in enumerate(bars) if i != exit_i - 1],
+                                     actions=[dividend]))
+    no_liquidity, _ = batch_book(missing_liquidity, DEFAULTS, first, exit_i, orders, "drawdown_only", set())
+    assert no_liquidity["outcome_gaps"] == {"dividend_payment_date": 1, "missing_exit_liquidity": 1}
+    tight_capacity = dict(DEFAULTS, participation=.001)
+    limited, _ = batch_book(unknown, tight_capacity, first, exit_i, orders, "drawdown_only", set())
+    assert limited["outcome_gaps"] == {"dividend_payment_date": 1, "exit_participation_limit": 1}
