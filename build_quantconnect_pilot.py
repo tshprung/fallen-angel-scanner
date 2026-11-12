@@ -1,4 +1,4 @@
-"""Package the replay as two Python files for QuantConnect Research."""
+"""Package the replay modules or batch notebook cell for QuantConnect Research."""
 
 import argparse
 import ast
@@ -39,6 +39,17 @@ from zoneinfo import ZoneInfo
 import math
 
 from fa_pilot_inputs import Dataset, TERMINAL, assess_solvency, drawdown_candidate, load_policy, valuation_scenarios
+'''
+BATCH_IMPORTS = '''from bisect import bisect_left, bisect_right
+from collections import Counter
+from datetime import date, datetime, time, timedelta
+from hashlib import sha256
+from zoneinfo import ZoneInfo
+import json
+import math
+
+from fa_pilot_inputs import Dataset, drawdown_candidate, load_policy
+from fa_pilot_replay import DEFAULTS, ranked_groups, scan_candidates, simulate
 '''
 
 
@@ -88,14 +99,37 @@ def build():
     return files
 
 
+def build_batch_cell():
+    runner = ROOT / "quantconnect_batch.py"
+    source = runner.read_text(encoding="utf-8")
+    lines = source.splitlines()
+    adapter = "\n\n\n".join(source_text(lines, node) for node in ast.parse(source, filename=str(runner)).body
+                            if isinstance(node, (ast.Assign, ast.FunctionDef, ast.If)))
+    shared = shared_sections((
+        ("quantconnect_pilot.py", ("NEW_YORK", "WARMUP", "END", "MARKET", "SPY_DISTRIBUTION_SOURCE",
+                                  "market_sessions", "raw_history", "market_actions")),
+        ("quantconnect_cohort.py", ("STOCK_DIVIDENDS", "cash_available_session", "reconcile_stock_distributions")),
+    ))
+    cell = "# Generated from Fallen Angel Scanner source.\n\n" + "\n\n\n".join((BATCH_IMPORTS, *shared, adapter)) + "\n"
+    compile(cell, "quantconnect_batch_cell.py", "exec")
+    if len(cell.replace("\n", "\r\n").encode("utf-8")) >= MAX_FILE_BYTES:
+        raise ValueError("Batch cell exceeds the QuantConnect Free project file limit")
+    return cell
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("output_dir", type=Path, help="New directory for the two generated source files")
+    parser.add_argument("output", type=Path, help="Output directory for modules or output file for the batch cell")
+    parser.add_argument("--batch-cell", action="store_true", help="Generate one cell using the installed pilot modules")
     args = parser.parse_args()
+    if args.batch_cell:
+        with args.output.open("x", encoding="utf-8") as output:
+            output.write(build_batch_cell())
+        return
     files = build()
-    args.output_dir.mkdir()
+    args.output.mkdir()
     for name, source in files.items():
-        (args.output_dir / name).write_bytes(source.encode("utf-8"))
+        (args.output / name).write_bytes(source.encode("utf-8"))
 
 
 if __name__ == "__main__":

@@ -63,12 +63,12 @@ def filing_facts():
     }
 
 
-def market_sessions(hours):
+def market_sessions(hours, start=WARMUP, end=END):
     sessions = {}
-    cursor = WARMUP
-    while cursor < END:
+    cursor = start
+    while cursor < end:
         opening = hours.get_next_market_open(cursor, False)
-        if opening >= END:
+        if opening >= end:
             break
         closing = hours.get_next_market_close(opening, False)
         if opening < cursor or opening.date() != closing.date() or opening >= closing:
@@ -80,9 +80,9 @@ def market_sessions(hours):
     return sessions
 
 
-def raw_history(history, symbol, bar_type, daily, sessions, sid):
+def raw_history(history, symbol, bar_type, daily, sessions, sid, start=WARMUP, end=END):
     bars = []
-    for bar in history[bar_type](symbol, WARMUP, END, daily):
+    for bar in history[bar_type](symbol, start, end, daily):
         day = bar.end_time.date()
         session = sessions.get(day)
         if (not session or bar.time.date() != day or getattr(bar, "is_fill_forward", False)
@@ -93,10 +93,10 @@ def raw_history(history, symbol, bar_type, daily, sessions, sid):
     return bars
 
 
-def market_actions(history, symbol, event_types, sessions, sid):
+def market_actions(history, symbol, event_types, sessions, sid, start=WARMUP, end=END, delisting_start=None):
     split_type, split_occurred, dividend_type, delisting_type = event_types
     actions = []
-    for event in history[split_type](symbol, WARMUP, END):
+    for event in history[split_type](symbol, start, end):
         if event.type != split_occurred:
             continue
         day = event.time.date()
@@ -106,7 +106,7 @@ def market_actions(history, symbol, event_types, sessions, sid):
         actions.append(dict(security_id=sid, session=str(day), kind="split", ratio=1/factor,
                             available_at=sessions[day]["open_at"], source_id="QuantConnect split event"))
     split_sessions = {action["session"] for action in actions}
-    for event in history[dividend_type](symbol, WARMUP, END):
+    for event in history[dividend_type](symbol, start, end):
         day = event.time.date()
         if str(day) in split_sessions:
             raise ValueError("Confirm the distribution share basis for same-session corporate actions")
@@ -117,7 +117,8 @@ def market_actions(history, symbol, event_types, sessions, sid):
             actions.append(dict(security_id=sid, session=str(day), kind="dividend", cash_per_share=amount_paid,
                                 pay_session=None, available_at=sessions[day]["open_at"],
                                 source_id="QuantConnect dividend ex-date; payment date unverified"))
-    delisted = any(history[delisting_type](symbol, WARMUP, END))
+    delisted = any(delisting_start is None or event.time.date() >= delisting_start
+                   for event in history[delisting_type](symbol, start, end))
     return actions, delisted
 
 

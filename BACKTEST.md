@@ -45,6 +45,20 @@ The holding-window reference table also covers four payments each for Bank of Am
 
 The notebook prints the compact `cohort_replay` result. Once the verified drawdown signals have complete outcome inputs, the shared simulator runs the drawdown-only group and SPY on the same entry and exit sessions with default trading costs and participation limits. For this fixed holding period, the SPY replay uses the four USD cash distributions published by its US sponsor, including one payable after the exit. It reports missing, unexpected and duplicate feed dates and any amount differences. The report shows the percentage of initial capital used and counts the drawdowns that qualified for the scanner core. The June 2022 coverage run found three drawdowns and zero qualifications. All three drawdowns cleared the outcome checks after dividend reconciliation. One signal date and a small cohort leave the performance gate at `INSUFFICIENT_EVIDENCE`. [State Street US historical distributions](https://www.ssga.com/us/en/intermediary/resources/documents/etf-dividend-distributions)
 
+## Run the multi-date development batch
+
+Use the existing QuantConnect project with `fa_pilot_inputs.py` and `fa_pilot_replay.py`. Generate one notebook cell, paste its contents into a blank Python Research notebook in that project, and run it once. The cell prints the aggregate summary and leaves the detailed result in `batch_result` inside the notebook.
+
+```sh
+python build_quantconnect_pilot.py --batch-cell quantconnect-batch-cell.py
+```
+
+The frozen development schedule uses the last regular session of March and September from 2020 through 2023. The cell samples up to 16 issuers per date using a fixed hash of the date and stable security ID. The sample uses the dated vendor listing classification and size estimate before reading returns. It includes USD primary common shares with a CIK and a vendor market cap above the existing floor. Reported coverage reflects that sample. The 365-day replay uses the next regular open and the first regular open on or after the horizon. The holding windows can overlap and the date-level returns are separate experiments.
+
+The batch reports a provisional drawdown-only replay using the vendor size screen when stock price inputs are complete. Unverified dividend payment dates, unresolved delisting notices on filled positions, and missing exit inputs suppress that portfolio's return. SPY uses the four sponsor distributions in each holding window. The cell also simulates a separate SPY trade using the capital deployed by each strategy and the same cost model. [State Street US distribution history](https://www.ssga.com/us/en/intermediary/resources/documents/etf-dividend-distributions)
+
+For the scanner-core comparison, supply independently reconciled public evidence in `batch_verified_evidence` before running the cell. Its optional `facts` mapping uses `(signal date, ticker, CIK)` keys and the facts fields in the input contract below. Its optional `dividends` mapping uses `(ex-date ticker, CIK, ex-date)` keys and `(payable date, USD amount, source ID)` values. The batch reuses the previously reconciled June pilot dividends where dates and identity match. It checks statement availability and blocks the core comparison when required inputs are incomplete. Pending delistings remain visible as unresolved outcomes. The initial run identifies which evidence is missing and reports `DEVELOPMENT_BATCH_ONLY`.
+
 ## Freeze a real experiment
 
 ```sh

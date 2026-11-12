@@ -7,7 +7,9 @@ from types import ModuleType, SimpleNamespace
 
 import pytest
 
-from build_quantconnect_pilot import build
+from backtest_demo import snapshot
+from build_quantconnect_pilot import build, build_batch_cell
+from quantconnect_batch import BATCH_SAMPLE_SIZE, batch_sample
 from quantconnect_cohort import ANCHORS, SHARES, reconcile_stock_distributions, run_cohort_audit
 from quantconnect_pilot import SIGNAL, SPY_DISTRIBUTIONS, reconcile_benchmark_distributions
 
@@ -66,6 +68,8 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
                 return [SimpleNamespace(time=datetime(2023, 6, 29), distribution=.25)]
             if kind is Delisting and symbol.value == "CTXS":
                 return [SimpleNamespace(time=datetime(2022, 9, 30), price=0)]
+            if kind is Delisting and symbol.value == "LATE" and start < datetime(2023, 4, 4) < end:
+                return [SimpleNamespace(time=datetime(2023, 4, 4), price=0)]
             if kind is not TradeBar:
                 return []
             result = []
@@ -79,7 +83,8 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
                 if problem == "clock" and day == date(2023, 7, 3):
                     close = datetime.combine(day, time(16))
                 price = (drawdown_prices or {}).get(symbol.value, 100)
-                if symbol.value in (drawdown_prices or {}) and day < date(2022, 6, 16):
+                crash = date(2022, 9, 15) if problem == "batch" else date(2022, 6, 16)
+                if symbol.value in (drawdown_prices or {}) and day < crash:
                     price /= .65
                 result.append(SimpleNamespace(time=opening, end_time=close, open=price, close=price, volume=1_000_000))
                 cursor = datetime.combine(day+timedelta(days=1), time.min)
@@ -107,6 +112,8 @@ def mock_quantconnect(monkeypatch, problem, universe_rows=None, drawdown_prices=
             return selection
 
         def universe_history(self, universe, start, end):
+            if problem == "batch":
+                return {("universe", end): universe_rows}
             assert start.date() < end.date() == SIGNAL
             if universe_rows is not None:
                 return {("universe", datetime.combine(SIGNAL, time.min)): universe_rows}
@@ -286,3 +293,71 @@ def test_cohort_manulife_uses_gross_usd_and_does_not_accept_cad_amount():
     assert actions[0]["cash_per_share"] == .268521
     assert actions[0]["pay_session"] == "2023-06-20"
     assert actions[1] == cad_dividend
+
+
+def test_generated_development_batch_keeps_missing_evidence_and_delisting_outcomes_visible(
+    monkeypatch, tmp_path, capsys
+):
+    common = SimpleNamespace(security_type="ST00000001", currency_id="USD",
+                             is_depositary_receipt=False, is_primary_share=True)
+    names = ["DROP", "LATE", *[f"STOCK{i}" for i in range(14)]]
+    universe = [SimpleNamespace(symbol=SimpleNamespace(value=name, id=f"{name} ID"),
+                                company_reference=SimpleNamespace(cik=str(i)),
+                                market_cap=2e9, security_reference=common)
+                for i, name in enumerate(names, 1)]
+    mock_quantconnect(monkeypatch, "batch", universe, {"DROP": 60, "LATE": 60})
+    evidence = {"facts": {}}
+    for i, name in enumerate(names, 1):
+        evidence["facts"]["2022-09-30", name, str(i)] = dict(
+            period_end="2022-06-30", available_at="2022-08-01T20:00:00Z", sector="Industrials",
+            industry="Industrial Machinery", shares_outstanding=15_000_000,
+            source_id=f"synthetic-filing-{i}", filing_status="METADATA_CHECKED", event_hold=False,
+            evidence=snapshot("2022-06-30"),
+        )
+    files = build()
+    for name, source in files.items():
+        (tmp_path / name).write_bytes(source.encode("utf-8"))
+    monkeypatch.syspath_prepend(str(tmp_path))
+    cell = tmp_path / "batch_cell.py"
+    cell.write_text(build_batch_cell(), encoding="utf-8")
+    try:
+        globals_after_run = runpy.run_path(str(cell), run_name="__main__",
+                                          init_globals={"batch_verified_evidence": evidence})
+    finally:
+        for name in files:
+            sys.modules.pop(name.removesuffix(".py"), None)
+    output = capsys.readouterr().out
+    summary = json.loads(output)
+    assert summary["status"] == "DEVELOPMENT_BATCH_ONLY"
+    assert summary["performance_gate"] == "INSUFFICIENT_EVIDENCE"
+    assert len(summary["dates"]) == 8
+    assert "2023-09-29" in summary["dates"]
+    assert "LATE" not in output
+    verified = summary["dates"]["2022-09-30"]
+    assert verified["verified_size_inputs"] == 16
+    assert verified["core_comparison"] == "READY_FOR_DEVELOPMENT_REPLAY"
+    drawdown = verified["strategies"]["drawdown_only"]
+    assert drawdown["fills"] == 2
+    assert drawdown["unresolved"] == 1
+    assert drawdown["net_portfolio_return_pct"] is None
+    detail = next(row for row in globals_after_run["batch_result"]["dates"] if row["signal_date"] == "2022-09-30")
+    assert drawdown["spy_with_same_capital_pct"] > detail["market"]["net_portfolio_return_pct"] * .20
+    unverified = summary["dates"]["2022-03-31"]
+    assert unverified["verified_size_inputs"] == 0
+    assert unverified["core_comparison"] == "INPUT_COVERAGE_INCOMPLETE"
+    assert "scanner_core" not in unverified["strategies"]
+
+
+def test_batch_sample_is_independent_of_snapshot_order_and_limits_each_issuer_to_one_listing():
+    common = SimpleNamespace(security_type="ST00000001", currency_id="USD",
+                             is_depositary_receipt=False, is_primary_share=True)
+    universe = [SimpleNamespace(symbol=SimpleNamespace(value=f"STOCK{i}", id=f"STOCK{i} ID"),
+                                company_reference=SimpleNamespace(cik=str(i // 2 + 1)),
+                                market_cap=2e9, security_reference=common)
+                for i in range(40)]
+    config = {"min_market_cap": 750e6}
+    selected, counts = batch_sample(universe, date(2022, 9, 30), config)
+    reversed_sample, reversed_counts = batch_sample(reversed(universe), date(2022, 9, 30), config)
+    assert selected == reversed_sample and counts == reversed_counts
+    assert counts["eligible_issuers"] == 20
+    assert len({cik for _, cik, _ in selected}) == BATCH_SAMPLE_SIZE

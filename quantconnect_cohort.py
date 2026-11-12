@@ -107,11 +107,11 @@ def cash_available_session(payable, hours):
     return hours.get_next_market_open(datetime.combine(next_day, time.min), False).date().isoformat()
 
 
-def reconcile_stock_distributions(actions, ticker, cik, hours):
+def reconcile_stock_distributions(actions, ticker, cik, hours, records=STOCK_DIVIDENDS):
     reconciled = []
     counts = Counter()
     for row in actions:
-        evidence = STOCK_DIVIDENDS.get((ticker, cik, row["session"])) if row["kind"] == "dividend" else None
+        evidence = records.get((ticker, cik, row["session"])) if row["kind"] == "dividend" else None
         if evidence is not None:
             payable, cash, source = evidence
             if math.isclose(row["cash_per_share"], cash, rel_tol=0, abs_tol=.005001):
