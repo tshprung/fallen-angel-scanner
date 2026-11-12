@@ -59,7 +59,8 @@ class SecClient:
 
     def get_json(self, url):
         if not (url == SEC_MAPPING or re.fullmatch(
-                r"https://data\.sec\.gov/submissions/CIK\d{10}(?:-submissions-\d{3})?\.json", url)):
+                r"https://data\.sec\.gov/(?:submissions/CIK\d{10}(?:-submissions-\d{3})?"
+                r"|api/xbrl/companyfacts/CIK\d{10})\.json", url)):
             raise SourceUnavailable("Unrecognized SEC endpoint")
         now = self.now if self.fixed_now else utc()
         ttl = timedelta(days=7) if url == SEC_MAPPING else timedelta(minutes=15)

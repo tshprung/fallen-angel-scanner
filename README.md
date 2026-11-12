@@ -33,7 +33,7 @@ These tickers illustrate software use; they are not recommendations. `--no-email
 
 The main shortlist uses fundamental scenarios, rather than treating a return to a past share price as fair value. Historical recovery helpers remain for compatibility but do not determine the new shortlist. After safety filters, report-size limits prioritize documented cases and then use fixed financial criteria. They never loosen assumptions to fill a report. An explicit resolution in a headline removes only that headline's resolved risk mention; it does not clear holds, verify compliance, or establish a recovery catalyst.
 
-See the [historical validation plan](BACKTEST_PLAN.md) for how to test the scanner against simpler alternatives. The backtest has not been implemented.
+The [offline backtest runner](BACKTEST.md) implements the deterministic core experiment in the [historical validation plan](BACKTEST_PLAN.md). It needs a point-in-time dataset with failed and delisted securities. The included synthetic demo exercises the code and cannot establish an investment edge.
 
 `recovery_cases.json` initially contains no issuer claims. [RECOVERY_CASES.md](RECOVERY_CASES.md) defines how reviewed research is recorded; it is not automatically filled with invented forecasts. US SEC metadata checks are live, but reading and reconciling source contents still requires research. Non-US listings can remain research watches while their local sources are unresolved; they cannot become documented cases through absent SEC coverage.
 
