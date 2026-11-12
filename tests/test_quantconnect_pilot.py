@@ -226,3 +226,23 @@ def test_stock_distribution_requires_matching_security_and_defers_cash_past_paya
     assert dividend["pay_session"] is None
     assert reconcile_stock_distributions([dividend], "MRTN", "7", MarketHours()) == ([dividend], {})
     assert reconcile_stock_distributions([dividend], "OTHER", "799167", MarketHours()) == ([dividend], {})
+
+
+def test_cohort_xerox_dividend_retains_cash_date_after_horizon_exit():
+    dividend = dict(session="2023-06-29", kind="dividend", cash_per_share=.25, pay_session=None)
+    actions, counts = reconcile_stock_distributions([dividend], "XRX", "1770450", MarketHours())
+    assert counts == {"stock_dividends_reconciled": 1}
+    assert actions[0]["pay_session"] == "2023-08-01"
+    assert dividend["session"] < "2023-07-03" < actions[0]["pay_session"]
+
+
+def test_cohort_manulife_uses_gross_usd_and_does_not_accept_cad_amount():
+    usd_dividend = dict(session="2023-05-23", kind="dividend", cash_per_share=.27, pay_session=None)
+    cad_dividend = dict(usd_dividend, cash_per_share=.365)
+    actions, counts = reconcile_stock_distributions(
+        [usd_dividend, cad_dividend], "MFC", "1086888", MarketHours()
+    )
+    assert counts == {"stock_dividends_reconciled": 1, "stock_dividend_amount_disagreements": 1}
+    assert actions[0]["cash_per_share"] == .268521
+    assert actions[0]["pay_session"] == "2023-06-20"
+    assert actions[1] == cad_dividend

@@ -29,14 +29,39 @@ ANCHORS = SHARES.keys() | {"BOWL", "EGP", "SATS", "TME"}
 TRAILING_FCF = {"AMRC": -594_723_000, "MRTN": -12_362_000, "SEM": -19_986_000, "MSA": 135_821_000}
 SPECIALIST_ISSUERS = {"BAC", "MFC", "NBHC", "WABC"}
 XEROX_NET_DEBT = 4_271_000_000 - 1_681_000_000
-# Ex-dates use the then applicable Nasdaq rule, one business day before
-# the stated record date for these ordinary dividends. The feed must agree.
+# Use issuer ex-dates where stated. For the other ordinary dividends, use
+# the then applicable T+2 rule and require a matching feed ex-date and amount.
 STOCK_DIVIDENDS = {
+    ("BAC", "70858", "2022-09-01"): ("2022-09-30", .22, "SEC:0000070858-22-000112"),
+    ("BAC", "70858", "2022-12-01"): ("2022-12-30", .22, "Bank of America Q4 2022 dividend release"),
+    ("BAC", "70858", "2023-03-02"): ("2023-03-31", .22, "Bank of America Q1 2023 dividend release"),
+    ("BAC", "70858", "2023-06-01"): ("2023-06-30", .22, "Bank of America Q2 2023 dividend release"),
     ("CTXS", "877890", "2021-09-09"): ("2021-09-24", .37, "SEC:0001193125-21-228138"),
     ("CTXS", "877890", "2021-12-06"): ("2021-12-21", .37, "SEC:0001193125-21-319281"),
+    # Gross USD rates published by Manulife, before withholding.
+    ("MFC", "1086888", "2022-08-22"): ("2022-09-19", .254433, "Manulife common dividend history (USD)"),
+    ("MFC", "1086888", "2022-11-21"): ("2022-12-19", .247515, "Manulife common dividend history (USD)"),
+    ("MFC", "1086888", "2023-02-27"): ("2023-03-20", .268008, "Manulife common dividend history (USD)"),
+    ("MFC", "1086888", "2023-05-23"): ("2023-06-19", .268521, "Manulife common dividend history (USD)"),
     ("MRTN", "799167", "2022-06-15"): ("2022-06-30", .06, "Marten Transport issuer release 2022-05-04"),
     ("MRTN", "799167", "2022-12-12"): ("2022-12-27", .06, "Marten Transport issuer release 2022-11-30"),
     ("MRTN", "799167", "2023-03-16"): ("2023-03-31", .06, "Marten Transport issuer release 2023-02-20"),
+    ("NBHC", "1475841", "2022-08-25"): ("2022-09-15", .23, "National Bank Holdings dividend history"),
+    ("NBHC", "1475841", "2022-11-23"): ("2022-12-15", .25, "National Bank Holdings dividend history"),
+    ("NBHC", "1475841", "2023-02-23"): ("2023-03-15", .25, "National Bank Holdings dividend history"),
+    ("NBHC", "1475841", "2023-05-25"): ("2023-06-15", .26, "National Bank Holdings dividend history"),
+    ("SEM", "1320414", "2022-08-15"): ("2022-09-02", .125, "Select Medical FY2022 10-K"),
+    ("SEM", "1320414", "2022-11-15"): ("2022-11-29", .125, "Select Medical FY2022 10-K"),
+    ("SEM", "1320414", "2023-03-02"): ("2023-03-15", .125, "Select Medical FY2023 10-K"),
+    ("SEM", "1320414", "2023-05-17"): ("2023-05-31", .125, "Select Medical FY2023 10-K"),
+    ("WABC", "311094", "2022-08-05"): ("2022-08-19", .42, "Westamerica dividend release 2022-07-28"),
+    ("WABC", "311094", "2022-11-04"): ("2022-11-18", .42, "Westamerica dividend release 2022-10-27"),
+    ("WABC", "311094", "2023-02-03"): ("2023-02-17", .42, "Westamerica dividend release 2023-01-26"),
+    ("WABC", "311094", "2023-05-05"): ("2023-05-19", .42, "Westamerica dividend release 2023-04-27"),
+    ("XRX", "1770450", "2022-09-29"): ("2022-10-31", .25, "Xerox dividend history"),
+    ("XRX", "1770450", "2022-12-29"): ("2023-01-31", .25, "Xerox dividend history"),
+    ("XRX", "1770450", "2023-03-30"): ("2023-05-01", .25, "Xerox dividend history"),
+    ("XRX", "1770450", "2023-06-29"): ("2023-07-31", .25, "Xerox dividend history"),
 }
 
 
