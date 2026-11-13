@@ -1,9 +1,6 @@
 name: Daily Fallen Angel Scan
 
 on:
-  schedule:
-    # Run at 18:30 UTC on weekdays (Poland: 19:30 winter / 20:30 summer)
-    - cron: "30 18 * * 1-5"
   workflow_dispatch:
 
 concurrency:
