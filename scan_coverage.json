@@ -1,5 +1,5 @@
 {
-  "started_at": "2026-11-12T00:58:10.630414+00:00",
+  "started_at": "2026-11-12T23:50:14.028382+00:00",
   "completed": true,
   "requested_symbols": [
     "TTD",
@@ -798,7 +798,6 @@
     "RKLB",
     "ROK",
     "ROIV",
-    "ROKU",
     "ROL",
     "ROP",
     "ROST",
@@ -1703,20 +1702,20 @@
     "ZD",
     "ZWS"
   ],
-  "requested_count": 1700,
-  "processed_count": 1700,
-  "quote_successes": 1697,
-  "histories_checked": 1570,
+  "requested_count": 1699,
+  "processed_count": 1699,
+  "quote_successes": 1698,
+  "histories_checked": 1587,
   "outcomes": {
-    "no_recent_decline_or_price_unverified": 1272,
-    "candidate": 295,
-    "insufficient_history": 10,
+    "no_recent_decline_or_price_unverified": 1284,
+    "candidate": 300,
+    "insufficient_history": 9,
     "biotechnology": 70,
+    "currency_unverified": 2,
     "price_listing_filter": 7,
-    "data_error": 11,
-    "currency_unverified": 11,
-    "liquidity_filter_or_missing_volume": 2,
-    "below_market_cap": 22
+    "below_market_cap": 24,
+    "liquidity_filter_or_missing_volume": 1,
+    "data_error": 2
   },
   "data_gaps": [
     {
@@ -1732,40 +1731,10 @@
       "error_type": null
     },
     {
-      "ticker": "KR",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
-    },
-    {
       "ticker": "LBRDK",
       "stage": "currency_and_security",
       "outcome": "currency_unverified",
       "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MAA",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
-    },
-    {
-      "ticker": "MSM",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "NEM",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "YFRateLimitError"
-    },
-    {
-      "ticker": "NWSA",
-      "stage": "quote",
-      "outcome": "data_error",
-      "error_type": "Exception"
     },
     {
       "ticker": "QRVO",
@@ -1774,28 +1743,10 @@
       "error_type": null
     },
     {
-      "ticker": "ROKU",
-      "stage": "price_history",
-      "outcome": "insufficient_history",
-      "error_type": null
-    },
-    {
-      "ticker": "V",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
-    },
-    {
       "ticker": "WBS",
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
-    },
-    {
-      "ticker": "CRDA.L",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
     },
     {
       "ticker": "POLI.TA",
@@ -1804,46 +1755,10 @@
       "error_type": "ValueError"
     },
     {
-      "ticker": "ICL.TA",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "ALV.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "PUM.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "FRE.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "CON.DE",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "BLFS",
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
-    },
-    {
-      "ticker": "CTS",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
     },
     {
       "ticker": "CWEN-A",
@@ -1852,7 +1767,7 @@
       "error_type": "CurrencyUnavailable"
     },
     {
-      "ticker": "CXM",
+      "ticker": "DMC",
       "stage": "price_history",
       "outcome": "data_error",
       "error_type": "ValueError"
@@ -1876,44 +1791,14 @@
       "error_type": null
     },
     {
-      "ticker": "MCY",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
-      "ticker": "MGEE",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "YFRateLimitError"
-    },
-    {
-      "ticker": "MGY",
-      "stage": "quote",
-      "outcome": "data_error",
-      "error_type": "Exception"
-    },
-    {
-      "ticker": "PMT",
-      "stage": "currency_and_security",
-      "outcome": "currency_unverified",
-      "error_type": "CurrencyUnavailable"
-    },
-    {
       "ticker": "RAMP",
       "stage": "price_history",
       "outcome": "insufficient_history",
       "error_type": null
-    },
-    {
-      "ticker": "TMP",
-      "stage": "price_history",
-      "outcome": "data_error",
-      "error_type": "ValueError"
     }
   ],
   "notice": "Configured/fallback universe only, not every listed company. Missing data and unverified prices do not establish that a stock failed the investment criteria.",
-  "updated_at": "2026-11-12T01:19:53.485693+00:00",
+  "updated_at": "2026-11-13T00:04:48.902317+00:00",
   "last_symbol": "ZWS",
   "consecutive_quote_failures": 0,
   "maximum_consecutive_quote_failures": 1

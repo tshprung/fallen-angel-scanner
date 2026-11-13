@@ -1,7 +1,7 @@
 {
   "method_version": 5,
   "benchmark_method_version": 1,
-  "last_refreshed_at": "2026-11-12T01:28:48.831540+00:00",
+  "last_refreshed_at": "2026-11-13T00:13:53.531874+00:00",
   "notice": "Correlated forward observations, not a portfolio backtest or calibrated success rate. Unknown outcomes stay in cohort totals.",
   "cohorts": [
     {
