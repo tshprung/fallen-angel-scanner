@@ -1,6 +1,6 @@
 {
   "months": {
-    "2026-11": 525347
+    "2026-11": 1181997
   },
   "days": {
     "2026-11-23": [
@@ -9,6 +9,7 @@
   },
   "note": "Conservative USD 0.50 opening allowance used for earlier November recovery pilots. Values are USD millionths.",
   "attempts": {
-    "e7861cec140fa8efc5d5f4d4076a19d44bd1abae58566b899fdfd18110884ed3": "2026-11-23"
+    "e7861cec140fa8efc5d5f4d4076a19d44bd1abae58566b899fdfd18110884ed3": "2026-11-23",
+    "4d4b53feae4c8d8c9aece143b3c01df7abec419e078a43dbb83a4c0a3d23200e": "2026-11-23"
   }
 }
