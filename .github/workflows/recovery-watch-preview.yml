@@ -28,7 +28,7 @@ jobs:
       - run: pip install -q -r requirements.txt pytest
       - run: python -m pytest -q tests/test_recovery_watch.py
       - name: Generate early email
-        run: python -u recovery_watch.py early --state recovery_watch_state.json --out data/preview
+        run: python -u recovery_watch.py early --state recovery_watch_state.json --out data/preview ${{ github.event_name == 'push' && '--repeat-preview' || '' }}
       - uses: actions/upload-artifact@v4
         with:
           name: early-price-alert

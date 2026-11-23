@@ -101,3 +101,23 @@ def drop_events(bars, calendar, start):
                      "range":([float(prior_year.min()*scale), float(prior_year.max()*scale)]
                               if len(prior_year)==252 and prior_year.notna().all() else None)})
     return rows
+
+
+def bounce_status(bars, calendar, signal):
+    """Describe completed closes since the alert. Never count an intraday print as confirmation."""
+    window = calendar[calendar >= pd.Timestamp(signal)]
+    prices = distribution_adjusted_close(bars).reindex(window)
+    if prices.empty or prices.isna().any():
+        return "Post-alert closing history incomplete."
+    if len(prices) == 1:
+        return "No completed session since the alert."
+    last = prices.iloc[-1]
+    low = prices.min()
+    if last == low:
+        return "Latest close is at the post-alert low."
+    low_day = prices[prices == low].index[-1]
+    since_low = prices.loc[low_day:]
+    gain = 100 * (last / low - 1)
+    return (f"Latest close is {gain:.1f}% above the {low_day.date()} closing low. "
+            + ("At least two consecutive higher closes." if len(since_low) >= 3
+               and since_low.iloc[-3] < since_low.iloc[-2] < last else "A sustained rebound is unconfirmed."))

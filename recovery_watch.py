@@ -17,7 +17,7 @@ from ai_research import atomic_json, MAX_SHORTLIST
 from fallen_angel_scanner import (debt_filter_applies, is_biotechnology_company, is_tradeable_equity,
                                  not_penny_delist_risk, passes_avg_dollar_liquidity,
                                  profitability_signals, should_exclude_for_leverage)
-from recovery_prices import NY, SECTOR_FUNDS, collect, current_quote, distribution_adjusted_close, drop_events, read_bars
+from recovery_prices import NY, SECTOR_FUNDS, bounce_status, collect, distribution_adjusted_close, drop_events, read_bars
 from review_holds import load_review_holds
 from tickers_config import get_min_market_cap_usd
 from paper_sessions import next_paper_session
@@ -48,6 +48,8 @@ def research_hold(info, known=None):
         return "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis."
     excluded, reason = should_exclude_for_leverage(info)
     if excluded:
+        if reason.startswith("High debt") and not (info.get("totalStockholderEquity") or 0) > 0:
+            return "Leverage unverified. Confirm debt and book equity from the same balance sheet."
         return reason
     if profitability_signals(info)[1]:
         return "Financial exclusion: negative margins, negative operating cash flow and declining revenue."
@@ -128,12 +130,14 @@ def scan(directory, cache, state, now, profile=fetch_profile):
         ticker=event["ticker"]
         if (end-date.fromisoformat(event["day"])).days>45:
             del watch[key]
-        elif ticker in failures:
+        elif ticker in failures or ticker not in symbols:
             event["latest_close"]=None
+            event["chart"]="Current closing history unavailable."
         elif ticker in symbols:
             bars=read_bars(folder,ticker)
             if bars.index[-1]==calendar[-1]:
-                event.update(latest_close=float(bars.Close.iloc[-1]),latest_day=end.isoformat())
+                event.update(latest_close=float(bars.Close.iloc[-1]),latest_day=end.isoformat(),
+                             chart=bounce_status(bars,calendar,event["day"]))
     state["last_scan"]=end.isoformat()
     coverage=dict(date=end.isoformat(), universe_date=universe["started_at"][:10], requested=len(symbols),
                   gaps={s:e for s,e in failures.items() if s in symbols}, raw_crossings=len(positives))
@@ -187,6 +191,7 @@ def compose(directory, kind, rows, coverage, now):
                              if span else "Prior-year stability unverified.")+" "+
                      (f"Sector comparison: {escape(e['peer'])} {e['peer_move']:+.1f}% over the same dates."
                       if e.get("peer_move") is not None else "Comparable-sector history unavailable.")+"</p>")
+        parts.append("<p>Chart through "+escape(e["latest_day"])+". "+escape(e.get("chart","Closing pattern unverified."))+"</p>")
         if kind=="early":
             parts.append(f"<p><b>{'Research hold' if e.get('hold') else 'Research pending'}</b>. "+
                          escape(e.get("hold") or "The price trigger alone does not establish financial safety or fair value.")+"</p>")
@@ -194,6 +199,7 @@ def compose(directory, kind, rows, coverage, now):
                 parts.append(f"<p>Latest completed close {money(e['latest_close'])} on {e['latest_day']}; "
                              f"40% hurdle now {money(1.4*e['latest_close'])}.</p>")
         else:
+            parts.append("<p>Cause of this specific drop: unverified. The filing review covers operating and financing evidence.</p>")
             parts.append(f"<p><b>{escape(e['status'])}</b></p><p>{escape(e['brief']).replace(chr(10),'<br>')}</p>")
             quote=e.get("quote")
             if quote:
@@ -214,6 +220,7 @@ def compose(directory, kind, rows, coverage, now):
     msg.add_alternative(body,subtype="html")
     (directory/(kind+".eml")).write_bytes(msg.as_bytes())
     (directory/(kind+".html")).write_text(body,encoding="utf-8")
+    atomic_json(directory/(kind+".json"), {"generated_at":now.isoformat(),"rows":rows})
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
@@ -221,15 +228,23 @@ def main():
     parser.add_argument("--out",type=Path,required=True)
     parser.add_argument("--state",type=Path,required=True)
     parser.add_argument("--cache",type=Path,default=Path("data/watch-prices"))
+    parser.add_argument("--repeat-preview",action="store_true",help="Re-render today's early alerts for preview inspection")
     args=parser.parse_args()
     now=datetime.now(timezone.utc)
     args.out.mkdir(parents=True,exist_ok=True)
     state=json.loads(args.state.read_text()) if args.state.exists() else {}
     if args.stage=="early":
         coverage=scan(args.out,args.cache,state,now)
-        rows=early_batch(state,now.astimezone(NY).date().isoformat())
+        day=now.astimezone(NY).date().isoformat()
+        rows=early_batch(state,day)
+        if args.repeat_preview and state.get("audience",{}).get(day):
+            audience=set(state["audience"][day])
+            repeat=[e for e in ranked(state["watch"].values()) if e["ticker"] in audience
+                    and e["key"] in state.get("early_seen",[]) and e.get("latest_close")]
+            by_ticker={e["ticker"]:e for e in reversed(ranked(rows+repeat))}
+            rows=ranked(by_ticker.values())[:MAX_SHORTLIST]
         compose(args.out,"early",rows,coverage,now)
-        state.setdefault("early_seen",[]).extend(e["key"] for e in rows)
+        state["early_seen"]=list(dict.fromkeys(state.get("early_seen",[])+[e["key"] for e in rows]))
     else:
         from recovery_followup import followup
         coverage=json.loads((args.out/"coverage.json").read_text())

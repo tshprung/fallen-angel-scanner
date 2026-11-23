@@ -8,7 +8,7 @@ import pytest
 
 import recovery_followup as research
 import recovery_watch as watch
-from recovery_prices import drop_events
+from recovery_prices import bounce_status, drop_events
 from sec_filings import SourceUnavailable
 
 NOW = datetime(2026,11,23,15,tzinfo=timezone.utc)
@@ -60,6 +60,22 @@ def test_unchanged_alert_and_daily_cap():
     state["early_seen"]=[]
     state["audience"]={day:[str(i) for i in range(10)]}
     assert not watch.early_batch(state,day)
+
+
+def test_bounce_uses_completed_sessions_only():
+    h=bars([100.,90.,95.,98.])
+    day=h.index[0]
+    assert "No completed" in bounce_status(h,h.index[:1],day)
+    assert "at the post-alert low" in bounce_status(h,h.index[:2],day)
+    assert "unconfirmed" in bounce_status(h,h.index[:3],day)
+    assert "two consecutive higher" in bounce_status(h,h.index,day)
+    assert "incomplete" in bounce_status(h.drop(h.index[1]),h.index,day)
+
+
+def test_vendor_debt_units_do_not_support_high_debt_claim():
+    info={"sector":"Technology","industry":"Semiconductors","debtToEquity":14.31,"totalDebt":100}
+    assert "Leverage unverified" in watch.research_hold(info)
+    assert "High debt" in watch.research_hold(dict(info,totalStockholderEquity=7))
 
 def test_first_republic_specialist_hold(tmp_path,monkeypatch):
     # First Republic's March 16 disclosure described $30B of deposits, no equity injection.
