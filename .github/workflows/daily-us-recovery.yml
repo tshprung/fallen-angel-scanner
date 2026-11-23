@@ -1,0 +1,91 @@
+name: Daily US recovery watch
+
+on:
+  schedule:
+    - cron: '17 16 * * 1-5'
+      timezone: America/New_York
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Verify delivery settings or run the after-close pilot
+        type: choice
+        options: [verify, run]
+        default: verify
+
+concurrency:
+  group: daily-us-recovery
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -q -r requirements.txt
+      - name: Check session and mode
+        id: session
+        run: |
+          ready=$(python recovery_delivery.py ready | tail -1)
+          [[ "$ready" == true || "$ready" == false ]]
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          echo "Completed US trading session today: $ready"
+      - name: Verify authenticated email connection
+        if: inputs.mode == 'verify'
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+        run: python recovery_delivery.py verify
+      - name: Send price alerts, then financial updates
+        if: inputs.mode != 'verify' && steps.session.outputs.ready == 'true'
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          WATCH_STATE_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name fallen-angel-bot
+          git config user.email bot@fallen-angel
+          save() {
+            if ! git diff --cached --quiet; then
+              git commit -m "$1"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          }
+          deliver() {
+            local path="recovery_pending/$1.eml"
+            if [[ -f "$path" ]]; then
+              python recovery_delivery.py send --kind "$1"
+              git rm -- "$path"
+              save "Record accepted $1 email"
+            fi
+          }
+          for stage in early followup; do
+            deliver "$stage"
+            python -u recovery_watch.py "$stage" --state recovery_watch_state.json --out data/recovery
+            python recovery_delivery.py queue --kind "$stage"
+            git add recovery_watch_state.json
+            if [[ -f "recovery_pending/$stage.eml" ]]; then git add "recovery_pending/$stage.eml"; fi
+            save "Save $stage research and pending delivery"
+            deliver "$stage"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.mode != 'verify' && steps.session.outputs.ready == 'true'
+        with:
+          name: us-recovery-reports
+          path: data/recovery/
+          if-no-files-found: ignore
