@@ -1,0 +1,61 @@
+name: Recovery watch email preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [pilot/recovery-watch-preview]
+    paths: ['.github/workflows/recovery-watch-preview.yml']
+
+concurrency:
+  group: recovery-watch-preview
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    if: github.ref == 'refs/heads/pilot/recovery-watch-preview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: pilot/recovery-watch-preview
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -q -r requirements.txt pytest
+      - run: python -m pytest -q tests/test_recovery_watch.py
+      - name: Generate early email
+        run: python -u recovery_watch.py early --state recovery_watch_state.json --out data/preview
+      - uses: actions/upload-artifact@v4
+        with:
+          name: early-price-alert
+          path: |
+            data/preview/early.*
+            data/preview/coverage.json
+      - name: Save early alert identities
+        run: |
+          git config user.name fallen-angel-bot
+          git config user.email bot@fallen-angel
+          git add recovery_watch_state.json
+          if ! git diff --cached --quiet; then git commit -m "Record watch preview episodes"; git push; fi
+      - name: Generate separate financial follow-up
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          WATCH_STATE_TOKEN: ${{ github.token }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        run: python -u recovery_watch.py followup --state recovery_watch_state.json --out data/preview
+      - uses: actions/upload-artifact@v4
+        with:
+          name: financial-follow-up
+          path: data/preview/followup.*
+      - name: Save reviewed evidence identities
+        run: |
+          git add recovery_watch_state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record follow-up evidence identities"
+            git pull --rebase
+            git push
+          fi
