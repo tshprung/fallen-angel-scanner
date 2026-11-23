@@ -1,74 +1,63 @@
-name: OpenAI research pilot (no email or paper)
-
+name: Three historical briefs - one time
 on:
   push:
-    branches: [main]
+    branches: [pilot/historical-briefs-20261123]
     paths: ['.github/workflows/ai-research-pilot.yml']
-  workflow_dispatch:
-
-permissions:
-  contents: write
-
-# Share the daily scan lock and budget. Never run independent paid probes concurrently.
-concurrency:
-  group: fallen-angel-scan-${{ github.ref }}
-  cancel-in-progress: false
-
+permissions: {}
 jobs:
-  pilot:
+  review:
+    if: github.run_attempt == '1' && github.event.head_commit.message == 'Measure three dated public research briefs'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: python -m pip install -r requirements.txt pytest
-      - name: Offline regression tests
-        run: python -m pytest tests test_email_generation.py test_fresh_crash_bucket.py -q --import-mode=importlib -p no:cacheprovider
-      - name: AI budget date (UTC)
-        id: ai-date
-        run: echo "day=$(date -u +%F)" >> "$GITHUB_OUTPUT"
-      - name: Restore AI reservations
-        id: ai-state
-        uses: actions/cache/restore@v4
-        with:
-          path: ai_research_state.json
-          key: ai-research-${{ github.ref_name }}-${{ steps.ai-date.outputs.day }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: ai-research-${{ github.ref_name }}-
-      - name: Research up to three companies using fresh saved scan data
+      - name: Review dated public evidence and record usage
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          PYTHONUNBUFFERED: '1'
-        run: python -u ai_research.py
-      - name: Preserve AI reservations even on failure
-        if: always() && steps.ai-state.outcome == 'success' && hashFiles('ai_research_state.json') != ''
-        uses: actions/cache/save@v4
-        with:
-          path: ai_research_state.json
-          key: ${{ steps.ai-state.outputs.cache-primary-key }}
-      - name: Preserve research and email preview
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ai-research-pilot-${{ github.run_id }}
-          path: |
-            ai_research.json
-            ai_research.md
-            ai_research_state.json
-            ai_email_preview.html
-            ai_research_drafts.json
-            ai_development_probe.json
-      - name: Save research and budget without touching selections or paper state
-        if: always() && steps.ai-state.outcome == 'success'
+        shell: python
         run: |
-          git config user.name "fallen-angel-bot"
-          git config user.email "bot@fallen-angel"
-          for path in ai_research.json ai_research.md ai_research_state.json ai_research_drafts.json ai_development_probe.json; do
-            if [ -f "$path" ]; then git add "$path"; fi
-          done
-          if ! git diff --cached --quiet; then
-            git commit -m "Save bounded OpenAI research pilot"
-            git pull --rebase
-            git push
-          fi
+          import base64
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+          
+          cases = {
+              "A": "Solar equipment maker; Nov 15 2024 close 10.64 vs 18.87 Nov 5 (-43.6%); comparable inverter vendor -33.8%. Prior Nov 13/14 closes 12.10/12.83. Earlier year range ~15-102. Public quarterly earnings: revenues down 64% year over year; 63.9M operating cash used in quarter; inventories at distributors and slower installations, especially Europe. Sept 30 quarterly filing: cash 303.9M, short-term marketable securities 374.9M; remaining convertible principal 347.5M due Sept 2025, 337M due 2029. Nov 4 tax credit sale 40M net. Target at alert 14.896. No independent fair value estimate.",
+              "B": "Semiconductor manufacturer; Aug 2 2024 close 21.48 vs 33.37 July 22 (-35.6%); processor peer -15.0%. Prior close 29.05; volume 300.9M vs 107.7M prior day. Earlier year closing range ~30-51. Aug 1 quarterly results: Q2 GAAP operating loss 1.964B; Q2 GAAP gross margin 35.4%, Q3 outlook 34.5%. Manufacturing capacity underused; accelerated product ramp weighed on margins. Quarterly dividend suspended starting Q4. June 29 balance sheet: cash plus short term investments 29.273B, short-term debt 4.695B and other debt 48.334B. Target 30.072. No independent fair value estimate.",
+              "C": "Regional deposit-taking bank; Mar 17 2023 close 23.03 vs 34.27 March 16 (-32.8%); regional bank ETF -6.0% same day. Complete year of price history unavailable for this test. Issuer March 16: 34B cash as of March 15 excluding newly announced 30B of uninsured deposits from 11 banks with initial 120-day term. March 10-15 Fed borrowings ranged 20B to 109B; FHLB short-term borrowings up 10B since March 9. Issuer said insured deposits stable March 8-15 and daily deposit outflows had slowed; no quantified proof total deposits stabilized. Common dividend suspended. No documented capital injection. Target 32.242. No independent fair value estimate."
+          }
+          models = ["gpt-5.4-mini-2026-03-17", "gpt-5.4-2026-03-05"]
+          instructions = "Use only the dated fact packet. Write a concise historical investor email in English, maximum 190 words. Give the risk verdict first, drop vs peer, plausible cause, liquidity/debt, 40% hurdle vs supported value, chart and next checkpoint. Flag what is unknown. Never infer a probability, future outcome, or a trading instruction."
+          key = os.environ["OPENAI_API_KEY"]
+          if not key:
+              raise RuntimeError("Repository API key unavailable")
+          
+          def run(case, model, source):
+              if len(source.encode()) > 12000:
+                  raise ValueError("Input limit exceeded")
+              for tier in ("flex", "default"):
+                  payload = dict(model=model, input=source, instructions=instructions, service_tier=tier,
+                                 max_output_tokens=1400, store=False, reasoning={"effort": "low"})
+                  request = urllib.request.Request("https://api.openai.com/v1/responses", json.dumps(payload).encode(),
+                                               {"Authorization": "Bearer " + key, "Content-Type": "application/json"})
+                  try:
+                      with urllib.request.urlopen(request, timeout=240) as response:
+                          result = json.load(response)
+                  except urllib.error.HTTPError as exc:
+                      error = json.loads(exc.read()).get("error", {})
+                      print("REQUEST_ERROR", case, model, tier, exc.code, error.get("code"), flush=True)
+                      if tier == "flex" and (exc.code == 429 or (exc.code == 400 and "tier" in str(error.get("message", "")).lower())):
+                          continue
+                      return ""
+                  print("USAGE", case, model, result.get("service_tier"), result.get("status"),
+                        json.dumps(result.get("usage")), flush=True)
+                  if result.get("status") != "completed":
+                      return ""
+                  return "\n".join(c["text"] for item in result["output"] for c in item.get("content", []) if c["type"] == "output_text")
+              return ""
+          for case, packet in cases.items():
+              draft = run(case, models[0], packet)
+              if draft:
+                  reviewed = run(case, models[1], packet + "\nAudit every claim in the draft against the packet, correct unsupported claims, then deliver the final email. Draft:\n" + draft)
+                  if reviewed:
+                      print("BRIEF", case, base64.b64encode(reviewed.encode()).decode(), flush=True)
