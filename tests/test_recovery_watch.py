@@ -50,6 +50,25 @@ def test_missing_sessions_and_distributions():
     h.iloc[1,h.columns.get_loc("Dividends")]=.01
     assert not drop_events(h,h.index,h.index[0])
 
+
+def test_history_counts_only_complete_pre_drop_year():
+    h=bars([80.]*212+[100.]*40+[100.]*10+[65.])
+    event,=drop_events(h,h.index,h.index[-1])
+    assert event["near_reference_sessions"]==40
+    for frame in (h.drop(h.index[5]), h.iloc[1:]):
+        event,=drop_events(frame,h.index,h.index[-1])
+        assert event["near_reference_sessions"] is None
+
+
+def test_shortlist_prioritizes_repeated_prices_with_room_to_recover(tmp_path):
+    base=dict(nvda(), latest_close=70., latest_reference=100., near_reference_sessions=50)
+    held=dict(base,ticker="HOLD",hold="Needs financial review")
+    spike=dict(base,ticker="SPIKE",near_reference_sessions=0)
+    rebounded=dict(base,ticker="BOUNCE",latest_close=90.,near_reference_sessions=100)
+    assert watch.ranked([held,spike,rebounded,base])==[base,spike,rebounded,held]
+    mail=preview(tmp_path,"early",[base])
+    assert "50/252" in mail and "+42.9%" in mail and "$98.00" in mail
+
 def test_unchanged_alert_and_daily_cap():
     e=nvda()
     state={"watch":{e["key"]:e}}

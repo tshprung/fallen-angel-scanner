@@ -93,11 +93,16 @@ def drop_events(bars, calendar, start):
             continue
         peak_day = close.iloc[i-10:i].iloc[::-1].idxmax()
         prior_year = close.iloc[max(0,i-262):i-10]
+        near_reference = None
+        if len(prior_year) == 252 and prior_year.notna().all():
+            peak = previous.iloc[i]
+            near_reference = int(prior_year.between(0.90 * peak, 1.10 * peak).sum())
         raw = float(data.at[day,"Close"])
         # Express the earlier reference in signal-day share/distribution units.
         scale = raw/close.iloc[i]
         rows.append({"day":day.date().isoformat(), "close":raw, "drop":round(100*losses.iloc[i],2),
                      "peak_day":peak_day.date().isoformat(), "reference":float(previous.iloc[i]*scale),
+                     "near_reference_sessions":near_reference,
                      "range":([float(prior_year.min()*scale), float(prior_year.max()*scale)]
                               if len(prior_year)==252 and prior_year.notna().all() else None)})
     return rows

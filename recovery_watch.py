@@ -114,6 +114,9 @@ def scan(directory, cache, state, now, profile=fetch_profile):
                     if not math.isfinite(peer_move):
                         peer_move=None
             key=ticker+"@"+event["day"]
+            first_trade = info.get("firstTradeDateEpochUtc")
+            if isinstance(first_trade, (int, float)) and 0 < first_trade <= now.timestamp():
+                event["first_trade_year"] = datetime.fromtimestamp(first_trade, NY).year
             event.update(ticker=ticker, name=info.get("shortName") or ticker, key=key, cap=info["marketCap"],
                          sector=info["sector"], peer=comparable, peer_move=peer_move, hold=research_hold(info,known.get(ticker)),
                          latest_close=float(bars.Close.iloc[-1]), latest_day=end.isoformat())
@@ -136,7 +139,10 @@ def scan(directory, cache, state, now, profile=fetch_profile):
         elif ticker in symbols:
             bars=read_bars(folder,ticker)
             if bars.index[-1]==calendar[-1]:
+                adjusted = distribution_adjusted_close(bars)
+                reference = adjusted.get(pd.Timestamp(event["peak_day"]))
                 event.update(latest_close=float(bars.Close.iloc[-1]),latest_day=end.isoformat(),
+                             latest_reference=float(reference) if pd.notna(reference) and reference > 0 else None,
                              chart=bounce_status(bars,calendar,event["day"]))
     state["last_scan"]=end.isoformat()
     coverage=dict(date=end.isoformat(), universe_date=universe["started_at"][:10], requested=len(symbols),
@@ -145,7 +151,13 @@ def scan(directory, cache, state, now, profile=fetch_profile):
     return coverage
 
 def ranked(events):
-    return sorted(events,key=lambda e:(e["day"],e["cap"],e["ticker"]),reverse=True)
+    def priority(e):
+        price, reference = e.get("latest_close"), e.get("latest_reference")
+        meets_goal = bool(price and reference and reference >= price * 1.4)
+        sessions = e.get("near_reference_sessions")
+        return (e["day"], not e.get("hold"), meets_goal, sessions if sessions is not None else -1,
+                e["cap"], e["ticker"])
+    return sorted(events, key=priority, reverse=True)
 
 def available_today(state, ticker, day):
     audience=state.get("audience",{}).get(day,[])
@@ -178,42 +190,37 @@ def money(v):
 
 def compose(directory, kind, rows, coverage, now):
     subject=f"Recovery watch | {len(rows)} " + ("price alerts" if kind=="early" else "research updates")
-    parts=[f"<h1>{escape(subject)}</h1>",f"<p>US pilot · Completed session {coverage['date']}. "
-           f"{coverage['requested']} symbols from the {coverage['universe_date']} scanner list; "
-           f"{len(coverage['gaps'])} data gaps.</p>"]
-    if not rows:
-        parts.append("<p>No new updates for this preview.</p>")
+    parts=[f"<h1>{escape(subject)}</h1>",
+           f"<p>{coverage['date']} US close · {coverage['requested']} symbols · {len(coverage['gaps'])} data gaps. "
+           "Upside assumes a return to the old price. Cause of the drops unverified.</p>"]
     for e in rows:
-        parts.append(f"<h2>{escape(e['name'])} ({escape(e['ticker'])})</h2>")
-        parts.append(f"<p>{e['day']} close {money(e['close'])}, down {abs(e['drop']):.1f}% from "
-                     f"{money(e['reference'])} on {e['peak_day']}. A 40% gain from the alert close requires "
-                     f"<b>{money(e['close']*1.4)}</b>.</p>")
-        span=e.get("range")
-        parts.append("<p>"+(f"Prior 252-session closing range {money(span[0])}–{money(span[1])}."
-                             if span else "Prior-year stability unverified.")+" "+
-                     (f"Sector comparison: {escape(e['peer'])} {e['peer_move']:+.1f}% over the same dates."
-                      if e.get("peer_move") is not None else "Comparable-sector history unavailable.")+"</p>")
-        parts.append("<p>Chart through "+escape(e["latest_day"])+". "+escape(e.get("chart","Closing pattern unverified."))+"</p>")
-        if kind=="early":
-            parts.append(f"<p><b>{'Research hold' if e.get('hold') else 'Research pending'}</b>. "+
-                         escape(e.get("hold") or "The price trigger alone does not establish financial safety or fair value.")+"</p>")
-            if e["latest_day"]!=e["day"] and e.get("latest_close"):
-                parts.append(f"<p>Latest completed close {money(e['latest_close'])} on {e['latest_day']}; "
-                             f"40% hurdle now {money(1.4*e['latest_close'])}.</p>")
+        early = kind == "early"
+        status = e.get("status") or ("Research hold" if e.get("hold") else "Research pending")
+        parts.append(f"<h2>{escape(e['ticker'])} · {escape(e['name'])}</h2><p><b>{escape(status)}</b></p>")
+        quote = e.get("quote")
+        if early and e.get("latest_close") and e.get("latest_reference"):
+            quote = {"price": e["latest_close"], "reference": e["latest_reference"], "at": e["latest_day"]+" close"}
+        if quote:
+            price, reference = quote["price"], quote["reference"]
+            gain = 100*(reference/price-1)
+            parts.append(f"<p>{money(price)} ({escape(quote['at'])}) → old price {money(reference)} "
+                         f"(<b>{gain:+.1f}%</b>). A 40% gain requires {money(price*1.4)}.</p>")
         else:
-            parts.append("<p>Cause of this specific drop: unverified. The filing review covers operating and financing evidence.</p>")
-            parts.append(f"<p><b>{escape(e['status'])}</b></p><p>{escape(e['brief']).replace(chr(10),'<br>')}</p>")
-            quote=e.get("quote")
-            if quote:
-                price=quote["price"]
-                parts.append(f"<p>Price at {escape(quote['at'])}: <b>{money(price)}</b>. "
-                             f"40% gain now requires <b>{money(price*1.4)}</b>. Return to the old "
-                             f"reference would be {100*(quote['reference']/price-1):+.1f}%. "
-                             "The reference is historical, not a fair-value estimate.</p>")
-            else:
-                parts.append("<p>Fresh comparable price unavailable. Current upside unverified.</p>")
-            for label,url in e.get("sources",[]):
-                parts.append(f'<p><a href="{escape(url,quote=True)}">{escape(label)}</a></p>')
+            parts.append("<p>Current upside unverified.</p>")
+        sessions = e.get("near_reference_sessions")
+        history = (f"{sessions}/252 earlier closes within 10% of the old price."
+                   if sessions is not None else "Prior-year trading history incomplete or unverified.")
+        peer = (f" vs {escape(e['peer'])} {e['peer_move']:+.1f}%" if e.get("peer_move") is not None else "")
+        if e.get("first_trade_year"):
+            history += f" US trading history since {e['first_trade_year']}."
+        parts.append(f"<p>{e['drop']:.1f}% from {escape(e['peak_day'])} to {escape(e['day'])}{peer}. {history}</p>")
+        parts.append(f"<p>{escape(e.get('chart','Closing pattern unverified.'))}</p>")
+        brief = e.get("hold") if early else e.get("brief")
+        if brief:
+            parts.append(f"<p>{escape(brief).replace(chr(10),'<br>')}</p>")
+        sources = [f'<a href="{escape(url,quote=True)}">{escape(label)}</a>' for label,url in e.get("sources",[])]
+        if sources:
+            parts.append("<p>"+" · ".join(sources)+"</p>")
     body="<!doctype html><html lang='en'><meta charset='utf-8'><body style='font:16px/1.5 Arial,sans-serif;max-width:720px;margin:24px auto'>"+ "".join(parts)+"</body></html>"
     msg=EmailMessage(policy=SMTP)
     msg["Subject"]=subject
