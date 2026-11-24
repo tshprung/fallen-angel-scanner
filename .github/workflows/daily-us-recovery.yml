@@ -70,12 +70,18 @@ jobs:
             local path="recovery_pending/$1.eml"
             if [[ -f "$path" ]]; then
               python recovery_delivery.py send --kind "$1"
+              if [[ "$1" == followup ]]; then
+                python recovery_delivery.py complete-queued
+                git add recovery_watch_state.json
+              fi
               git rm -- "$path"
               save "Record accepted $1 email"
             fi
           }
+          deliver early
+          deliver followup
+          if [[ "$(python recovery_delivery.py ready | tail -1)" == false ]]; then exit 0; fi
           for stage in early followup; do
-            deliver "$stage"
             python -u recovery_watch.py "$stage" --state recovery_watch_state.json --out data/recovery
             python recovery_delivery.py queue --kind "$stage"
             git add recovery_watch_state.json

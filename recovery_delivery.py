@@ -22,9 +22,11 @@ def session_ready(now, state):
     return session > completed
 
 
-def record_completion(state_path, coverage_path):
+def record_completion(state_path, coverage_path=None):
     state = json.loads(state_path.read_text(encoding="utf-8"))
-    session = json.loads(coverage_path.read_text(encoding="utf-8"))["date"]
+    # A queued follow-up is acknowledged before a later scan can advance last_scan.
+    session = (json.loads(coverage_path.read_text(encoding="utf-8"))["date"]
+               if coverage_path is not None else state["last_scan"])
     if session != state["last_scan"] or session < state.get("last_completed_delivery_session", ""):
         raise ValueError("Scan coverage does not match the delivery session")
     state["last_completed_delivery_session"] = session
@@ -43,9 +45,11 @@ def queue_message(kind, directory, pending):
 
 
 def smtp(pending=None):
-    sender, recipient = os.environ["SENDER_EMAIL"], os.environ["RECEIVER_EMAIL"]
-    if not sender.strip() or not recipient.strip():
+    sender, recipient = (os.environ[k].strip() for k in ("SENDER_EMAIL", "RECEIVER_EMAIL"))
+    if not sender or not recipient:
         raise ValueError("Missing sender or recipient")
+    if any(c in sender + recipient for c in "\r\n"):
+        raise ValueError("Unexpected line break inside an email address")
     with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=40) as server:
         server.starttls(context=ssl.create_default_context())
         server.login(sender, os.environ["SENDER_PASSWORD"])
@@ -67,7 +71,7 @@ def smtp(pending=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["ready", "verify", "send", "queue", "complete"])
+    parser.add_argument("action", choices=["ready", "verify", "send", "queue", "complete", "complete-queued"])
     parser.add_argument("--kind", choices=["early", "followup"])
     args = parser.parse_args()
     state_path = Path("recovery_watch_state.json")
@@ -76,6 +80,10 @@ if __name__ == "__main__":
         print("true" if session_ready(datetime.now(timezone.utc), state) else "false")
     elif args.action == "complete":
         record_completion(state_path, Path("data/recovery/coverage.json"))
+    elif args.action == "complete-queued":
+        if not Path("recovery_pending/followup.eml").is_file():
+            parser.error("No queued follow-up to acknowledge")
+        record_completion(state_path)
     elif args.action == "verify":
         smtp()
     else:

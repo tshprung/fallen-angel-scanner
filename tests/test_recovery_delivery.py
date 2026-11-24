@@ -55,8 +55,8 @@ def test_empty_updates_and_retry_preserve_pending_message(tmp_path):
 
 
 def test_smtp_verification_and_delivery_use_existing_recipient(tmp_path,monkeypatch):
-    for name,val in {"SENDER_EMAIL":"from@example.org","SENDER_PASSWORD":"test",
-                     "RECEIVER_EMAIL":"to@example.org"}.items():
+    for name,val in {"SENDER_EMAIL":"from@example.org\r\n","SENDER_PASSWORD":"test",
+                     "RECEIVER_EMAIL":"to@example.org\n"}.items():
         monkeypatch.setenv(name,val)
     smtp = MagicMock()
     monkeypatch.setattr(delivery.smtplib,"SMTP",smtp)
@@ -73,4 +73,5 @@ def test_smtp_verification_and_delivery_use_existing_recipient(tmp_path,monkeypa
     delivery.smtp(pending)
     sent = server.send_message.call_args.args[0]
     assert sent["To"] == "to@example.org" and sent["Message-ID"]
+    assert sent["From"] == "from@example.org" and sent["Message-ID"].endswith("@example.org>")
     assert b"to@example.org" not in pending.read_bytes()
