@@ -38,7 +38,7 @@ jobs:
           ready=$(python recovery_delivery.py ready | tail -1)
           [[ "$ready" == true || "$ready" == false ]]
           echo "ready=$ready" >> "$GITHUB_OUTPUT"
-          echo "Completed US trading session today: $ready"
+          echo "An unprocessed completed US session is available: $ready"
       - name: Verify authenticated email connection
         if: inputs.mode == 'verify'
         env:
@@ -83,6 +83,9 @@ jobs:
             save "Save $stage research and pending delivery"
             deliver "$stage"
           done
+          python recovery_delivery.py complete
+          git add recovery_watch_state.json
+          save "Record completed US recovery session"
       - uses: actions/upload-artifact@v4
         if: always() && inputs.mode != 'verify' && steps.session.outputs.ready == 'true'
         with:

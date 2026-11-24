@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from email.message import EmailMessage
+import json
 from unittest.mock import MagicMock
 
 import pytest
@@ -8,11 +9,29 @@ import recovery_delivery as delivery
 from recovery_watch import early_batch
 
 
-@pytest.mark.parametrize(("day", "hour", "ready"), [
-    (23, 19, False), (23, 22, True), (26, 22, False), (28, 22, False),
+@pytest.mark.parametrize(("day", "hour", "completed", "ready"), [
+    (23, 19, "2026-11-20", False), (23, 22, "2026-11-20", True),
+    (24, 6, "2026-11-20", True), (24, 6, "2026-11-23", False),
+    (24, 22, "2026-11-23", True), (26, 22, "2026-11-25", False),
+    (28, 22, "2026-11-27", False),
 ])
-def test_after_close_and_holidays(day, hour, ready):
-    assert delivery.session_ready(datetime(2026, 11, day, hour, tzinfo=timezone.utc)) is ready
+def test_after_close_and_holidays(day, hour, completed, ready):
+    state = {"last_completed_delivery_session":completed}
+    assert delivery.session_ready(datetime(2026, 11, day, hour, tzinfo=timezone.utc), state) is ready
+
+
+def test_partial_scan_is_still_due_until_delivery_completes(tmp_path):
+    state = {"preview_through": "2026-11-20", "last_scan": "2026-11-23"}
+    now = datetime(2026, 11, 24, 6, tzinfo=timezone.utc)
+    assert delivery.session_ready(now, state)
+    path, coverage = tmp_path / "state.json", tmp_path / "coverage.json"
+    path.write_text(json.dumps(state))
+    coverage.write_text('{"date":"2026-11-20"}')
+    with pytest.raises(ValueError):
+        delivery.record_completion(path, coverage)
+    coverage.write_text('{"date":"2026-11-23"}')
+    delivery.record_completion(path, coverage)
+    assert not delivery.session_ready(now, json.loads(path.read_text()))
 
 
 def test_preview_backlog_does_not_fill_first_live_email():

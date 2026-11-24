@@ -12,12 +12,23 @@ import smtplib
 import ssl
 
 from fallen_angel_scanner import SMTP_SERVER, SMTP_PORT
-from recovery_prices import NY
 from recovery_watch import latest_session
+from ai_research import atomic_json
 
 
-def session_ready(now):
-    return latest_session(now) == now.astimezone(NY).date()
+def session_ready(now, state):
+    session = latest_session(now).isoformat()
+    completed = state.get("last_completed_delivery_session") or state["preview_through"]
+    return session > completed
+
+
+def record_completion(state_path, coverage_path):
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    session = json.loads(coverage_path.read_text(encoding="utf-8"))["date"]
+    if session != state["last_scan"] or session < state.get("last_completed_delivery_session", ""):
+        raise ValueError("Scan coverage does not match the delivery session")
+    state["last_completed_delivery_session"] = session
+    atomic_json(state_path, state)
 
 
 def queue_message(kind, directory, pending):
@@ -56,11 +67,15 @@ def smtp(pending=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=["ready", "verify", "send", "queue"])
+    parser.add_argument("action", choices=["ready", "verify", "send", "queue", "complete"])
     parser.add_argument("--kind", choices=["early", "followup"])
     args = parser.parse_args()
+    state_path = Path("recovery_watch_state.json")
     if args.action == "ready":
-        print("true" if session_ready(datetime.now(timezone.utc)) else "false")
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        print("true" if session_ready(datetime.now(timezone.utc), state) else "false")
+    elif args.action == "complete":
+        record_completion(state_path, Path("data/recovery/coverage.json"))
     elif args.action == "verify":
         smtp()
     else:
