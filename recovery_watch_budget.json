@@ -1,11 +1,14 @@
 {
   "months": {
-    "2026-11": 905655
+    "2026-11": 1309578
   },
   "days": {
     "2026-11-23": [
       "BE",
       "RKLB"
+    ],
+    "2026-11-24": [
+      "CRWV"
     ]
   },
   "note": "Conservative USD 0.50 opening allowance used for earlier November recovery pilots. Values are USD millionths.",
@@ -17,6 +20,7 @@
     "9fb3e4eff0b8f2fe7d5c0b03705bebd12c0e9331020258cc926b83f1a6184ebc": "2026-11-23",
     "af9b56d6e5ac9b7fdde9b2139bdb3dbf14b9455a978900119334474f3bd0b9d1": "2026-11-23",
     "43f550104a092ed54386fd62415e4d2c49724247fb389d8a691cce79e8a52a23": "2026-11-23",
-    "1a9a1263ab32339a2c1e7a998c5d5bc66ebd63d38b487e1319949df4d53d3ff7": "2026-11-23"
+    "1a9a1263ab32339a2c1e7a998c5d5bc66ebd63d38b487e1319949df4d53d3ff7": "2026-11-23",
+    "cf2f13420a88f913c260661e5523d34c03a80453131b42b808a1d304ab2bcc58": "2026-11-24"
   }
 }
