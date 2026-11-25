@@ -30,10 +30,10 @@ def chart(symbol, params):
         raise ValueError("Quote identity or currency mismatch")
     return item
 
-def fetch_daily(symbol, end):
+def fetch_daily(symbol, end, lookback_days=440):
     def stamp(day):
         return int(datetime.combine(day, time(), timezone.utc).timestamp())
-    data = chart(symbol, {"period1": stamp(end - timedelta(days=440)), "period2": stamp(end+timedelta(days=1)),
+    data = chart(symbol, {"period1": stamp(end - timedelta(days=lookback_days)), "period2": stamp(end+timedelta(days=1)),
                           "interval": "1d", "events": "div,splits,capitalGains"})
     index = pd.to_datetime(data["timestamp"], unit="s", utc=True).tz_convert(NY).tz_localize(None).normalize()
     bars = pd.DataFrame(data["indicators"]["quote"][0], index=index).rename(columns=str.title)
@@ -71,6 +71,25 @@ def collect(symbols, end, cache):
 def read_bars(folder, symbol):
     d = json.loads((folder/(symbol+".json")).read_text())
     return pd.DataFrame(d["data"], columns=d["columns"], index=pd.to_datetime(d["index"]))
+
+
+def historical_reference(bars, calendar, event):
+    """Compare 60 completed month ends before the pre-drop peak, on one adjusted basis."""
+    peak = pd.Timestamp(event["peak_day"])
+    adjusted = distribution_adjusted_close(bars.loc[:peak])
+    if peak not in adjusted or not np.isfinite(adjusted.at[peak]) or adjusted.at[peak] <= 0:
+        return None
+    periods = pd.period_range(end=peak.to_period("M")-1, periods=60, freq="M")
+    month_ends = calendar.to_series().groupby(calendar.to_period("M")).max().reindex(periods)
+    if month_ends.isna().any():
+        return None
+    prices = adjusted.reindex(pd.DatetimeIndex(month_ends))
+    prices = prices.loc[prices.index >= adjusted.index[0]]
+    if prices.empty or not (np.isfinite(prices) & (prices > 0)).all():
+        return None
+    near = prices.between(.9*adjusted.at[peak], 1.1*adjusted.at[peak])
+    blocks = (len(periods)-len(near)+np.arange(len(near)))//12
+    return {"months":len(near), "near":int(near.sum()), "years_with_three":int((near.groupby(blocks).sum()>=3).sum())}
 
 def current_quote(symbol, now):
     """Timestamped regular or extended-hours print; refuse a stale historical 'current' price."""

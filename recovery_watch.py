@@ -18,7 +18,8 @@ from ai_research import atomic_json, MAX_SHORTLIST
 from fallen_angel_scanner import (debt_filter_applies, is_biotechnology_company, is_tradeable_equity,
                                  not_penny_delist_risk, passes_avg_dollar_liquidity,
                                  profitability_signals, should_exclude_for_leverage)
-from recovery_prices import NY, SECTOR_FUNDS, bounce_status, collect, distribution_adjusted_close, drop_events, read_bars
+from recovery_prices import (NY, SECTOR_FUNDS, bounce_status, collect, distribution_adjusted_close,
+                             drop_events, fetch_daily, historical_reference, read_bars)
 from review_holds import load_review_holds
 from tickers_config import get_min_market_cap_usd
 from paper_sessions import next_paper_session
@@ -128,7 +129,11 @@ def scan(directory, cache, state, now, profile=fetch_profile):
     with ThreadPoolExecutor(max_workers=3) as pool:
         for ticker,event,error in pool.map(enrich,positives.items()):
             if error: failures[ticker]=error
-            if event: watch[event["key"]]=event
+            if event:
+                cached = watch.get(event["key"], {})
+                if cached.get("peak_day") == event["peak_day"]:
+                    event["long_history"] = cached.get("long_history")
+                watch[event["key"]]=event
     # Refresh previously alerted prices while waiting for a filing; retire old episodes.
     for key,event in list(watch.items()):
         ticker=event["ticker"]
@@ -145,6 +150,25 @@ def scan(directory, cache, state, now, profile=fetch_profile):
                 event.update(latest_close=float(bars.Close.iloc[-1]),latest_day=end.isoformat(),
                              latest_reference=float(reference) if pd.notna(reference) and reference > 0 else None,
                              chart=bounce_status(bars,calendar,event["day"]))
+    missing = [e for e in watch.values() if e.get("latest_close") and not e.get("long_history")]
+    if missing:
+        def history(ticker):
+            try:
+                return fetch_daily(ticker, end, lookback_days=2000)
+            except (requests.RequestException, ValueError, KeyError, TypeError, IndexError):
+                return None
+        benchmark = history("SPY")
+        if benchmark is not None:
+            tickers = sorted({e["ticker"] for e in missing})
+            with ThreadPoolExecutor(max_workers=3) as pool:
+                histories = dict(zip(tickers, pool.map(history, tickers)))
+            for e in missing:
+                bars = histories[e["ticker"]]
+                if bars is not None:
+                    try:
+                        e["long_history"] = historical_reference(bars, benchmark.index, e)
+                    except (ValueError, KeyError, IndexError):
+                        e["long_history"] = None
     state["last_scan"]=end.isoformat()
     coverage=dict(date=end.isoformat(), universe_date=universe["started_at"][:10], requested=len(symbols),
                   gaps={s:e for s,e in failures.items() if s in symbols}, raw_crossings=len(positives))
@@ -156,7 +180,10 @@ def ranked(events):
         price, reference = e.get("latest_close"), e.get("latest_reference")
         meets_goal = bool(price and reference and reference >= price * 1.4)
         sessions = e.get("near_reference_sessions")
-        return (e["day"], not e.get("hold"), meets_goal, sessions if sessions is not None else -1,
+        history = e.get("long_history") or {}
+        repeated = history.get("years_with_three", 0) >= 2
+        return (e["day"], not e.get("hold"), meets_goal, repeated, history.get("years_with_three", 0),
+                sessions if sessions is not None else -1,
                 e["cap"], e["ticker"])
     return sorted(events, key=priority, reverse=True)
 
@@ -244,7 +271,12 @@ def compose_digest(directory, now):
         status = event.get("status") or ("Research hold" if event.get("hold") else "Research pending")
         note = (event.get("brief") or event.get("hold") or "").strip().splitlines()
         summary = note[0] if note and len(note[0].split()) <= 24 else ""
-        parts.append(f"<p><b>{escape(ticker)} {upside}</b> · {escape(status)}. {escape(summary)}</p>")
+        history = event.get("long_history")
+        if history:
+            level = f"Old price ±10% at {history['near']}/{history['months']} month ends."
+        else:
+            level = "Long-term price history unverified."
+        parts.append(f"<p><b>{escape(ticker)} {upside}</b> · {escape(status)}. {escape(summary)} {level}</p>")
     run_id = os.getenv("GITHUB_RUN_ID", "")
     if run_id.isdigit():
         parts.append(f'<p><a href="https://github.com/tshprung/fallen-angel-scanner/actions/runs/{run_id}">Full research and sources</a></p>')

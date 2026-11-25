@@ -8,7 +8,7 @@ import pytest
 
 import recovery_followup as research
 import recovery_watch as watch
-from recovery_prices import bounce_status, drop_events
+from recovery_prices import bounce_status, drop_events, historical_reference
 from sec_filings import SourceUnavailable
 
 NOW = datetime(2026,11,23,15,tzinfo=timezone.utc)
@@ -49,6 +49,25 @@ def test_missing_sessions_and_distributions():
     h["Dividends"]=0.
     h.iloc[1,h.columns.get_loc("Dividends")]=.01
     assert not drop_events(h,h.index,h.index[0])
+
+
+def test_multiyear_reference_separates_spikes_from_repeated_prices():
+    index = pd.bdate_range("2020-01-01","2025-02-28")
+    b = pd.DataFrame({"Close":50., "Adj Close":50.},index=index)
+    peak = {"peak_day":"2025-02-10"}
+    b.loc["2025-02":] = 100.
+    for year in (2021,2024):
+        b.loc[f"{year}-04":f"{year}-06"] = 100.
+    result = historical_reference(b,index,peak)
+    assert result == {"months":60,"near":6,"years_with_three":2}
+    assert historical_reference(b.drop(pd.Timestamp("2023-10-31")),index,peak) is None
+    recent = historical_reference(b.loc["2024-07":],index,peak)
+    assert recent["months"] == 7 and recent["years_with_three"] == 0
+    e = dict(nvda(),latest_close=65., latest_reference=100., near_reference_sessions=20)
+    spike = dict(e,ticker="SPIKE",near_reference_sessions=100,
+                 long_history={"months":60,"near":10,"years_with_three":1})
+    repeated = dict(e,long_history=result)
+    assert watch.ranked([spike,repeated]) == [repeated,spike]
 
 
 def test_history_counts_only_complete_pre_drop_year():
