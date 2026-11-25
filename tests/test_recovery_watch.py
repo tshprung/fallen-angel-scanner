@@ -176,3 +176,25 @@ def test_monthly_reservation_and_three_daily_issuers():
     for s in ("A","B","C"): research.reserve(ledger,"2026-12","2026-12-01",s,50)
     with pytest.raises(SourceUnavailable): research.reserve(ledger,"2026-12","2026-12-01","D",50)
     research.reserve(ledger,"2026-12","2026-12-01","C",50)
+
+
+@pytest.mark.parametrize("complete",[True,False])
+def test_business_comparison_reaches_digest_or_research_hold(monkeypatch,tmp_path,complete):
+    event=nvda()
+    summary={"business_change":"Sales doubled.","risk":"New factories require debt.","checkpoint":"Watch factory deliveries."}
+    if not complete:
+        del summary["risk"]
+    monkeypatch.setattr(research,"Wallet",lambda:object())
+    monkeypatch.setattr(research,"evidence",lambda *args:("verified filing text",[]))
+    monkeypatch.setattr(research,"model_call",lambda model,*args:json.dumps(summary) if model==research.REVIEW_MODEL else "draft")
+    monkeypatch.setattr(research,"refresh",lambda *args:None)
+    rows=research.followup({"watch":{event["key"]:event},"early_seen":[event["key"]]},NOW)
+    preview(tmp_path,"early",[event])
+    preview(tmp_path,"followup",rows)
+    (tmp_path/"coverage.json").write_text('{"date":"2026-11-20"}')
+    watch.compose_digest(tmp_path,NOW)
+    body=(tmp_path/"digest.html").read_text(encoding="utf-8")
+    if complete:
+        assert all(value in body for value in summary.values())
+    else:
+        assert "Research hold" in body and "Sales doubled." not in body

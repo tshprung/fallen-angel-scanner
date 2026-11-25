@@ -261,7 +261,7 @@ def compose_digest(directory, now):
     session = json.loads((directory / "coverage.json").read_text(encoding="utf-8"))["date"]
     count = len(companies)
     subject = f"Recovery watch | {count} {'company' if count == 1 else 'companies'} | {session}"
-    parts = ["<p>Potential gain if the stock returns to its old price. Recovery unconfirmed.</p>"]
+    parts = ["<p>Percentages assume a return to the old price. Selloff causes and rebound odds unverified.</p>"]
     for ticker, event in companies.items():
         price, reference = event.get("latest_close"), event.get("latest_reference")
         if "quote" in event:
@@ -276,7 +276,13 @@ def compose_digest(directory, now):
             level = f"Old price ±10% at {history['near']}/{history['months']} month ends."
         else:
             level = "Long-term price history unverified."
-        parts.append(f"<p><b>{escape(ticker)} {upside}</b> · {escape(status)}. {escape(summary)} {level}</p>")
+        comparison = event.get("business_summary")
+        if comparison:
+            parts.append(f"<p><b>{escape(ticker)} {upside}</b> · {escape(status)}. "
+                         f"{escape(comparison['business_change'])} Risk: {escape(comparison['risk'])} "
+                         f"Watch: {escape(comparison['checkpoint'])}</p>")
+        else:
+            parts.append(f"<p><b>{escape(ticker)} {upside}</b> · {escape(status)}. {escape(summary)} {level}</p>")
     run_id = os.getenv("GITHUB_RUN_ID", "")
     if run_id.isdigit():
         parts.append(f'<p><a href="https://github.com/tshprung/fallen-angel-scanner/actions/runs/{run_id}">Full research and sources</a></p>')
