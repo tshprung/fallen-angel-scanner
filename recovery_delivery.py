@@ -1,4 +1,4 @@
-"""Deliver the pilot's two generated emails to the configured scanner inbox."""
+"""Deliver one combined scanner digest to the configured inbox."""
 import argparse
 from datetime import datetime, timezone
 from email import policy
@@ -12,7 +12,7 @@ import smtplib
 import ssl
 
 from fallen_angel_scanner import SMTP_SERVER, SMTP_PORT
-from recovery_watch import latest_session
+from recovery_watch import compose_digest, latest_session
 from ai_research import atomic_json
 
 
@@ -72,7 +72,7 @@ def smtp(pending=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["ready", "verify", "send", "queue", "complete", "complete-queued"])
-    parser.add_argument("--kind", choices=["early", "followup"])
+    parser.add_argument("--kind", choices=["digest"])
     args = parser.parse_args()
     state_path = Path("recovery_watch_state.json")
     if args.action == "ready":
@@ -81,8 +81,8 @@ if __name__ == "__main__":
     elif args.action == "complete":
         record_completion(state_path, Path("data/recovery/coverage.json"))
     elif args.action == "complete-queued":
-        if not Path("recovery_pending/followup.eml").is_file():
-            parser.error("No queued follow-up to acknowledge")
+        if not Path("recovery_pending/digest.eml").is_file():
+            parser.error("No queued digest to acknowledge")
         record_completion(state_path)
     elif args.action == "verify":
         smtp()
@@ -91,6 +91,7 @@ if __name__ == "__main__":
             parser.error("--kind required for delivery")
         path = Path("recovery_pending") / (args.kind + ".eml")
         if args.action == "queue":
+            compose_digest(Path("data/recovery"), datetime.now(timezone.utc))
             queue_message(args.kind, Path("data/recovery"), path)
         else:
             smtp(path)

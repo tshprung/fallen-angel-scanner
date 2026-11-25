@@ -228,7 +228,7 @@ def followup(state,now):
             wallet=Wallet()
             draft=model_call(MODEL,prompt,e["ticker"],wallet,fingerprint)
             brief=model_call(REVIEW_MODEL,prompt+"\nCheck the draft against the filings. Write only three short sentences, "
-                             "at most 55 words total: (1) financing risk with the most material evidence, "
+                             "one per line, at most 55 words total: (1) in 15 words or fewer, give the main financing risk, "
                              "(2) what changed in the business and when, (3) one measurable recovery checkpoint. "
                              "State material unknowns. Do not attribute the price move. Draft:\n"+draft,e["ticker"],wallet,fingerprint)
             status="Filing review · investment case unverified"

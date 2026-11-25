@@ -54,6 +54,29 @@ def test_empty_updates_and_retry_preserve_pending_message(tmp_path):
     assert pending.read_bytes() == (tmp_path / "early.eml").read_bytes()
 
 
+@pytest.mark.parametrize("early,followup,expected", [
+    (["A","B"],["B","C"],["A","B","C"]), ([],["C"],["C"]), (["A"],[],["A"]), ([],[],[]),
+])
+def test_one_daily_digest(tmp_path, early, followup, expected):
+    for stage,tickers in (("early",early),("followup",followup)):
+        rows = [dict(ticker=t,latest_close=10,latest_reference=15) for t in tickers]
+        if stage == "followup":
+            for row in rows:
+                row.update(status="Research hold",brief="Debt unverified.",quote=None)
+        (tmp_path / (stage+".json")).write_text(json.dumps({"rows":rows}))
+    (tmp_path / "coverage.json").write_text('{"date":"2026-11-24"}')
+    delivery.compose_digest(tmp_path,datetime.now(timezone.utc))
+    digest=json.loads((tmp_path / "digest.json").read_text())
+    assert [r["ticker"] for r in digest["rows"]] == expected
+    body=(tmp_path / "digest.html").read_text(encoding="utf-8")
+    assert body.count("<b>") == len(expected)
+    for ticker in followup:
+        assert ticker+" upside unknown</b> · Research hold. Debt unverified." in body
+    pending=tmp_path / "pending" / "digest.eml"
+    delivery.queue_message("digest",tmp_path,pending)
+    assert pending.exists() == bool(expected)
+
+
 def test_smtp_verification_and_delivery_use_existing_recipient(tmp_path,monkeypatch):
     for name,val in {"SENDER_EMAIL":"from@example.org\r\n","SENDER_PASSWORD":"test",
                      "RECEIVER_EMAIL":"to@example.org\n"}.items():

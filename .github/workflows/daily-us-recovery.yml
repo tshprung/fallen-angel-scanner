@@ -46,7 +46,7 @@ jobs:
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
         run: python recovery_delivery.py verify
-      - name: Send price alerts, then financial updates
+      - name: Send one daily recovery digest
         if: inputs.mode != 'verify' && steps.session.outputs.ready == 'true'
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
@@ -67,31 +67,29 @@ jobs:
             fi
           }
           deliver() {
-            local path="recovery_pending/$1.eml"
+            local path="recovery_pending/digest.eml"
             if [[ -f "$path" ]]; then
-              python recovery_delivery.py send --kind "$1"
-              if [[ "$1" == followup ]]; then
-                python recovery_delivery.py complete-queued
-                git add recovery_watch_state.json
-              fi
+              python recovery_delivery.py send --kind digest
+              python recovery_delivery.py complete-queued
+              git add recovery_watch_state.json
               git rm -- "$path"
-              save "Record accepted $1 email"
+              save "Record accepted daily digest"
             fi
           }
-          deliver early
-          deliver followup
+          deliver
           if [[ "$(python recovery_delivery.py ready | tail -1)" == false ]]; then exit 0; fi
           for stage in early followup; do
             python -u recovery_watch.py "$stage" --state recovery_watch_state.json --out data/recovery
-            python recovery_delivery.py queue --kind "$stage"
-            git add recovery_watch_state.json
-            if [[ -f "recovery_pending/$stage.eml" ]]; then git add "recovery_pending/$stage.eml"; fi
-            save "Save $stage research and pending delivery"
-            deliver "$stage"
           done
-          python recovery_delivery.py complete
+          python recovery_delivery.py queue --kind digest
+          if [[ -f recovery_pending/digest.eml ]]; then
+            git add recovery_pending/digest.eml
+          else
+            python recovery_delivery.py complete
+          fi
           git add recovery_watch_state.json
-          save "Record completed US recovery session"
+          save "Save daily research and delivery state"
+          deliver
       - uses: actions/upload-artifact@v4
         if: always() && inputs.mode != 'verify' && steps.session.outputs.ready == 'true'
         with:

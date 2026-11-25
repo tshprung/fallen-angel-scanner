@@ -7,6 +7,7 @@ from email.policy import SMTP
 from html import escape
 import json
 import math
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -221,6 +222,36 @@ def compose(directory, kind, rows, coverage, now):
         sources = [f'<a href="{escape(url,quote=True)}">{escape(label)}</a>' for label,url in e.get("sources",[])]
         if sources:
             parts.append("<p>"+" · ".join(sources)+"</p>")
+    write_report(directory,kind,subject,parts,rows,now)
+
+
+def compose_digest(directory, now):
+    companies = {}
+    for stage in ("early", "followup"):
+        report = json.loads((directory / (stage + ".json")).read_text(encoding="utf-8"))
+        for event in report["rows"]:
+            companies[event["ticker"]] = event
+    session = json.loads((directory / "coverage.json").read_text(encoding="utf-8"))["date"]
+    count = len(companies)
+    subject = f"Recovery watch | {count} {'company' if count == 1 else 'companies'} | {session}"
+    parts = ["<p>Potential gain if the stock returns to its old price. Recovery unconfirmed.</p>"]
+    for ticker, event in companies.items():
+        price, reference = event.get("latest_close"), event.get("latest_reference")
+        if "quote" in event:
+            quote = event["quote"] or {}
+            price, reference = quote.get("price"), quote.get("reference")
+        upside = f"{100*(reference/price-1):+.1f}%" if price and reference else "upside unknown"
+        status = event.get("status") or ("Research hold" if event.get("hold") else "Research pending")
+        note = (event.get("brief") or event.get("hold") or "").strip().splitlines()
+        summary = note[0] if note and len(note[0].split()) <= 24 else ""
+        parts.append(f"<p><b>{escape(ticker)} {upside}</b> · {escape(status)}. {escape(summary)}</p>")
+    run_id = os.getenv("GITHUB_RUN_ID", "")
+    if run_id.isdigit():
+        parts.append(f'<p><a href="https://github.com/tshprung/fallen-angel-scanner/actions/runs/{run_id}">Full research and sources</a></p>')
+    write_report(directory, "digest", subject, parts, list(companies.values()), now)
+
+
+def write_report(directory, kind, subject, parts, rows, now):
     body="<!doctype html><html lang='en'><meta charset='utf-8'><body style='font:16px/1.5 Arial,sans-serif;max-width:720px;margin:24px auto'>"+ "".join(parts)+"</body></html>"
     msg=EmailMessage(policy=SMTP)
     msg["Subject"]=subject
