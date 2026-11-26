@@ -14,15 +14,20 @@
       "ticker": "AAOI",
       "name": "Applied Optoelectronics, Inc.",
       "key": "AAOI@2026-11-20",
-      "cap": 3485625856,
+      "cap": 3360361216,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -14.5,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 38.4000015259,
-      "latest_day": "2026-11-24",
+      "latest_close": 37.0200004578,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 0,
+        "years_with_three": 0
+      },
       "latest_reference": 55.8600006104,
-      "chart": "Latest close is 16.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 12.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "ADEA@2026-11-05": {
       "day": "2026-11-05",
@@ -32,21 +37,26 @@
       "reference": 22.75000014461289,
       "near_reference_sessions": 44,
       "range": [
-        11.623829438406192,
-        33.50683845839831
+        11.62383046029134,
+        33.50683845839832
       ],
       "ticker": "ADEA",
       "name": "Adeia Inc.",
       "key": "ADEA@2026-11-05",
-      "cap": 1489962112,
+      "cap": 1549560576,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -15.0,
       "hold": null,
-      "latest_close": 13.5,
-      "latest_day": "2026-11-24",
+      "latest_close": 14.029999733,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 22.669497301035413,
-      "chart": "Latest close is 5.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 9.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "ALAB@2026-11-05": {
       "day": "2026-11-05",
@@ -57,20 +67,25 @@
       "near_reference_sessions": 52,
       "range": [
         100.2699966431,
-        483.0199890137
+        483.01998901370007
       ],
       "ticker": "ALAB",
       "name": "Astera Labs, Inc.",
       "key": "ALAB@2026-11-05",
-      "cap": 33435811840,
+      "cap": 33268021248,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": null,
-      "latest_close": 191.3000030518,
-      "latest_day": "2026-11-24",
+      "latest_close": 190.3399963379,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 31,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 297.200012207,
-      "chart": "Latest close is 6.6% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "AMD@2026-11-05": {
       "day": "2026-11-05",
@@ -91,10 +106,15 @@
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 413.2699890137,
-      "latest_day": "2026-11-24",
+      "latest_close": 406.0299987793,
+      "latest_day": "2026-11-25",
       "latest_reference": 578.4400024414,
-      "chart": "Latest close is 2.2% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 0.4% above the 2026-11-05 closing low. A sustained rebound is unconfirmed.",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      }
     },
     "AORT@2026-11-16": {
       "day": "2026-11-16",
@@ -110,15 +130,20 @@
       "ticker": "AORT",
       "name": "Artivion, Inc.",
       "key": "AORT@2026-11-16",
-      "cap": 959694848,
+      "cap": 952864256,
       "sector": "Healthcare",
       "peer": "XLV",
       "peer_move": -0.9,
       "hold": null,
-      "latest_close": 19.6700000763,
-      "latest_day": "2026-11-24",
+      "latest_close": 19.5300006866,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 10,
+        "years_with_three": 2
+      },
       "latest_reference": 26.4500007629,
-      "chart": "Latest close is 8.3% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 7.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "APLD@2026-11-20": {
       "day": "2026-11-20",
@@ -138,10 +163,15 @@
       "peer": "XLK",
       "peer_move": -14.5,
       "hold": null,
-      "latest_close": 12.220000267,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 6.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 17.9099998474
+      "latest_close": 12.2899999619,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 7.0% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 17.9099998474,
+      "long_history": {
+        "months": 55,
+        "near": 1,
+        "years_with_three": 0
+      }
     },
     "ASTS@2026-11-18": {
       "day": "2026-11-18",
@@ -157,15 +187,20 @@
       "ticker": "ASTS",
       "name": "AST SpaceMobile, Inc.",
       "key": "ASTS@2026-11-18",
-      "cap": 9457180672,
+      "cap": 10426942464,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -4.1,
       "hold": null,
-      "latest_close": 23.6000003815,
-      "latest_day": "2026-11-24",
+      "latest_close": 26.0200004578,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 0,
+        "years_with_three": 0
+      },
       "latest_reference": 36.8899993896,
-      "chart": "Latest close is 1.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 11.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "AUGO@2026-11-20": {
       "day": "2026-11-20",
@@ -175,21 +210,26 @@
       "reference": 86.02671460768424,
       "near_reference_sessions": 83,
       "range": [
-        31.871501090863266,
-        105.76720682500645
+        31.871507928484316,
+        105.76720682500643
       ],
       "ticker": "AUGO",
       "name": "Aura Minerals Inc.",
       "key": "AUGO@2026-11-20",
-      "cap": 5087473152,
+      "cap": 5277823488,
       "sector": "Basic Materials",
       "peer": "XLB",
       "peer_move": -8.7,
       "hold": null,
-      "latest_close": 60.6699981689,
-      "latest_day": "2026-11-24",
+      "latest_close": 62.9399986267,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 16,
+        "near": 5,
+        "years_with_three": 1
+      },
       "latest_reference": 86.02671460768424,
-      "chart": "Latest close is 6.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 10.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "AVAV@2026-11-20": {
       "day": "2026-11-20",
@@ -200,27 +240,32 @@
       "near_reference_sessions": 24,
       "range": [
         102.0800018311,
-        392.8599853516
+        392.8599853516001
       ],
       "ticker": "AVAV",
       "name": "AeroVironment, Inc.",
       "key": "AVAV@2026-11-20",
-      "cap": 4543371264,
+      "cap": 4643487744,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -7.4,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 89.4000015259,
-      "latest_day": "2026-11-24",
+      "latest_close": 91.3700027466,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 7,
+        "years_with_three": 1
+      },
       "latest_reference": 126.9599990845,
-      "chart": "Latest close is 3.0% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 5.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "AXON@2026-11-09": {
       "day": "2026-11-09",
       "close": 303.1799926758,
       "drop": -30.79,
       "peak_day": "2026-10-29",
-      "reference": 438.049987793,
+      "reference": 438.04998779300007,
       "near_reference_sessions": 87,
       "range": [
         345.9400024414,
@@ -229,22 +274,27 @@
       "ticker": "AXON",
       "name": "Axon Enterprise, Inc.",
       "key": "AXON@2026-11-09",
-      "cap": 26003093504,
+      "cap": 27935490048,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -0.7,
       "hold": null,
-      "latest_close": 319.3200073242,
-      "latest_day": "2026-11-24",
-      "latest_reference": 438.049987793,
-      "chart": "Latest close is 9.7% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "latest_close": 343.049987793,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 6,
+        "years_with_three": 1
+      },
+      "latest_reference": 438.04998779300007,
+      "chart": "Latest close is 17.8% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "BE@2026-11-20": {
       "day": "2026-11-20",
       "close": 142.3899993896,
       "drop": -32.02,
       "peak_day": "2026-11-11",
-      "reference": 209.47000122070003,
+      "reference": 209.4700012207,
       "near_reference_sessions": 48,
       "range": [
         76.9700012207,
@@ -253,15 +303,20 @@
       "ticker": "BE",
       "name": "Bloom Energy Corporation",
       "key": "BE@2026-11-20",
-      "cap": 46243667968,
+      "cap": 45202952192,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -8.5,
       "hold": null,
-      "latest_close": 156.4100036621,
-      "latest_day": "2026-11-24",
-      "latest_reference": 209.47000122070003,
-      "chart": "Latest close is 9.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "latest_close": 152.8899993896,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
+      "latest_reference": 209.4700012207,
+      "chart": "Latest close is 7.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "BMNR@2026-11-20": {
       "day": "2026-11-20",
@@ -281,10 +336,15 @@
       "peer": "XLF",
       "peer_move": -6.9,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 13.1800003052,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 1.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 19.2399997711
+      "latest_close": 13.4399995804,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 3.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 19.2399997711,
+      "long_history": {
+        "months": 17,
+        "near": 4,
+        "years_with_three": 1
+      }
     },
     "BTU@2026-11-05": {
       "day": "2026-11-05",
@@ -294,21 +354,26 @@
       "reference": 23.32000019283354,
       "near_reference_sessions": 80,
       "range": [
-        20.75687117194212,
-        39.25621444192586
+        20.756872806098883,
+        39.25621753250768
       ],
       "ticker": "BTU",
       "name": "Peabody Energy Corporation",
       "key": "BTU@2026-11-05",
-      "cap": 1893106944,
+      "cap": 2005255040,
       "sector": "Energy",
       "peer": "XLE",
       "peer_move": -9.6,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 15.529999733,
-      "latest_day": "2026-11-24",
+      "latest_close": 16.4500007629,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 26,
+        "years_with_three": 4
+      },
       "latest_reference": 23.21312580932363,
-      "chart": "Latest close is 0.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "CDE@2026-11-20": {
       "day": "2026-11-20",
@@ -324,15 +389,20 @@
       "ticker": "CDE",
       "name": "Coeur Mining, Inc.",
       "key": "CDE@2026-11-20",
-      "cap": 11435099136,
+      "cap": 12007365632,
       "sector": "Basic Materials",
       "peer": "XLB",
       "peer_move": -8.7,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 11.1899995804,
-      "latest_day": "2026-11-24",
+      "latest_close": 11.75,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 7,
+        "years_with_three": 1
+      },
       "latest_reference": 16.4500007629,
-      "chart": "Latest close is 4.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 10.0% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "CIEN@2026-11-05": {
       "day": "2026-11-05",
@@ -348,15 +418,20 @@
       "ticker": "CIEN",
       "name": "Ciena Corporation",
       "key": "CIEN@2026-11-05",
-      "cap": 33930526720,
+      "cap": 34429689856,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -15.0,
       "hold": null,
-      "latest_close": 239.2700042725,
-      "latest_day": "2026-11-24",
+      "latest_close": 242.7899932861,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 5,
+        "years_with_three": 1
+      },
       "latest_reference": 363.2099914551,
-      "chart": "Latest close is 3.7% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 5.2% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "CLSK@2026-11-05": {
       "day": "2026-11-05",
@@ -372,15 +447,20 @@
       "ticker": "CLSK",
       "name": "CleanSpark, Inc.",
       "key": "CLSK@2026-11-05",
-      "cap": 1313619328,
+      "cap": 1330312448,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": 2.4,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 5.1149997711,
-      "latest_day": "2026-11-24",
+      "latest_close": 5.1799998283,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 7,
+        "years_with_three": 1
+      },
       "latest_reference": 8.5799999237,
-      "chart": "Latest close is 4.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 5.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "COHU@2026-11-05": {
       "day": "2026-11-05",
@@ -390,21 +470,26 @@
       "reference": 53.4000015259,
       "near_reference_sessions": 67,
       "range": [
-        21.379999160800004,
+        21.379999160799997,
         73.9100036621
       ],
       "ticker": "COHU",
       "name": "Cohu, Inc.",
       "key": "COHU@2026-11-05",
-      "cap": 1791666176,
+      "cap": 1789772160,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -23.0,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 37.8400001526,
-      "latest_day": "2026-11-24",
+      "latest_close": 37.7999992371,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 53.4000015259,
-      "chart": "Latest close is 8.4% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 8.3% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "CRCL@2026-11-20": {
       "day": "2026-11-20",
@@ -420,15 +505,20 @@
       "ticker": "CRCL",
       "name": "Circle Internet Group, Inc.",
       "key": "CRCL@2026-11-20",
-      "cap": 12242714624,
+      "cap": 12383818752,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": -4.5,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 47.7200012207,
-      "latest_day": "2026-11-24",
+      "latest_close": 48.2700004578,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 17,
+        "near": 4,
+        "years_with_three": 1
+      },
       "latest_reference": 67.8799972534,
-      "chart": "Latest close is 0.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 1.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "CRDO@2026-11-05": {
       "day": "2026-11-05",
@@ -444,39 +534,49 @@
       "ticker": "CRDO",
       "name": "Credo Technology Group Holding ",
       "key": "CRDO@2026-11-05",
-      "cap": 20009361408,
+      "cap": 20072325120,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": null,
-      "latest_close": 106.4599990845,
-      "latest_day": "2026-11-24",
+      "latest_close": 106.7949981689,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 57,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 173.6900024414,
-      "chart": "Latest close is 6.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "CRWV@2026-11-20": {
       "day": "2026-11-20",
       "close": 39.5099983215,
       "drop": -34.98,
       "peak_day": "2026-11-11",
-      "reference": 60.7700004578,
+      "reference": 60.770000457799995,
       "near_reference_sessions": 13,
       "range": [
-        43.659999847399995,
+        43.6599998474,
         137.9799957275
       ],
       "ticker": "CRWV",
       "name": "CoreWeave, Inc.",
       "key": "CRWV@2026-11-20",
-      "cap": 23693735936,
+      "cap": 23674269696,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -14.5,
       "hold": null,
-      "latest_close": 42.6049995422,
-      "latest_day": "2026-11-24",
-      "latest_reference": 60.7700004578,
-      "chart": "Latest close is 7.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "latest_close": 42.5699996948,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 20,
+        "near": 1,
+        "years_with_three": 0
+      },
+      "latest_reference": 60.770000457799995,
+      "chart": "Latest close is 7.7% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "CTVA@2026-11-18": {
       "day": "2026-11-18",
@@ -486,21 +586,26 @@
       "reference": 12.2600002289,
       "near_reference_sessions": 182,
       "range": [
-        9.225143774432514,
+        9.22514568193394,
         14.4499998093
       ],
       "ticker": "CTVA",
       "name": "Corteva, Inc.",
       "key": "CTVA@2026-11-18",
-      "cap": 5445355520,
+      "cap": 5492067840,
       "sector": "Basic Materials",
       "peer": "XLB",
       "peer_move": -6.4,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 8.1599998474,
-      "latest_day": "2026-11-24",
+      "latest_close": 8.2299995422,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 10,
+        "years_with_three": 1
+      },
       "latest_reference": 12.2600002289,
-      "chart": "Latest close is 3.4% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 4.3% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "CVI@2026-11-04": {
       "day": "2026-11-04",
@@ -510,19 +615,24 @@
       "reference": 62.020002395860196,
       "near_reference_sessions": 12,
       "range": [
-        20.597235393494906,
+        20.597233481030287,
         63.12000288101282
       ],
       "ticker": "CVI",
       "name": "CVR Energy Inc.",
       "key": "CVI@2026-11-04",
-      "cap": 3495723264,
+      "cap": 3379125248,
       "sector": "Energy",
       "peer": "XLE",
       "peer_move": -8.8,
       "hold": null,
-      "latest_close": 31.4799995422,
-      "latest_day": "2026-11-24",
+      "latest_close": 30.4300003052,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 0,
+        "years_with_three": 0
+      },
       "latest_reference": 61.86186412766394,
       "chart": "Latest close is at the post-alert low."
     },
@@ -540,15 +650,20 @@
       "ticker": "DDOG",
       "name": "Datadog, Inc.",
       "key": "DDOG@2026-11-04",
-      "cap": 59709218816,
+      "cap": 57134985216,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -6.9,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 165.3800048828,
-      "latest_day": "2026-11-24",
+      "latest_close": 158.25,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 280.8200073242,
-      "chart": "Latest close is 5.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 0.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "DELL@2026-11-05": {
       "day": "2026-11-05",
@@ -558,21 +673,26 @@
       "reference": 501.9599914551,
       "near_reference_sessions": 36,
       "range": [
-        110.41839153421871,
+        110.41839153421878,
         587.5979526783248
       ],
       "ticker": "DELL",
       "name": "Dell Technologies Inc.",
       "key": "DELL@2026-11-05",
-      "cap": 187742781440,
+      "cap": 188874522624,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -14.3,
       "hold": null,
-      "latest_close": 295.2799987793,
-      "latest_day": "2026-11-24",
+      "latest_close": 297.0599975586,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 501.9599914551,
-      "chart": "Latest close is 6.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "DOCN@2026-11-05": {
       "day": "2026-11-05",
@@ -588,15 +708,20 @@
       "ticker": "DOCN",
       "name": "DigitalOcean Holdings, Inc.",
       "key": "DOCN@2026-11-05",
-      "cap": 8732944384,
+      "cap": 8462731776,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -14.3,
       "hold": null,
-      "latest_close": 74.0100021362,
-      "latest_day": "2026-11-24",
+      "latest_close": 71.7200012207,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 0
+      },
       "latest_reference": 106.3899993896,
-      "chart": "Latest close is 10.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 7.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "DOX@2026-11-16": {
       "day": "2026-11-16",
@@ -607,20 +732,25 @@
       "near_reference_sessions": 135,
       "range": [
         48.828893623099155,
-        82.44210153453415
+        82.44210455718245
       ],
       "ticker": "DOX",
       "name": "Amdocs Limited",
       "key": "DOX@2026-11-16",
-      "cap": 4372900352,
+      "cap": 4521169408,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -5.4,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 41.8800010681,
-      "latest_day": "2026-11-24",
+      "latest_close": 43.2999992371,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 9,
+        "years_with_three": 2
+      },
       "latest_reference": 63.5400009155,
-      "chart": "Latest close is 3.4% above the 2026-11-19 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 6.9% above the 2026-11-19 closing low. At least two consecutive higher closes."
     },
     "DT@2026-11-05": {
       "day": "2026-11-05",
@@ -636,15 +766,20 @@
       "ticker": "DT",
       "name": "Dynatrace, Inc.",
       "key": "DT@2026-11-05",
-      "cap": 13451940864,
+      "cap": 13592543232,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -12.8,
       "hold": null,
-      "latest_close": 46.8800010681,
-      "latest_day": "2026-11-24",
+      "latest_close": 47.3699989319,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 64.1800003052,
-      "chart": "Latest close is 8.5% above the 2026-11-17 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 9.7% above the 2026-11-17 closing low. At least two consecutive higher closes."
     },
     "ECG@2026-11-05": {
       "day": "2026-11-05",
@@ -660,22 +795,27 @@
       "ticker": "ECG",
       "name": "Everus Construction Group, Inc.",
       "key": "ECG@2026-11-05",
-      "cap": 4011089920,
+      "cap": 4036111360,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -5.2,
       "hold": null,
-      "latest_close": 78.5500030518,
-      "latest_day": "2026-11-24",
+      "latest_close": 79.0400009155,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 25,
+        "near": 5,
+        "years_with_three": 1
+      },
       "latest_reference": 112.7300033569,
-      "chart": "Latest close is 8.4% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 9.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "ENPH@2026-11-20": {
       "day": "2026-11-20",
       "close": 19.6299991608,
       "drop": -32.5,
       "peak_day": "2026-11-09",
-      "reference": 29.079999923699997,
+      "reference": 29.0799999237,
       "near_reference_sessions": 44,
       "range": [
         24.9899997711,
@@ -684,15 +824,20 @@
       "ticker": "ENPH",
       "name": "Enphase Energy, Inc.",
       "key": "ENPH@2026-11-20",
-      "cap": 2695241984,
+      "cap": 2760076032,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -12.8,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 20.3700008392,
-      "latest_day": "2026-11-24",
-      "latest_reference": 29.079999923699997,
-      "chart": "Latest close is 3.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "latest_close": 20.8600006104,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
+      "latest_reference": 29.0799999237,
+      "chart": "Latest close is 6.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "FFIV@2026-11-05": {
       "day": "2026-11-05",
@@ -708,15 +853,20 @@
       "ticker": "FFIV",
       "name": "F5, Inc.",
       "key": "FFIV@2026-11-05",
-      "cap": 18041337856,
+      "cap": 18051586048,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -12.8,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 316.8699951172,
-      "latest_day": "2026-11-24",
+      "latest_close": 317.049987793,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 461.60000610349994,
-      "chart": "Latest close is 4.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 4.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "FIVN@2026-11-18": {
       "day": "2026-11-18",
@@ -732,15 +882,20 @@
       "ticker": "FIVN",
       "name": "Five9, Inc.",
       "key": "FIVN@2026-11-18",
-      "cap": 1852396288,
+      "cap": 1801584256,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -7.2,
       "hold": null,
-      "latest_close": 24.7900009155,
-      "latest_day": "2026-11-24",
+      "latest_close": 24.1100006104,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 1
+      },
       "latest_reference": 36.3499984741,
-      "chart": "Latest close is 10.0% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 7.0% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "FIX@2026-10-23": {
       "day": "2026-10-23",
@@ -760,10 +915,15 @@
       "peer": "XLI",
       "peer_move": -2.7,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 1096.5600585938,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 13.7% above the 2026-11-05 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 1714.1704469231693
+      "latest_close": 1099.5799560547,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 14.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 1714.1704469231693,
+      "long_history": {
+        "months": 60,
+        "near": 5,
+        "years_with_three": 1
+      }
     },
     "FORM@2026-11-05": {
       "day": "2026-11-05",
@@ -779,36 +939,46 @@
       "ticker": "FORM",
       "name": "FormFactor, Inc.",
       "key": "FORM@2026-11-05",
-      "cap": 5734650880,
+      "cap": 5658762752,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": null,
-      "latest_close": 73.3000030518,
-      "latest_day": "2026-11-24",
+      "latest_close": 72.3300018311,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 110.3099975586,
-      "chart": "Latest close is 2.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 0.8% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "FPS@2026-11-05": {
       "day": "2026-11-05",
       "close": 18.2099990845,
       "drop": -37.79,
       "peak_day": "2026-10-28",
-      "reference": 29.2700004578,
+      "reference": 29.270000457799995,
       "near_reference_sessions": null,
       "range": null,
       "ticker": "FPS",
       "name": "Forgent Power Solutions, Inc.",
       "key": "FPS@2026-11-05",
-      "cap": 5671510016,
+      "cap": 5729351680,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -3.6,
       "hold": null,
-      "latest_close": 18.6299991608,
-      "latest_day": "2026-11-24",
-      "latest_reference": 29.2700004578,
-      "chart": "Latest close is 3.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "latest_close": 18.8199996948,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 8,
+        "near": 2,
+        "years_with_three": 0
+      },
+      "latest_reference": 29.270000457799995,
+      "chart": "Latest close is 4.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "FSLR@2026-11-20": {
       "day": "2026-11-20",
@@ -824,15 +994,20 @@
       "ticker": "FSLR",
       "name": "First Solar, Inc.",
       "key": "FSLR@2026-11-20",
-      "cap": 15907210240,
+      "cap": 15894312960,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -9.5,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 148.0,
-      "latest_day": "2026-11-24",
+      "latest_close": 147.8800048828,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 16,
+        "years_with_three": 3
+      },
       "latest_reference": 201.13999938959998,
-      "chart": "Latest close is 7.6% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 7.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "FTNT@2026-11-02": {
       "day": "2026-11-02",
@@ -848,15 +1023,20 @@
       "ticker": "FTNT",
       "name": "Fortinet, Inc.",
       "key": "FTNT@2026-11-02",
-      "cap": 97349042176,
+      "cap": 99156434944,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -8.1,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 132.5,
-      "latest_day": "2026-11-24",
+      "latest_close": 134.9600067139,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 185.0,
-      "chart": "Latest close is 11.5% above the 2026-11-06 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 13.6% above the 2026-11-06 closing low. At least two consecutive higher closes."
     },
     "GLXY@2026-11-05": {
       "day": "2026-11-05",
@@ -866,21 +1046,26 @@
       "reference": 19.0900001526,
       "near_reference_sessions": 33,
       "range": [
-        15.720000267,
+        15.720000266999998,
         42.8600006104
       ],
       "ticker": "GLXY",
       "name": "Galaxy Digital Inc.",
       "key": "GLXY@2026-11-05",
-      "cap": 6746877440,
+      "cap": 6752718848,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": 2.4,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 11.5500001907,
-      "latest_day": "2026-11-24",
+      "latest_close": 11.5600004196,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 17,
+        "near": 3,
+        "years_with_three": 0
+      },
       "latest_reference": 19.0900001526,
-      "chart": "Latest close is 2.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 3.0% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "GTM@2026-11-18": {
       "day": "2026-11-18",
@@ -896,15 +1081,20 @@
       "ticker": "GTM",
       "name": "ZoomInfo Technologies Inc.",
       "key": "GTM@2026-11-18",
-      "cap": 874457472,
+      "cap": 897932864,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -7.2,
       "hold": null,
-      "latest_close": 2.9800000191,
-      "latest_day": "2026-11-24",
+      "latest_close": 3.0599999428,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 4.2600002289,
-      "chart": "Latest close is 8.0% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 10.9% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "HL@2026-11-20": {
       "day": "2026-11-20",
@@ -914,21 +1104,26 @@
       "reference": 15.409999362838242,
       "near_reference_sessions": 79,
       "range": [
-        12.09916425465313,
-        31.790331510571153
+        12.09916425465316,
+        31.790329602445464
       ],
       "ticker": "HL",
       "name": "Hecla Mining Company",
       "key": "HL@2026-11-20",
-      "cap": 7322372608,
+      "cap": 7577648128,
       "sector": "Basic Materials",
       "peer": "XLB",
       "peer_move": -8.7,
       "hold": null,
-      "latest_close": 10.8999996185,
-      "latest_day": "2026-11-24",
+      "latest_close": 11.279999733,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 15.404497756402995,
-      "chart": "Latest close is 3.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 7.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "ICHR@2026-11-05": {
       "day": "2026-11-05",
@@ -949,34 +1144,44 @@
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 26.3899993896,
-      "latest_day": "2026-11-24",
+      "latest_close": 25.6399993896,
+      "latest_day": "2026-11-25",
       "latest_reference": 43.0800018311,
-      "chart": "Latest close is at the post-alert low."
+      "chart": "Latest close is at the post-alert low.",
+      "long_history": {
+        "months": 60,
+        "near": 6,
+        "years_with_three": 1
+      }
     },
     "IESC@2026-11-05": {
       "day": "2026-11-05",
       "close": 145.5800018311,
       "drop": -35.98,
       "peak_day": "2026-10-27",
-      "reference": 227.41000366210002,
+      "reference": 227.41000366209997,
       "near_reference_sessions": 69,
       "range": [
-        178.9700012207,
-        396.9800109863
+        178.97000122070003,
+        396.98001098630004
       ],
       "ticker": "IESC",
       "name": "IES Holdings, Inc.",
       "key": "IESC@2026-11-05",
-      "cap": 6626976768,
+      "cap": 6864053760,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -3.2,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 166.0399932861,
-      "latest_day": "2026-11-24",
-      "latest_reference": 227.41000366210002,
-      "chart": "Latest close is 14.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "latest_close": 171.9799957275,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
+      "latest_reference": 227.41000366209997,
+      "chart": "Latest close is 18.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "INTC@2026-10-30": {
       "day": "2026-10-30",
@@ -992,15 +1197,20 @@
       "ticker": "INTC",
       "name": "Intel Corporation",
       "key": "INTC@2026-10-30",
-      "cap": 291261972480,
+      "cap": 289508032512,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -9.7,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 54.7999992371,
-      "latest_day": "2026-11-24",
+      "latest_close": 54.4700012207,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 95.5299987793,
-      "chart": "Latest close is 6.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "IONQ@2026-11-18": {
       "day": "2026-11-18",
@@ -1010,21 +1220,26 @@
       "reference": 35.3400001526,
       "near_reference_sessions": 60,
       "range": [
-        26.5900001526,
+        26.590000152599995,
         72.0699996948
       ],
       "ticker": "IONQ",
       "name": "IonQ, Inc.",
       "key": "IONQ@2026-11-18",
-      "cap": 10368553984,
+      "cap": 10896239616,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -4.1,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 22.3999996185,
-      "latest_day": "2026-11-24",
+      "latest_close": 23.5400009155,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 0
+      },
       "latest_reference": 35.3400001526,
-      "chart": "Latest close is 8.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 13.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "IREN@2026-11-19": {
       "day": "2026-11-19",
@@ -1040,15 +1255,20 @@
       "ticker": "IREN",
       "name": "IREN LIMITED",
       "key": "IREN@2026-11-19",
-      "cap": 5495428096,
+      "cap": 5452992512,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": -2.8,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 12.9499998093,
-      "latest_day": "2026-11-24",
+      "latest_close": 12.8500003815,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 0,
+        "years_with_three": 0
+      },
       "latest_reference": 21.6399993896,
-      "chart": "Latest close is 9.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 8.7% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "KALU@2026-10-26": {
       "day": "2026-10-26",
@@ -1068,10 +1288,15 @@
       "peer": "XLB",
       "peer_move": 0.1,
       "hold": null,
-      "latest_close": 95.6200027466,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 6.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 152.85289540320014
+      "latest_close": 94.5899963379,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 4.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 152.85289540320014,
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      }
     },
     "KRMN@2026-11-20": {
       "day": "2026-11-20",
@@ -1087,15 +1312,20 @@
       "ticker": "KRMN",
       "name": "Karman Holdings Inc.",
       "key": "KRMN@2026-11-20",
-      "cap": 3843477760,
+      "cap": 3879261696,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -7.4,
       "hold": null,
-      "latest_close": 29.0,
-      "latest_day": "2026-11-24",
+      "latest_close": 29.2700004578,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 21,
+        "near": 5,
+        "years_with_three": 1
+      },
       "latest_reference": 45.9000015259,
-      "chart": "Latest close is at the post-alert low."
+      "chart": "Latest close is 0.9% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "LBRT@2026-11-05": {
       "day": "2026-11-05",
@@ -1105,21 +1335,26 @@
       "reference": 17.6100006104,
       "near_reference_sessions": 86,
       "range": [
-        14.963174682500254,
-        33.686274124941214
+        14.963173690084416,
+        33.68627620872644
       ],
       "ticker": "LBRT",
       "name": "Liberty Energy Inc.",
       "key": "LBRT@2026-11-05",
-      "cap": 1832639616,
+      "cap": 1945241728,
       "sector": "Energy",
       "peer": "XLE",
       "peer_move": -10.0,
       "hold": null,
-      "latest_close": 11.2299995422,
-      "latest_day": "2026-11-24",
+      "latest_close": 11.9200000763,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 15,
+        "years_with_three": 3
+      },
       "latest_reference": 17.6100006104,
-      "chart": "Latest close is 4.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 10.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "LCID@2026-11-20": {
       "day": "2026-11-20",
@@ -1140,10 +1375,15 @@
       "peer": "XLY",
       "peer_move": -7.1,
       "hold": null,
-      "latest_close": 2.6400001049,
-      "latest_day": "2026-11-24",
+      "latest_close": 2.5599999428,
+      "latest_day": "2026-11-25",
       "latest_reference": 3.7699999808999998,
-      "chart": "Latest close is 5.6% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 2.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      }
     },
     "LEU@2026-11-20": {
       "day": "2026-11-20",
@@ -1154,20 +1394,25 @@
       "near_reference_sessions": 9,
       "range": [
         89.0299987793,
-        337.76000976560005
+        337.7600097656
       ],
       "ticker": "LEU",
       "name": "Centrus Energy Corp.",
       "key": "LEU@2026-11-20",
-      "cap": 1732774528,
+      "cap": 1715248896,
       "sector": "Energy",
       "peer": "XLE",
       "peer_move": -2.3,
       "hold": null,
-      "latest_close": 84.0400009155,
-      "latest_day": "2026-11-24",
+      "latest_close": 83.1900024414,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 117.3399963379,
-      "chart": "Latest close is 3.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 2.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "LITE@2026-11-12": {
       "day": "2026-11-12",
@@ -1183,39 +1428,49 @@
       "ticker": "LITE",
       "name": "Lumentum Holdings Inc.",
       "key": "LITE@2026-11-12",
-      "cap": 44174434304,
+      "cap": 43218612224,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -7.9,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 487.1199951172,
-      "latest_day": "2026-11-24",
+      "latest_close": 476.5799865723,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 5,
+        "years_with_three": 1
+      },
       "latest_reference": 919.5300292969,
-      "chart": "Latest close is 5.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 3.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "LQDT@2026-11-20": {
       "day": "2026-11-20",
       "close": 31.8700008392,
       "drop": -30.72,
       "peak_day": "2026-11-10",
-      "reference": 46.0,
+      "reference": 45.99999999999999,
       "near_reference_sessions": 59,
       "range": [
-        22.159999847399998,
+        22.1599998474,
         46.7599983215
       ],
       "ticker": "LQDT",
       "name": "Liquidity Services, Inc.",
       "key": "LQDT@2026-11-20",
-      "cap": 1052741056,
+      "cap": 1094486528,
       "sector": "Consumer Cyclical",
       "peer": "XLY",
       "peer_move": -7.1,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 33.5400009155,
-      "latest_day": "2026-11-24",
-      "latest_reference": 46.0,
-      "chart": "Latest close is 5.2% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "latest_close": 34.8699989319,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
+      "latest_reference": 45.99999999999999,
+      "chart": "Latest close is 9.4% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "MARA@2026-11-20": {
       "day": "2026-11-20",
@@ -1225,21 +1480,26 @@
       "reference": 7.6599998474,
       "near_reference_sessions": 32,
       "range": [
-        5.8800001144000005,
+        5.8800001144,
         17.1299991608
       ],
       "ticker": "MARA",
       "name": "MARA Holdings, Inc.",
       "key": "MARA@2026-11-20",
-      "cap": 2095868544,
+      "cap": 2099742720,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": -6.9,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 5.4099998474,
-      "latest_day": "2026-11-24",
+      "latest_close": 5.4200000763,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 0
+      },
       "latest_reference": 7.6599998474,
-      "chart": "Latest close is 6.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "MOD@2026-11-04": {
       "day": "2026-11-04",
@@ -1255,15 +1515,20 @@
       "ticker": "MOD",
       "name": "Modexus Solutions, Inc.",
       "key": "MOD@2026-11-04",
-      "cap": 6975712256,
+      "cap": 7252868096,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": 0.7,
       "hold": null,
-      "latest_close": 131.1300048828,
-      "latest_day": "2026-11-24",
+      "latest_close": 136.3399963379,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 5,
+        "years_with_three": 1
+      },
       "latest_reference": 149.7799987793,
-      "chart": "Latest close is 43.5% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 49.2% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "MRVL@2026-11-02": {
       "day": "2026-11-02",
@@ -1273,45 +1538,55 @@
       "reference": 251.6499938965,
       "near_reference_sessions": 44,
       "range": [
-        73.66078528122628,
-        316.2805547653252
+        73.66077765162528,
+        316.2805547653253
       ],
       "ticker": "MRVL",
       "name": "Marvell Technology, Inc.",
       "key": "MRVL@2026-11-02",
-      "cap": 118382206976,
+      "cap": 117806342144,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -13.1,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 131.5700073242,
-      "latest_day": "2026-11-24",
+      "latest_close": 130.9299926758,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 251.6499938965,
-      "chart": "Latest close is 7.6% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 7.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "MSTR@2026-11-17": {
       "day": "2026-11-17",
       "close": 96.5,
       "drop": -32.3,
       "peak_day": "2026-11-04",
-      "reference": 142.5399932861,
+      "reference": 142.53999328610004,
       "near_reference_sessions": 83,
       "range": [
-        82.3099975586,
-        269.5100097656
+        82.30999755860002,
+        269.51000976560005
       ],
       "ticker": "MSTR",
       "name": "Strategy Inc",
       "key": "MSTR@2026-11-17",
-      "cap": 32994334720,
+      "cap": 34019688448,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -7.5,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 77.5500030518,
-      "latest_day": "2026-11-24",
+      "latest_close": 79.9599990845,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 9,
+        "years_with_three": 2
+      },
       "latest_reference": 142.5399932861,
-      "chart": "Latest close is at the post-alert low."
+      "chart": "Latest close is 3.1% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "MU@2026-11-05": {
       "day": "2026-11-05",
@@ -1321,21 +1596,26 @@
       "reference": 983.2299804688,
       "near_reference_sessions": 79,
       "range": [
-        198.2373309319725,
-        1213.176128066187
+        198.2373327895637,
+        1213.1761280661874
       ],
       "ticker": "MU",
       "name": "Micron Technology, Inc.",
       "key": "MU@2026-11-05",
-      "cap": 712559034368,
+      "cap": 680268201984,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 629.7899780273,
-      "latest_day": "2026-11-24",
+      "latest_close": 601.25,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 983.2299804688,
-      "chart": "Latest close is 5.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 1.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "MXL@2026-11-20": {
       "day": "2026-11-20",
@@ -1355,34 +1635,44 @@
       "peer": "SOXX",
       "peer_move": -20.6,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 41.8899993896,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 1.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 59.9500007629
+      "latest_close": 42.0499992371,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 1.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 59.950000762900004,
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 1
+      }
     },
     "NOW@2026-10-29": {
       "day": "2026-10-29",
       "close": 109.6699981689,
       "drop": -31.01,
       "peak_day": "2026-10-23",
-      "reference": 158.96000671389996,
+      "reference": 158.9600067139,
       "near_reference_sessions": 46,
       "range": [
-        82.99999999999999,
-        189.25799560549996
+        83.0,
+        189.2579956055
       ],
       "ticker": "NOW",
       "name": "ServiceNow, Inc.",
       "key": "NOW@2026-10-29",
-      "cap": 95218499584,
+      "cap": 95654436864,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": 3.0,
       "hold": null,
-      "latest_close": 91.7399978638,
-      "latest_day": "2026-11-24",
+      "latest_close": 92.1600036621,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 10,
+        "years_with_three": 2
+      },
       "latest_reference": 158.9600067139,
-      "chart": "Latest close is 4.7% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 5.2% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "NVDA@2026-11-20": {
       "day": "2026-11-20",
@@ -1398,15 +1688,20 @@
       "ticker": "NVDA",
       "name": "NVIDIA Corporation",
       "key": "NVDA@2026-11-20",
-      "cap": 3751960903680,
+      "cap": 3605147156480,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -9.6,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 155.3800048828,
-      "latest_day": "2026-11-24",
+      "latest_close": 149.3000030518,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 13,
+        "years_with_three": 2
+      },
       "latest_reference": 186.6399993896,
-      "chart": "Latest close is 23.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 18.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "NXT@2026-11-20": {
       "day": "2026-11-20",
@@ -1422,15 +1717,20 @@
       "ticker": "NXT",
       "name": "Nextpower Inc.",
       "key": "NXT@2026-11-20",
-      "cap": 10027372544,
+      "cap": 10519896064,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -9.5,
       "hold": null,
-      "latest_close": 65.7600021362,
-      "latest_day": "2026-11-24",
+      "latest_close": 68.9899978638,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 45,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 104.9049987793,
-      "chart": "Latest close is at the post-alert low."
+      "chart": "Latest close is 4.9% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "ONTO@2026-11-05": {
       "day": "2026-11-05",
@@ -1440,21 +1740,26 @@
       "reference": 223.6799926758,
       "near_reference_sessions": 54,
       "range": [
-        124.08999633789999,
+        124.0899963379,
         378.450012207
       ],
       "ticker": "ONTO",
       "name": "Onto Innovation Inc.",
       "key": "ONTO@2026-11-05",
-      "cap": 8515148800,
+      "cap": 8449866752,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": null,
-      "latest_close": 173.4799957275,
-      "latest_day": "2026-11-24",
+      "latest_close": 172.1499938965,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 8,
+        "years_with_three": 2
+      },
       "latest_reference": 223.6799926758,
-      "chart": "Latest close is 11.2% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 10.4% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "P@2026-11-05": {
       "day": "2026-11-05",
@@ -1464,21 +1769,26 @@
       "reference": 138.7299957275,
       "near_reference_sessions": 14,
       "range": [
-        56.9900016785,
+        56.99000167850001,
         156.9700012207
       ],
       "ticker": "P",
       "name": "Everpure, Inc.",
       "key": "P@2026-11-05",
-      "cap": 30723553280,
+      "cap": 31553290240,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -14.3,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 92.1999969482,
-      "latest_day": "2026-11-24",
+      "latest_close": 94.6900024414,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 138.7299957275,
-      "chart": "Latest close is 0.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 2.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "PENG@2026-11-05": {
       "day": "2026-11-05",
@@ -1494,87 +1804,107 @@
       "ticker": "PENG",
       "name": "Penguin Solutions, Inc.",
       "key": "PENG@2026-11-05",
-      "cap": 2277367040,
+      "cap": 2244634112,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -15.0,
       "hold": null,
-      "latest_close": 37.5699996948,
-      "latest_day": "2026-11-24",
+      "latest_close": 37.0299987793,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 60.7999992371,
-      "chart": "Latest close is 4.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 2.7% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "PRLB@2026-11-05": {
       "day": "2026-11-05",
       "close": 63.0299987793,
       "drop": -30.67,
       "peak_day": "2026-10-28",
-      "reference": 90.9100036621,
+      "reference": 90.91000366209998,
       "near_reference_sessions": 39,
       "range": [
-        46.8100013733,
-        98.6800003052
+        46.81000137329999,
+        98.68000030519998
       ],
       "ticker": "PRLB",
       "name": "Proto Labs, Inc.",
       "key": "PRLB@2026-11-05",
-      "cap": 1397698304,
+      "cap": 1405098624,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -3.6,
       "hold": null,
-      "latest_close": 58.5499992371,
-      "latest_day": "2026-11-24",
+      "latest_close": 58.8600006104,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 90.9100036621,
-      "chart": "Latest close is 1.8% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 2.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "QS@2026-11-18": {
       "day": "2026-11-18",
       "close": 3.1900000572,
       "drop": -30.2,
       "peak_day": "2026-11-09",
-      "reference": 4.5700001717,
+      "reference": 4.570000171700001,
       "near_reference_sessions": 25,
       "range": [
-        3.8949999808999998,
-        17.0699996948
+        3.894999980900001,
+        17.069999694800003
       ],
       "ticker": "QS",
       "name": "QuantumScape Corporation",
       "key": "QS@2026-11-18",
-      "cap": 1729323520,
+      "cap": 1828852992,
       "sector": "Consumer Cyclical",
       "peer": "XLY",
       "peer_move": -1.5,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 2.7799999714,
-      "latest_day": "2026-11-24",
+      "latest_close": 2.9400000572,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 0
+      },
       "latest_reference": 4.5700001717,
-      "chart": "Latest close is at the post-alert low."
+      "chart": "Latest close is 5.8% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "RDDT@2026-10-30": {
       "day": "2026-10-30",
       "close": 91.7300033569,
       "drop": -41.25,
       "peak_day": "2026-10-16",
-      "reference": 156.1399993896,
+      "reference": 156.13999938959998,
       "near_reference_sessions": 121,
       "range": [
-        121.8399963379,
-        258.9299926758
+        121.83999633789999,
+        258.92999267579995
       ],
       "ticker": "RDDT",
       "name": "Reddit, Inc.",
       "key": "RDDT@2026-10-30",
-      "cap": 17444085760,
+      "cap": 17670006784,
       "sector": "Communication Services",
       "peer": "XLC",
       "peer_move": -9.4,
       "hold": null,
-      "latest_close": 90.3399963379,
-      "latest_day": "2026-11-24",
+      "latest_close": 91.5100021362,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 31,
+        "near": 10,
+        "years_with_three": 2
+      },
       "latest_reference": 156.1399993896,
-      "chart": "Latest close is 5.9% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 7.2% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "RKLB@2026-11-20": {
       "day": "2026-11-20",
@@ -1594,10 +1924,15 @@
       "peer": "XLI",
       "peer_move": -8.5,
       "hold": null,
-      "latest_close": 45.9799995422,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 1.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 66.1500015259
+      "latest_close": 47.0200004578,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 3.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 66.1500015259,
+      "long_history": {
+        "months": 60,
+        "near": 7,
+        "years_with_three": 1
+      }
     },
     "ROCK@2026-11-13": {
       "day": "2026-11-13",
@@ -1613,39 +1948,49 @@
       "ticker": "ROCK",
       "name": "Gibraltar Industries, Inc.",
       "key": "ROCK@2026-11-13",
-      "cap": 866833152,
+      "cap": 906045632,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -0.4,
       "hold": null,
-      "latest_close": 29.1800003052,
-      "latest_day": "2026-11-24",
+      "latest_close": 30.5,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 13,
+        "years_with_three": 2
+      },
       "latest_reference": 43.5800018311,
-      "chart": "Latest close is 9.3% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 14.2% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "RSI@2026-10-30": {
       "day": "2026-10-30",
       "close": 12.1199998856,
       "drop": -34.56,
       "peak_day": "2026-10-16",
-      "reference": 18.5200004578,
+      "reference": 18.520000457800002,
       "near_reference_sessions": 106,
       "range": [
-        15.8900003433,
-        34.5200004578
+        15.890000343300004,
+        34.52000045780001
       ],
       "ticker": "RSI",
       "name": "Rush Street Interactive, Inc.",
       "key": "RSI@2026-10-30",
-      "cap": 2739966208,
+      "cap": 2830080512,
       "sector": "Consumer Cyclical",
       "peer": "XLY",
       "peer_move": 2.6,
       "hold": null,
-      "latest_close": 11.25,
-      "latest_day": "2026-11-24",
+      "latest_close": 11.6199998856,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 9,
+        "years_with_three": 1
+      },
       "latest_reference": 18.5200004578,
-      "chart": "Latest close is 0.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 3.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "RUN@2026-11-20": {
       "day": "2026-11-20",
@@ -1655,28 +2000,33 @@
       "reference": 9.9799995422,
       "near_reference_sessions": 27,
       "range": [
-        6.889999866499999,
+        6.8899998665,
         21.4099998474
       ],
       "ticker": "RUN",
       "name": "Sunrun Inc.",
       "key": "RUN@2026-11-20",
-      "cap": 1630814720,
+      "cap": 1669528576,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -9.5,
       "hold": null,
-      "latest_close": 6.7399997711,
-      "latest_day": "2026-11-24",
+      "latest_close": 6.9000000954,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 6,
+        "years_with_three": 1
+      },
       "latest_reference": 9.9799995422,
-      "chart": "Latest close is 2.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 4.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "SCSC@2026-11-06": {
       "day": "2026-11-06",
       "close": 42.7799987793,
       "drop": -30.16,
       "peak_day": "2026-10-27",
-      "reference": 61.25000000000001,
+      "reference": 61.25,
       "near_reference_sessions": 53,
       "range": [
         34.2700004578,
@@ -1685,15 +2035,20 @@
       "ticker": "SCSC",
       "name": "ScanSource, Inc.",
       "key": "SCSC@2026-11-06",
-      "cap": 881700672,
+      "cap": 894099008,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -13.1,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 43.3800010681,
-      "latest_day": "2026-11-24",
-      "latest_reference": 61.25000000000001,
-      "chart": "Latest close is 1.4% above the 2026-11-06 closing low. A sustained rebound is unconfirmed."
+      "latest_close": 43.9900016785,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
+      "latest_reference": 61.25,
+      "chart": "Latest close is 2.8% above the 2026-11-06 closing low. A sustained rebound is unconfirmed."
     },
     "SDGR@2026-11-20": {
       "day": "2026-11-20",
@@ -1709,39 +2064,49 @@
       "ticker": "SDGR",
       "name": "Schrodinger, Inc.",
       "key": "SDGR@2026-11-20",
-      "cap": 1876194048,
+      "cap": 1830396544,
       "sector": "Healthcare",
       "peer": "XLV",
       "peer_move": -5.9,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 24.9899997711,
-      "latest_day": "2026-11-24",
+      "latest_close": 24.3799991608,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 8,
+        "years_with_three": 1
+      },
       "latest_reference": 33.3899993896,
-      "chart": "Latest close is 9.0% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 6.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "SEDG@2026-11-20": {
       "day": "2026-11-20",
       "close": 18.2700004578,
       "drop": -33.95,
       "peak_day": "2026-11-09",
-      "reference": 27.65999984740001,
+      "reference": 27.6599998474,
       "near_reference_sessions": 20,
       "range": [
-        26.200000762900007,
-        78.51000213620001
+        26.200000762900004,
+        78.5100021362
       ],
       "ticker": "SEDG",
       "name": "SolarEdge Technologies, Inc.",
       "key": "SEDG@2026-11-20",
-      "cap": 1127461120,
+      "cap": 1219713664,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -12.8,
       "hold": null,
-      "latest_close": 18.2099990845,
-      "latest_day": "2026-11-24",
+      "latest_close": 19.7000007629,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 5,
+        "years_with_three": 0
+      },
       "latest_reference": 27.6599998474,
-      "chart": "Latest close is at the post-alert low."
+      "chart": "Latest close is 8.2% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "SFM@2026-10-29": {
       "day": "2026-10-29",
@@ -1751,21 +2116,26 @@
       "reference": 68.8600006104,
       "near_reference_sessions": 79,
       "range": [
-        62.4900016785,
-        114.1200027466
+        62.49000167850001,
+        114.12000274660001
       ],
       "ticker": "SFM",
       "name": "Sprouts Farmers Market, Inc.",
       "key": "SFM@2026-10-29",
-      "cap": 4776728064,
+      "cap": 4917843968,
       "sector": "Consumer Defensive",
       "peer": "XLP",
       "peer_move": -2.0,
       "hold": null,
-      "latest_close": 51.7900009155,
-      "latest_day": "2026-11-24",
+      "latest_close": 53.3199996948,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 6,
+        "years_with_three": 2
+      },
       "latest_reference": 68.8600006104,
-      "chart": "Latest close is 7.9% above the 2026-10-29 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 11.1% above the 2026-10-29 closing low. At least two consecutive higher closes."
     },
     "SMTC@2026-11-20": {
       "day": "2026-11-20",
@@ -1785,10 +2155,15 @@
       "peer": "SOXX",
       "peer_move": -20.6,
       "hold": null,
-      "latest_close": 86.4599990845,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is at the post-alert low.",
-      "latest_reference": 125.2200012207
+      "latest_close": 92.9300003052,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 7.5% above the 2026-11-24 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 125.22000122069998,
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      }
     },
     "SNEX@2026-11-19": {
       "day": "2026-11-19",
@@ -1804,15 +2179,20 @@
       "ticker": "SNEX",
       "name": "StoneX Group Inc.",
       "key": "SNEX@2026-11-19",
-      "cap": 4617664000,
+      "cap": 4385267712,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": -5.2,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 38.1500015259,
-      "latest_day": "2026-11-24",
+      "latest_close": 36.2299995422,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 58.0499992371,
-      "chart": "Latest close is 4.1% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is at the post-alert low."
     },
     "STRL@2026-11-04": {
       "day": "2026-11-04",
@@ -1828,15 +2208,20 @@
       "ticker": "STRL",
       "name": "Sterling Infrastructure, Inc.",
       "key": "STRL@2026-11-04",
-      "cap": 7813224448,
+      "cap": 7952011264,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": 0.7,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 256.1499938965,
-      "latest_day": "2026-11-24",
+      "latest_close": 260.700012207,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
       "latest_reference": 412.9599914551,
-      "chart": "Latest close is 4.8% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 6.7% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "TEAM@2026-11-06": {
       "day": "2026-11-06",
@@ -1846,21 +2231,26 @@
       "reference": 227.6100006104,
       "near_reference_sessions": 9,
       "range": [
-        57.1500015259,
+        57.15000152590001,
         225.5050048828
       ],
       "ticker": "TEAM",
       "name": "Atlassian Corporation",
       "key": "TEAM@2026-11-06",
-      "cap": 35463417856,
+      "cap": 36365049856,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -10.1,
       "hold": null,
-      "latest_close": 140.8099975586,
-      "latest_day": "2026-11-24",
+      "latest_close": 144.3899993896,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 11,
+        "years_with_three": 3
+      },
       "latest_reference": 227.6100006104,
-      "chart": "Latest close is 5.9% above the 2026-11-19 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 8.6% above the 2026-11-19 closing low. At least two consecutive higher closes."
     },
     "TEM@2026-11-20": {
       "day": "2026-11-20",
@@ -1876,15 +2266,20 @@
       "ticker": "TEM",
       "name": "Tempus AI, Inc.",
       "key": "TEM@2026-11-20",
-      "cap": 10001081344,
+      "cap": 9984665600,
       "sector": "Healthcare",
       "peer": "XLV",
       "peer_move": -5.9,
       "hold": null,
-      "latest_close": 54.8300018311,
-      "latest_day": "2026-11-24",
+      "latest_close": 54.7400016785,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 29,
+        "near": 4,
+        "years_with_three": 0
+      },
       "latest_reference": 84.4400024414,
-      "chart": "Latest close is 1.5% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 1.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "TRIP@2026-11-16": {
       "day": "2026-11-16",
@@ -1900,15 +2295,20 @@
       "ticker": "TRIP",
       "name": "TripAdvisor, Inc.",
       "key": "TRIP@2026-11-16",
-      "cap": 835389568,
+      "cap": 849528768,
       "sector": "Consumer Cyclical",
       "peer": "XLY",
       "peer_move": -3.4,
       "hold": null,
-      "latest_close": 7.0900001526,
-      "latest_day": "2026-11-24",
+      "latest_close": 7.2100000381,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 6,
+        "years_with_three": 1
+      },
       "latest_reference": 10.1999998093,
-      "chart": "Latest close is 1.6% above the 2026-11-16 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 3.3% above the 2026-11-16 closing low. At least two consecutive higher closes."
     },
     "TTMI@2026-11-05": {
       "day": "2026-11-05",
@@ -1924,15 +2324,20 @@
       "ticker": "TTMI",
       "name": "TTM Technologies, Inc.",
       "key": "TTMI@2026-11-05",
-      "cap": 6261413376,
+      "cap": 6129693696,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -15.0,
       "hold": null,
-      "latest_close": 59.4199981689,
-      "latest_day": "2026-11-24",
+      "latest_close": 58.1699981689,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 90.7900009155,
-      "chart": "Latest close is 1.0% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is at the post-alert low."
     },
     "UCTT@2026-11-05": {
       "day": "2026-11-05",
@@ -1943,18 +2348,23 @@
       "near_reference_sessions": 36,
       "range": [
         21.6499996185,
-        142.5899963379
+        142.58999633789998
       ],
       "ticker": "UCTT",
       "name": "Ultra Clean Holdings, Inc.",
       "key": "UCTT@2026-11-05",
-      "cap": 1730402688,
+      "cap": 1688677248,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -24.2,
       "hold": null,
-      "latest_close": 36.0800018311,
-      "latest_day": "2026-11-24",
+      "latest_close": 35.2099990845,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 1
+      },
       "latest_reference": 55.8800010681,
       "chart": "Latest close is at the post-alert low."
     },
@@ -1972,15 +2382,20 @@
       "ticker": "UNIT",
       "name": "Uniti Group Inc.",
       "key": "UNIT@2026-11-20",
-      "cap": 964022464,
+      "cap": 968878976,
       "sector": "Real Estate",
       "peer": "XLRE",
       "peer_move": -3.5,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 3.9700000286,
-      "latest_day": "2026-11-24",
+      "latest_close": 3.9900000095,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 6,
+        "years_with_three": 1
+      },
       "latest_reference": 5.2199997902,
-      "chart": "Latest close is 13.8% above the 2026-11-23 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 14.3% above the 2026-11-23 closing low. At least two consecutive higher closes."
     },
     "VCYT@2026-11-05": {
       "day": "2026-11-05",
@@ -1991,20 +2406,25 @@
       "near_reference_sessions": 36,
       "range": [
         30.0100002289,
-        60.4900016785
+        60.49000167850001
       ],
       "ticker": "VCYT",
       "name": "Veracyte, Inc.",
       "key": "VCYT@2026-11-05",
-      "cap": 2145692800,
+      "cap": 2093240832,
       "sector": "Healthcare",
       "peer": "XLV",
       "peer_move": -2.5,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 26.5900001526,
-      "latest_day": "2026-11-24",
+      "latest_close": 25.9400005341,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 52.5200004578,
-      "chart": "Latest close is 10.8% above the 2026-11-05 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 8.1% above the 2026-11-05 closing low. A sustained rebound is unconfirmed."
     },
     "VICR@2026-11-05": {
       "day": "2026-11-05",
@@ -2020,15 +2440,20 @@
       "ticker": "VICR",
       "name": "Vicor Corporation",
       "key": "VICR@2026-11-05",
-      "cap": 5793956864,
+      "cap": 5789341696,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -15.0,
       "hold": null,
-      "latest_close": 125.5500030518,
-      "latest_day": "2026-11-24",
+      "latest_close": 125.4499969482,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      },
       "latest_reference": 216.6499938965,
-      "chart": "Latest close is 0.4% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 0.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "WDC@2026-11-05": {
       "day": "2026-11-05",
@@ -2038,21 +2463,26 @@
       "reference": 396.4200134277,
       "near_reference_sessions": 30,
       "range": [
-        120.24543442132307,
+        120.24546041076697,
         745.9955277107391
       ],
       "ticker": "WDC",
       "name": "Western Digital Corporation",
       "key": "WDC@2026-11-05",
-      "cap": 102545866752,
+      "cap": 101984378880,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -15.0,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 273.950012207,
-      "latest_day": "2026-11-24",
+      "latest_close": 272.450012207,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 396.4200134277,
-      "chart": "Latest close is 4.9% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 4.3% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "XP@2026-10-26": {
       "day": "2026-10-26",
@@ -2072,34 +2502,44 @@
       "peer": "XLF",
       "peer_move": 1.8,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 13.6800003052,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 4.2% above the 2026-11-20 closing low. At least two consecutive higher closes.",
-      "latest_reference": 32.5999984741
+      "latest_close": 14.3900003433,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 9.6% above the 2026-11-20 closing low. At least two consecutive higher closes.",
+      "latest_reference": 32.5999984741,
+      "long_history": {
+        "months": 60,
+        "near": 0,
+        "years_with_three": 0
+      }
     },
     "LZ@2026-11-17": {
       "day": "2026-11-17",
       "close": 4.6500000954,
       "drop": -32.61,
       "peak_day": "2026-11-04",
-      "reference": 6.900000095399999,
+      "reference": 6.9000000954,
       "near_reference_sessions": 80,
       "range": [
-        5.429999828300001,
+        5.429999828299999,
         10.9300003052
       ],
       "ticker": "LZ",
       "name": "LegalZoom.com, Inc.",
       "key": "LZ@2026-11-17",
-      "cap": 772944896,
+      "cap": 782854400,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -2.8,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 4.6799998283,
-      "latest_day": "2026-11-24",
-      "latest_reference": 6.900000095399999,
-      "chart": "Latest close is 4.7% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "latest_close": 4.7399997711,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 11,
+        "years_with_three": 2
+      },
+      "latest_reference": 6.9000000954,
+      "chart": "Latest close is 6.0% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "FRMI@2026-11-03": {
       "day": "2026-11-03",
@@ -2119,10 +2559,15 @@
       "peer": "XLRE",
       "peer_move": 3.7,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 1.9800000191,
-      "latest_day": "2026-11-24",
-      "chart": "Latest close is 29.4% above the 2026-11-05 closing low. A sustained rebound is unconfirmed.",
-      "latest_reference": 3.0199999809
+      "latest_close": 1.9950000048,
+      "latest_day": "2026-11-25",
+      "chart": "Latest close is 30.4% above the 2026-11-05 closing low. A sustained rebound is unconfirmed.",
+      "latest_reference": 3.0199999809,
+      "long_history": {
+        "months": 12,
+        "near": 0,
+        "years_with_three": 0
+      }
     },
     "STRA@2026-11-06": {
       "day": "2026-11-06",
@@ -2138,15 +2583,20 @@
       "ticker": "STRA",
       "name": "Strategic Education, Inc.",
       "key": "STRA@2026-11-06",
-      "cap": 1166098560,
+      "cap": 1167192704,
       "sector": "Consumer Defensive",
       "peer": "XLP",
       "peer_move": 2.1,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 53.2900009155,
-      "latest_day": "2026-11-24",
+      "latest_close": 53.3400001526,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 31,
+        "years_with_three": 4
+      },
       "latest_reference": 81.7399978638,
-      "chart": "Latest close is 5.1% above the 2026-11-20 closing low. At least two consecutive higher closes."
+      "chart": "Latest close is 5.2% above the 2026-11-20 closing low. At least two consecutive higher closes."
     },
     "TER@2026-11-05": {
       "day": "2026-11-05",
@@ -2156,21 +2606,26 @@
       "reference": 323.6800023434163,
       "near_reference_sessions": 73,
       "range": [
-        138.58091756317728,
+        138.58093118513952,
         483.663888922309
       ],
       "ticker": "TER",
       "name": "Teradyne, Inc.",
       "key": "TER@2026-11-05",
-      "cap": 33288919040,
+      "cap": 33121865728,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -22.6,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 213.2200012207,
-      "latest_day": "2026-11-24",
+      "latest_close": 212.1499938965,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 1
+      },
       "latest_reference": 323.4999072436096,
-      "chart": "Latest close is 4.2% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
+      "chart": "Latest close is 3.7% above the 2026-11-20 closing low. A sustained rebound is unconfirmed."
     },
     "APLD@2026-11-24": {
       "day": "2026-11-24",
@@ -2186,15 +2641,20 @@
       "ticker": "APLD",
       "name": "Applied Digital Corporation",
       "key": "APLD@2026-11-24",
-      "cap": 3695170816,
+      "cap": 3716337920,
       "sector": "Technology",
       "peer": "XLK",
       "peer_move": -9.9,
       "hold": null,
-      "latest_close": 12.220000267,
-      "latest_day": "2026-11-24",
+      "latest_close": 12.2899999619,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 55,
+        "near": 1,
+        "years_with_three": 0
+      },
       "latest_reference": 17.9099998474,
-      "chart": "No completed session since the alert."
+      "chart": "Latest close is 0.6% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "BMNR@2026-11-24": {
       "day": "2026-11-24",
@@ -2210,22 +2670,27 @@
       "ticker": "BMNR",
       "name": "BitMine Immersion Technologies,",
       "key": "BMNR@2026-11-24",
-      "cap": 8256624640,
+      "cap": 8419501056,
       "sector": "Financial Services",
       "peer": "XLF",
       "peer_move": -4.3,
       "hold": "Specialist review required. Deposit funding, credit losses or sector-specific financing need separate analysis.",
-      "latest_close": 13.1800003052,
-      "latest_day": "2026-11-24",
+      "latest_close": 13.4399995804,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 17,
+        "near": 4,
+        "years_with_three": 1
+      },
       "latest_reference": 19.2399997711,
-      "chart": "No completed session since the alert."
+      "chart": "Latest close is 2.0% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "MXL@2026-11-24": {
       "day": "2026-11-24",
       "close": 41.8899993896,
       "drop": -30.13,
       "peak_day": "2026-11-11",
-      "reference": 59.9500007629,
+      "reference": 59.950000762900004,
       "near_reference_sessions": 21,
       "range": [
         13.0500001907,
@@ -2234,15 +2699,20 @@
       "ticker": "MXL",
       "name": "MaxLinear, Inc",
       "key": "MXL@2026-11-24",
-      "cap": 3811990272,
+      "cap": 3826550272,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -17.2,
       "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
-      "latest_close": 41.8899993896,
-      "latest_day": "2026-11-24",
-      "latest_reference": 59.9500007629,
-      "chart": "No completed session since the alert."
+      "latest_close": 42.0499992371,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 4,
+        "years_with_three": 1
+      },
+      "latest_reference": 59.950000762900004,
+      "chart": "Latest close is 0.4% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "RKLB@2026-11-24": {
       "day": "2026-11-24",
@@ -2258,42 +2728,165 @@
       "ticker": "RKLB",
       "name": "Rocket Lab Corporation",
       "key": "RKLB@2026-11-24",
-      "cap": 30943258624,
+      "cap": 31643150336,
       "sector": "Industrials",
       "peer": "XLI",
       "peer_move": -5.5,
       "hold": null,
-      "latest_close": 45.9799995422,
-      "latest_day": "2026-11-24",
+      "latest_close": 47.0200004578,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 7,
+        "years_with_three": 1
+      },
       "latest_reference": 66.1500015259,
-      "chart": "No completed session since the alert."
+      "chart": "Latest close is 2.3% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
     },
     "SMTC@2026-11-24": {
       "day": "2026-11-24",
       "close": 86.4599990845,
       "drop": -30.95,
       "peak_day": "2026-11-11",
-      "reference": 125.2200012207,
+      "reference": 125.22000122069998,
       "near_reference_sessions": 51,
       "range": [
-        62.56999969480001,
+        62.5699996948,
         197.1999969482
       ],
       "ticker": "SMTC",
       "name": "Semtech Corporation",
       "key": "SMTC@2026-11-24",
-      "cap": 8068933120,
+      "cap": 8672750592,
       "sector": "Technology",
       "peer": "SOXX",
       "peer_move": -17.2,
       "hold": null,
-      "latest_close": 86.4599990845,
-      "latest_day": "2026-11-24",
-      "latest_reference": 125.2200012207,
-      "chart": "No completed session since the alert."
+      "latest_close": 92.9300003052,
+      "latest_day": "2026-11-25",
+      "long_history": {
+        "months": 60,
+        "near": 3,
+        "years_with_three": 1
+      },
+      "latest_reference": 125.22000122069998,
+      "chart": "Latest close is 7.5% above the 2026-11-24 closing low. A sustained rebound is unconfirmed."
+    },
+    "ADIG@2026-11-12": {
+      "day": "2026-11-12",
+      "close": 9.8199996948,
+      "drop": -49.85,
+      "peak_day": "2026-11-11",
+      "reference": 19.5799999237,
+      "near_reference_sessions": null,
+      "range": null,
+      "ticker": "ADIG",
+      "name": "ADI Global Distribution Inc.",
+      "key": "ADIG@2026-11-12",
+      "cap": 759261504,
+      "sector": "Technology",
+      "peer": "XLK",
+      "peer_move": -0.3,
+      "hold": null,
+      "latest_close": 9.9899997711,
+      "latest_day": "2026-11-25",
+      "latest_reference": 19.5799999237,
+      "chart": "Latest close is 12.2% above the 2026-11-19 closing low. At least two consecutive higher closes.",
+      "long_history": {
+        "months": 4,
+        "near": 2,
+        "years_with_three": 0
+      }
+    },
+    "AMD@2026-11-25": {
+      "day": "2026-11-25",
+      "close": 406.0299987793,
+      "drop": -30.63,
+      "peak_day": "2026-11-12",
+      "reference": 585.299987793,
+      "near_reference_sessions": 44,
+      "range": [
+        190.9499969482,
+        649.4199829102
+      ],
+      "ticker": "AMD",
+      "name": "Advanced Micro Devices, Inc.",
+      "key": "AMD@2026-11-25",
+      "cap": 672006275072,
+      "sector": "Technology",
+      "peer": "SOXX",
+      "peer_move": -17.4,
+      "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
+      "latest_close": 406.0299987793,
+      "latest_day": "2026-11-25",
+      "latest_reference": 585.299987793,
+      "chart": "No completed session since the alert.",
+      "long_history": {
+        "months": 60,
+        "near": 2,
+        "years_with_three": 0
+      }
+    },
+    "ICHR@2026-11-25": {
+      "day": "2026-11-25",
+      "close": 25.6399993896,
+      "drop": -31.54,
+      "peak_day": "2026-11-11",
+      "reference": 37.4500007629,
+      "near_reference_sessions": 12,
+      "range": [
+        14.249999999999998,
+        112.2799987793
+      ],
+      "ticker": "ICHR",
+      "name": "Ichor Holdings",
+      "key": "ICHR@2026-11-25",
+      "cap": 963456384,
+      "sector": "Technology",
+      "peer": "SOXX",
+      "peer_move": -17.6,
+      "hold": "Leverage unverified. Confirm debt and book equity from the same balance sheet.",
+      "latest_close": 25.6399993896,
+      "latest_day": "2026-11-25",
+      "latest_reference": 37.4500007629,
+      "chart": "No completed session since the alert.",
+      "long_history": {
+        "months": 60,
+        "near": 13,
+        "years_with_three": 2
+      }
+    },
+    "LCID@2026-11-25": {
+      "day": "2026-11-25",
+      "close": 2.5599999428,
+      "drop": -30.25,
+      "peak_day": "2026-11-11",
+      "reference": 3.6700000763,
+      "near_reference_sessions": 15,
+      "range": [
+        2.9800000191,
+        17.1800003052
+      ],
+      "ticker": "LCID",
+      "name": "Lucid Group, Inc.",
+      "key": "LCID@2026-11-25",
+      "cap": 1014407232,
+      "sector": "Consumer Cyclical",
+      "peer": "XLY",
+      "peer_move": -2.9,
+      "hold": null,
+      "latest_close": 2.5599999428,
+      "latest_day": "2026-11-25",
+      "latest_reference": 3.6700000763,
+      "chart": "No completed session since the alert.",
+      "long_history": {
+        "months": 60,
+        "near": 0,
+        "years_with_three": 0
+      }
     }
   },
-  "last_scan": "2026-11-24",
+  "last_scan": "2026-11-25",
   "early_seen": [
     "NVDA@2026-11-20",
     "BE@2026-11-20",
@@ -2309,7 +2902,10 @@
     "SMTC@2026-11-24",
     "APLD@2026-11-24",
     "BMNR@2026-11-24",
-    "MXL@2026-11-24"
+    "MXL@2026-11-24",
+    "LCID@2026-11-25",
+    "ICHR@2026-11-25",
+    "AMD@2026-11-25"
   ],
   "preview_through": "2026-11-20",
   "audience": {
@@ -2322,6 +2918,11 @@
       "APLD",
       "BMNR",
       "MXL"
+    ],
+    "2026-11-25": [
+      "LCID",
+      "ICHR",
+      "AMD"
     ]
   },
   "reviewed": {
@@ -2333,7 +2934,10 @@
     "CRCL@2026-11-20": "128586af2f44c67ba03a7d5852d461e24973d92a27adfe80a33d6c8a0d9e5808",
     "RKLB@2026-11-24": "447bd9fe39bef437c98b478a9687318d364b51ed999a3a82dc5e5ee81205f2e8",
     "SMTC@2026-11-24": "0cb64767de153ffbb69a7a913ad8cf1925a04539e5d6ea1afc8e4afb29aead65",
-    "APLD@2026-11-24": "a47328700cbfec52c13d3fdec371d8bfb029d68310bf273b23c90e24f42714b1"
+    "APLD@2026-11-24": "a47328700cbfec52c13d3fdec371d8bfb029d68310bf273b23c90e24f42714b1",
+    "LCID@2026-11-25": "54ff3d1ad8519a6ae365726cca7b26e115cd5ac8b80ffcf00d60bc5694c2f272",
+    "ICHR@2026-11-25": "30059f16eec442c4155f67f7602b41cfc50f376b67248a38167387c7d4e974b5",
+    "AMD@2026-11-25": "30059f16eec442c4155f67f7602b41cfc50f376b67248a38167387c7d4e974b5"
   },
   "last_completed_delivery_session": "2026-11-24"
 }
