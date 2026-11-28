@@ -1,6 +1,6 @@
 {
   "months": {
-    "2026-11": 1491974
+    "2026-11": 1661975
   },
   "days": {
     "2026-11-23": [
@@ -19,7 +19,8 @@
       "LCID"
     ],
     "2026-11-28": [
-      "LCID"
+      "LCID",
+      "RKLB"
     ]
   },
   "note": "Conservative USD 0.50 opening allowance used for earlier November recovery pilots. Values are USD millionths.",
@@ -42,6 +43,7 @@
     "f4461db560d463fdb29e87d21bdb9ff9797d0e0f996d352087b2bf52a700bd59": "2026-11-25",
     "bbe2ecd9b3ad2baa0b3e3d831c09b158c07c87cb4826ff55bea918d8ea6696f1": "2026-11-26",
     "fbbff70a7381848733e50f4041dfa572fc60836f157ef4b44966e67262f95750": "2026-11-28",
-    "f5b3bc182984aa74b8842d53afa9a1411d68038d62747040b23c725e1df39cf1": "2026-11-28"
+    "f5b3bc182984aa74b8842d53afa9a1411d68038d62747040b23c725e1df39cf1": "2026-11-28",
+    "03133693f091f803bae456b35bd4c6d22a8f6f71137d5c7fbab049dff5472c61": "2026-11-28"
   }
 }
